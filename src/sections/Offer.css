@@ -1,0 +1,24 @@
+.offer {
+  background: var(--surface-color);
+}
+
+.offer__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+  align-items: center;
+}
+
+.offer__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  background: var(--surface-muted);
+}
+
+.offer__note {
+  color: var(--muted-color);
+}

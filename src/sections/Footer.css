@@ -1,0 +1,36 @@
+.footer {
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+
+.footer__brand {
+  margin: 0 0 6px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.footer__copy {
+  color: #cbd5e1;
+}
+
+.footer__links {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.footer__links a {
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+.footer__links a:hover {
+  color: #fff;
+}
