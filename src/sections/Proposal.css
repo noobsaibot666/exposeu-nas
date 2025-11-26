@@ -33,7 +33,7 @@
   place-items: center;
   width: min(960px, 92vw);
   aspect-ratio: 16 / 7;
-  perspective: 1400px; /* increase for deeper Z look */
+  perspective: 1500px; /* increase for deeper Z look */
   z-index: 1;
 }
 
@@ -63,7 +63,7 @@
   position: relative;
   place-items: center;
   display: grid;
-  gap: 14px;
+  gap: 24px;
   text-align: center;
   z-index: 2;
 }

@@ -20,20 +20,20 @@ const cards: FrameCard[] = [
     id: 'c1',
     image: 'src/assets/images/visualelectric-1755373701143.png',
     rotate: -12, // individual rotation
-    offsetX: -320, // horizontal offset for arc spacing
+    offsetX: -380, // horizontal offset for arc spacing
     offsetY: 60, // vertical offset for arc spacing
-    scale: 0.78, // individual size
-    blur: 10, // individual blur for depth of field
+    scale: 0.58, // individual size
+    blur: 6, // individual blur for depth of field
     depth: -40, // z-depth (used for stacking and transform)
   },
   {
     id: 'c2',
     image: 'src/assets/images/5bcdeb6c6e929fdb9f16ed10665ca5e0.jpg',
     rotate: -6, // individual rotation
-    offsetX: -180, // horizontal offset for arc spacing
+    offsetX: -220, // horizontal offset for arc spacing
     offsetY: 18, // vertical offset for arc spacing
     scale: 0.9, // individual size
-    blur: 5, // individual blur for depth of field
+    blur: 4, // individual blur for depth of field
     depth: -10, // z-depth (used for stacking and transform)
   },
   {
@@ -50,20 +50,20 @@ const cards: FrameCard[] = [
     id: 'c4',
     image: 'src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg',
     rotate: 8, // individual rotation
-    offsetX: 180, // horizontal offset for arc spacing
+    offsetX: 220, // horizontal offset for arc spacing
     offsetY: 18, // vertical offset for arc spacing
     scale: 0.9, // individual size
-    blur: 5, // individual blur for depth of field
+    blur: 4, // individual blur for depth of field
     depth: -10, // z-depth (used for stacking and transform)
   },
   {
     id: 'c5',
     image: 'src/assets/images/03ef1b2283de3cdc7781c5a2d3aa0cce.jpg',
     rotate: 14, // individual rotation
-    offsetX: 320, // horizontal offset for arc spacing
+    offsetX: 380, // horizontal offset for arc spacing
     offsetY: 60, // vertical offset for arc spacing
-    scale: 0.78, // individual size
-    blur: 10, // individual blur for depth of field
+    scale: 0.58, // individual size
+    blur: 6, // individual blur for depth of field
     depth: -40, // z-depth (used for stacking and transform)
   },
 ]
