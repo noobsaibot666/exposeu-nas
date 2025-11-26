@@ -1,5 +1,9 @@
 import type { CSSProperties } from 'react'
+import { useCallback, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
+import gsap from 'gsap'
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import './Hero.css'
 
 type OrbitItem = {
@@ -75,35 +79,70 @@ const orbitItems: OrbitItem[] = [
   },
 ]
 
-const orbitDuration = 30
-const ringSize = 560
-const orbitRadius = 260
-const cardSize = 118
+const orbitDuration = 60 // seconds for a full orbit
+const ringSizeVW = 20 // diameter in vw units
+const orbitRadius = 480 // radius in px units
+const cardSize = 120 // size in px units
+
 
 function Hero() {
   const angleStep = (2 * Math.PI) / orbitItems.length
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollToPlugin)
+  }, [])
+
+  const handleScrollTo = useCallback((selector: string) => {
+    const target = document.querySelector(selector)
+    if (!target) return
+    gsap.to(window, {
+      duration: 1.4,
+      ease: 'power2.inOut',
+      scrollTo: { y: target, offsetY: 24 },
+    })
+  }, [])
 
   return (
     <section className="section hero" id="hero">
       <div className="hero__canvas">
         <div className="hero__top-links" aria-label="Quick navigation">
           <nav className="hero__nav hero__nav--left">
-            <a href="/#hero">Home</a>
-            <a href="/#proposal">Proposal</a>
-            <a href="/#claim">Claim</a>
-            <a href="/#offer">Offer</a>
+            <button type="button" onClick={() => handleScrollTo('#hero')}>
+              Home
+            </button>
+            <button type="button" onClick={() => handleScrollTo('#proposal')}>
+              Proposal
+            </button>
+            <button type="button" onClick={() => handleScrollTo('#claim')}>
+              Claim
+            </button>
+            <button type="button" onClick={() => handleScrollTo('#offer')}>
+              Offer
+            </button>
           </nav>
           <div className="hero__nav-logo" aria-hidden="true" />
           <nav className="hero__nav hero__nav--right">
-            <a href="/about">About</a>
-            <a href="/contact">Contact</a>
+            <button type="button" onClick={() => navigate('/about')}>
+              About
+            </button>
+            <button type="button" onClick={() => navigate('/contact')}>
+              Contact
+            </button>
           </nav>
         </div>
 
         <div className="hero__orbit-shell">
           <div
             className="hero__ring-shell"
-            style={{ width: ringSize, height: ringSize, maxWidth: '96vw', maxHeight: '96vw' }}
+            style={{
+              width: `${ringSizeVW}vw`,
+              height: `${ringSizeVW}vw`,
+              minWidth: 360,
+              minHeight: 360,
+              maxWidth: 1080,
+              maxHeight: 1080,
+            }}
           >
             <motion.div
               className="hero__ring"
@@ -147,14 +186,16 @@ function Hero() {
           </div>
 
           <div className="hero__center">
-            <h1>We tailor visuals that speak your story.</h1>
-            <p>
-              From concept to creation, we craft content that amplifies your artistic voice and
-              keeps momentum for your launch.
-            </p>
-            <a className="hero__cta" href="/#proposal">
-              Discover More ↓
-            </a>
+            <div className="hero__center-content">
+              <h1>We tailor visuals that speak your story.</h1>
+              <p>
+                From concept to creation, we craft content that amplifies your artistic voice and
+                keeps momentum for your launch.
+              </p>
+              <button className="hero__cta" type="button" onClick={() => handleScrollTo('#proposal')}>
+                Discover More ↓
+              </button>
+            </div>
           </div>
         </div>
       </div>
