@@ -1,45 +1,107 @@
 .proposal {
-  background: var(--surface-color);
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
+  position: relative;
+  padding: 140px 16px;
+  background: #05070b;
+  color: #fff;
+  overflow: hidden;
+  min-height: 100vh;
+  width: 100%;
 }
 
-.proposal__header {
-  max-width: 720px;
-  margin-bottom: 32px;
-}
-
-.proposal__header h2 {
-  font-size: clamp(1.8rem, 2vw + 1rem, 2.4rem);
-}
-
-.proposal__grid {
+.proposal__glass { 
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 18px;
+  gap: 32px;
+  justify-items: center;
+}
+
+.proposal__halo {
+  /* Accent bloom behind cards (adjust opacity or remove if undesired) */
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.08), transparent 40%);
+  filter: blur(64px);
+  opacity: 0.4;
+  z-index: 0;
+}
+
+.proposal__stack {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(960px, 92vw);
+  aspect-ratio: 16 / 7;
+  perspective: 1400px; /* increase for deeper Z look */
+  z-index: 1;
 }
 
 .proposal__card {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 12px;
-  padding: 18px;
-  background: var(--surface-muted);
-  border: 1px solid var(--border-color);
-  border-radius: 14px;
+  position: absolute;
+  width: clamp(200px, 24vw, 320px); /* card size */
+  aspect-ratio: 1 / 1; /* 1:1 aspect */
+  border-radius: 24px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.5); /* depth shadow */
+  border: 2px solid transparent;
+  background-image: var(--card-image), linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(120, 120, 120, 0.25)); /* subtle grey stroke */
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  backdrop-filter: blur(12px);
+  transition: transform 400ms ease, box-shadow 400ms ease, filter 400ms ease;
 }
 
-.proposal__icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(14, 165, 233, 0.2));
-  display: grid;
+.proposal__card:hover {
+  transform: translateZ(40px) rotateX(6deg) rotateY(-6deg) rotate(var(--card-tilt, 0deg));
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  filter: blur(0px);
+}
+
+.proposal__copy {
+  position: relative;
   place-items: center;
-  font-size: 1.6rem;
-  color: var(--accent-strong);
+  display: grid;
+  gap: 14px;
+  text-align: center;
+  z-index: 2;
 }
 
-.proposal__card h3 {
-  margin: 0 0 0.35rem;
+.proposal__copy h2 {
+  font-size: clamp(2.2rem, 2vw + 1.5rem, 3rem);
+  margin: 0;
+  font-weight: 300;
+  align-content: center;
+}
+
+.proposal__cta {
+  width: 30%;  
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #fff;
+  color: #05070b;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.proposal__cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 768px) {
+  .proposal {
+    padding: 100px 14px;
+  }
+
+  .proposal__stack {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+  }
 }
