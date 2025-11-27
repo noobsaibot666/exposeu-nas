@@ -20,69 +20,100 @@ const orbitItems: OrbitItem[] = [
   {
     label: 'Portraits',
     tone: '#f97316',
-    image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=500&q=80',
+    image: '/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg',
   },
   {
     label: 'Lifestyle',
     tone: '#10b981',
-    image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=500&q=80',
+    image: '/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg',
   },
   {
     label: 'Studios',
     tone: '#2563eb',
-    image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=500&q=80',
+    image: '/src/assets/images/5bcdeb6c6e929fdb9f16ed10665ca5e0.jpg',
   },
   {
     label: 'Editorial',
     tone: '#e11d48',
-    image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80',
+    image: '/src/assets/images/5ca58a0696b1a8655c92ae3ed107c5e8.jpg',
   },
   {
     label: 'Partners',
     tone: '#8b5cf6',
-    image: 'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=500&q=80',
+    image: '/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg',
   },
   {
     label: 'On Set',
     tone: '#22c55e',
-    image: 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?auto=format&fit=crop&w=500&q=80',
+    image: '/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg',
   },
   {
     label: 'Campaigns',
     tone: '#0ea5e9',
-    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=500&q=80',
+    image: '/src/assets/images/03ef1b2283de3cdc7781c5a2d3aa0cce.jpg',
   },
   {
     label: 'Launches',
     tone: '#f59e0b',
-    image: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=500&q=80',
+    image: '/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg',
   },
   {
     label: 'Fashion',
     tone: '#7c3aed',
-    image: 'https://images.unsplash.com/photo-1496747611180-206a5c8c4f47?auto=format&fit=crop&w=500&q=80',
+    image: '/src/assets/images/bg01.jpg',
   },
   {
     label: 'Travel',
     tone: '#14b8a6',
-    image: 'https://images.unsplash.com/photo-1500530855697-0f3c5f5e0ba4?auto=format&fit=crop&w=500&q=80',
+    image: '/src/assets/images/cfcb07dd865328849ba617c98ae71eb3.jpg',
   },
   {
     label: 'Product',
     tone: '#eab308',
-    image: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=500&q=80',
+    image: '/src/assets/images/d3eef75d7c0616b67215308172bf30d5.jpg',
   },
   {
     label: 'Behind the Scenes',
     tone: '#ec4899',
-    image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=500&q=80',
+    image: '/src/assets/images/Daydream.jpg',
   },
+  {
+    label: 'Behind the Scenes',
+    tone: '#ec4899',
+    image: '/src/assets/images/FuturisticInterior-RomanPrytuliak.jpg',
+  },
+  {
+    label: 'Behind the Scenes',
+    tone: '#ec4899',
+    image: '/src/assets/images/Pinonsecrets.jpg',
+  },
+  {
+    label: 'Behind the Scenes',
+    tone: '#ec4899',
+    image: '/src/assets/images/Pinonnovelawalcyr.png',
+  },
+  {
+    label: 'Behind the Scenes',
+    tone: '#ec4899',
+    image: '/src/assets/images/PinonShowww.jpg',
+  },
+  {
+    label: 'Behind the Scenes',
+    tone: '#ec4899',
+    image: '/src/assets/images/PinonTheWall.jpg',
+  },
+  {
+    label: 'Behind the Scenes',
+    tone: '#5848ecff',
+    image: '/src/assets/images/f2905fd98e2710a6e4b42098b9836c5c.jpg',
+  },
+  
 ]
 
-const orbitDuration = 60 // seconds for a full orbit
-const ringSizeVW = 20 // diameter in vw units
-const orbitRadius = 480 // radius in px units
-const cardSize = 120 // size in px units
+const orbitDuration = 36 // seconds for a full orbit
+const ringSizeVW = 36 // diameter in vw units
+const orbitRadius = 656 // radius in px units
+const cardSize = 152 // size in px units
 
 
 function Hero() {
@@ -121,7 +152,9 @@ function Hero() {
               Offer
             </button>
           </nav>
-          <div className="hero__nav-logo" aria-hidden="true" />
+          <div className="hero__nav_center" >
+            EXPOSE.U
+            </div>
           <nav className="hero__nav hero__nav--right">
             <button type="button" onClick={() => navigate('/about')}>
               About
@@ -166,7 +199,8 @@ function Hero() {
                     style={{
                       width: cardSize,
                       height: cardSize,
-                      transform: `translate(${x}px, ${y}px)`,
+                      // combine center offset with orbital position to keep the anchor in the middle
+                      transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`,
                     }}
                     whileHover={{ scale: 1.1, zIndex: 2 }}
                     transition={{ type: 'spring', stiffness: 220, damping: 18 }}

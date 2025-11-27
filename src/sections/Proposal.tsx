@@ -62,7 +62,7 @@ const cards: FrameCard[] = [
     rotate: 14, // individual rotation
     offsetX: 380, // horizontal offset for arc spacing
     offsetY: 60, // vertical offset for arc spacing
-    scale: 0.58, // individual size
+    scale: 0.8, // individual size
     blur: 6, // individual blur for depth of field
     depth: -40, // z-depth (used for stacking and transform)
   },
@@ -74,18 +74,28 @@ function Proposal() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
     const ctx = gsap.context(() => {
-      gsap.from('.proposal__card', {
-        y: 40,
-        opacity: 0,
-        rotateX: -10,
-        stagger: 0.1,
-        duration: 1.2,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 80%',
+      gsap.fromTo(
+        '.proposal__card',
+        {
+          y: 40,
+          opacity: 0,
+          rotateX: -10,
         },
-      })
+        {
+          y: 0,
+          opacity: 1,
+          rotateX: 0,
+          stagger: 0.1,
+          duration: 1.2,
+          ease: 'power3.out',
+          immediateRender: false, // keep initial visibility until animation starts
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+            once: true, // run animation once
+          },
+        },
+      )
     }, sectionRef)
 
     return () => ctx.revert()

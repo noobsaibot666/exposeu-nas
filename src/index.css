@@ -65,12 +65,12 @@ p {
 }
 
 .section {
-  padding: 96px 24px;
+  padding: 72px 12px; /* further reduce padding to open horizontal space */
   scroll-margin-top: 100px;
 }
 
 .content {
-  width: min(1120px, 92vw);
+  width: min(1180px, 98vw); /* widen content container for more spread */
   margin: 0 auto;
 }
 

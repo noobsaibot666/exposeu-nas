@@ -31,7 +31,7 @@
   position: relative;
   display: grid;
   place-items: center;
-  width: min(960px, 92vw);
+  width: min(1040px, 98vw); /* widen stack to reduce side padding */
   aspect-ratio: 16 / 7;
   perspective: 1500px; /* increase for deeper Z look */
   z-index: 1;

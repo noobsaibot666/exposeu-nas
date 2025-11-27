@@ -14,9 +14,20 @@
   overflow: hidden;
 }
 
+.hero_brand {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  z-index: 999;
+}
+
 .hero__canvas {
   position: relative;
-  width: min(1200px, 96vw);
+  width: min(1280px, 99vw); /* widen hero canvas to reduce side margins */
   margin: 0 auto;
   padding: 2rem 1rem 6rem;
   box-sizing: border-box;
@@ -51,7 +62,7 @@
 .hero__ring-shell {
   position: absolute;
   left: 50%;
-  top: 50%;
+   top: 85%;  /*adjust vertical position of orbit ring */
   transform: translate(-50%, -50%);
 }
 
@@ -68,7 +79,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); /* base center offset; orbital translate added inline */
   will-change: transform;
 }
 
@@ -132,6 +143,13 @@
   gap: 10px;
 }
 
+.hero__nav_center {
+  justify-content: center;
+  font-family: satoshi, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
 .hero__nav--right {
   justify-content: flex-end;
 }
@@ -171,14 +189,15 @@
   place-items: center;
   text-align: center;
   padding: 0 1rem;
+  top: 14%;
 }
 
 .hero__center-content {
   display: grid;
-  gap: 12px;
+  gap: 28px;
   align-items: center;
   justify-items: center;
-  max-width: min(520px, 70vw);
+  max-width: min(600px, 70vw);
 }
 
 .hero__center h1 {
