@@ -1,22 +1,36 @@
 .offer {
   position: relative;
   background: #05070b;
-  color: #fff;
+  color: #f5f7fb;
   min-height: 100vh;
-  padding: 80px 0 64px;
-  display: grid;
-  grid-template-rows: 1fr auto;
-  place-items: center;
+  padding: 96px 0 84px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 94px;
+}
+
+.offer__intro {
+  width: min(1200px, 92vw);
+  padding: 0 12px;
+  text-align: center;
+  font-weight: 300;
+  font-size: 1.8rem;
+  line-height: 1.6;
+  color: #f7f7fa;
 }
 
 .offer__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
-  align-items: end;
-  padding: 0 16px;
-  width: min(1280px, 98vw);
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 20px;
+  justify-content: center;
+  overflow-x: auto;
+  padding: 0 12px;
+  width: min(1200px, 92vw);
   margin: 0 auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
 }
 
 .offer__card {
@@ -26,34 +40,22 @@
   overflow: hidden;
   background-size: cover;
   background-position: center;
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
-  transform-origin: center;
-  transition: transform 220ms ease;
-}
-
-.offer__card:hover .offer__card-media {
-  transform: scale(1.06); /* zoom image on hover */
+  box-shadow: 0 18px 44px rgba(18, 19, 30, 0.55);
+  width: 100%;
+  max-width: 340px;
 }
 
 .offer__card-link {
   position: absolute;
   inset: 0;
   display: block;
-}
-
-.offer__card-media {
-  position: absolute;
-  inset: 0;
-  background: inherit;
-  background-size: cover;
-  background-position: center;
-  transition: transform 220ms ease;
+  color: inherit;
 }
 
 .offer__card-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.6) 100%);
+  background: linear-gradient(180deg, rgba(5, 7, 11, 0.1) 0%, rgba(5, 7, 11, 0.76) 100%);
   padding: 12px;
   display: flex;
   flex-direction: column;
@@ -63,44 +65,56 @@
 
 .offer__card h3 {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 800;
+  color: #fdfefe;
 }
 
 .offer__card p {
   margin: 0;
   font-size: 0.95rem;
-  opacity: 0.85;
+  opacity: 0.88;
+  color: #e6e8ef;
 }
 
 .offer__headline {
-  display: grid;
-  place-items: center;
-  padding: 16px 16px 0;
-  text-align: left;
-  width: min(1280px, 98vw);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0 12px;
+  text-align: center;
+  width: min(1200px, 92vw);
+  row-gap: 8px;
 }
 
 .offer__headline h2 {
   margin: 0;
-  font-size: clamp(2.6rem, 4vw + 1rem, 3.6rem);
-  font-weight: 900;
+  font-size: clamp(1.5rem, 4vw, 6rem);
+  font-weight: 700;
   letter-spacing: 0.04em;
+  color: #fdfdfd;
 }
 
 .offer__subhead {
-  margin: 6px 0 0;
-  font-size: 1.05rem;
+  margin: 0;
+  font-size: 1.08rem;
   font-weight: 500;
   opacity: 0.9;
+  color: #e4e6ed;
+}
+
+.offer a {
+  color: inherit;
+  text-decoration: none;
 }
 
 @media (max-width: 720px) {
   .offer {
-    padding: 80px 0 56px;
+    padding: 80px 0 64px;
+    gap: 48px;
   }
 
   .offer__grid {
-    gap: 12px;
+    gap: 14px;
   }
 }
