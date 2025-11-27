@@ -6,6 +6,7 @@ import Hero from './sections/Hero'
 import Offer from './sections/Offer'
 import Proposal from './sections/Proposal'
 import About from './pages/About'
+import CallSession from './pages/CallSession'
 import Contact from './pages/Contact'
 import Project01 from './pages/project_01'
 import Project02 from './pages/project_02'
@@ -34,6 +35,15 @@ function App() {
           element={
             <>
               <About />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/call-session"
+          element={
+            <>
+              <CallSession />
               <Footer />
             </>
           }

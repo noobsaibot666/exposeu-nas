@@ -13,15 +13,16 @@ function Footer() {
         <p className="footer__brand">expose.u</p>
         <div className="footer__links">
           <div className="footer__group">
-            <p className="footer__label">Choose the best fit</p>
-            <a href="#">Glow Up Kit</a>
-            <a href="#">Spotlight</a>
-            <a href="#">Prime Cut</a>
+            <p className="footer__label">I need to content for my</p>
+            <a href="#">Exhibition</a>
+            <a href="#">Fashion Show</a>
+            <a href="#">Gallery Showcase</a>
+            <a href="#">Artists Talks</a>
           </div>
           <div className="footer__group">
             <p className="footer__label">Get in touch</p>
             <a href="/contact">Contact</a>
-            <a href="#">Book a call session</a>
+            <a href="/call-session">Book a call session</a>
           </div>
         </div>
       </div>

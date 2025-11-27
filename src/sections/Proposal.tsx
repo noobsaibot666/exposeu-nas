@@ -28,7 +28,7 @@ const cards: FrameCard[] = [
   },
   {
     id: 'c2',
-    image: 'src/assets/images/5bcdeb6c6e929fdb9f16ed10665ca5e0.jpg',
+    image: 'src/assets/images/64b261efa17b3bc8eb2edc58d9f810ee.jpg',
     rotate: -6, // individual rotation
     offsetX: -220, // horizontal offset for arc spacing
     offsetY: 18, // vertical offset for arc spacing
@@ -62,7 +62,7 @@ const cards: FrameCard[] = [
     rotate: 14, // individual rotation
     offsetX: 380, // horizontal offset for arc spacing
     offsetY: 60, // vertical offset for arc spacing
-    scale: 0.8, // individual size
+    scale: 0.68, // individual size
     blur: 6, // individual blur for depth of field
     depth: -40, // z-depth (used for stacking and transform)
   },

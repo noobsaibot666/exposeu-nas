@@ -153,7 +153,7 @@ function Hero() {
             </button>
           </nav>
           <div className="hero__nav_center" >
-            EXPOSE.U
+            expose.u
             </div>
           <nav className="hero__nav hero__nav--right">
             <button type="button" onClick={() => navigate('/about')}>
