@@ -210,8 +210,8 @@ function Claim() {
         </div>
         <div className="claim__headline">
           <h2>
-            From concept to spectacle, we craft bold visual worlds for
-            galleries, brands, and cultural spaces.
+            We capture exhibitions, performances, and installations with the same intent you put
+            into them—art-first, intentional, and never event-generic.
           </h2>
         </div>
       </div>

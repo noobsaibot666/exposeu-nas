@@ -221,10 +221,10 @@ function Hero() {
 
           <div className="hero__center">
             <div className="hero__center-content">
-              <h1>We tailor visuals that speak your story.</h1>
+              <h1>We film art the way it feels.</h1>
               <p>
-                From concept to creation, we craft content that amplifies your artistic voice and
-                keeps momentum for your launch.
+                Photo + video for exhibitions, performances, and galleries—crafted with taste, tuned
+                to your voice, and built to move real audiences.
               </p>
               <button className="hero__cta" type="button" onClick={() => handleScrollTo('#proposal')}>
                 Discover More ↓

@@ -123,9 +123,9 @@ function Proposal() {
           ))}
         </div>
         <div className="proposal__copy">
-          <h2>Eyewear That Stands Out</h2>
+          <h2>Art documented with clarity and soul.</h2>
           <button className="proposal__cta" type="button" >
-            Enter Store
+            View our work
           </button>
         </div>
       </div>

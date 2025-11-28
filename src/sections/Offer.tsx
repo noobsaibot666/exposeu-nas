@@ -15,29 +15,29 @@ const works: WorkCard[] = [
   {
     id: 'w1',
     image: '/src/assets/images/03ef1b2283de3cdc7781c5a2d3aa0cce.jpg',
-    title: 'Exhibition',
-    subtitle: 'Immersive Experience & Installation',
+    title: 'Exhibitions',
+    subtitle: 'Atmospheric coverage for installs & openings',
     link: '/project_01',
   },
   {
     id: 'w2',
     image: '/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg',
-    title: 'Fashion Show',
-    subtitle: 'Private Events & Launches',
+    title: 'Performance',
+    subtitle: 'Runway, sets, and live shows',
     link: '/project_02',
   },
   {
     id: 'w3',
     image: '/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg',
-    title: 'Gallery Showcase',
-    subtitle: 'Art Exhibition & Display',
+    title: 'Gallery Stories',
+    subtitle: 'Curator walkthroughs & features',
     link: '/project_04',
   },
   {
     id: 'w4',
     image: '/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg',
-    title: 'Artists Talks',
-    subtitle: 'Workshops & Discussions',
+    title: 'Artist Sessions',
+    subtitle: 'Portraits, talks, and BTS',
     link: '/project_05',
   },
 ]
@@ -69,7 +69,7 @@ function Offer() {
       <div className="offer__headline">
         <h2>What we offer</h2>
         <p className="offer__subhead">
-          Four options of high-standard content creation for your creative needs.
+          Focused coverage for the real ones—artists, galleries, and stages that deserve to be seen.
         </p>
       </div>
       <div className="offer__grid">
