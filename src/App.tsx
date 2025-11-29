@@ -6,13 +6,14 @@ import Hero from './sections/Hero'
 import Offer from './sections/Offer'
 import Proposal from './sections/Proposal'
 import About from './pages/About'
+import Atmospheric from './pages/Atmospheric'
 import CallSession from './pages/CallSession'
 import Contact from './pages/Contact'
-import Project01 from './pages/project_01'
-import Project02 from './pages/project_02'
-import Project03 from './pages/project_03'
-import Project04 from './pages/project_04'
-import Project05 from './pages/project_05'
+import Exhibitions from './pages/Exhibitions'
+import FashionShow from './pages/FashionShow'
+import GalleryStories from './pages/GalleryStories'
+import Performance from './pages/Performance'
+import ArtistSessions from './pages/ArtistSessions'
 
 function App() {
   return (
@@ -58,47 +59,50 @@ function App() {
           }
         />
         <Route
-          path="/project_01"
+          path="/exhibitions"
           element={
             <>
-              <Project01 />
-              <Footer />
+              <Exhibitions />
             </>
           }
         />
         <Route
-          path="/project_02"
+          path="/atmospheric"
           element={
             <>
-              <Project02 />
-              <Footer />
+              <Atmospheric />
             </>
           }
         />
         <Route
-          path="/project_03"
+          path="/performance"
           element={
             <>
-              <Project03 />
-              <Footer />
+              <Performance />
             </>
           }
         />
         <Route
-          path="/project_04"
+          path="/gallery-stories"
           element={
             <>
-              <Project04 />
-              <Footer />
+              <GalleryStories />
             </>
           }
         />
         <Route
-          path="/project_05"
+          path="/artist-sessions"
           element={
             <>
-              <Project05 />
-              <Footer />
+              <ArtistSessions />
+            </>
+          }
+        />
+        <Route
+          path="/fashion-show"
+          element={
+            <>
+              <FashionShow />
             </>
           }
         />

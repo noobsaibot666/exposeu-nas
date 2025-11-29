@@ -9,26 +9,34 @@
   grid-template-columns: repeat(3, 1fr);
   align-items: center;
   gap: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-weight: 800;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  padding: 28px 0 32px;
-  color: #d2d2d2;
-  font-size: 0.78rem;
+  padding: 20px 0 24px;
+  color: #ffffff;
+  font-size: 1rem;
 }
 
 .about__links {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
   justify-content: center;
 }
 
+.about__links--left {
+  justify-content: flex-start;
+}
+
+.about__links--right {
+  justify-content: flex-end;
+}
+
 .about__links a {
-  color: #f6f6f6;
-  font-weight: 700;
+  color: #ffffff;
+  font-weight: 800;
   text-decoration: none;
-  font-size: 0.75rem;
+  font-size: 1rem;
 }
 
 .about__links a:hover {
@@ -36,14 +44,10 @@
 }
 
 .about__brand {
-  font-size: 0.9rem;
+  font-size: 1.5rem;
   font-weight: 800;
-}
-
-.about__contact {
-  text-align: right;
-  font-size: 0.75rem;
-  font-weight: 700;
+  text-transform: none;
+  justify-self: center;
 }
 
 .about__shell {
@@ -64,7 +68,7 @@
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-weight: 700;
-  color: #9c9c9c;
+  color: #ffffff;
   font-size: 0.8rem;
   line-height: 1.4;
 }
@@ -106,7 +110,7 @@
 .about__body {
   margin: 0;
   font-size: 1rem;
-  color: #e6e6e6;
+  color: #ffffff;
   line-height: 1.6;
   max-width: 1140px;
 }
@@ -163,7 +167,7 @@
 
 .about__note {
   margin-top: 6px;
-  color: #dcdcdc;
+  color: #ffffff;
   line-height: 1.5;
 }
 
@@ -172,7 +176,7 @@
   font-size: clamp(3rem, 10vw + 1rem, 6rem);
   font-weight: 500;
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 10px;
   justify-content: flex-start;
 }
@@ -186,6 +190,7 @@
   line-height: 0.9;
   font-weight: 500;
   letter-spacing: -0.05em;
+  align-items: baseline;
 }
 
 .about__arrow svg {

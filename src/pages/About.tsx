@@ -4,16 +4,17 @@ function About() {
   return (
     <main className="about">
       <div className="content about__nav">
-        <div className="about__brand">expose.u</div>
-        <nav className="about__links">
+        <nav className="about__links about__links--left">
           <a href="/">Home</a>
           <a href="/#proposal">Proposal</a>
           <a href="/#claim">Claim</a>
           <a href="/#offer">Offer</a>
+        </nav>
+        <div className="about__brand">expose.u</div>
+        <nav className="about__links about__links--right">
           <a href="/about">About</a>
           <a href="/contact">Contact</a>
         </nav>
-        <div className="about__contact">hello@exposeu.studio</div>
       </div>
 
       <section className="section about__shell">
@@ -80,7 +81,17 @@ function About() {
           <a className="about__footer-link" href="/contact">
             Contact
             <span aria-hidden="true" className="about__arrow">
-              <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                width="72"
+                height="72"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ transform: 'rotate(-45deg)' }} // rotated for emphasis
+              >
                 <path d="M12 5v14" />
                 <path d="m19 12-7 7-7-7" />
               </svg>
