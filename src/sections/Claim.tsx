@@ -130,40 +130,47 @@ function Claim() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const ctx = gsap.context(() => {
       // Scroll-in animation for text block
-      gsap.from(".claim__headline", {
-        opacity: 0,
-        y: 50,
-        duration: 1.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 75%",
-        },
-      });
+      if (!prefersReduced) {
+        gsap.from(".claim__headline", {
+          opacity: 0,
+          y: 50,
+          duration: 1.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 75%",
+          },
+        });
+      }
 
       // Float images parallax on scroll
+      const listeners: Array<() => void> = [];
+
       gsap.utils.toArray<HTMLElement>(".claim__img").forEach((img) => {
         const depth = Number(img.dataset.depth || 0);
-        gsap.fromTo(
-          img,
-          { y: depth },
-          {
-            y: depth * 10, // stronger parallax on scroll
-            ease: "none",
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: true,
-            },
-          }
-        );
+        if (!prefersReduced) {
+          gsap.fromTo(
+            img,
+            { y: depth },
+            {
+              y: depth * 10, // stronger parallax on scroll
+              ease: "none",
+              scrollTrigger: {
+                trigger: sectionRef.current,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true,
+              },
+            }
+          );
+        }
 
         // Subtle hover float — tweak strength below
-        img.addEventListener("mousemove", (e) => {
+        const onMove = (e: MouseEvent) => {
           const rect = img.getBoundingClientRect();
           const relX = ((e.clientX - rect.left) / rect.width - 0.5) * 10;
           const relY = ((e.clientY - rect.top) / rect.height - 0.5) * 10;
@@ -173,16 +180,25 @@ function Claim() {
             duration: 0.4,
             ease: "power2.out",
           });
-        });
-        img.addEventListener("mouseleave", () => {
+        };
+        const onLeave = () => {
           gsap.to(img, {
             rotateX: 0,
             rotateY: 0,
             duration: 0.5,
             ease: "power2.out",
           });
+        };
+
+        img.addEventListener("mousemove", onMove);
+        img.addEventListener("mouseleave", onLeave);
+        listeners.push(() => {
+          img.removeEventListener("mousemove", onMove);
+          img.removeEventListener("mouseleave", onLeave);
         });
       });
+
+      return () => listeners.forEach((off) => off());
     }, sectionRef);
 
     return () => ctx.revert();

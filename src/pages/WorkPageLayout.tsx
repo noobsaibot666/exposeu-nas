@@ -50,6 +50,8 @@ function WorkPageLayout({
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
     const ctx = gsap.context(() => {
       const cards = gsap.utils.toArray<HTMLElement>('.work-hero__card')
 
@@ -66,15 +68,25 @@ function WorkPageLayout({
         },
       })
 
+      const listeners: Array<() => void> = []
+
       cards.forEach((card) => {
         const baseScale = Number(card.dataset.scale) || 1
-        card.addEventListener('mouseenter', () => {
+        const enter = () => {
           gsap.to(card, { scale: baseScale * 1.03, y: '-=4', duration: 0.35, ease: 'power2.out' })
-        })
-        card.addEventListener('mouseleave', () => {
+        }
+        const leave = () => {
           gsap.to(card, { scale: baseScale, y: `+=4`, duration: 0.4, ease: 'power2.out' })
+        }
+        card.addEventListener('mouseenter', enter)
+        card.addEventListener('mouseleave', leave)
+        listeners.push(() => {
+          card.removeEventListener('mouseenter', enter)
+          card.removeEventListener('mouseleave', leave)
         })
       })
+
+      return () => listeners.forEach((off) => off())
     }, stackRef)
 
     return () => ctx.revert()

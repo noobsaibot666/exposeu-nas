@@ -301,6 +301,12 @@
     gap: 24px;
   }
 
+  .work-hero__stack {
+    justify-content: flex-start;
+    overflow-x: auto; /* allow horizontal scroll on small screens */
+    padding-bottom: 12px;
+  }
+
   .work-gallery__header {
     grid-template-columns: 1fr;
   }
