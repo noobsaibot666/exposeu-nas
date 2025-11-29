@@ -17,7 +17,7 @@
 
 .claim__floating {
   position: absolute;
-  inset: -8% 0;
+  inset: -14% 0; /* push floaters further out */
   pointer-events: none;
 }
 
@@ -44,8 +44,8 @@
   display: grid;
   place-items: center;
   text-align: center;
-  gap: 12px; /* spacing between text elements */
-  padding: 0 12px;
+  gap: 10px; /* spacing between text elements */
+  padding: 0 10px;
   pointer-events: none;
 }
 
@@ -60,7 +60,7 @@
 .claim__headline h2 {
   margin: 0;
   font-weight: 300; /* thin weight for big type */
-  font-size: clamp(2.6rem, 5vw + 1rem, 4.2rem);
+  font-size: clamp(2.2rem, 4.2vw + 1rem, 3.6rem); /* smaller headline */
   line-height: 1.08;
   max-width: 18ch;
 }

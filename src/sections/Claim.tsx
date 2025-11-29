@@ -19,7 +19,7 @@ const floatImages: FloatImage[] = [
     id: "f1",
     src: "/src/assets/images/03ef1b2283de3cdc7781c5a2d3aa0cce.jpg",
     width: 160,
-    top: "8%",
+    top: "28%",
     left: "10%",
     depth: -50,
     rotate: -6,
@@ -73,7 +73,7 @@ const floatImages: FloatImage[] = [
     id: "f7",
     src: "/src/assets/images/9e0e2a8be395cbebe80fe4296dcb4a0e.jpg",
     width: 120,
-    top: "10%",
+    top: "20%",
     left: "76%",
     depth: -40,
     rotate: 3,
@@ -210,8 +210,8 @@ function Claim() {
         </div>
         <div className="claim__headline">
           <h2>
-            We capture exhibitions, performances, and installations with the same intent you put
-            into them—art-first, intentional, and never event-generic.
+            We capture exhibitions, performances, and installs with the same intent you put into
+            them—art-first, precise, and never generic.
           </h2>
         </div>
       </div>
