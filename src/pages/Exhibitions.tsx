@@ -33,22 +33,6 @@ function Exhibitions() {
           title: 'On-brand pacing',
           subtitle: 'Edits that match your tone—minimalist, bold, or intimate—so every output feels like you.',
         },
-        {
-          title: 'Curator collaboration',
-          subtitle: 'We align on key pieces, themes, and must-have frames so the story you curated is the story we capture.',
-        },
-        {
-          title: 'Press & partners',
-          subtitle: 'We package assets for media drops, catalogs, and sponsors with clear permissions and usage notes.',
-        },
-        {
-          title: 'Fast turnaround',
-          subtitle: 'Same-week selects and social cuts so you can publish while the momentum is high.',
-        },
-        {
-          title: 'Discreet presence',
-          subtitle: 'We keep a low footprint—no obtrusive rigs—so guests stay immersed and the work leads.',
-        },
       ]}
       extraGalleryTitle="What you get"
       extraGalleryCopy="We handle the capture and delivery end-to-end so you can focus on your artists, guests, and partners."

@@ -4,13 +4,7 @@ const heroCards = [
   { image: '/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg', title: 'Runway Light' },
   { image: '/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg', title: 'Backstage' },
   { image: '/src/assets/images/PinonShowww.jpg', title: 'Final Walk' },
-]
-
-const galleryItems = [
-  { image: '/src/assets/images/03ef1b2283de3cdc7781c5a2d3aa0cce.jpg', title: 'Lookbook Pulls' },
-  { image: '/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg', title: 'Motion & Fabric' },
-  { image: '/src/assets/images/5ca58a0696b1a8655c92ae3ed107c5e8.jpg', title: 'Designer Details' },
-  { image: '/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg', title: 'Press Ready' },
+  { image: '/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg', title: 'Fabric Motion' },
 ]
 
 function FashionShow() {
@@ -22,9 +16,30 @@ function FashionShow() {
       cards={heroCards}
       galleryTitle="Why fashion teams hire us"
       galleryCopy="We sync with your show flow, capture looks cleanly, and deliver both hero shots and social cuts fast."
-      gallery={galleryItems}
+      gallery={[
+        { title: 'Runway clarity', subtitle: 'Clean, flattering coverage of each look for designers and PR.' },
+        { title: 'Backstage energy', subtitle: 'Candid prep, fittings, and final moments that tell the story.' },
+        { title: 'Fabric + motion', subtitle: 'Angles and shutter choices that show texture and flow.' },
+        { title: 'Press-ready delivery', subtitle: 'Hero images and reels ready for media and socials within days.' },
+      ]}
+      extraGalleryTitle="What you get"
+      extraGalleryCopy="Editorial-grade coverage plus fast delivery so your collection hits every channel on time."
+      extraGallery={[
+        { title: 'Lookbook pulls', subtitle: 'Isolated frames of each look, ready for e-comm or press kits.' },
+        { title: 'Vertical + horizontal', subtitle: 'Reels, wides, and detail stills sized for every platform.' },
+        { title: 'Designer features', subtitle: 'Selects spotlighting craft, details, and signature elements.' },
+        { title: 'Usage notes', subtitle: 'Organized folders with naming, permissions, and delivery checklists.' },
+      ]}
+      extraGallerySecondaryTitle="How we cover shows"
+      extraGallerySecondaryCopy="We plan with production, lock sightlines, and stay agile so we never miss a look."
+      extraGallerySecondary={[
+        { title: 'Show flow sync', subtitle: 'Coordinate cues, walk order, and key beats with your team.' },
+        { title: 'Pit + roaming', subtitle: 'Primary angle plus roaming coverage for varied perspectives.' },
+        { title: 'Low footprint', subtitle: 'Minimal rigging to keep aisles clear and timelines tight.' },
+        { title: 'Same-day selects', subtitle: 'Priority frames day-of; full delivery follows quickly.' },
+      ]}
       ctaText="Line up your next fashion show coverage—let’s lock the brief and timing."
-      ctaHref="/call-session"
+      ctaHref="/contact"
     />
   )
 }

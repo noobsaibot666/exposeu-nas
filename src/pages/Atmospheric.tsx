@@ -4,12 +4,6 @@ const heroCards = [
   { image: '/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg', title: 'Moody Portraits' },
   { image: '/src/assets/images/Daydream.jpg', title: 'Slow Motion' },
   { image: '/src/assets/images/bg01.jpg', title: 'Ambient Scenes' },
-]
-
-const galleryItems = [
-  { image: '/src/assets/images/5bcdeb6c6e929fdb9f16ed10665ca5e0.jpg', title: 'Studio Texture' },
-  { image: '/src/assets/images/f2905fd98e2710a6e4b42098b9836c5c.jpg', title: 'Smoke + Light' },
-  { image: '/src/assets/images/cfcb07dd865328849ba617c98ae71eb3.jpg', title: 'Color Fields' },
   { image: '/src/assets/images/PinonTheWall.jpg', title: 'Stillness & Tone' },
 ]
 
@@ -22,9 +16,30 @@ function Atmospheric() {
       cards={heroCards}
       galleryTitle="Why it lands"
       galleryCopy="We design motion and stills that feel handcrafted—rich blacks, intentional grain, and pacing that lets the scene bloom."
-      gallery={galleryItems}
+      gallery={[
+        { title: 'Mood boards to frames', subtitle: 'We translate your references into lighting setups and camera moves that hold the vibe.' },
+        { title: 'Texture + tone', subtitle: 'Rich blacks, intentional grain, and color that feels tactile, not over-processed.' },
+        { title: 'Pacing for feeling', subtitle: 'Slow camera, long takes, and breathing room so scenes bloom on their own.' },
+        { title: 'Sound + motion', subtitle: 'Ambient soundbeds and subtle moves that make short pieces feel immersive.' },
+      ]}
+      extraGalleryTitle="What you get"
+      extraGalleryCopy="Atmospheric packages tuned for teasers, lookbooks, and art films—ready to drop across channels."
+      extraGallery={[
+        { title: 'Deliverables set', subtitle: 'Vertical reels, widescreen cuts, and still pulls in one delivery.' },
+        { title: 'Look & grade', subtitle: 'Custom LUTs and grading that match your palette.' },
+        { title: 'Music beds', subtitle: 'Licensed tracks or bespoke soundbeds to hold the tone.' },
+        { title: 'Usage clarity', subtitle: 'Organized folders with usage notes for partners and press.' },
+      ]}
+      extraGallerySecondaryTitle="How we shoot"
+      extraGallerySecondaryCopy="Lean crew, thoughtful prelight, and a calm set so the mood stays intact."
+      extraGallerySecondary={[
+        { title: 'Prelight + tests', subtitle: 'We dial light and color before talent arrives.' },
+        { title: 'Small footprint', subtitle: 'Minimal gear to keep the set quiet and nimble.' },
+        { title: 'On-set direction', subtitle: 'Clear cues to keep movement slow and intentional.' },
+        { title: 'Swift handoff', subtitle: 'Selects and cuts fast so you can release while the buzz is fresh.' },
+      ]}
       ctaText="Let’s craft your next atmospheric shoot. Tell us the mood and we’ll handle the rest."
-      ctaHref="/call-session"
+      ctaHref="/contact"
     />
   )
 }
