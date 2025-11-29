@@ -1,9 +1,12 @@
+import { useEffect, useRef } from 'react'
 import type { CSSProperties } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Footer from '../sections/Footer'
 import './WorkPage.css'
 
 export type WorkCard = {
-  image: string
+  image?: string
   title: string
   subtitle?: string
 }
@@ -18,6 +21,12 @@ type WorkPageLayoutProps = {
   gallery: WorkCard[]
   ctaText: string
   ctaHref: string
+  extraGalleryTitle?: string
+  extraGalleryCopy?: string
+  extraGallery?: WorkCard[]
+  extraGallerySecondaryTitle?: string
+  extraGallerySecondaryCopy?: string
+  extraGallerySecondary?: WorkCard[]
 }
 
 function WorkPageLayout({
@@ -30,7 +39,47 @@ function WorkPageLayout({
   gallery,
   ctaText,
   ctaHref,
+  extraGalleryTitle,
+  extraGalleryCopy,
+  extraGallery,
+  extraGallerySecondaryTitle,
+  extraGallerySecondaryCopy,
+  extraGallerySecondary,
 }: WorkPageLayoutProps) {
+  const stackRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger)
+    const ctx = gsap.context(() => {
+      const cards = gsap.utils.toArray<HTMLElement>('.work-hero__card')
+
+      gsap.from(cards, {
+        opacity: 0,
+        y: 24,
+        scale: 0.94,
+        stagger: 0.08,
+        duration: 1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: stackRef.current,
+          start: 'top 80%',
+        },
+      })
+
+      cards.forEach((card) => {
+        const baseScale = Number(card.dataset.scale) || 1
+        card.addEventListener('mouseenter', () => {
+          gsap.to(card, { scale: baseScale * 1.03, y: '-=4', duration: 0.35, ease: 'power2.out' })
+        })
+        card.addEventListener('mouseleave', () => {
+          gsap.to(card, { scale: baseScale, y: `+=4`, duration: 0.4, ease: 'power2.out' })
+        })
+      })
+    }, stackRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
     <main className="work-page">
       <div className="content work-nav">
@@ -56,20 +105,39 @@ function WorkPageLayout({
           </div>
           <div className="work-hero__stack-shell">
             <p className="work-hero__label">Projects</p>
-            <div className="work-hero__stack">
-              {cards.map((card, index) => (
-                <div
-                  key={card.title}
-                  className="work-hero__card"
-                  style={{ '--offset': `${index * 16}px` } as CSSProperties}
-                >
-                  <div className="work-hero__card-media" style={{ backgroundImage: `url(${card.image})` }} />
-                  <div className="work-hero__card-meta">
-                    <p>{card.title}</p>
-                    {card.subtitle && <span>{card.subtitle}</span>}
+            <div className="work-hero__stack" ref={stackRef}>
+              {cards.map((card, index) => {
+                const scales = [0.98, 1.08, 1.2, 1.34] // tune per card
+                const widths = [260, 300, 360, 420] // px widths per card
+                const translateY = [12, 6, 0, -6] // px vertical offsets per card
+                const overlap = '-24px' // horizontal overlap between cards
+                const scale = scales[index] ?? scales[scales.length - 1]
+                const width = widths[index] ?? widths[widths.length - 1]
+                const ty = translateY[index] ?? translateY[translateY.length - 1]
+
+                return (
+                  <div
+                    key={card.title}
+                    className="work-hero__card"
+                    data-scale={scale}
+                    style={
+                      {
+                        '--card-scale': scale,
+                        '--card-overlap': index === 0 ? '0px' : overlap,
+                        '--card-width': `${width}px`,
+                        '--card-translate': `${ty}px`,
+                        '--card-z': 10 + index,
+                      } as CSSProperties
+                    }
+                  >
+                    <div className="work-hero__card-media" style={{ backgroundImage: `url(${card.image})` }} />
+                    <div className="work-hero__card-meta">
+                      <p>{card.title}</p>
+                      {card.subtitle && <span>{card.subtitle}</span>}
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </div>
@@ -84,17 +152,93 @@ function WorkPageLayout({
           </div>
         </div>
         <div className="content work-gallery__grid">
-          {gallery.map((item) => (
-            <div key={item.title} className="work-gallery__item">
-              <div className="work-gallery__image" style={{ backgroundImage: `url(${item.image})` }} />
-              <div className="work-gallery__caption">
-                <p className="work-gallery__title">{item.title}</p>
-                {item.subtitle && <p className="work-gallery__subtitle">{item.subtitle}</p>}
+          {gallery.map((item, index) => {
+            const ratios = ['square', 'wide', 'classic'] as const
+            const ratio = ratios[index % ratios.length]
+            const isTextOnly = !item.image
+            return (
+              <div
+                key={item.title}
+                className={`work-gallery__item ${isTextOnly ? 'work-gallery__item--text' : `work-gallery__item--${ratio}`}`}
+              >
+                {!isTextOnly && (
+                  <div className="work-gallery__image" style={{ backgroundImage: `url(${item.image})` }} />
+                )}
+                <div className="work-gallery__caption">
+                  <p className="work-gallery__title">{item.title}</p>
+                  {item.subtitle && <p className="work-gallery__subtitle">{item.subtitle}</p>}
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </section>
+
+      {extraGallery && extraGallery.length > 0 && (
+        <section className="section work-gallery work-gallery--secondary">
+          <div className="content work-gallery__header">
+            <div className="work-gallery__label">More to expect</div>
+            <div>
+              <h2>{extraGalleryTitle}</h2>
+              <p>{extraGalleryCopy}</p>
+            </div>
+          </div>
+          <div className="content work-gallery__grid">
+            {extraGallery.map((item, index) => {
+              const ratios = ['wide', 'classic', 'square'] as const
+              const ratio = ratios[index % ratios.length]
+              const isTextOnly = !item.image
+              return (
+                <div
+                  key={`${item.title}-${index}`}
+                  className={`work-gallery__item ${isTextOnly ? 'work-gallery__item--text' : `work-gallery__item--${ratio}`}`}
+                >
+                  {!isTextOnly && (
+                    <div className="work-gallery__image" style={{ backgroundImage: `url(${item.image})` }} />
+                  )}
+                  <div className="work-gallery__caption">
+                    <p className="work-gallery__title">{item.title}</p>
+                    {item.subtitle && <p className="work-gallery__subtitle">{item.subtitle}</p>}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </section>
+      )}
+
+      {extraGallerySecondary && extraGallerySecondary.length > 0 && (
+        <section className="section work-gallery work-gallery--secondary">
+          <div className="content work-gallery__header">
+            <div className="work-gallery__label">How we deliver</div>
+            <div>
+              <h2>{extraGallerySecondaryTitle}</h2>
+              <p>{extraGallerySecondaryCopy}</p>
+            </div>
+          </div>
+          <div className="content work-gallery__grid">
+            {extraGallerySecondary.map((item, index) => {
+              const ratios = ['classic', 'square', 'wide'] as const
+              const ratio = ratios[index % ratios.length]
+              const isTextOnly = !item.image
+              return (
+                <div
+                  key={`${item.title}-secondary-${index}`}
+                  className={`work-gallery__item ${isTextOnly ? 'work-gallery__item--text' : `work-gallery__item--${ratio}`}`}
+                >
+                  {!isTextOnly && (
+                    <div className="work-gallery__image" style={{ backgroundImage: `url(${item.image})` }} />
+                  )}
+                  <div className="work-gallery__caption">
+                    <p className="work-gallery__title">{item.title}</p>
+                    {item.subtitle && <p className="work-gallery__subtitle">{item.subtitle}</p>}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </section>
+      )}
 
       <section className="section work-cta">
         <div className="content work-cta__content">
@@ -102,8 +246,8 @@ function WorkPageLayout({
             <p className="work-cta__eyebrow">Ready to collaborate</p>
             <h3>{ctaText}</h3>
           </div>
-          <a className="btn btn-primary" href={ctaHref}>
-            Let&apos;s talk
+          <a className="work-cta__link" href={ctaHref}>
+            Contact us
           </a>
         </div>
       </section>
