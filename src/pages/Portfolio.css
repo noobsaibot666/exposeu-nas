@@ -14,14 +14,14 @@
   text-transform: uppercase;
   padding: 20px 0 18px;
   margin-bottom: 12px;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .portfolio__links {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  font-size: 1rem;
+  gap: 10px;
+  font-size: 0.6rem;
 }
 
 .portfolio__links a {
@@ -50,7 +50,7 @@
 
 .portfolio__brand {
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 800;
   text-transform: lowercase;
   color: #ffffff;
