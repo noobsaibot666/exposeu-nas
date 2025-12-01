@@ -3,6 +3,7 @@ import './Proposal.css'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import type { CSSProperties } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 type FrameCard = {
   id: string
@@ -70,6 +71,7 @@ const cards: FrameCard[] = [
 
 function Proposal() {
   const sectionRef = useRef<HTMLElement | null>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
@@ -123,8 +125,13 @@ function Proposal() {
           ))}
         </div>
         <div className="proposal__copy">
-          <h2>Art documented with clarity and soul.</h2>
-          <button className="proposal__cta" type="button" >
+          <h2>Bring us in as your creative unit.</h2>
+          <p>
+            We storyboard, shoot, and deliver exhibition-ready photo and video that carries your
+            tone. Hire us as your content partners—from moodboards to final exports—so your work
+            launches with visuals that feel intentional.
+          </p>
+          <button className="proposal__cta" type="button" onClick={() => navigate('/portfolio')}>
             View our work
           </button>
         </div>

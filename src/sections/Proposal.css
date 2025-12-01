@@ -63,7 +63,7 @@
   position: relative;
   place-items: center;
   display: grid;
-  gap: 24px;
+  gap: 18px;
   text-align: center;
   z-index: 2;
 }
@@ -73,6 +73,14 @@
   margin: 0;
   font-weight: 300;
   align-content: center;
+}
+
+.proposal__copy p {
+  margin: 0;
+  max-width: 640px;
+  color: #e7e9f5;
+  line-height: 1.6;
+  font-weight: 400;
 }
 
 .proposal__cta {

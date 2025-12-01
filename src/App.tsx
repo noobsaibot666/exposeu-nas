@@ -14,6 +14,7 @@ import FashionShow from './pages/FashionShow'
 import GalleryStories from './pages/GalleryStories'
 import Performance from './pages/Performance'
 import ArtistSessions from './pages/ArtistSessions'
+import Portfolio from './pages/Portfolio'
 
 function App() {
   return (
@@ -103,6 +104,15 @@ function App() {
           element={
             <>
               <FashionShow />
+            </>
+          }
+        />
+        <Route
+          path="/portfolio"
+          element={
+            <>
+              <Portfolio />
+              <Footer />
             </>
           }
         />
