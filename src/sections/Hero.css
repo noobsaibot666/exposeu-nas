@@ -54,16 +54,14 @@
   position: relative;
   width: 100%;
   min-height: 960px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
 }
 
 .hero__ring-shell {
-  position: absolute;
-  left: 50%;
-   top: 85%;  /*adjust vertical position of orbit ring */
-  transform: translate(-50%, -50%);
+  position: relative;
+  transform: none;
+  will-change: transform, opacity;
 }
 
 .hero__ring {
@@ -73,14 +71,18 @@
   border-radius: 50%;
   display: grid;
   place-items: center;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .hero__card {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%); /* base center offset; orbital translate added inline */
+  transform: translate(-50%, -50%) translateZ(0); /* base center offset; orbital translate added inline */
   will-change: transform;
+  backface-visibility: hidden;
 }
 
 .hero__thumb {
@@ -98,6 +100,9 @@
   background-size: cover;
   background-position: center;
   border: 1px solid rgba(255, 255, 255, 0.2);
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 @media (max-width: 900px) {
@@ -151,6 +156,21 @@
   text-transform: lowercase;
 }
 
+.hero__nav_center button {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 800;
+  text-transform: lowercase;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.hero__nav_center button:hover {
+  text-decoration: underline;
+}
+
 .hero__nav--right {
   justify-content: flex-end;
 }
@@ -190,7 +210,7 @@
   place-items: center;
   text-align: center;
   padding: 0 1rem;
-  top: 14%;
+
 }
 
 .hero__center-content {
@@ -219,7 +239,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 12px 20px;
+  padding: 14px 20px;
   border-radius: 12px;
   border: 2px solid #fff;
   color: #fff;

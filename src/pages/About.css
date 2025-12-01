@@ -40,7 +40,13 @@
 }
 
 .about__links a:hover {
+  color: #ffffff;
   text-decoration: underline;
+  text-decoration-color: currentColor;
+}
+
+.about__links a:visited {
+  color: #ffffff;
 }
 
 .about__brand {
@@ -48,6 +54,8 @@
   font-weight: 800;
   text-transform: none;
   justify-self: center;
+  color: #ffffff;
+  text-decoration: none;
 }
 
 .about__shell {
@@ -191,6 +199,16 @@
   font-weight: 500;
   letter-spacing: -0.05em;
   align-items: baseline;
+}
+
+.about__footer-link:hover {
+  color: #ffffff;
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+}
+
+.about__footer-link:visited {
+  color: #ffffff;
 }
 
 .about__arrow svg {

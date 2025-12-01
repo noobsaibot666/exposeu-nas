@@ -101,7 +101,9 @@ function WorkPageLayout({
           <a href="/#claim">Claim</a>
           <a href="/#offer">Offer</a>
         </nav>
-        <div className="work-nav__brand">expose.u</div>
+        <a className="work-nav__brand" href="/">
+          expose.u
+        </a>
         <nav className="work-nav__links work-nav__links--right">
           <a href="/about">About</a>
           <a href="/contact">Contact</a>

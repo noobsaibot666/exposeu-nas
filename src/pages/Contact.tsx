@@ -10,7 +10,9 @@ function Contact() {
           <a href="/#claim">Claim</a>
           <a href="/#offer">Offer</a>
         </nav>
-        <div className="contact__brand">expose.u</div>
+        <a className="contact__brand" href="/">
+          expose.u
+        </a>
         <nav className="contact__links contact__links--right">
           <a href="/about">About</a>
           <a href="/contact">Contact</a>

@@ -61,12 +61,18 @@
 }
 
 .footer__links a {
-  color: #e1e3ec;
+  color: #ffffff;
   text-decoration: none;
   font-weight: 500;
 }
 
 .footer__links a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+}
+
+.footer__links a:visited {
   color: #ffffff;
 }
 

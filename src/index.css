@@ -41,13 +41,19 @@ body {
 }
 
 a {
-  color: var(--accent-color);
+  color: #ffffff;
   text-decoration: none;
   font-weight: 600;
 }
 
 a:hover {
-  color: var(--accent-strong);
+  color: #ffffff;
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+}
+
+a:visited {
+  color: #ffffff;
 }
 
 h1,

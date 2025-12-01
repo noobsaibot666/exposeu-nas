@@ -32,7 +32,13 @@
 }
 
 .contact__links a:hover {
+  color: #ffffff;
   text-decoration: underline;
+  text-decoration-color: currentColor;
+}
+
+.contact__links a:visited {
+  color: #ffffff;
 }
 
 .contact__links--right {
@@ -48,6 +54,8 @@
   font-size: 1.5rem;
   font-weight: 800;
   text-transform: none;
+  color: #ffffff;
+  text-decoration: none;
 }
 
 .contact__body {
@@ -116,13 +124,18 @@
 }
 
 .contact__list a {
-  color: #d4d7e1;
+  color: #ffffff;
   text-decoration: none;
 }
 
 .contact__list a:hover {
   color: #ffffff;
   text-decoration: underline;
+  text-decoration-color: currentColor;
+}
+
+.contact__list a:visited {
+  color: #ffffff;
 }
 
 .contact__address {

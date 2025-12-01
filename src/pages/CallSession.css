@@ -31,7 +31,13 @@
 }
 
 .call-session__links a:hover {
+  color: #ffffff;
   text-decoration: underline;
+  text-decoration-color: currentColor;
+}
+
+.call-session__links a:visited {
+  color: #ffffff;
 }
 
 .call-session__links--right {
@@ -48,6 +54,8 @@
   font-size: 1.5rem;
   font-weight: 800;
   font-style: normal;
+  color: #ffffff;
+  text-decoration: none;
   
 }
 

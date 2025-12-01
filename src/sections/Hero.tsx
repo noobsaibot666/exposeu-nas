@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 import { useCallback, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
@@ -113,12 +113,13 @@ const orbitItems: OrbitItem[] = [
 const orbitDuration = 36 // seconds for a full orbit
 const ringSizeVW = 36 // diameter in vw units
 const orbitRadius = 656 // radius in px units
-const cardSize = 152 // size in px units
+const cardSize = 160 // orbit thumbnail size in px
 
 
 function Hero() {
   const angleStep = (2 * Math.PI) / orbitItems.length
   const navigate = useNavigate()
+  const prefersReducedMotion = useReducedMotion()
 
   useEffect(() => {
     gsap.registerPlugin(ScrollToPlugin)
@@ -152,9 +153,11 @@ function Hero() {
               Offer
             </button>
           </nav>
-          <div className="hero__nav_center" >
-            expose.u
-            </div>
+          <div className="hero__nav_center">
+            <button type="button" aria-label="Go to homepage" onClick={() => handleScrollTo('#hero')}>
+              expose.u
+            </button>
+          </div>
           <nav className="hero__nav hero__nav--right">
             <button type="button" onClick={() => navigate('/about')}>
               About
@@ -166,7 +169,7 @@ function Hero() {
         </div>
 
         <div className="hero__orbit-shell">
-          <div
+          <motion.div
             className="hero__ring-shell"
             style={{
               width: `${ringSizeVW}vw`,
@@ -176,11 +179,30 @@ function Hero() {
               maxWidth: 1080,
               maxHeight: 1080,
             }}
+            initial={
+              prefersReducedMotion
+                ? undefined
+                : { opacity: 0, scale: 1.12, y: 120 }
+            }
+            animate={
+              prefersReducedMotion
+                ? undefined
+                : { opacity: 1, scale: 1, y: 0 }
+            }
+            transition={
+              prefersReducedMotion
+                ? undefined
+                : { duration: 0.9, ease: 'easeOut' }
+            }
           >
             <motion.div
               className="hero__ring"
-              animate={{ rotate: 360 }}
-              transition={{ repeat: Infinity, ease: 'linear', duration: orbitDuration }}
+              animate={prefersReducedMotion ? undefined : { rotate: 360 }}
+              transition={
+                prefersReducedMotion
+                  ? undefined
+                  : { repeat: Infinity, ease: 'linear', duration: orbitDuration }
+              }
             >
               {orbitItems.map((item, index) => {
                 const angle = angleStep * index
@@ -208,8 +230,12 @@ function Hero() {
                     <motion.div
                       className="hero__thumb"
                       style={backgroundStyles}
-                      animate={{ rotate: -360 }}
-                      transition={{ repeat: Infinity, ease: 'linear', duration: orbitDuration }}
+                      animate={prefersReducedMotion ? undefined : { rotate: -360 }}
+                      transition={
+                        prefersReducedMotion
+                          ? undefined
+                          : { repeat: Infinity, ease: 'linear', duration: orbitDuration }
+                      }
                     >
                       {!item.image && <span>{item.label}</span>}
                     </motion.div>
@@ -217,7 +243,7 @@ function Hero() {
                 )
               })}
             </motion.div>
-          </div>
+          </motion.div>
 
           <div className="hero__center">
             <div className="hero__center-content">

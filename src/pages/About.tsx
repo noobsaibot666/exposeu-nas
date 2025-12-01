@@ -10,7 +10,9 @@ function About() {
           <a href="/#claim">Claim</a>
           <a href="/#offer">Offer</a>
         </nav>
-        <div className="about__brand">expose.u</div>
+        <a className="about__brand" href="/">
+          expose.u
+        </a>
         <nav className="about__links about__links--right">
           <a href="/about">About</a>
           <a href="/contact">Contact</a>

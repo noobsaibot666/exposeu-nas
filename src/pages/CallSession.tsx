@@ -12,7 +12,9 @@ function CallSession() {
             <a href="/#claim">Claim</a>
             <a href="/#offer">Offer</a>
           </nav>
-          <div className="call-session__brand">expose.u</div>
+          <a className="call-session__brand" href="/">
+            expose.u
+          </a>
           <nav className="call-session__links call-session__links--right">
             <a href="/about">About</a>
             <a href="/contact">Contact</a>
