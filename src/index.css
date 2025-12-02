@@ -34,10 +34,17 @@ body {
   margin: 0;
   color: var(--text-color);
   background: var(--page-bg);
+  animation: page-fade-in 320ms ease;
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+#root,
+html,
+body {
+  background-color: #05070b; /* dark fallback to prevent white flash before main styles load */
 }
 
 #root {
@@ -174,4 +181,15 @@ p {
   font-weight: 800;
   font-style: normal;
   font-display: swap;
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

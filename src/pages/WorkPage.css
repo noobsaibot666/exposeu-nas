@@ -275,22 +275,25 @@
 .work-cta__link {
   width: 18%;
   text-align: center;
-  color: #050505;
+  color: #050505 !important;
   background: #ffffff; /* CTA background */
   text-decoration: none;
   font-weight: 600; /* CTA weight */
   font-size: 1.2rem; /* CTA link size */
   border: 1px solid #ffffff; /* CTA border */
-  padding: 10px 16px;
+  padding: 12px 18px;
   border-radius: 16px;
   transition: transform 150ms ease, border-color 150ms ease, background-color 150ms ease, color 150ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .work-cta__link:hover {
   transform: translateY(-1px);
   border-color: #dcdcdc;
   background: #f4f4f4;
-  color: #050505;
+  color: #050505 !important;
 }
 
 @media (max-width: 900px) {
