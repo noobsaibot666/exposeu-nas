@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react'
-import type { WheelEvent } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import type { CSSProperties, PointerEvent, WheelEvent } from 'react'
 import './Portfolio.css'
 
 type VideoItem = {
@@ -107,11 +107,20 @@ const videos: VideoItem[] = [
 
 function Portfolio() {
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const [hoveredId, setHoveredId] = useState<string | null>(null)
   const gridRef = useRef<HTMLDivElement | null>(null)
+  const dragState = useRef({ active: false, startX: 0, scrollLeft: 0, moved: false, pointerId: 0 })
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' })
+  }, [])
 
   const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
     const grid = gridRef.current
-    if (!grid) return
+    if (!grid || grid.scrollWidth <= grid.clientWidth) return
+
+    // Convert vertical wheel motion into horizontal scrolling inside the card rail.
     if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
       event.preventDefault()
       event.stopPropagation()
@@ -119,6 +128,42 @@ function Portfolio() {
       grid.scrollTo({ left: next, behavior: 'smooth' })
     }
   }
+
+  const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    const grid = gridRef.current
+    if (!grid || event.button !== 0 || grid.scrollWidth <= grid.clientWidth) return
+
+    setHoveredId(null)
+    dragState.current = {
+      active: true,
+      startX: event.clientX,
+      scrollLeft: grid.scrollLeft,
+      moved: false,
+      pointerId: event.pointerId,
+    }
+    setIsDragging(true)
+    grid.setPointerCapture(event.pointerId)
+    event.preventDefault()
+  }
+
+  const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    if (!dragState.current.active || !gridRef.current) return
+    const deltaX = event.clientX - dragState.current.startX
+    if (Math.abs(deltaX) > 2) {
+      dragState.current.moved = true
+    }
+    gridRef.current.scrollLeft = dragState.current.scrollLeft - deltaX
+  }
+
+  const stopDragging = (_event?: PointerEvent<HTMLDivElement>) => {
+    const grid = gridRef.current
+    if (!grid || !dragState.current.active) return
+    dragState.current.active = false
+    dragState.current.pointerId && grid.releasePointerCapture(dragState.current.pointerId)
+    setIsDragging(false)
+  }
+
+  const hoveredIndex = hoveredId ? videos.findIndex((v) => v.id === hoveredId) : -1
 
   return (
     <main className="portfolio">
@@ -146,54 +191,87 @@ function Portfolio() {
       </section>
 
       <section className="section portfolio__gallery">
-        <div
-          className="content portfolio__grid"
-          ref={gridRef}
-          onWheel={handleWheel}
-          onWheelCapture={handleWheel}
-        >
-          {videos.map((video) => (
-            <button
-              key={video.id}
-              type="button"
-              className="portfolio__card"
-              onClick={() => setActiveVideo(video)}
+        <div className="content">
+          <div className="portfolio__rail" onWheel={handleWheel} onWheelCapture={handleWheel}>
+            <div
+              className={`portfolio__grid ${isDragging ? 'is-dragging' : ''}`}
+              ref={gridRef}
+              onPointerDown={handlePointerDown}
+              onPointerMove={handlePointerMove}
+              onPointerUp={stopDragging}
+              onPointerLeave={stopDragging}
             >
-              <div className="portfolio__thumb" style={{ backgroundImage: `url(${video.thumb})` }} aria-hidden>
-                <div className="portfolio__topline">
-                  <span className="portfolio__pill">{video.tag ?? 'Feature'}</span>
-                  <span className="portfolio__icon">
-                    <svg width="12" height="12" viewBox="0 0 22 22" fill="none">
-                      <path
-                        d="M20 18.6842C20 19.4109 19.4109 20 18.6842 20C17.9575 20 17.3684 19.4109 17.3684 18.6842V4.49219L2.24609 19.6145C1.73225 20.1284 0.899333 20.1284 0.385485 19.6145C-0.128363 19.1007 -0.128362 18.2678 0.385485 17.7539L15.5078 2.63158H1.31579C0.589099 2.63158 0 2.04248 0 1.31579C0 0.589099 0.589099 0 1.31579 0H20V18.6842Z"
-                        fill="white"
-                      />
-                    </svg>
-                  </span>
-                </div>
-                <div className="portfolio__thumb-overlay" />
-                <div className="portfolio__bottom">
-                  <span className="portfolio__chip">{video.year}</span>
-                  <p className="portfolio__title">{video.title}</p>
-                  <p className="portfolio__description">{video.description}</p>
-                  <div className="portfolio__footer-row">
-                    <span className="portfolio__location">{video.location}</span>
-                    <span className="portfolio__cta-chip">
-                      {video.cta ?? 'Play'}
-                      <svg width="8" height="14" viewBox="0 0 3 7" fill="none">
-                        <path
-                          d="M1 6L2.50024 4.1247C2.79242 3.75948 2.79242 3.24052 2.50024 2.87531L1 1"
-                          stroke="white"
-                          strokeWidth="0.5"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </button>
-          ))}
+              {videos.map((video, index) => {
+                const shift =
+                  hoveredIndex === -1
+                    ? 0
+                    : index < hoveredIndex
+                      ? -48
+                      : index > hoveredIndex
+                        ? 48
+                        : 0
+                const cardStyle: CSSProperties & { '--card-shift'?: string } = {
+                  '--card-shift': `${shift}px`,
+                }
+
+                return (
+                  <button
+                    key={video.id}
+                    type="button"
+                    className="portfolio__card"
+                    style={cardStyle}
+                    onClick={() => {
+                      if (dragState.current.moved) {
+                        dragState.current.moved = false
+                        return
+                      }
+                      setActiveVideo(video)
+                    }}
+                    onMouseEnter={() => setHoveredId(video.id)}
+                    onMouseLeave={() => setHoveredId(null)}
+                  >
+                    <div
+                      className="portfolio__thumb"
+                      style={{ backgroundImage: `url(${video.thumb})` }}
+                      aria-hidden
+                    >
+                      <div className="portfolio__topline">
+                        <span className="portfolio__pill">{video.tag ?? 'Feature'}</span>
+                        <span className="portfolio__icon">
+                          <svg width="12" height="12" viewBox="0 0 22 22" fill="none">
+                            <path
+                              d="M20 18.6842C20 19.4109 19.4109 20 18.6842 20C17.9575 20 17.3684 19.4109 17.3684 18.6842V4.49219L2.24609 19.6145C1.73225 20.1284 0.899333 20.1284 0.385485 19.6145C-0.128363 19.1007 -0.128362 18.2678 0.385485 17.7539L15.5078 2.63158H1.31579C0.589099 2.63158 0 2.04248 0 1.31579C0 0.589099 0.589099 0 1.31579 0H20V18.6842Z"
+                              fill="white"
+                            />
+                          </svg>
+                        </span>
+                      </div>
+                      <div className="portfolio__thumb-overlay" />
+                      <div className="portfolio__bottom">
+                        <span className="portfolio__chip">{video.year}</span>
+                        <p className="portfolio__title">{video.title}</p>
+                        <p className="portfolio__description">{video.description}</p>
+                        <div className="portfolio__footer-row">
+                          <span className="portfolio__location">{video.location}</span>
+                          <span className="portfolio__cta-chip">
+                            {video.cta ?? 'Play'}
+                            <svg width="8" height="14" viewBox="0 0 3 7" fill="none">
+                              <path
+                                d="M1 6L2.50024 4.1247C2.79242 3.75948 2.79242 3.24052 2.50024 2.87531L1 1"
+                                stroke="white"
+                                strokeWidth="0.5"
+                                strokeLinecap="round"
+                              />
+                            </svg>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
         </div>
       </section>
 
