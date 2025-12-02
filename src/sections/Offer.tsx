@@ -91,9 +91,9 @@ function Offer() {
           <article
             key={work.id}
             className="offer__card"
-            style={{ backgroundImage: `url(${work.image})` }}
           >
             <a className="offer__card-link" href={work.link}>
+              <div className="offer__card-img" style={{ backgroundImage: `url(${work.image})` }} />
               <div className="offer__card-overlay">
                 <h3>{work.title}</h3>
                 <p>{work.subtitle}</p>
