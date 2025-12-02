@@ -122,7 +122,7 @@ const offers: OfferItem[] = [
     blurb: 'Full visual direction for galleries, openings, and installs—immersive screens, loops, and atmosphere.',
     link: '/#offer',
     cta: 'Explore Exhibition',
-    accent: '#7dd3fc',
+    accent: '#ffffffff',
     background: '/src/assets/images/5bcdeb6c6e929fdb9f16ed10665ca5e0.jpg',
   },
   {

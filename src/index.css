@@ -16,7 +16,7 @@
   --surface-base: #0a0d16;
   --text-strong: #f6f7fb;
   --text-muted-strong: #cfd3df;
-  --border-soft: rgba(255, 255, 255, 0.16);
+  --border-soft: rgba(255, 255, 255, 0);
   --link-color: #f6f7fb;
   --page-bg: #05070b;
   font-family: var(--font-sans);
