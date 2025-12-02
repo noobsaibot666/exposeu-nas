@@ -221,11 +221,10 @@ function Hero() {
                     style={{
                       width: cardSize,
                       height: cardSize,
-                      // combine center offset with orbital position to keep the anchor in the middle
+                      left: '50%',
+                      top: '50%',
                       transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`,
                     }}
-                    whileHover={{ scale: 1.1, zIndex: 2 }}
-                    transition={{ type: 'spring', stiffness: 220, damping: 18 }}
                   >
                     <motion.div
                       className="hero__thumb"

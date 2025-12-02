@@ -36,6 +36,10 @@ body {
   background: var(--page-bg);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 #root {
   min-height: 100vh;
 }

@@ -31,19 +31,20 @@
   position: relative;
   display: grid;
   place-items: center;
-  width: min(1040px, 98vw); /* widen stack to reduce side padding */
-  aspect-ratio: 16 / 7;
+  width: min(1180px, 98vw); /* widen stack to reduce side padding */
+  aspect-ratio: 16 / 6.2;
   perspective: 1500px; /* increase for deeper Z look */
   z-index: 1;
 }
 
 .proposal__card {
   position: absolute;
-  width: clamp(200px, 24vw, 320px); /* card size */
+  width: clamp(200px, 24vw, 340px); /* card size */
   aspect-ratio: 1 / 1; /* 1:1 aspect */
   border-radius: 24px;
   background-size: cover;
   background-position: center;
+  background-color: #0b0e16;
   box-shadow: 0 28px 80px rgba(0, 0, 0, 0.5); /* depth shadow */
   border: 2px solid transparent;
   background-image: var(--card-image), linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(120, 120, 120, 0.25)); /* subtle grey stroke */
