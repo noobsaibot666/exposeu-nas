@@ -1,8 +1,8 @@
 .claim {
   position: relative;
   min-height: 100vh;
-  background: #05070b;
-  color: #fff;
+  background: var(--bg-base);
+  color: var(--text-strong);
   overflow: hidden;
   display: grid;
   place-items: center;
@@ -26,7 +26,7 @@
   position: absolute;
   border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  box-shadow: none;
   filter: saturate(1.05) brightness(0.98);
   transform-style: preserve-3d;
   transition: transform 300ms ease;

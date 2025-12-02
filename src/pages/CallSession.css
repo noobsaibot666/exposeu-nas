@@ -1,6 +1,6 @@
 .call-session {
-  background: #05070b;
-  color: #f6f7fb;
+  background: var(--bg-base);
+  color: var(--text-strong);
 }
 
 .call-session__nav {
@@ -91,7 +91,7 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
   padding: 22px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  box-shadow: none;
   display: grid;
   gap: 16px;
 }

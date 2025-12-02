@@ -1,8 +1,8 @@
 .proposal {
   position: relative;
   padding: 140px 16px;
-  background: #05070b;
-  color: #fff;
+  background: var(--bg-base);
+  color: var(--text-strong);
   overflow: hidden;
   min-height: 100vh;
   width: 100%;
@@ -47,7 +47,7 @@
   background-size: cover;
   background-position: center;
   background-color: #0b0e16;
-  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.5); /* depth shadow */
+  box-shadow: none;
   border: 2px solid transparent;
   background-image: var(--card-image), linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(120, 120, 120, 0.25)); /* subtle grey stroke */
   background-origin: border-box;
@@ -58,7 +58,7 @@
 
 .proposal__card:hover {
   transform: translateZ(40px) rotateX(6deg) rotateY(-6deg) rotate(var(--card-tilt, 0deg));
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  box-shadow: none;
   filter: blur(0px);
 }
 
@@ -76,12 +76,13 @@
   margin: 0;
   font-weight: 300;
   align-content: center;
+  color: var(--text-strong);
 }
 
 .proposal__copy p {
   margin: 0;
   max-width: 640px;
-  color: #e7e9f5;
+  color: var(--text-muted-strong);
   line-height: 1.6;
   font-weight: 400;
 }
@@ -103,7 +104,7 @@
 
 .proposal__cta:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  box-shadow: none;
 }
 
 @media (max-width: 768px) {

@@ -1,7 +1,7 @@
 .contact {
   min-height: 100vh;
-  background: #050505;
-  color: #f6f7fb;
+  background: var(--bg-base);
+  color: var(--text-strong);
 }
 
 .contact__nav {
@@ -25,20 +25,20 @@
 }
 
 .contact__links a {
-  color: #ffffff;
+  color: var(--link-color);
   font-weight: 800;
   text-decoration: none;
   font-size: 1rem;
 }
 
 .contact__links a:hover {
-  color: #ffffff;
+  color: var(--link-color);
   text-decoration: underline;
   text-decoration-color: currentColor;
 }
 
 .contact__links a:visited {
-  color: #ffffff;
+  color: var(--link-color);
 }
 
 .contact__links--right {
@@ -54,7 +54,7 @@
   font-size: 1.5rem;
   font-weight: 800;
   text-transform: none;
-  color: #ffffff;
+  color: var(--link-color);
   text-decoration: none;
 }
 
@@ -84,7 +84,7 @@
 
 .contact__lede {
   margin: 0;
-  color: #d4d7e1;
+  color: var(--text-muted-strong);
 }
 
 .contact__info {
@@ -108,7 +108,7 @@
 
 .contact__info p {
   margin: 0;
-  color: #d4d7e1;
+  color: var(--text-muted-strong);
 }
 
 .contact__list {
@@ -120,27 +120,27 @@
 .contact__label {
   margin: 0;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-strong);
 }
 
 .contact__list a {
-  color: #ffffff;
+  color: var(--link-color);
   text-decoration: none;
 }
 
 .contact__list a:hover {
-  color: #ffffff;
+  color: var(--link-color);
   text-decoration: underline;
   text-decoration-color: currentColor;
 }
 
 .contact__list a:visited {
-  color: #ffffff;
+  color: var(--link-color);
 }
 
 .contact__address {
   margin: 0;
-  color: #d4d7e1;
+  color: var(--text-muted-strong);
 }
 
 .contact__form {
@@ -161,9 +161,9 @@
 .contact__field input,
 .contact__field textarea {
   border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+  border-bottom: 1px solid var(--border-soft);
   background: transparent;
-  color: #ffffff;
+  color: var(--text-strong);
   border-radius: 0;
   padding: 10px 0;
   font-size: 1rem;
@@ -172,7 +172,7 @@
 
 .contact__field input:focus,
 .contact__field textarea:focus {
-  border-bottom-color: #ffffff;
+  border-bottom-color: var(--link-color);
   box-shadow: none;
 }
 

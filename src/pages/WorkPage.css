@@ -1,6 +1,6 @@
 .work-page {
-  background: #05070b;
-  color: #f6f7fb;
+  background: var(--bg-base);
+  color: var(--text-strong);
   min-height: 100vh;
 }
 
@@ -13,7 +13,7 @@
   letter-spacing: 0.02em;
   text-transform: uppercase;
   padding: 20px 0 10px;
-  color: #ffffff;
+  color: var(--link-color);
   font-size: 0.5rem;
 }
 
@@ -32,20 +32,20 @@
 }
 
 .work-nav__links a {
-  color: #ffffff;
+  color: var(--link-color);
   font-weight: 800;
   text-decoration: none;
   font-size: 0.6rem; /* nav link size */
 }
 
 .work-nav__links a:hover {
-  color: #ffffff;
+  color: var(--link-color);
   text-decoration: underline;
   text-decoration-color: currentColor;
 }
 
 .work-nav__links a:visited {
-  color: #ffffff;
+  color: var(--link-color);
 }
 
 .work-nav__brand {
@@ -53,7 +53,7 @@
   font-size: 1.5rem;
   font-weight: 800;
   text-transform: lowercase;
-  color: #ffffff;
+  color: var(--link-color);
   text-decoration: none;
 }
 
@@ -76,7 +76,7 @@
 
 .work-hero__copy p {
   margin: 0;
-  color: #d4d7e1;
+  color: var(--text-muted-strong);
 }
 
 .work-hero__eyebrow {
@@ -123,7 +123,7 @@
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  box-shadow: none;
   transform: translateY(var(--card-translate, 0)) scale(var(--card-scale, 1));
   background: #0b0f1a;
   margin-left: var(--card-overlap, 0);
@@ -171,18 +171,19 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-weight: 700;
-  color: #a5acc1;
+  color: var(--text-muted-strong);
   font-size: 0.85rem;
 }
 
 .work-gallery__header h2 {
   margin: 0 0 8px;
   font-size: clamp(1.8rem, 2vw + 1.2rem, 2.6rem);
+  color: var(--text-strong);
 }
 
 .work-gallery__header p {
   margin: 0;
-  color: #d4d7e1;
+  color: var(--text-muted-strong);
 }
 
 .work-gallery__grid {
@@ -192,13 +193,13 @@
 }
 
 .work-gallery__item {
-  background: #0a0e17;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--surface-base);
+  border: 1px solid var(--border-soft);
   border-radius: 14px;
   overflow: hidden;
   display: grid;
   gap: 10px;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+  box-shadow: none;
 }
 
 .work-gallery__image {
