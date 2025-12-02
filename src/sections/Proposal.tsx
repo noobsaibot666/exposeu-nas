@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
 import './Proposal.css'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import type { CSSProperties } from 'react'
 import { useNavigate } from 'react-router-dom'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 type FrameCard = {
   id: string
@@ -17,55 +17,56 @@ type FrameCard = {
 }
 
 const cards: FrameCard[] = [
+  // Arc layout: tweak offsets/rotate/scale to reshape the stack horizontally.
   {
     id: 'c1',
-    image: 'src/assets/images/visualelectric-1755373701143.png',
-    rotate: -12, // individual rotation
-    offsetX: -380, // horizontal offset for arc spacing
-    offsetY: 60, // vertical offset for arc spacing
-    scale: 0.58, // individual size
-    blur: 6, // individual blur for depth of field
-    depth: -40, // z-depth (used for stacking and transform)
+    image: '/src/assets/images/visualelectric-1755373701143.png',
+    rotate: -10,
+    offsetX: -420,
+    offsetY: 60,
+    scale: 0.54,
+    blur: 4,
+    depth: -25,
   },
   {
     id: 'c2',
-    image: 'src/assets/images/64b261efa17b3bc8eb2edc58d9f810ee.jpg',
-    rotate: -6, // individual rotation
-    offsetX: -220, // horizontal offset for arc spacing
-    offsetY: 18, // vertical offset for arc spacing
-    scale: 0.9, // individual size
-    blur: 4, // individual blur for depth of field
-    depth: -10, // z-depth (used for stacking and transform)
+    image: '/src/assets/images/64b261efa17b3bc8eb2edc58d9f810ee.jpg',
+    rotate: -5,
+    offsetX: -260,
+    offsetY: 24,
+    scale: 0.82,
+    blur: 2,
+    depth: 8,
   },
   {
     id: 'c3',
-    image: 'src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg',
-    rotate: 0, // individual rotation
-    offsetX: 0, // horizontal offset for arc spacing
-    offsetY: -20, // vertical offset for arc spacing
-    scale: 1.12, // individual size
-    blur: 0, // individual blur for depth of field
-    depth: 60, // z-depth (used for stacking and transform)
+    image: '/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg',
+    rotate: 0,
+    offsetX: 0,
+    offsetY: 0,
+    scale: 1.05,
+    blur: 0,
+    depth: 40,
   },
   {
     id: 'c4',
-    image: 'src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg',
-    rotate: 8, // individual rotation
-    offsetX: 220, // horizontal offset for arc spacing
-    offsetY: 18, // vertical offset for arc spacing
-    scale: 0.9, // individual size
-    blur: 4, // individual blur for depth of field
-    depth: -10, // z-depth (used for stacking and transform)
+    image: '/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg',
+    rotate: 5,
+    offsetX: 260,
+    offsetY: 24,
+    scale: 0.82,
+    blur: 2,
+    depth: 8,
   },
   {
     id: 'c5',
-    image: 'src/assets/images/03ef1b2283de3cdc7781c5a2d3aa0cce.jpg',
-    rotate: 14, // individual rotation
-    offsetX: 380, // horizontal offset for arc spacing
-    offsetY: 60, // vertical offset for arc spacing
-    scale: 0.68, // individual size
-    blur: 6, // individual blur for depth of field
-    depth: -40, // z-depth (used for stacking and transform)
+    image: '/src/assets/images/03ef1b2283de3cdc7781c5a2d3aa0cce.jpg',
+    rotate: 10,
+    offsetX: 420,
+    offsetY: 60,
+    scale: 0.54,
+    blur: 4,
+    depth: -25,
   },
 ]
 
@@ -76,28 +77,23 @@ function Proposal() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.proposal__card',
-        {
-          y: 40,
-          opacity: 0,
-          rotateX: -10,
+      gsap.from('.proposal__card', {
+        x: -50,
+        y: 30,
+        opacity: 1, // keep images visible to avoid empty cards on load
+        filter: 'blur(10px)',
+        rotateX: -4,
+        rotateY: -3,
+        duration: 0.65,
+        ease: 'power2.out',
+        stagger: 0.05,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 85%',
+          end: 'top 20%',
+          scrub: 0.35,
         },
-        {
-          y: 0,
-          opacity: 1,
-          rotateX: 0,
-          stagger: 0.1,
-          duration: 1.2,
-          ease: 'power3.out',
-          immediateRender: false, // keep initial visibility until animation starts
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 80%',
-            once: true, // run animation once
-          },
-        },
-      )
+      })
     }, sectionRef)
 
     return () => ctx.revert()
@@ -115,6 +111,7 @@ function Proposal() {
               style={
                 {
                   '--card-image': `url(${card.image})`,
+                  // Compose position/scale/rotation per card to keep the arc visually balanced.
                   transform: `translateX(${card.offsetX}px) translateY(${card.offsetY}px) rotate(${card.rotate}deg) scale(${card.scale}) translateZ(${card.depth}px)`,
                   filter: `blur(${card.blur}px)`,
                   zIndex: card.depth,
