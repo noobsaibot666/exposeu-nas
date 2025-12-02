@@ -14,6 +14,16 @@ type VideoItem = {
   cta?: string
 }
 
+type OfferItem = {
+  id: string
+  title: string
+  blurb: string
+  link: string
+  cta: string
+  accent: string
+  background: string
+}
+
 const videos: VideoItem[] = [
   {
     id: 'v1',
@@ -105,6 +115,63 @@ const videos: VideoItem[] = [
   },
 ]
 
+const offers: OfferItem[] = [
+  {
+    id: 'offer-exhibition',
+    title: 'Exhibition',
+    blurb: 'Full visual direction for galleries, openings, and installs—immersive screens, loops, and atmosphere.',
+    link: '/#offer',
+    cta: 'Explore Exhibition',
+    accent: '#7dd3fc',
+    background: '/src/assets/images/5bcdeb6c6e929fdb9f16ed10665ca5e0.jpg',
+  },
+  {
+    id: 'offer-session',
+    title: 'Artist Session',
+    blurb: 'Studio and portrait sessions that capture process and story—polished deliverables for press and socials.',
+    link: '/#offer',
+    cta: 'Book a Session',
+    accent: '#c4b5fd',
+    background: '/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg',
+  },
+  {
+    id: 'offer-performance',
+    title: 'Performance',
+    blurb: 'Live performance capture with cinematic coverage—multi-angle, crisp audio, and quick turnarounds.',
+    link: '/#offer',
+    cta: 'Plan a Performance',
+    accent: '#fca5a5',
+    background: '/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg',
+  },
+  {
+    id: 'offer-atmospheric',
+    title: 'Atmospheric',
+    blurb: 'Mood-first films and stills that set the tone for your release, event, or install.',
+    link: '/atmospheric',
+    cta: 'Build the Atmosphere',
+    accent: '#9bd1ff',
+    background: '/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg',
+  },
+  {
+    id: 'offer-gallery',
+    title: 'Gallery Stories',
+    blurb: 'Curator walkthroughs and features that make your space and artists shine online.',
+    link: '/gallery-stories',
+    cta: 'Tell the Story',
+    accent: '#fbcfe8',
+    background: '/src/assets/images/PinonShowww.jpg',
+  },
+  {
+    id: 'offer-fashion',
+    title: 'Fashion Show',
+    blurb: 'Editorial runway capture with clean angles, sharp detail, and fast delivery.',
+    link: '/fashion-show',
+    cta: 'Book Runway Coverage',
+    accent: '#c7d2fe',
+    background: '/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg',
+  },
+]
+
 function Portfolio() {
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null)
   const [isDragging, setIsDragging] = useState(false)
@@ -120,12 +187,19 @@ function Portfolio() {
     const grid = gridRef.current
     if (!grid || grid.scrollWidth <= grid.clientWidth) return
 
-    // Convert vertical wheel motion into horizontal scrolling inside the card rail.
+    const maxScroll = grid.scrollWidth - grid.clientWidth
+    if (maxScroll <= 0) return
+
+    // Convert vertical wheel motion into horizontal scrolling inside the card rail,
+    // but let the page scroll if we are already at an edge.
     if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
-      event.preventDefault()
-      event.stopPropagation()
-      const next = grid.scrollLeft + event.deltaY * 1.1
-      grid.scrollTo({ left: next, behavior: 'smooth' })
+      const current = grid.scrollLeft
+      const next = Math.min(maxScroll, Math.max(0, current + event.deltaY * 1.1))
+      if (next !== current) {
+        event.preventDefault()
+        event.stopPropagation()
+        grid.scrollTo({ left: next, behavior: 'smooth' })
+      }
     }
   }
 
@@ -133,7 +207,6 @@ function Portfolio() {
     const grid = gridRef.current
     if (!grid || event.button !== 0 || grid.scrollWidth <= grid.clientWidth) return
 
-    setHoveredId(null)
     dragState.current = {
       active: true,
       startX: event.clientX,
@@ -141,16 +214,18 @@ function Portfolio() {
       moved: false,
       pointerId: event.pointerId,
     }
-    setIsDragging(true)
-    grid.setPointerCapture(event.pointerId)
-    event.preventDefault()
+    setHoveredId(null)
   }
 
   const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
     if (!dragState.current.active || !gridRef.current) return
     const deltaX = event.clientX - dragState.current.startX
-    if (Math.abs(deltaX) > 2) {
-      dragState.current.moved = true
+    if (Math.abs(deltaX) > 8) {
+      if (!dragState.current.moved) {
+        dragState.current.moved = true
+        setIsDragging(true)
+        gridRef.current.setPointerCapture(dragState.current.pointerId)
+      }
     }
     gridRef.current.scrollLeft = dragState.current.scrollLeft - deltaX
   }
@@ -233,11 +308,18 @@ function Portfolio() {
                     <div
                       className="portfolio__thumb"
                       style={{ backgroundImage: `url(${video.thumb})` }}
-                      aria-hidden
-                    >
-                      <div className="portfolio__topline">
-                        <span className="portfolio__pill">{video.tag ?? 'Feature'}</span>
-                        <span className="portfolio__icon">
+                    aria-hidden
+                  >
+                    <span className="portfolio__play" aria-hidden>
+                      <span className="portfolio__play-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <polygon points="9 18 19 12 9 6 9 18" />
+                        </svg>
+                      </span>
+                    </span>
+                    <div className="portfolio__topline">
+                      <span className="portfolio__pill">{video.tag ?? 'Feature'}</span>
+                      <span className="portfolio__icon">
                           <svg width="12" height="12" viewBox="0 0 22 22" fill="none">
                             <path
                               d="M20 18.6842C20 19.4109 19.4109 20 18.6842 20C17.9575 20 17.3684 19.4109 17.3684 18.6842V4.49219L2.24609 19.6145C1.73225 20.1284 0.899333 20.1284 0.385485 19.6145C-0.128363 19.1007 -0.128362 18.2678 0.385485 17.7539L15.5078 2.63158H1.31579C0.589099 2.63158 0 2.04248 0 1.31579C0 0.589099 0.589099 0 1.31579 0H20V18.6842Z"
@@ -271,6 +353,54 @@ function Portfolio() {
                 )
               })}
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section portfolio__offers">
+        <div className="content portfolio__offers-inner">
+          <div className="portfolio__offers-copy">
+            <p className="portfolio__eyebrow">Collaboration</p>
+            <h2>Now that you’ve seen the work, choose how we can team up.</h2>
+            <p className="portfolio__lead">
+              Pick the format that fits your stage—exhibitions, artist sessions, or full performance capture.
+            </p>
+          </div>
+          <div className="portfolio__offers-grid">
+            {offers.map((offer) => (
+              <a
+                key={offer.id}
+                className="portfolio__offer-card"
+                href={offer.link}
+                style={
+                  {
+                    '--offer-accent': offer.accent,
+                    backgroundImage: `url(${offer.background})`,
+                  } as CSSProperties
+                }
+              >
+                <div className="portfolio__offer-overlay">
+                  <div className="portfolio__offer-top">
+                    <span className="portfolio__offer-pill">Offer</span>
+                    <span className="portfolio__offer-badge">{offer.title}</span>
+                  </div>
+                  <p className="portfolio__offer-title">{offer.title}</p>
+                  <p className="portfolio__offer-blurb">{offer.blurb}</p>
+                  <span className="portfolio__offer-cta">
+                    {offer.cta}
+                    <svg width="10" height="16" viewBox="0 0 6 10" fill="none">
+                      <path
+                        d="M1 9L4.5 5L1 1"
+                        stroke="white"
+                        strokeWidth="1.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </div>
+              </a>
+            ))}
           </div>
         </div>
       </section>
