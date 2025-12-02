@@ -10,12 +10,14 @@ import About from './pages/About'
 import Atmospheric from './pages/Atmospheric'
 import CallSession from './pages/CallSession'
 import Contact from './pages/Contact'
+import ContactSuccess from './pages/ContactSuccess'
 import Exhibitions from './pages/Exhibitions'
 import FashionShow from './pages/FashionShow'
 import GalleryStories from './pages/GalleryStories'
 import Performance from './pages/Performance'
 import ArtistSessions from './pages/ArtistSessions'
 import Portfolio from './pages/Portfolio'
+import NotFound from './pages/NotFound'
 import { setTheme } from './theme'
 
 function App() {
@@ -104,6 +106,15 @@ function App() {
           }
         />
         <Route
+          path="/contact-success"
+          element={
+            <>
+              <ContactSuccess />
+              <Footer />
+            </>
+          }
+        />
+        <Route
           path="/exhibitions"
           element={
             <>
@@ -160,6 +171,7 @@ function App() {
             </>
           }
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   )

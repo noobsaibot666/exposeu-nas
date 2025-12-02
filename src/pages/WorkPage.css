@@ -290,6 +290,12 @@
   justify-content: center;
 }
 
+.work-cta__link.contact__submit--ghost {
+  background: transparent;
+  color: var(--link-color) !important;
+  border-color: var(--border-soft);
+}
+
 .work-cta__link:hover {
   transform: translateY(-1px);
   border-color: #dcdcdc;

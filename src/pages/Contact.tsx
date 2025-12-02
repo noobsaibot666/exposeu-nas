@@ -1,6 +1,14 @@
 import './Contact.css'
+import { useNavigate } from 'react-router-dom'
 
 function Contact() {
+  const navigate = useNavigate()
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    navigate('/contact-success')
+  }
+
   return (
     <main className="contact">
       <div className="content contact__nav">
@@ -48,7 +56,7 @@ function Contact() {
             </div>
           </div>
 
-          <form className="contact__form">
+          <form className="contact__form" onSubmit={handleSubmit}>
             <div className="contact__field">
               <label htmlFor="firstName">Name</label>
               <input id="firstName" name="firstName" type="text" placeholder="First name" />
