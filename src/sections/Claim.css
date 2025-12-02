@@ -11,14 +11,14 @@
 
 .claim__stage {
   position: relative;
-  width: min(1280px, 99vw); /* widen stage to spread floating images horizontally */
-  height: min(760px, 90vh);
-  max-width: 1400px;
+  width: 100%; /* allow full available width */
+  height: min(840px, 95vh);
+  max-width: none;
 }
 
 .claim__floating {
   position: absolute;
-  inset: -14% -6%; /* push floaters further out horizontally */
+  inset: -6% -6%; /* allow images to float beyond bounds if desired */
   pointer-events: none;
 }
 

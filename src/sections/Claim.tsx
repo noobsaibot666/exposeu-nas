@@ -18,27 +18,27 @@ const floatImages: FloatImage[] = [
   {
     id: "f1",
     src: "/src/assets/images/03ef1b2283de3cdc7781c5a2d3aa0cce.jpg",
-    width: 160,
-    top: "28%",
-    left: "10%",
+    width: 130,
+    top: "25%",
+    left: "28%",
     depth: -50,
     rotate: -6,
   },
   {
     id: "f2",
     src: "/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg",
-    width: 120,
-    top: "36%",
-    left: "4%",
+    width: 105,
+    top: "30%",
+    left: "8%",
     depth: -18,
     rotate: -2,
   },
   {
     id: "f3",
     src: "/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg",
-    width: 190,
-    top: "30%",
-    left: "44%",
+    width: 170,
+    top: "14%",
+    left: "50%",
     depth: 22,
     rotate: 5,
   },
@@ -46,80 +46,80 @@ const floatImages: FloatImage[] = [
     id: "f4",
     src: "/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg",
     width: 110,
-    top: "44%",
-    left: "76%",
+    top: "26%",
+    left: "84%",
     depth: -28,
     rotate: 8,
   },
   {
     id: "f5",
     src: "/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg",
-    width: 140,
-    top: "60%",
-    left: "10%",
+    width: 125,
+    top: "66%",
+    left: "18%",
     depth: -14,
     rotate: -10,
   },
   {
     id: "f6",
     src: "/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg",
-    width: 160,
-    top: "66%",
-    left: "60%",
+    width: 140,
+    top: "70%",
+    left: "58%",
     depth: 14,
     rotate: 4,
   },
   {
     id: "f7",
     src: "/src/assets/images/9e0e2a8be395cbebe80fe4296dcb4a0e.jpg",
-    width: 120,
+    width: 110,
     top: "20%",
-    left: "76%",
+    left: "72%",
     depth: -40,
     rotate: 3,
   },
   {
     id: "f8",
     src: "/src/assets/images/cfcb07dd865328849ba617c98ae71eb3.jpg",
-    width: 110,
-    top: "53%",
-    left: "20%",
+    width: 105,
+    top: "44%",
+    left: "24%",
     depth: -22,
     rotate: -8,
   },
   {
     id: "f9",
     src: "/src/assets/images/d3eef75d7c0616b67215308172bf30d5.jpg",
-    width: 130,
-    top: "32%",
-    left: "90%",
+    width: 112,
+    top: "28%",
+    left: "64%",
     depth: -16,
     rotate: 6,
   },
   {
     id: "f10",
     src: "/src/assets/images/f2905fd98e2710a6e4b42098b9836c5c.jpg",
-    width: 115,
-    top: "70%",
-    left: "32%",
+    width: 102,
+    top: "78%",
+    left: "40%",
     depth: -12,
     rotate: -4,
   },
   {
     id: "f11",
     src: "/src/assets/images/visualelectric-1755373701143.png",
-    width: 145,
-    top: "1%",
-    left: "48%",
+    width: 128,
+    top: "6%",
+    left: "44%",
     depth: 12,
     rotate: 2,
   },
   {
     id: "f12",
     src: "/src/assets/images/PinonShowww.jpg",
-    width: 125,
-    top: "62%",
-    left: "88%",
+    width: 108,
+    top: "64%",
+    left: "70%",
     depth: -10,
     rotate: -3,
   },
@@ -208,21 +208,23 @@ function Claim() {
     <section className="claim" id="claim" ref={sectionRef}>
       <div className="claim__stage">
         <div className="claim__floating">
-          {floatImages.map((img) => (
-            <div
-              key={img.id}
-              className="claim__img"
-              data-depth={img.depth}
-              style={{
-                width: img.width,
-                top: img.top,
-                left: img.left,
-                transform: `translateZ(${img.depth}px) rotate(${img.rotate}deg)`,
-              }}
-            >
-              <img src={img.src} alt="" />
-            </div>
-          ))}
+          {floatImages.map((img) => {
+            return (
+              <div
+                key={img.id}
+                className="claim__img"
+                data-depth={img.depth}
+                style={{
+                  width: img.width,
+                  top: img.top,
+                  left: img.left,
+                  transform: `translateZ(${img.depth}px) rotate(${img.rotate}deg)`,
+                }}
+              >
+                <img src={img.src} alt="" />
+              </div>
+            );
+          })}
         </div>
         <div className="claim__headline">
           <h2>
