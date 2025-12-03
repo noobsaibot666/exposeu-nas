@@ -5,57 +5,16 @@
 }
 
 .about__nav {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  align-items: center;
-  gap: 10px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
   padding: 20px 0 24px;
-  color: var(--link-color);
-  font-size: 1rem;
 }
 
-.about__links {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  justify-content: center;
+.about__nav .top-nav__bar {
+  padding-left: 4px;
+  padding-right: 4px;
 }
 
-.about__links--left {
-  justify-content: flex-start;
-}
-
-.about__links--right {
-  justify-content: flex-end;
-}
-
-.about__links a {
-  color: var(--link-color);
-  font-weight: 800;
-  text-decoration: none;
-  font-size: 1rem;
-}
-
-.about__links a:hover {
-  color: var(--link-color);
-  text-decoration: underline;
-  text-decoration-color: currentColor;
-}
-
-.about__links a:visited {
-  color: var(--link-color);
-}
-
-.about__brand {
-  font-size: 1.5rem;
-  font-weight: 800;
-  text-transform: none;
-  justify-self: center;
-  color: var(--link-color);
-  text-decoration: none;
+.about__nav .top-nav__brand {
+  font-size: 1.4rem;
 }
 
 .about__shell {
@@ -221,14 +180,7 @@
   }
 
   .about__nav {
-    grid-template-columns: 1fr;
-    justify-items: center;
-    gap: 8px;
-  }
-
-  .about__links {
-    justify-content: center;
-    flex-wrap: wrap;
+    padding: 16px 0 12px;
   }
 
   .about__portrait {

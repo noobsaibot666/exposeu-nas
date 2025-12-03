@@ -1,5 +1,6 @@
 import './Contact.css'
 import { useNavigate } from 'react-router-dom'
+import TopNav from '../components/TopNav'
 
 function Contact() {
   const navigate = useNavigate()
@@ -12,19 +13,19 @@ function Contact() {
   return (
     <main className="contact">
       <div className="content contact__nav">
-        <nav className="contact__links contact__links--left">
-          <a href="/">Home</a>
-          <a href="/#proposal">Proposal</a>
-          <a href="/#claim">Claim</a>
-          <a href="/#offer">Offer</a>
-        </nav>
-        <a className="contact__brand" href="/">
-          expose.u
-        </a>
-        <nav className="contact__links contact__links--right">
-          <a href="/about">About</a>
-          <a href="/contact">Contact</a>
-        </nav>
+        <TopNav
+          leftLinks={[
+            { label: 'Home', href: '/' },
+            { label: 'Proposal', href: '/#proposal' },
+            { label: 'Claim', href: '/#claim' },
+            { label: 'Offer', href: '/#offer' },
+          ]}
+          rightLinks={[
+            { label: 'About', href: '/about' },
+            { label: 'Contact', href: '/contact' },
+          ]}
+          className="top-nav--page"
+        />
       </div>
 
       <section className="section contact__body">

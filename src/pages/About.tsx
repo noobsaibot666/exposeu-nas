@@ -1,22 +1,23 @@
 import './About.css'
+import TopNav from '../components/TopNav'
 
 function About() {
   return (
     <main className="about">
       <div className="content about__nav">
-        <nav className="about__links about__links--left">
-          <a href="/">Home</a>
-          <a href="/#proposal">Proposal</a>
-          <a href="/#claim">Claim</a>
-          <a href="/#offer">Offer</a>
-        </nav>
-        <a className="about__brand" href="/">
-          expose.u
-        </a>
-        <nav className="about__links about__links--right">
-          <a href="/about">About</a>
-          <a href="/contact">Contact</a>
-        </nav>
+        <TopNav
+          leftLinks={[
+            { label: 'Home', href: '/' },
+            { label: 'Proposal', href: '/#proposal' },
+            { label: 'Claim', href: '/#claim' },
+            { label: 'Offer', href: '/#offer' },
+          ]}
+          rightLinks={[
+            { label: 'About', href: '/about' },
+            { label: 'Contact', href: '/contact' },
+          ]}
+          className="top-nav--page"
+        />
       </div>
 
       <section className="section about__shell">

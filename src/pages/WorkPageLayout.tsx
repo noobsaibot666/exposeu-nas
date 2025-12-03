@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Footer from '../sections/Footer'
+import TopNav from '../components/TopNav'
 import './WorkPage.css'
 
 export type WorkCard = {
@@ -95,19 +96,19 @@ function WorkPageLayout({
   return (
     <main className="work-page">
       <div className="content work-nav">
-        <nav className="work-nav__links work-nav__links--left">
-          <a href="/">Home</a>
-          <a href="/#proposal">Proposal</a>
-          <a href="/#claim">Claim</a>
-          <a href="/#offer">Offer</a>
-        </nav>
-        <a className="work-nav__brand" href="/">
-          expose.u
-        </a>
-        <nav className="work-nav__links work-nav__links--right">
-          <a href="/about">About</a>
-          <a href="/contact">Contact</a>
-        </nav>
+        <TopNav
+          leftLinks={[
+            { label: 'Home', href: '/' },
+            { label: 'Proposal', href: '/#proposal' },
+            { label: 'Claim', href: '/#claim' },
+            { label: 'Offer', href: '/#offer' },
+          ]}
+          rightLinks={[
+            { label: 'About', href: '/about' },
+            { label: 'Contact', href: '/contact' },
+          ]}
+          className="top-nav--page"
+        />
       </div>
 
       <section className="section work-hero">

@@ -1,9 +1,10 @@
 import type { CSSProperties } from 'react'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
+import TopNav from '../components/TopNav'
 import './Hero.css'
 
 type OrbitItem = {
@@ -120,9 +121,25 @@ function Hero() {
   const angleStep = (2 * Math.PI) / orbitItems.length
   const navigate = useNavigate()
   const prefersReducedMotion = useReducedMotion()
+  const [orbitRadiusPx, setOrbitRadiusPx] = useState(orbitRadius)
+  const [orbitCardSize, setOrbitCardSize] = useState(cardSize)
 
   useEffect(() => {
     gsap.registerPlugin(ScrollToPlugin)
+  }, [])
+
+  useEffect(() => {
+    const updateOrbit = () => {
+      const width = window.innerWidth || orbitRadius
+      const radius = Math.max(220, Math.min(orbitRadius, width * 0.55))
+      const thumb = Math.max(100, Math.min(cardSize, width * 0.26))
+      setOrbitRadiusPx(radius)
+      setOrbitCardSize(thumb)
+    }
+
+    updateOrbit()
+    window.addEventListener('resize', updateOrbit)
+    return () => window.removeEventListener('resize', updateOrbit)
   }, [])
 
   const handleScrollTo = useCallback((selector: string) => {
@@ -135,37 +152,35 @@ function Hero() {
     })
   }, [])
 
+  const leftLinks = useMemo(
+    () => [
+      { label: 'Home', onClick: () => handleScrollTo('#hero') },
+      { label: 'Proposal', onClick: () => handleScrollTo('#proposal') },
+      { label: 'Claim', onClick: () => handleScrollTo('#claim') },
+      { label: 'Offer', onClick: () => handleScrollTo('#offer') },
+    ],
+    [handleScrollTo],
+  )
+
+  const rightLinks = useMemo(
+    () => [
+      { label: 'About', onClick: () => navigate('/about') },
+      { label: 'Contact', onClick: () => navigate('/contact') },
+    ],
+    [navigate],
+  )
+
   return (
     <section className="section hero" id="hero">
       <div className="hero__canvas">
-        <div className="hero__top-links" aria-label="Quick navigation">
-          <nav className="hero__nav hero__nav--left">
-            <button type="button" onClick={() => handleScrollTo('#hero')}>
-              Home
-            </button>
-            <button type="button" onClick={() => handleScrollTo('#proposal')}>
-              Proposal
-            </button>
-            <button type="button" onClick={() => handleScrollTo('#claim')}>
-              Claim
-            </button>
-            <button type="button" onClick={() => handleScrollTo('#offer')}>
-              Offer
-            </button>
-          </nav>
-          <div className="hero__nav_center">
-            <button type="button" aria-label="Go to homepage" onClick={() => handleScrollTo('#hero')}>
-              expose.u
-            </button>
-          </div>
-          <nav className="hero__nav hero__nav--right">
-            <button type="button" onClick={() => navigate('/about')}>
-              About
-            </button>
-            <button type="button" onClick={() => navigate('/contact')}>
-              Contact
-            </button>
-          </nav>
+        <div className="hero__nav-shell" aria-label="Quick navigation">
+          <TopNav
+            leftLinks={leftLinks}
+            rightLinks={rightLinks}
+            onBrandClick={() => handleScrollTo('#hero')}
+            brandLabel="expose.u"
+            className="top-nav--hero"
+          />
         </div>
 
         <div className="hero__orbit-shell">
@@ -206,8 +221,8 @@ function Hero() {
             >
               {orbitItems.map((item, index) => {
                 const angle = angleStep * index
-                const x = Math.cos(angle) * orbitRadius
-                const y = Math.sin(angle) * orbitRadius
+                const x = Math.cos(angle) * orbitRadiusPx
+                const y = Math.sin(angle) * orbitRadiusPx
 
                 const backgroundStyles: ThumbStyle = {
                   '--thumb-color': item.tone,
@@ -219,8 +234,8 @@ function Hero() {
                     key={item.label}
                     className="hero__card"
                     style={{
-                      width: cardSize,
-                      height: cardSize,
+                      width: orbitCardSize,
+                      height: orbitCardSize,
                       left: '50%',
                       top: '50%',
                       transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`,
