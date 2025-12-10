@@ -3,7 +3,7 @@
   min-height: 100vh;
   background: #050505;
   color: #f5f5f4;
-  overflow: hidden;
+  overflow-x: hidden; /* prevent sideways scroll while keeping overlays like the nav drawer visible */
 }
 
 .home__background {

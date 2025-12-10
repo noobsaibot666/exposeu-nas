@@ -14,19 +14,25 @@ function Footer() {
         />
       </div>
       <div className="footer__content">
-        <p className="footer__brand">expose.u</p>
+        <div>
+          <p className="footer__brand">expose.u</p>
+          <p className="footer__tagline">Cinematic photo + video for Berlin&rsquo;s galleries, artists, and electric nights.</p>
+        </div>
         <div className="footer__links">
           <div className="footer__group">
-            <p className="footer__label">I need to content for my</p>
-            <a href="#">Exhibition</a>
-            <a href="#">Fashion Show</a>
-            <a href="#">Gallery Showcase</a>
-            <a href="#">Artists Talks</a>
+            <p className="footer__label">Need coverage for</p>
+            <a href="/exhibitions">Exhibitions</a>
+            <a href="/fashion-show">Fashion shows</a>
+            <a href="/gallery-stories">Gallery stories</a>
+            <a href="/artist-sessions">Artist sessions</a>
+            <a href="/performance">Performances</a>
+            <a href="/atmospheric">Atmospheric films</a>
           </div>
           <div className="footer__group">
-            <p className="footer__label">Get in touch</p>
-            <a href="/contact">Contact</a>
+            <p className="footer__label">Next steps</p>
+            <a href="/contact">Contact the studio</a>
             <a href="/call-session">Book a call session</a>
+            <a href="/portfolio">View portfolio</a>
           </div>
         </div>
       </div>
