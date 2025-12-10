@@ -48,7 +48,7 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-weight: 700; /* eyebrow weight */
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--text-secondary);
   font-size: 0.9rem; /* eyebrow size */
 }
 
@@ -76,7 +76,7 @@
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--text-secondary);
   font-size: 0.95rem;
 }
 
@@ -86,10 +86,10 @@
   aspect-ratio: 3 / 4;
   border-radius: 16px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--border-soft);
   box-shadow: none;
   transform: translateY(var(--card-translate, 0)) scale(var(--card-scale, 1));
-  background: #0b0f1a;
+  background: var(--surface-base);
   margin-left: var(--card-overlap, 0);
   z-index: var(--card-z, 1);
 }
@@ -108,14 +108,14 @@
   background: rgba(0, 0, 0, 0.55);
   border-radius: 10px;
   font-size: 0.9rem;
-  color: #f6f7fb;
+  color: var(--text-strong);
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
 .work-hero__card-meta span {
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--text-secondary);
   font-size: 0.8rem;
 }
 
@@ -196,7 +196,7 @@
 
 .work-gallery__subtitle {
   margin: 0;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--text-secondary);
   font-size: 0.95rem;
 }
 
@@ -225,7 +225,7 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--text-secondary);
   margin: 0 0 6px;
 }
 
@@ -241,12 +241,12 @@
   width: auto;
   min-width: 180px;
   text-align: center;
-  color: #f5f5f4 !important;
-  background: rgba(255, 255, 255, 0.14); /* CTA background */
+  color: var(--text-strong) !important;
+  background: var(--button-ghost-bg); /* CTA background */
   text-decoration: none;
   font-weight: 600; /* CTA weight */
   font-size: 1.2rem; /* CTA link size */
-  border: 1px solid rgba(255, 255, 255, 0.85); /* CTA border */
+  border: 1px solid var(--border-highlight); /* CTA border */
   padding: 12px 18px;
   border-radius: 16px;
   transition: transform 150ms ease, border-color 150ms ease, background-color 150ms ease, color 150ms ease;
@@ -264,9 +264,9 @@
 
 .work-cta__link:hover {
   transform: translateY(-1px);
-  border-color: rgba(255, 255, 255, 0.85);
-  background: rgba(255, 255, 255, 0.22);
-  color: #ffffff !important;
+  border-color: var(--border-highlight);
+  background: var(--button-ghost-hover-bg);
+  color: var(--text-strong) !important;
 }
 
 @media (max-width: 900px) {
