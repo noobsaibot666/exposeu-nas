@@ -290,7 +290,7 @@
 
 .portfolio__description {
   margin: 0;
-  color: #e4e7f2;
+  color: rgba(255, 255, 255, 0.75);
   font-size: 1rem;
   line-height: 1.4;
 }
@@ -395,7 +395,7 @@
 
 .portfolio__player-meta .portfolio__description {
   font-size: 0.95rem;
-  color: #e4e7f2;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .portfolio__offers {

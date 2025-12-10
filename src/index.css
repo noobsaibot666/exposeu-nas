@@ -15,7 +15,7 @@
   --bg-base: #05070b;
   --surface-base: #0a0d16;
   --text-strong: #f6f7fb;
-  --text-muted-strong: #cfd3df;
+  --text-muted-strong: rgba(245, 245, 244, 0.7);
   --border-soft: rgba(255, 255, 255, 0);
   --link-color: #f6f7fb;
   --page-bg: #05070b;

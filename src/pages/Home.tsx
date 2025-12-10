@@ -306,31 +306,38 @@ function Home() {
           </div>
         </div>
         <div className="home__pricing-grid">
-          {pricingTiers.map((tier) => (
-            <article key={tier.name} className={`home__pricing-card ${tier.badge ? 'is-popular' : ''}`}>
-              {tier.badge && <span className="home__pricing-badge">{tier.badge}</span>}
-              <div className="home__pricing-meta">
-                <h3>{tier.name}</h3>
-                <p>{tier.cadence}</p>
-              </div>
-              <div className="home__pricing-value">
-                <span>{tier.price}</span>
-                <small>{tier.cadence === 'Per activation' ? '/project' : tier.cadence === 'Retainer' ? '' : '/mo'}</small>
-              </div>
-              <p className="home__pricing-copy">{tier.description}</p>
-              <ul>
-                {tier.features.map((feature) => (
-                  <li key={feature}>
-                    <span>✓</span>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <button type="button" onClick={() => navigate(tier.link)}>
-                {tier.cta}
-              </button>
-            </article>
-          ))}
+          {pricingTiers.map((tier) => {
+            const isMonthly = tier.name === 'Monthly'
+            const classes = ['home__pricing-card']
+            if (tier.badge) classes.push('is-popular')
+            if (isMonthly) classes.push('home__pricing-card--monthly')
+
+            return (
+              <article key={tier.name} className={classes.join(' ')}>
+                {tier.badge && <span className="home__pricing-badge">{tier.badge}</span>}
+                <div className="home__pricing-meta">
+                  <h3>{tier.name}</h3>
+                  <p>{tier.cadence}</p>
+                </div>
+                <div className="home__pricing-value">
+                  <span>{tier.price}</span>
+                  <small>{tier.cadence === 'Per activation' ? '/project' : tier.cadence === 'Retainer' ? '' : '/mo'}</small>
+                </div>
+                <p className="home__pricing-copy">{tier.description}</p>
+                <ul>
+                  {tier.features.map((feature) => (
+                    <li key={feature}>
+                      <span>✓</span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                <button type="button" onClick={() => navigate(tier.link)}>
+                  {tier.cta}
+                </button>
+              </article>
+            )
+          })}
         </div>
         <p className="home__pricing-footnote">
           Start with a single activation or scale into monthly and yearly retainers. Educational and artist-led initiatives receive preferred rates.

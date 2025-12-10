@@ -83,7 +83,7 @@
 .call-session__subhead {
   max-width: 720px;
   font-size: 1.2rem;
-  color: #d4d7e1;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .call-session__card {
@@ -109,7 +109,7 @@
 
 .call-session__intro p {
   margin: 0;
-  color: #c8ccd9;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .call-session__eyebrow {
@@ -117,7 +117,7 @@
   letter-spacing: 0.08em;
   font-weight: 700;
   margin: 0;
-  color: #a5acc1;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .call-session__embed {
