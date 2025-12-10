@@ -5,17 +5,7 @@
 }
 
 .contact__nav {
-  padding: 20px 0 24px;
-  margin-bottom: 16px;
-}
-
-.contact__nav .top-nav__bar {
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-.contact__nav .top-nav__brand {
-  font-size: 1.4rem;
+  margin-bottom: 24px;
 }
 
 .contact__body {

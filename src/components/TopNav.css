@@ -9,7 +9,7 @@
   grid-template-columns: 1fr auto 1fr auto;
   align-items: center;
   gap: 12px;
-  padding: 12px 0;
+  padding: 22px 30px;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   font-weight: 800;
@@ -223,7 +223,7 @@
 @media (max-width: 900px) {
   .top-nav__bar {
     grid-template-columns: auto auto;
-    padding: 10px 4px;
+    padding: 20px 22px;
   }
 
   .top-nav__links {

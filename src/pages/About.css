@@ -5,16 +5,7 @@
 }
 
 .about__nav {
-  padding: 20px 0 24px;
-}
-
-.about__nav .top-nav__bar {
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-.about__nav .top-nav__brand {
-  font-size: 1.4rem;
+  margin-bottom: 24px;
 }
 
 .about__shell {
@@ -136,42 +127,6 @@
   margin-top: 6px;
   color: var(--text-strong);
   line-height: 1.5;
-}
-
-.about__footer-mark {
-  margin-top: 60px;
-  font-size: clamp(3rem, 10vw + 1rem, 6rem);
-  font-weight: 500;
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  justify-content: flex-start;
-}
-
-.about__footer-link {
-  color: var(--link-color);
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  line-height: 0.9;
-  font-weight: 500;
-  letter-spacing: -0.05em;
-  align-items: baseline;
-}
-
-.about__footer-link:hover {
-  color: var(--link-color);
-  text-decoration: underline;
-  text-decoration-color: currentColor;
-}
-
-.about__footer-link:visited {
-  color: var(--link-color);
-}
-
-.about__arrow svg {
-  display: block;
 }
 
 @media (max-width: 900px) {

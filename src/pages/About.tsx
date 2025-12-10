@@ -1,20 +1,39 @@
+import { useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './About.css'
 import TopNav from '../components/TopNav'
+import Footer from '../sections/Footer'
 
 function About() {
+  const navigate = useNavigate()
+
+  const goToHomeSection = (hash?: string) => {
+    navigate(hash ? `/${hash}` : '/')
+  }
+
+  const navLinks = useMemo(
+    () => ({
+      left: [
+        { label: 'Studio', onClick: () => goToHomeSection('#hero') },
+        { label: 'Cases', onClick: () => goToHomeSection('#cases') },
+        { label: 'Pricing', onClick: () => goToHomeSection('#services') },
+      ],
+      right: [
+        { label: 'About', onClick: () => navigate('/about') },
+        { label: 'Contact', onClick: () => navigate('/contact') },
+      ],
+    }),
+    [navigate],
+  )
+
   return (
     <main className="about">
-      <div className="content about__nav">
+      <div className="home__nav about__nav">
         <TopNav
-          leftLinks={[
-            { label: 'Studio', href: '/#hero' },
-            { label: 'Cases', href: '/#cases' },
-            { label: 'Pricing', href: '/#services' },
-          ]}
-          rightLinks={[
-            { label: 'About', href: '/about' },
-            { label: 'Contact', href: '/contact' },
-          ]}
+          leftLinks={navLinks.left}
+          rightLinks={navLinks.right}
+          onBrandClick={() => goToHomeSection('#hero')}
+          brandLabel="expose.u"
           className="top-nav--page"
         />
       </div>
@@ -79,27 +98,7 @@ function About() {
           </div>
         </div>
 
-        <div className="content about__footer-mark">
-          <a className="about__footer-link" href="/contact">
-            Contact
-            <span aria-hidden="true" className="about__arrow">
-                  <svg
-                width="72"
-                height="72"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                style={{ transform: 'rotate(-45deg)' }} // rotated for emphasis
-              >
-                <path d="M12 5v14" />
-                <path d="m19 12-7 7-7-7" />
-              </svg>
-            </span>
-          </a>
-        </div>
+        <Footer />
       </section>
     </main>
   )

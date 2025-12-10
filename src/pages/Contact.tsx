@@ -1,9 +1,30 @@
+import { useMemo } from 'react'
 import './Contact.css'
 import { useNavigate } from 'react-router-dom'
 import TopNav from '../components/TopNav'
+import Footer from '../sections/Footer'
 
 function Contact() {
   const navigate = useNavigate()
+
+  const goToHomeSection = (hash?: string) => {
+    navigate(hash ? `/${hash}` : '/')
+  }
+
+  const navLinks = useMemo(
+    () => ({
+      left: [
+        { label: 'Studio', onClick: () => goToHomeSection('#hero') },
+        { label: 'Cases', onClick: () => goToHomeSection('#cases') },
+        { label: 'Pricing', onClick: () => goToHomeSection('#services') },
+      ],
+      right: [
+        { label: 'About', onClick: () => navigate('/about') },
+        { label: 'Contact', onClick: () => navigate('/contact') },
+      ],
+    }),
+    [navigate],
+  )
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -12,17 +33,12 @@ function Contact() {
 
   return (
     <main className="contact">
-      <div className="content contact__nav">
+      <div className="home__nav contact__nav">
         <TopNav
-          leftLinks={[
-            { label: 'Studio', href: '/#hero' },
-            { label: 'Cases', href: '/#cases' },
-            { label: 'Pricing', href: '/#services' },
-          ]}
-          rightLinks={[
-            { label: 'About', href: '/about' },
-            { label: 'Contact', href: '/contact' },
-          ]}
+          leftLinks={navLinks.left}
+          rightLinks={navLinks.right}
+          onBrandClick={() => goToHomeSection('#hero')}
+          brandLabel="expose.u"
           className="top-nav--page"
         />
       </div>
@@ -84,6 +100,7 @@ function Contact() {
           </form>
         </div>
       </section>
+      <Footer />
     </main>
   )
 }
