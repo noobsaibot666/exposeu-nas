@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react'
 import type { CSSProperties } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Footer from '../sections/Footer'
 import TopNav from '../components/TopNav'
 import './WorkPage.css'
 
@@ -98,10 +97,9 @@ function WorkPageLayout({
       <div className="content work-nav">
         <TopNav
           leftLinks={[
-            { label: 'Home', href: '/' },
-            { label: 'Proposal', href: '/#proposal' },
-            { label: 'Claim', href: '/#claim' },
-            { label: 'Offer', href: '/#offer' },
+            { label: 'Studio', href: '/#hero' },
+            { label: 'Cases', href: '/#cases' },
+            { label: 'Pricing', href: '/#services' },
           ]}
           rightLinks={[
             { label: 'About', href: '/about' },
@@ -266,8 +264,6 @@ function WorkPageLayout({
           </a>
         </div>
       </section>
-
-      <Footer />
     </main>
   )
 }

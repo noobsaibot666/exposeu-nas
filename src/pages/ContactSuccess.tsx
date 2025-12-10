@@ -8,10 +8,9 @@ function ContactSuccess() {
       <div className="content contact__nav">
         <TopNav
           leftLinks={[
-            { label: 'Home', href: '/' },
-            { label: 'Proposal', href: '/#proposal' },
-            { label: 'Claim', href: '/#claim' },
-            { label: 'Offer', href: '/#offer' },
+            { label: 'Studio', href: '/#hero' },
+            { label: 'Cases', href: '/#cases' },
+            { label: 'Pricing', href: '/#services' },
           ]}
           rightLinks={[
             { label: 'About', href: '/about' },

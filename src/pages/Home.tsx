@@ -1,46 +1,94 @@
-import { useMemo, useState, type CSSProperties } from 'react'
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { useNavigate } from 'react-router-dom'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import TopNav from '../components/TopNav'
 import './Home.css'
+import Footer from '../sections/Footer'
 
-const services = [
+const pricingTiers = [
   {
-    title: 'Editorial capture',
-    copy: 'Multi-camera documentation for runway, gallery, and pop-up environments delivered within 72 hours.',
-    tag: 'Capture',
+    name: 'Spontan',
+    cadence: 'Per activation',
+    price: '€2.9K',
+    description: 'One-off coverage for exhibitions, openings, or pop-up concerts.',
+    features: ['Editorial photo + video team', '48h highlight cut', 'Private proofing gallery'],
+    cta: 'Book Spontan',
+    link: '/contact',
   },
   {
-    title: 'Library builds',
-    copy: 'Vertical loops, GIF-ready stills, and native aspect ratios for every channel you syndicate to.',
-    tag: 'Systems',
+    name: 'Monthly',
+    cadence: '4 productions / month',
+    price: '€6.5K',
+    description: 'Popular with galleries and artist-run spaces launching back-to-back shows.',
+    features: ['Priority crew & gear', 'Lookbook + reels delivered weekly', 'Creative direction support'],
+    cta: 'Start Monthly',
+    link: '/contact',
+    badge: 'Popular',
   },
   {
-    title: 'Launch direction',
-    copy: 'Creative direction, treatment writing, and on-site stewardship for capsule drops and collector previews.',
-    tag: 'Strategy',
+    name: 'Yearly',
+    cadence: 'Retainer',
+    price: 'Custom',
+    description: 'Embedded studio for museums, ateliers, and brands running global programs.',
+    features: ['Dedicated producer in Berlin', 'Archive & licensing support', 'Seasonal campaign strategy'],
+    cta: 'Talk to us',
+    link: '/contact',
   },
 ]
 
 const projects = [
   {
-    title: 'Vault install 08',
-    location: 'Paris',
+    title: 'Artist sessions',
+    location: 'Berlin ateliers',
     year: '2024',
-    image: '/src/assets/images/PinonShowww.jpg',
+    image: '/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg',
+    copy: 'Intimate portrait films and long-form interviews for resident artists.',
+    link: '/artist-sessions',
   },
   {
-    title: 'Runway echo set',
-    location: 'Milan',
-    year: '2023',
-    image: '/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg',
-  },
-  {
-    title: 'Gallery chorus',
-    location: 'Lisbon',
+    title: 'Atmospheric films',
+    location: 'Lisbon residencies',
     year: '2024',
     image: '/src/assets/images/03ef1b2283de3cdc7781c5a2d3aa0cce.jpg',
+    copy: 'Slow cinema treatments that bottle the feeling of immersive installs.',
+    link: '/atmospheric',
+  },
+  {
+    title: 'Exhibition launch',
+    location: 'Paris galleries',
+    year: '2024',
+    image: '/src/assets/images/PinonShowww.jpg',
+    copy: 'Exhibition coverage for curators unveiling new collections.',
+    link: '/exhibitions',
+  },
+  {
+    title: 'Fashion show',
+    location: 'Milan runway',
+    year: '2023',
+    image: '/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg',
+    copy: 'High-energy runway coverage with editorial delivery.',
+    link: '/fashion-show',
+  },
+  {
+    title: 'Gallery stories',
+    location: 'Berlin openings',
+    year: '2023',
+    image: '/src/assets/images/PinonTheWall.jpg',
+    copy: 'Ambient vignettes for curator-led walkthroughs and collector tours.',
+    link: '/gallery-stories',
+  },
+  {
+    title: 'Performance docs',
+    location: 'Berlin nights',
+    year: '2024',
+    image: '/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg',
+    copy: 'Cinematic documentation for concerts, happenings, and live art.',
+    link: '/performance',
   },
 ]
+
+const projectRows = [projects.slice(0, 3), projects.slice(3, 6)]
 
 const heroGallery = [
   { id: 'thumb-1', image: '/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg', label: 'Openings', tone: 'designer', rotation: -3 },
@@ -50,9 +98,17 @@ const heroGallery = [
   { id: 'thumb-5', image: '/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg', label: 'Concerts', tone: 'live', rotation: -4 },
 ]
 
+const proofAvatars = [
+  '/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg',
+  '/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg',
+  '/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg',
+  '/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg',
+]
+
 function Home() {
   const navigate = useNavigate()
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
+  const casesRef = useRef<HTMLElement | null>(null)
 
   const handleScroll = (id: string) => {
     const target = document.querySelector(id)
@@ -63,8 +119,8 @@ function Home() {
     () => ({
       left: [
         { label: 'Studio', onClick: () => handleScroll('#hero') },
-        { label: 'Services', onClick: () => handleScroll('#services') },
         { label: 'Cases', onClick: () => handleScroll('#cases') },
+        { label: 'Pricing', onClick: () => handleScroll('#services') },
       ],
       right: [
         { label: 'About', onClick: () => navigate('/about') },
@@ -82,6 +138,59 @@ function Home() {
   }
 
   const resetTilt = () => setTilt({ x: 0, y: 0 })
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger)
+    const ctx = gsap.context(() => {
+      const cards = gsap.utils.toArray<HTMLElement>('.home__case-card')
+
+      cards.forEach((card, index) => {
+        gsap.from(card, {
+          opacity: 0,
+          scale: 0.92,
+          y: 60 + index * 4,
+          duration: 0.9,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 90%',
+          },
+        })
+      })
+
+      const listeners: Array<() => void> = []
+
+      cards.forEach((card) => {
+        const handleMove = (event: MouseEvent) => {
+          const rect = card.getBoundingClientRect()
+          const relX = event.clientX - (rect.left + rect.width / 2)
+          const relY = event.clientY - (rect.top + rect.height / 2)
+          const rotateX = (-relY / (rect.height / 2)) * 4
+          const rotateY = (relX / (rect.width / 2)) * 4
+          gsap.to(card, { rotationX: rotateX, rotationY: rotateY, scale: 1.04, duration: 0.35, ease: 'power3.out' })
+        }
+        const handleEnter = () => {
+          gsap.to(card, { scale: 1.05, duration: 0.4, ease: 'power3.out' })
+        }
+        const handleLeave = () => {
+          gsap.to(card, { rotationX: 0, rotationY: 0, scale: 1, duration: 0.6, ease: 'power2.out' })
+        }
+
+        card.addEventListener('mousemove', handleMove)
+        card.addEventListener('mouseenter', handleEnter)
+        card.addEventListener('mouseleave', handleLeave)
+        listeners.push(() => {
+          card.removeEventListener('mousemove', handleMove)
+          card.removeEventListener('mouseenter', handleEnter)
+          card.removeEventListener('mouseleave', handleLeave)
+        })
+      })
+
+      return () => listeners.forEach((off) => off())
+    }, casesRef)
+
+    return () => ctx.revert()
+  }, [])
 
   return (
     <main className="home">
@@ -134,50 +243,100 @@ function Home() {
         </div>
       </header>
 
-      <section className="home__section home__services" id="services">
-        <div className="home__section-header">
-          <p>Services</p>
-          <h2>Precision coverage for bold teams.</h2>
+      <section className="home__section home__proof">
+        <div className="home__proof-avatars">
+          {proofAvatars.map((avatar, idx) => (
+            <img key={avatar} src={avatar} alt="Client avatar" style={{ zIndex: proofAvatars.length - idx }} />
+          ))}
+          <span>140+ Berlin collaborators</span>
         </div>
-        <div className="home__services-grid">
-          {services.map((service) => (
-            <article key={service.title} className="home__service-card">
-              <span className="home__service-tag">{service.tag}</span>
-              <h3>{service.title}</h3>
-              <p>{service.copy}</p>
-              <button type="button" onClick={() => navigate('/contact')}>
-                Start briefing
-              </button>
-            </article>
+        <h2>
+          Ready for film &amp; photo teams who understand galleries, ateliers, and the energy that makes Berlin glow?
+        </h2>
+        <p className="home__proof-copy">
+          We create cinematic documentation for makers and the curators who elevate them&mdash;from gallery debuts to
+          experimental nights and collector previews.
+        </p>
+        <div className="home__proof-actions">
+          <button type="button" onClick={() => navigate('/contact')}>
+            Book a session
+          </button>
+          <button type="button" className="home__proof-secondary" onClick={() => handleScroll('#services')}>
+            Explore services
+          </button>
+        </div>
+      </section>
+
+      <section className="home__section home__cases" id="cases" ref={casesRef}>
+        <div className="home__section-header">
+          <p>Choose your tier</p>
+          <h2>Select the offer that fits your launch.</h2>
+        </div>
+        <div className="home__cases-grid">
+          {projectRows.map((row, rowIndex) => (
+            <div className="home__cases-row" key={`case-row-${rowIndex}`}>
+              {row.map((project) => (
+                <article key={project.title} className="home__case-card">
+                  <div className="home__case-media">
+                    <img src={project.image} alt={project.title} />
+                  </div>
+                  <div className="home__case-meta">
+                    <div>
+                      <p>{project.location}</p>
+                      <span>{project.year}</span>
+                    </div>
+                    <h3>{project.title}</h3>
+                    <p className="home__case-copy">{project.copy}</p>
+                    <button type="button" onClick={() => navigate(project.link)}>
+                      Explore offer
+                    </button>
+                  </div>
+                </article>
+              ))}
+            </div>
           ))}
         </div>
       </section>
 
-      <section className="home__section home__cases" id="cases">
-        <div className="home__section-header">
-          <p>Selected work</p>
-          <h2>Every engagement becomes a living library.</h2>
+      <section className="home__section home__pricing" id="services">
+        <div className="home__pricing-header">
+          <div>
+            <p>Pricing</p>
+            <h2>Simple tiers for Berlin creators.</h2>
+          </div>
         </div>
-        <div className="home__cases-grid">
-          {projects.map((project) => (
-            <article key={project.title} className="home__case-card">
-              <div className="home__case-media">
-                <img src={project.image} alt={project.title} />
+        <div className="home__pricing-grid">
+          {pricingTiers.map((tier) => (
+            <article key={tier.name} className={`home__pricing-card ${tier.badge ? 'is-popular' : ''}`}>
+              {tier.badge && <span className="home__pricing-badge">{tier.badge}</span>}
+              <div className="home__pricing-meta">
+                <h3>{tier.name}</h3>
+                <p>{tier.cadence}</p>
               </div>
-              <div className="home__case-meta">
-                <div>
-                  <p>{project.location}</p>
-                  <span>{project.year}</span>
-                </div>
-                <h3>{project.title}</h3>
-                <button type="button" onClick={() => navigate('/portfolio')}>
-                  Open case study
-                </button>
+              <div className="home__pricing-value">
+                <span>{tier.price}</span>
+                <small>{tier.cadence === 'Per activation' ? '/project' : tier.cadence === 'Retainer' ? '' : '/mo'}</small>
               </div>
+              <p className="home__pricing-copy">{tier.description}</p>
+              <ul>
+                {tier.features.map((feature) => (
+                  <li key={feature}>
+                    <span>✓</span>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <button type="button" onClick={() => navigate(tier.link)}>
+                {tier.cta}
+              </button>
             </article>
           ))}
         </div>
+        <p className="home__pricing-footnote">
+          Start with a single activation or scale into monthly and yearly retainers. Educational and artist-led initiatives receive preferred rates.
+        </p>
       </section>
+      <Footer />
     </main>
   )
 }

@@ -245,7 +245,7 @@ function Portfolio() {
       <div className="content portfolio__nav">
         <nav className="portfolio__links portfolio__links--left">
           <a href="/">Home</a>
-          <a href="/#proposal">Proposal</a>
+          <a href="/#cases">Cases</a>
           <a href="/#claim">Claim</a>
           <a href="/#offer">Offer</a>
         </nav>

@@ -1,6 +1,5 @@
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
-import Footer from './sections/Footer'
 import About from './pages/About'
 import Atmospheric from './pages/Atmospheric'
 import CallSession from './pages/CallSession'
@@ -21,51 +20,11 @@ function App() {
     <ThemeProvider>
       <div className="page">
         <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <Home />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/about"
-            element={
-              <>
-                <About />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/call-session"
-            element={
-              <>
-                <CallSession />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/contact"
-            element={
-              <>
-                <Contact />
-                <Footer />
-              </>
-            }
-          />
-          <Route
-            path="/contact-success"
-            element={
-              <>
-                <ContactSuccess />
-                <Footer />
-              </>
-            }
-          />
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/call-session" element={<CallSession />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/contact-success" element={<ContactSuccess />} />
           <Route
             path="/exhibitions"
             element={
@@ -114,15 +73,7 @@ function App() {
               </>
             }
           />
-          <Route
-            path="/portfolio"
-            element={
-              <>
-                <Portfolio />
-                <Footer />
-              </>
-            }
-          />
+          <Route path="/portfolio" element={<Portfolio />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
