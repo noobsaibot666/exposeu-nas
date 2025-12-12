@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import TopNav from '../components/TopNav'
 import './Home.css'
 import Footer from '../sections/Footer'
+import { resolveImagePath } from '../utils/resolveImagePath'
 
 const pricingTiers = [
   {
@@ -42,7 +43,7 @@ const projects = [
     title: 'Artist sessions',
     location: 'Berlin ateliers',
     year: '2024',
-    image: '/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg',
+    image: resolveImagePath('/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg'),
     copy: 'Intimate portrait films and long-form interviews for resident artists.',
     link: '/artist-sessions',
   },
@@ -50,7 +51,7 @@ const projects = [
     title: 'Atmospheric films',
     location: 'Lisbon residencies',
     year: '2024',
-    image: '/src/assets/images/03ef1b2283de3cdc7781c5a2d3aa0cce.jpg',
+    image: resolveImagePath('/src/assets/images/03ef1b2283de3cdc7781c5a2d3aa0cce.jpg'),
     copy: 'Slow cinema treatments that bottle the feeling of immersive installs.',
     link: '/atmospheric',
   },
@@ -58,7 +59,7 @@ const projects = [
     title: 'Exhibition launch',
     location: 'Paris galleries',
     year: '2024',
-    image: '/src/assets/images/PinonShowww.jpg',
+    image: resolveImagePath('/src/assets/images/PinonShowww.jpg'),
     copy: 'Exhibition coverage for curators unveiling new collections.',
     link: '/exhibitions',
   },
@@ -66,7 +67,7 @@ const projects = [
     title: 'Fashion show',
     location: 'Milan runway',
     year: '2023',
-    image: '/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg',
+    image: resolveImagePath('/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg'),
     copy: 'High-energy runway coverage with editorial delivery.',
     link: '/fashion-show',
   },
@@ -74,7 +75,7 @@ const projects = [
     title: 'Gallery stories',
     location: 'Berlin openings',
     year: '2023',
-    image: '/src/assets/images/PinonTheWall.jpg',
+    image: resolveImagePath('/src/assets/images/PinonTheWall.jpg'),
     copy: 'Ambient vignettes for curator-led walkthroughs and collector tours.',
     link: '/gallery-stories',
   },
@@ -82,7 +83,7 @@ const projects = [
     title: 'Performance docs',
     location: 'Berlin nights',
     year: '2024',
-    image: '/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg',
+    image: resolveImagePath('/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg'),
     copy: 'Cinematic documentation for concerts, happenings, and live art.',
     link: '/performance',
   },
@@ -91,18 +92,48 @@ const projects = [
 const projectRows = [projects.slice(0, 3), projects.slice(3, 6)]
 
 const heroGallery = [
-  { id: 'thumb-1', image: '/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg', label: 'Openings', tone: 'designer', rotation: -3 },
-  { id: 'thumb-2', image: '/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg', label: 'Artists', tone: 'artist', rotation: 2 },
-  { id: 'thumb-3', image: '/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg', label: 'Galleries', tone: 'curator', rotation: -1 },
-  { id: 'thumb-4', image: '/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg', label: 'Runway', tone: 'producer', rotation: 4 },
-  { id: 'thumb-5', image: '/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg', label: 'Concerts', tone: 'live', rotation: -4 },
+  {
+    id: 'thumb-1',
+    image: resolveImagePath('/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg'),
+    label: 'Openings',
+    tone: 'designer',
+    rotation: -3,
+  },
+  {
+    id: 'thumb-2',
+    image: resolveImagePath('/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg'),
+    label: 'Artists',
+    tone: 'artist',
+    rotation: 2,
+  },
+  {
+    id: 'thumb-3',
+    image: resolveImagePath('/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg'),
+    label: 'Galleries',
+    tone: 'curator',
+    rotation: -1,
+  },
+  {
+    id: 'thumb-4',
+    image: resolveImagePath('/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg'),
+    label: 'Runway',
+    tone: 'producer',
+    rotation: 4,
+  },
+  {
+    id: 'thumb-5',
+    image: resolveImagePath('/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg'),
+    label: 'Concerts',
+    tone: 'live',
+    rotation: -4,
+  },
 ]
 
 const proofAvatars = [
-  '/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg',
-  '/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg',
-  '/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg',
-  '/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg',
+  resolveImagePath('/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg'),
+  resolveImagePath('/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg'),
+  resolveImagePath('/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg'),
+  resolveImagePath('/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg'),
 ]
 
 function Home() {

@@ -1,10 +1,11 @@
+import { resolveImagePath } from '../utils/resolveImagePath'
 import WorkPageLayout from './WorkPageLayout'
 
 const heroCards = [
-  { image: '/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg', title: 'Moody Portraits' },
-  { image: '/src/assets/images/Daydream.jpg', title: 'Slow Motion' },
-  { image: '/src/assets/images/bg01.jpg', title: 'Ambient Scenes' },
-  { image: '/src/assets/images/PinonTheWall.jpg', title: 'Stillness & Tone' },
+  { image: resolveImagePath('/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg'), title: 'Moody Portraits' },
+  { image: resolveImagePath('/src/assets/images/Daydream.jpg'), title: 'Slow Motion' },
+  { image: resolveImagePath('/src/assets/images/bg01.jpg'), title: 'Ambient Scenes' },
+  { image: resolveImagePath('/src/assets/images/PinonTheWall.jpg'), title: 'Stillness & Tone' },
 ]
 
 function Atmospheric() {

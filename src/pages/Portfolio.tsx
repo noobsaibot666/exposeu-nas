@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties, PointerEvent, WheelEvent } from 'react'
 import './Portfolio.css'
+import { resolveImagePath } from '../utils/resolveImagePath'
 
 type VideoItem = {
   id: string
@@ -31,7 +32,7 @@ const videos: VideoItem[] = [
     description: 'Moody prelude that walks viewers through the build-out.',
     year: '2024',
     location: 'Berlin',
-    thumb: '/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg',
+    thumb: resolveImagePath('/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg'),
     videoSrc: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
     tag: 'Live',
     cta: 'Play',
@@ -42,7 +43,7 @@ const videos: VideoItem[] = [
     description: 'Portrait-led teaser for the opening night.',
     year: '2024',
     location: 'Paris',
-    thumb: '/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg',
+    thumb: resolveImagePath('/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg'),
     videoSrc: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
     tag: 'Feature',
     cta: 'Play',
@@ -53,7 +54,7 @@ const videos: VideoItem[] = [
     description: 'Cinematic capture of live movement and light.',
     year: '2025',
     location: 'London',
-    thumb: '/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg',
+    thumb: resolveImagePath('/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg'),
     videoSrc: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
     tag: 'Live',
     cta: 'Play',
@@ -64,7 +65,7 @@ const videos: VideoItem[] = [
     description: 'Intimate look at the artist’s process in-studio.',
     year: '2025',
     location: 'Lisbon',
-    thumb: '/src/assets/images/5bcdeb6c6e929fdb9f16ed10665ca5e0.jpg',
+    thumb: resolveImagePath('/src/assets/images/5bcdeb6c6e929fdb9f16ed10665ca5e0.jpg'),
     videoSrc: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
     tag: 'Studio',
     cta: 'Play',
@@ -75,7 +76,7 @@ const videos: VideoItem[] = [
     description: 'Editorial frames for a new collection drop.',
     year: '2025',
     location: 'Milan',
-    thumb: '/src/assets/images/5ca58a0696b1a8655c92ae3ed107c5e8.jpg',
+    thumb: resolveImagePath('/src/assets/images/5ca58a0696b1a8655c92ae3ed107c5e8.jpg'),
     videoSrc: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
     tag: 'Editorial',
     cta: 'Play',
@@ -86,7 +87,7 @@ const videos: VideoItem[] = [
     description: 'One-take reveal capturing the crowd and energy.',
     year: '2024',
     location: 'Rotterdam',
-    thumb: '/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg',
+    thumb: resolveImagePath('/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg'),
     videoSrc: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
     tag: 'Live',
     cta: 'Play',
@@ -97,7 +98,7 @@ const videos: VideoItem[] = [
     description: 'Wide shots and close detail of an immersive build.',
     year: '2025',
     location: 'Copenhagen',
-    thumb: '/src/assets/images/cfcb07dd865328849ba617c98ae71eb3.jpg',
+    thumb: resolveImagePath('/src/assets/images/cfcb07dd865328849ba617c98ae71eb3.jpg'),
     videoSrc: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
     tag: 'Immersive',
     cta: 'Play',
@@ -108,7 +109,7 @@ const videos: VideoItem[] = [
     description: 'After-dark coverage with moody grading.',
     year: '2024',
     location: 'Madrid',
-    thumb: '/src/assets/images/Daydream.jpg',
+    thumb: resolveImagePath('/src/assets/images/Daydream.jpg'),
     videoSrc: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
     tag: 'After Hours',
     cta: 'Play',
@@ -123,7 +124,7 @@ const offers: OfferItem[] = [
     link: '/#offer',
     cta: 'Explore Exhibition',
     accent: '#ffffffff',
-    background: '/src/assets/images/5bcdeb6c6e929fdb9f16ed10665ca5e0.jpg',
+    background: resolveImagePath('/src/assets/images/5bcdeb6c6e929fdb9f16ed10665ca5e0.jpg'),
   },
   {
     id: 'offer-session',
@@ -132,7 +133,7 @@ const offers: OfferItem[] = [
     link: '/#offer',
     cta: 'Book a Session',
     accent: '#c4b5fd',
-    background: '/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg',
+    background: resolveImagePath('/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg'),
   },
   {
     id: 'offer-performance',
@@ -141,7 +142,7 @@ const offers: OfferItem[] = [
     link: '/#offer',
     cta: 'Plan a Performance',
     accent: '#fca5a5',
-    background: '/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg',
+    background: resolveImagePath('/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg'),
   },
   {
     id: 'offer-atmospheric',
@@ -150,7 +151,7 @@ const offers: OfferItem[] = [
     link: '/atmospheric',
     cta: 'Build the Atmosphere',
     accent: '#9bd1ff',
-    background: '/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg',
+    background: resolveImagePath('/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg'),
   },
   {
     id: 'offer-gallery',
@@ -159,7 +160,7 @@ const offers: OfferItem[] = [
     link: '/gallery-stories',
     cta: 'Tell the Story',
     accent: '#fbcfe8',
-    background: '/src/assets/images/PinonShowww.jpg',
+    background: resolveImagePath('/src/assets/images/PinonShowww.jpg'),
   },
   {
     id: 'offer-fashion',
@@ -168,7 +169,7 @@ const offers: OfferItem[] = [
     link: '/fashion-show',
     cta: 'Book Runway Coverage',
     accent: '#c7d2fe',
-    background: '/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg',
+    background: resolveImagePath('/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg'),
   },
 ]
 

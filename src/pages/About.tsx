@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import './About.css'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
+import { resolveImagePath } from '../utils/resolveImagePath'
 
 function About() {
   const navigate = useNavigate()
@@ -74,7 +75,7 @@ function About() {
 
           <div className="about__portrait-block">
             <div className="about__portrait">
-              <img src="/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg" alt="Portrait" />
+              <img src={resolveImagePath('/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg')} alt="Portrait" />
             </div>
           </div>
 

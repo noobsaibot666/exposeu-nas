@@ -1,10 +1,11 @@
+import { resolveImagePath } from '../utils/resolveImagePath'
 import WorkPageLayout from './WorkPageLayout'
 
 const heroCards = [
-  { image: '/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg', title: 'Portrait' },
-  { image: '/src/assets/images/5ca58a0696b1a8655c92ae3ed107c5e8.jpg', title: 'In Studio' },
-  { image: '/src/assets/images/Pinonsecrets.jpg', title: 'Process' },
-  { image: '/src/assets/images/PinonShowww.jpg', title: 'Live Moment' },
+  { image: resolveImagePath('/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg'), title: 'Portrait' },
+  { image: resolveImagePath('/src/assets/images/5ca58a0696b1a8655c92ae3ed107c5e8.jpg'), title: 'In Studio' },
+  { image: resolveImagePath('/src/assets/images/Pinonsecrets.jpg'), title: 'Process' },
+  { image: resolveImagePath('/src/assets/images/PinonShowww.jpg'), title: 'Live Moment' },
 ]
 
 function ArtistSessions() {

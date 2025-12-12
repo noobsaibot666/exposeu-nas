@@ -1,10 +1,11 @@
+import { resolveImagePath } from '../utils/resolveImagePath'
 import WorkPageLayout from './WorkPageLayout'
 
 const heroCards = [
-  { image: '/src/assets/images/visualelectric-1755373701143.png', title: 'Opening Night' },
-  { image: '/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg', title: 'Light Studies' },
-  { image: '/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg', title: 'Curated Flow' },
-  { image: '/src/assets/images/03ef1b2283de3cdc7781c5a2d3aa0cce.jpg', title: 'Install Detail' },
+  { image: resolveImagePath('/src/assets/images/visualelectric-1755373701143.png'), title: 'Opening Night' },
+  { image: resolveImagePath('/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg'), title: 'Light Studies' },
+  { image: resolveImagePath('/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg'), title: 'Curated Flow' },
+  { image: resolveImagePath('/src/assets/images/03ef1b2283de3cdc7781c5a2d3aa0cce.jpg'), title: 'Install Detail' },
 ]
 
 function Exhibitions() {

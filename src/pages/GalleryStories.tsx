@@ -1,10 +1,11 @@
+import { resolveImagePath } from '../utils/resolveImagePath'
 import WorkPageLayout from './WorkPageLayout'
 
 const heroCards = [
-  { image: '/src/assets/images/visualelectric-1755373701143.png', title: 'Curator Voice' },
-  { image: '/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg', title: 'Install Details' },
-  { image: '/src/assets/images/03ef1b2283de3cdc7781c5a2d3aa0cce.jpg', title: 'Space Flow' },
-  { image: '/src/assets/images/PinonTheWall.jpg', title: 'Patron Moments' },
+  { image: resolveImagePath('/src/assets/images/visualelectric-1755373701143.png'), title: 'Curator Voice' },
+  { image: resolveImagePath('/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg'), title: 'Install Details' },
+  { image: resolveImagePath('/src/assets/images/03ef1b2283de3cdc7781c5a2d3aa0cce.jpg'), title: 'Space Flow' },
+  { image: resolveImagePath('/src/assets/images/PinonTheWall.jpg'), title: 'Patron Moments' },
 ]
 
 function GalleryStories() {

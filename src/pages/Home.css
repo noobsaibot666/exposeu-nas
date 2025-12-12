@@ -10,7 +10,7 @@
   position: fixed;
   inset: 0;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.95)),
-    url('/src/assets/images/FuturisticInterior-RomanPrytuliak.jpg') center/cover no-repeat;
+    url('../assets/images/FuturisticInterior-RomanPrytuliak.jpg') center/cover no-repeat;
   opacity: 0.3;
   filter: blur(3px);
   transform: scale(1.05);
