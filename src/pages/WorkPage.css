@@ -63,6 +63,7 @@
   justify-content: center; /* center stacked cards */
   overflow: visible; /* allow overlap without clipping */
   padding-bottom: 8px;
+  padding-inline: 12px;
   width: 100%; /* span available width */
 }
 
@@ -82,7 +83,7 @@
 
 .work-hero__card {
   position: relative;
-  width: var(--card-width, min(260px, 70vw)); /* card width */
+  width: min(var(--card-width, 260px), 86vw); /* card width */
   aspect-ratio: 3 / 4;
   border-radius: 16px;
   overflow: hidden;

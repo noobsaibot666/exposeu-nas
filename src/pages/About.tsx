@@ -1,5 +1,7 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './About.css'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
@@ -7,6 +9,7 @@ import { resolveImagePath } from '../utils/resolveImagePath'
 
 function About() {
   const navigate = useNavigate()
+  const rootRef = useRef<HTMLElement | null>(null)
 
   const goToHomeSection = (hash?: string) => {
     navigate(hash ? `/${hash}` : '/')
@@ -27,8 +30,43 @@ function About() {
     [navigate],
   )
 
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger)
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const ctx = gsap.context(() => {
+      gsap.from('.about__profile', { opacity: 0, y: 24, duration: 0.8, ease: 'power2.out' })
+
+      const rows = gsap.utils.toArray<HTMLElement>('.about__row')
+      gsap.from(rows, {
+        opacity: 0,
+        y: 20,
+        duration: 0.7,
+        stagger: 0.08,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.about__grid',
+          start: 'top 80%',
+        },
+      })
+
+      gsap.from('.about__portrait', {
+        opacity: 0,
+        scale: 0.96,
+        duration: 0.8,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.about__portrait-block',
+          start: 'top 80%',
+        },
+      })
+    }, rootRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <main className="about">
+    <main className="about" ref={rootRef}>
       <div className="home__nav about__nav">
         <TopNav
           leftLinks={navLinks.left}

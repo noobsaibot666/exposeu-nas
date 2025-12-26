@@ -1,11 +1,14 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import './Contact.css'
 import { useNavigate } from 'react-router-dom'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
 
 function Contact() {
   const navigate = useNavigate()
+  const rootRef = useRef<HTMLElement | null>(null)
 
   const goToHomeSection = (hash?: string) => {
     navigate(hash ? `/${hash}` : '/')
@@ -31,8 +34,48 @@ function Contact() {
     navigate('/contact-success')
   }
 
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger)
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const ctx = gsap.context(() => {
+      const headingItems = gsap.utils.toArray<HTMLElement>('.contact__heading > *')
+      gsap.from(headingItems, {
+        opacity: 0,
+        y: 18,
+        duration: 0.7,
+        stagger: 0.08,
+        ease: 'power2.out',
+      })
+
+      gsap.from('.contact__info', {
+        opacity: 0,
+        y: 18,
+        duration: 0.7,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.contact__grid',
+          start: 'top 80%',
+        },
+      })
+
+      gsap.from('.contact__form', {
+        opacity: 0,
+        y: 18,
+        duration: 0.7,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.contact__form',
+          start: 'top 85%',
+        },
+      })
+    }, rootRef)
+
+    return () => ctx.revert()
+  }, [])
+
   return (
-    <main className="contact">
+    <main className="contact" ref={rootRef}>
       <div className="home__nav contact__nav">
         <TopNav
           leftLinks={navLinks.left}

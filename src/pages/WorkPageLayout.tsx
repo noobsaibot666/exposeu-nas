@@ -46,26 +46,53 @@ function WorkPageLayout({
   extraGallerySecondaryCopy,
   extraGallerySecondary,
 }: WorkPageLayoutProps) {
+  const rootRef = useRef<HTMLElement | null>(null)
   const stackRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
+    window.scrollTo({ top: 0, behavior: 'auto' })
+
     const ctx = gsap.context(() => {
+      const heroItems = gsap.utils.toArray<HTMLElement>('.work-hero__copy > *')
+      gsap.from(heroItems, {
+        opacity: 0,
+        y: 22,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: 'power2.out',
+      })
+
       const cards = gsap.utils.toArray<HTMLElement>('.work-hero__card')
 
       gsap.from(cards, {
         opacity: 0,
-        y: 24,
+        x: -80,
         scale: 0.94,
         stagger: 0.08,
-        duration: 1,
-        ease: 'power2.out',
+        duration: 0.9,
+        ease: 'power2.in',
         scrollTrigger: {
           trigger: stackRef.current,
           start: 'top 80%',
         },
+      })
+
+      const galleryItems = gsap.utils.toArray<HTMLElement>('.work-gallery__item')
+      galleryItems.forEach((item, index) => {
+        gsap.from(item, {
+          opacity: 0,
+          y: 26,
+          duration: 0.7,
+          delay: index * 0.04,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: item,
+            start: 'top 85%',
+          },
+        })
       })
 
       const listeners: Array<() => void> = []
@@ -87,13 +114,13 @@ function WorkPageLayout({
       })
 
       return () => listeners.forEach((off) => off())
-    }, stackRef)
+    }, rootRef)
 
     return () => ctx.revert()
   }, [])
 
   return (
-    <main className="work-page">
+    <main className="work-page" ref={rootRef}>
       <div className="content work-nav">
         <TopNav
           leftLinks={[
@@ -120,10 +147,10 @@ function WorkPageLayout({
             <p className="work-hero__label">Projects</p>
             <div className="work-hero__stack" ref={stackRef}>
               {cards.map((card, index) => {
-                const scales = [0.98, 1.08, 1.2, 1.34] // tune per card
-                const widths = [260, 300, 360, 420] // px widths per card
+                const scales = [0.98, 1.08, 1.2, 1.32] // tune per card
+                const widths = [240, 280, 320, 360] // px widths per card
                 const translateY = [12, 6, 0, -6] // px vertical offsets per card
-                const overlap = '-24px' // horizontal overlap between cards
+                const overlap = '-20px' // horizontal overlap between cards
                 const scale = scales[index] ?? scales[scales.length - 1]
                 const width = widths[index] ?? widths[widths.length - 1]
                 const ty = translateY[index] ?? translateY[translateY.length - 1]

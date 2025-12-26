@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties, PointerEvent, WheelEvent } from 'react'
 import './Portfolio.css'
 import { resolveImagePath } from '../utils/resolveImagePath'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 type VideoItem = {
   id: string
@@ -178,10 +180,68 @@ function Portfolio() {
   const [isDragging, setIsDragging] = useState(false)
   const [hoveredId, setHoveredId] = useState<string | null>(null)
   const gridRef = useRef<HTMLDivElement | null>(null)
+  const rootRef = useRef<HTMLElement | null>(null)
   const dragState = useRef({ active: false, startX: 0, scrollLeft: 0, moved: false, pointerId: 0 })
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' })
+  }, [])
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger)
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const ctx = gsap.context(() => {
+      gsap.from('.portfolio__nav', { opacity: 0, y: -12, duration: 0.6, ease: 'power2.out' })
+
+      const heroItems = gsap.utils.toArray<HTMLElement>('.portfolio__hero-inner > *')
+      gsap.from(heroItems, {
+        opacity: 0,
+        y: 22,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: 'power2.out',
+      })
+
+      gsap.from('.portfolio__card', {
+        opacity: 0,
+        y: 24,
+        duration: 0.6,
+        stagger: 0.04,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.portfolio__gallery',
+          start: 'top 80%',
+        },
+      })
+
+      const offerItems = gsap.utils.toArray<HTMLElement>('.portfolio__offers-copy > *')
+      gsap.from(offerItems, {
+        opacity: 0,
+        y: 18,
+        duration: 0.6,
+        stagger: 0.08,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.portfolio__offers',
+          start: 'top 85%',
+        },
+      })
+
+      gsap.from('.portfolio__offer-card', {
+        opacity: 0,
+        y: 26,
+        duration: 0.7,
+        stagger: 0.06,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.portfolio__offers-grid',
+          start: 'top 85%',
+        },
+      })
+    }, rootRef)
+
+    return () => ctx.revert()
   }, [])
 
   const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
@@ -242,7 +302,7 @@ function Portfolio() {
   const hoveredIndex = hoveredId ? videos.findIndex((v) => v.id === hoveredId) : -1
 
   return (
-    <main className="portfolio">
+    <main className="portfolio" ref={rootRef}>
       <div className="content portfolio__nav">
         <nav className="portfolio__links portfolio__links--left">
           <a href="/">Home</a>

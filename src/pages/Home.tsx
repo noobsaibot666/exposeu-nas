@@ -96,35 +96,30 @@ const heroGallery = [
     id: 'thumb-1',
     image: resolveImagePath('/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg'),
     label: 'Exhibitions',
-    tone: '',
     rotation: -3,
   },
   {
     id: 'thumb-2',
     image: resolveImagePath('/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg'),
     label: 'Artist sessions',
-    tone: '',
     rotation: 2,
   },
   {
     id: 'thumb-3',
     image: resolveImagePath('/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg'),
-    label: 'Documentations',
-    tone: '',
+    label: 'Gallery documentation',
     rotation: -1,
   },
   {
     id: 'thumb-4',
     image: resolveImagePath('/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg'),
     label: 'Performances',
-    tone: '',
     rotation: 4,
   },
   {
     id: 'thumb-5',
     image: resolveImagePath('/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg'),
     label: 'Fashion shows',
-    tone: '',
     rotation: -4,
   },
 ]
@@ -139,6 +134,7 @@ const proofAvatars = [
 function Home() {
   const navigate = useNavigate()
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
+  const rootRef = useRef<HTMLElement | null>(null)
   const casesRef = useRef<HTMLElement | null>(null)
 
   const handleScroll = (id: string) => {
@@ -172,7 +168,18 @@ function Home() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
     const ctx = gsap.context(() => {
+      const heroTimeline = gsap.timeline({ defaults: { ease: 'power3.out' } })
+
+      heroTimeline
+        .from('.home__nav', { opacity: 0, y: -12, duration: 0.5 })
+        .from('.home__hero-title', { opacity: 0, y: 28, duration: 0.7 }, '-=0.2')
+        .from('.home__hero-gallery', { opacity: 0, y: 20, scale: 0.98, duration: 0.7 }, '-=0.35')
+        .from('.home__hero-subhead', { opacity: 0, y: 16, duration: 0.6 }, '-=0.35')
+        .from('.home__actions button', { opacity: 0, y: 12, duration: 0.5, stagger: 0.12 }, '-=0.3')
+
       const cards = gsap.utils.toArray<HTMLElement>('.home__case-card')
 
       cards.forEach((card, index) => {
@@ -187,6 +194,34 @@ function Home() {
             start: 'top 90%',
           },
         })
+      })
+
+      const pricingCards = gsap.utils.toArray<HTMLElement>('.home__pricing-card')
+      pricingCards.forEach((card, index) => {
+        gsap.from(card, {
+          opacity: 0,
+          y: 36,
+          duration: 0.8,
+          delay: index * 0.04,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 85%',
+          },
+        })
+      })
+
+      const proofItems = gsap.utils.toArray<HTMLElement>('.home__proof > *')
+      gsap.from(proofItems, {
+        opacity: 0,
+        y: 24,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.home__proof',
+          start: 'top 80%',
+        },
       })
 
       const listeners: Array<() => void> = []
@@ -218,14 +253,15 @@ function Home() {
       })
 
       return () => listeners.forEach((off) => off())
-    }, casesRef)
+    }, rootRef)
 
     return () => ctx.revert()
   }, [])
 
   return (
-    <main className="home">
+    <main className="home" ref={rootRef}>
       <div className="home__background" aria-hidden />
+      <div className="home__floaters" aria-hidden />
       <header className="home__section home__hero" id="hero">
         <div className="home__nav">
           <TopNav
@@ -237,7 +273,7 @@ function Home() {
           />
       </div>
         <div className="home__hero-body">
-          <h1>Photo and video for Berlin&rsquo;s galleries, artists, and live events.</h1>
+          <h1 className="home__hero-title">Photo and video for Berlin&rsquo;s galleries, artists, and live events.</h1>
           <div
             className="home__hero-gallery"
             onMouseMove={handleGalleryMouseMove}
@@ -254,7 +290,6 @@ function Home() {
                   <img src={thumb.image} alt={thumb.label} loading="lazy" />
                 </div>
                 <figcaption>
-                  <span>{thumb.tone}</span>
                   <strong>{thumb.label}</strong>
                 </figcaption>
               </figure>
