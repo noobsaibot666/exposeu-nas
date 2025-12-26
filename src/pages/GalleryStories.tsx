@@ -12,34 +12,34 @@ function GalleryStories() {
   return (
     <WorkPageLayout
       title="Gallery Stories"
-      heroCopy="Short films and photo essays that tell the story behind the space—curator intent, artist voice, and the feel of the room."
-      detail="Perfect for socials, press kits, and collector previews."
+      heroCopy="Short films and photo essays that translate the space with curator intent and artist voice."
+      detail="Built for socials, press kits, and collector previews with clear deliverables and fast turnaround."
       cards={heroCards}
-      galleryTitle="Why galleries call us"
-      galleryCopy="We script light, pacing, and interview beats to deliver a narrative that feels honest and elevated—ready for your patrons and partners."
+      galleryTitle="Why gallery teams choose us"
+      galleryCopy="We structure the story, guide interviews, and deliver a package ready for patrons, press, and partners."
       gallery={[
-        { title: 'Story architecture', subtitle: 'We map curator intent, artist voice, and patron experience into a clear narrative.' },
+        { title: 'Story architecture', subtitle: 'We map curator intent, artist voice, and visitor experience into a clear narrative.' },
         { title: 'Interviews that land', subtitle: 'Guided prompts so speakers sound natural and concise.' },
-        { title: 'Space + detail', subtitle: 'Wide establishing frames and close details that feel intentional.' },
-        { title: 'For patrons + press', subtitle: 'Cuts sized for socials, websites, and media kits.' },
+        { title: 'Space and detail', subtitle: 'Wide establishing frames and close details that show the work clearly.' },
+        { title: 'Multi-use cuts', subtitle: 'Versions sized for socials, web, and media kits.' },
       ]}
       extraGalleryTitle="What you get"
-      extraGalleryCopy="A complete story package—interviews, b-roll, and stills—delivered in formats ready to share."
+      extraGalleryCopy="A complete story package with interviews, b-roll, and stills ready to share."
       extraGallery={[
         { title: 'Interview cuts', subtitle: 'Clean audio, captions, and multiple lengths per platform.' },
         { title: 'B-roll library', subtitle: 'Organized clips of the space, works, and interactions.' },
         { title: 'Press stills', subtitle: 'Hi-res frames for catalogues and media drops.' },
-        { title: 'Usage clarity', subtitle: 'Folders with permissions and suggested pairings.' },
+        { title: 'Usage clarity', subtitle: 'Folder structure and naming for fast publishing.' },
       ]}
       extraGallerySecondaryTitle="How we produce"
       extraGallerySecondaryCopy="Tight schedules, lean crews, and pre-pro that keeps you focused on guests."
       extraGallerySecondary={[
-        { title: 'Pre-pro calls', subtitle: 'Outline story beats, must-capture works, and voices.' },
+        { title: 'Pre-pro call', subtitle: 'Align on story beats, key works, and voices.' },
         { title: 'Lean crew', subtitle: 'Small footprint to stay discreet during tours and events.' },
         { title: 'Run-of-show sync', subtitle: 'We align with your agenda to capture key moments.' },
-        { title: 'Fast edits', subtitle: 'Selects and finished cuts delivered on a clear timeline.' },
+        { title: 'Fast edits', subtitle: 'Selects in 48h; finals on an agreed schedule.' },
       ]}
-      ctaText="Let’s craft your next gallery story. We’ll tailor the shoot to your audience."
+      ctaText="Book a gallery story. Share your date, venue, and goals."
       ctaHref="/contact"
     />
   )

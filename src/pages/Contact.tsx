@@ -45,10 +45,10 @@ function Contact() {
 
       <section className="section contact__body">
         <div className="content contact__heading">
-          <p className="contact__eyebrow">Contact Us</p>
-          <h1>Let&apos;s plan your shoot.</h1>
+          <p className="contact__eyebrow">Contact</p>
+          <h1>Let&apos;s plan your coverage.</h1>
           <p className="contact__lede">
-            We respond fast—share your project and we&apos;ll align on the perfect coverage.
+            We reply within 24 hours. Share your dates, location, and goals, and we&apos;ll propose the right package.
           </p>
         </div>
         <div className="content contact__grid">
@@ -90,7 +90,7 @@ function Contact() {
               <textarea
                 id="message"
                 name="message"
-                placeholder="Tell us about your exhibition, performance, or shoot."
+                placeholder="Tell us about your exhibition, performance, or event. Include date, venue, and goals."
                 rows={4}
               />
             </div>

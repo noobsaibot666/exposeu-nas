@@ -120,27 +120,27 @@ const offers: OfferItem[] = [
   {
     id: 'offer-exhibition',
     title: 'Exhibition',
-    blurb: 'Full visual direction for galleries, openings, and installs—immersive screens, loops, and atmosphere.',
-    link: '/#offer',
-    cta: 'Explore Exhibition',
+    blurb: 'Full visual direction for galleries, openings, and installs with immersive screens, loops, and atmosphere.',
+    link: '/contact',
+    cta: 'Contact us',
     accent: '#ffffffff',
     background: resolveImagePath('/src/assets/images/5bcdeb6c6e929fdb9f16ed10665ca5e0.jpg'),
   },
   {
     id: 'offer-session',
     title: 'Artist Session',
-    blurb: 'Studio and portrait sessions that capture process and story—polished deliverables for press and socials.',
-    link: '/#offer',
-    cta: 'Book a Session',
+    blurb: 'Studio and portrait sessions that capture process and story with polished deliverables for press and socials.',
+    link: '/contact',
+    cta: 'Contact us',
     accent: '#c4b5fd',
     background: resolveImagePath('/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg'),
   },
   {
     id: 'offer-performance',
     title: 'Performance',
-    blurb: 'Live performance capture with cinematic coverage—multi-angle, crisp audio, and quick turnarounds.',
-    link: '/#offer',
-    cta: 'Plan a Performance',
+    blurb: 'Live performance capture with cinematic coverage, multi-angle, crisp audio, and quick turnarounds.',
+    link: '/contact',
+    cta: 'Contact us',
     accent: '#fca5a5',
     background: resolveImagePath('/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg'),
   },
@@ -148,8 +148,8 @@ const offers: OfferItem[] = [
     id: 'offer-atmospheric',
     title: 'Atmospheric',
     blurb: 'Mood-first films and stills that set the tone for your release, event, or install.',
-    link: '/atmospheric',
-    cta: 'Build the Atmosphere',
+    link: '/contact',
+    cta: 'Contact us',
     accent: '#9bd1ff',
     background: resolveImagePath('/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg'),
   },
@@ -157,8 +157,8 @@ const offers: OfferItem[] = [
     id: 'offer-gallery',
     title: 'Gallery Stories',
     blurb: 'Curator walkthroughs and features that make your space and artists shine online.',
-    link: '/gallery-stories',
-    cta: 'Tell the Story',
+    link: '/contact',
+    cta: 'Contact us',
     accent: '#fbcfe8',
     background: resolveImagePath('/src/assets/images/PinonShowww.jpg'),
   },
@@ -166,8 +166,8 @@ const offers: OfferItem[] = [
     id: 'offer-fashion',
     title: 'Fashion Show',
     blurb: 'Editorial runway capture with clean angles, sharp detail, and fast delivery.',
-    link: '/fashion-show',
-    cta: 'Book Runway Coverage',
+    link: '/contact',
+    cta: 'Contact us',
     accent: '#c7d2fe',
     background: resolveImagePath('/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg'),
   },
@@ -262,7 +262,7 @@ function Portfolio() {
       <section className="section portfolio__hero">
         <div className="content portfolio__hero-inner">
           <h1>Moving visuals for stages and walls.</h1>
-          <p>Bold captures with quiet control—see how we frame performances, galleries, and launches.</p>
+          <p>Bold captures with quiet control. See how we frame performances, galleries, and launches.</p>
         </div>
       </section>
 
@@ -364,7 +364,7 @@ function Portfolio() {
             <p className="portfolio__eyebrow">Collaboration</p>
             <h2>Now that you’ve seen the work, choose how we can team up.</h2>
             <p className="portfolio__lead">
-              Pick the format that fits your stage—exhibitions, artist sessions, or full performance capture.
+              Pick the format that fits your stage, from exhibitions and artist sessions to full performance capture.
             </p>
           </div>
           <div className="portfolio__offers-grid">

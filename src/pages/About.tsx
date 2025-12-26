@@ -43,8 +43,8 @@ function About() {
         <div className="content about__profile">
           <div className="about__label">Profile</div>
           <h1>
-            We’re artist-directors shooting photo + video for exhibitions, performances, and
-            galleries. Tasteful, precise, made by artists who live in the scene.
+            We’re artist-directors creating photo and video for exhibitions, performances, and
+            galleries. Precise, art-first, and shaped by people inside the scene.
           </h1>
         </div>
 
@@ -53,22 +53,22 @@ function About() {
             <div className="about__row">
               <p className="about__label">What we create</p>
               <p className="about__body">
-                Photo + video for exhibitions, performances, gallery takeovers, and launches—art-first and true
-                to your voice.
+                Photo and video for exhibitions, openings, performances, and artist releases, built to match your
+                voice and your audience.
               </p>
             </div>
             <div className="about__row">
               <p className="about__label">How it feels</p>
               <p className="about__body">
-                Intentional coverage with clean edits, balanced light, and pacing that matches your work—not
-                event reels.
+                Intentional coverage with clean edits, balanced light, and pacing that respects the work, not
+                generic event reels.
               </p>
             </div>
             <div className="about__row">
               <p className="about__label">Who we shoot</p>
               <p className="about__body">
-                Artists, curators, producers, and stages from intimate shows to mid-size venues—people who care
-                about aesthetics.
+                Artists, curators, and producers from intimate shows to mid-size venues, all with high aesthetic
+                standards.
               </p>
             </div>
           </div>
@@ -82,18 +82,18 @@ function About() {
           <div className="about__column about__column--meta">
             <div className="about__row">
               <p className="about__label">Where we work</p>
-              <p className="about__body">Berlin-based, working across EU/UK for residencies, festivals, and quick pop-ups.</p>
+              <p className="about__body">Berlin-based, available for nearby cities as your program expands.</p>
             </div>
             <div className="about__row">
               <p className="about__label">Why us</p>
               <p className="about__body">
-                We’re artists and directors—fast on set, respectful in your space, obsessed with tone and detail.
+                We’re artists and directors, fast on set, quiet in your space, obsessive about tone and detail.
               </p>
             </div>
             <div className="about__row">
               <p className="about__label">Collab</p>
               <p className="about__body">
-                Tell us what you’re unveiling. We’ll map coverage, crew, and delivery so you launch with visuals that feel like you.
+                Tell us what you’re launching. We’ll map coverage, crew, and delivery so your visuals feel unmistakably yours.
               </p>
             </div>
           </div>

@@ -9,30 +9,30 @@ import { resolveImagePath } from '../utils/resolveImagePath'
 
 const pricingTiers = [
   {
-    name: 'Spontan',
-    cadence: 'Per activation',
+    name: 'Single Event',
+    cadence: 'Per event',
     price: '€2.9K',
-    description: 'One-off coverage for exhibitions, openings, or pop-up concerts.',
-    features: ['Editorial photo + video team', '48h highlight cut', 'Private proofing gallery'],
-    cta: 'Book Spontan',
+    description: 'One-off coverage for exhibitions, openings, or pop-up performances.',
+    features: ['Editorial photo and video team', '48h highlight cut', 'Private proofing gallery'],
+    cta: 'Book Single Event',
     link: '/contact',
   },
   {
-    name: 'Monthly',
+    name: 'Monthly Coverage',
     cadence: '4 productions / month',
     price: '€6.5K',
-    description: 'Popular with galleries and artist-run spaces launching back-to-back shows.',
-    features: ['Priority crew & gear', 'Lookbook + reels delivered weekly', 'Creative direction support'],
-    cta: 'Start Monthly',
+    description: 'For galleries and producers running multiple shows each month.',
+    features: ['Priority crew and gear', 'Lookbook and reels delivered weekly', 'Creative direction support'],
+    cta: 'Start Monthly Coverage',
     link: '/contact',
     badge: 'Popular',
   },
   {
-    name: 'Yearly',
+    name: 'Retainer Studio',
     cadence: 'Retainer',
     price: 'Custom',
-    description: 'Embedded studio for museums, ateliers, and brands running global programs.',
-    features: ['Dedicated producer in Berlin', 'Archive & licensing support', 'Seasonal campaign strategy'],
+    description: 'Embedded support for institutions and brands planning seasonal programming.',
+    features: ['Dedicated producer in Berlin', 'Archive and licensing support', 'Seasonal campaign strategy'],
     cta: 'Talk to us',
     link: '/contact',
   },
@@ -40,52 +40,52 @@ const pricingTiers = [
 
 const projects = [
   {
-    title: 'Artist sessions',
-    location: 'Berlin ateliers',
-    year: '2024',
-    image: resolveImagePath('/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg'),
-    copy: 'Intimate portrait films and long-form interviews for resident artists.',
-    link: '/artist-sessions',
-  },
-  {
-    title: 'Atmospheric films',
-    location: 'Lisbon residencies',
-    year: '2024',
-    image: resolveImagePath('/src/assets/images/03ef1b2283de3cdc7781c5a2d3aa0cce.jpg'),
-    copy: 'Slow cinema treatments that bottle the feeling of immersive installs.',
-    link: '/atmospheric',
-  },
-  {
-    title: 'Exhibition launch',
+    title: 'Exhibition coverage',
     location: 'Paris galleries',
     year: '2024',
     image: resolveImagePath('/src/assets/images/PinonShowww.jpg'),
-    copy: 'Exhibition coverage for curators unveiling new collections.',
+    copy: 'Press-ready stills and recap films for openings, installs, and curator walkthroughs.',
     link: '/exhibitions',
-  },
-  {
-    title: 'Fashion show',
-    location: 'Milan runway',
-    year: '2023',
-    image: resolveImagePath('/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg'),
-    copy: 'High-energy runway coverage with editorial delivery.',
-    link: '/fashion-show',
   },
   {
     title: 'Gallery stories',
     location: 'Berlin openings',
     year: '2023',
     image: resolveImagePath('/src/assets/images/PinonTheWall.jpg'),
-    copy: 'Ambient vignettes for curator-led walkthroughs and collector tours.',
+    copy: 'Curator interviews, collector previews, and narrative cuts that give context to the work.',
     link: '/gallery-stories',
   },
   {
-    title: 'Performance docs',
+    title: 'Artist sessions',
+    location: 'Berlin ateliers',
+    year: '2024',
+    image: resolveImagePath('/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg'),
+    copy: 'Portraits, process, and BTS for releases, press kits, and artist profiles.',
+    link: '/artist-sessions',
+  },
+  {
+    title: 'Performance coverage',
     location: 'Berlin nights',
     year: '2024',
     image: resolveImagePath('/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg'),
-    copy: 'Cinematic documentation for concerts, happenings, and live art.',
+    copy: 'Live sets captured fast with reels, selects, and clean audio-aware edits.',
     link: '/performance',
+  },
+  {
+    title: 'Fashion show',
+    location: 'Milan runway',
+    year: '2023',
+    image: resolveImagePath('/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg'),
+    copy: 'Runway and backstage coverage with editorial framing and fast delivery.',
+    link: '/fashion-show',
+  },
+  {
+    title: 'Atmospheric films',
+    location: 'Lisbon residencies',
+    year: '2024',
+    image: resolveImagePath('/src/assets/images/03ef1b2283de3cdc7781c5a2d3aa0cce.jpg'),
+    copy: 'Mood-driven shorts and lookbooks for concept launches and immersive installs.',
+    link: '/atmospheric',
   },
 ]
 
@@ -237,7 +237,7 @@ function Home() {
           />
       </div>
         <div className="home__hero-body">
-          <h1>Content creation for Berlin&rsquo;s galleries, artists, and nights.</h1>
+          <h1>Photo and video for Berlin&rsquo;s galleries, artists, and live events.</h1>
           <div
             className="home__hero-gallery"
             onMouseMove={handleGalleryMouseMove}
@@ -261,15 +261,16 @@ function Home() {
             ))}
           </div>
           <p className="home__hero-subhead">
-            Photo + video crafted for exhibitions, openings, pocket concerts, and experimental art events across Berlin.
+            Exhibitions, openings, and performances captured with art-first direction, fast delivery, and clean edits
+            that match your tone.
           </p>
           <div className="home__actions">
             <button type="button" onClick={() => navigate('/contact')}>
-              Get in contact
+              Contact us
             </button>
-            <button type="button" onClick={() => handleScroll('#services')}>
-              View our offers
-            </button>
+          <button type="button" onClick={() => handleScroll('#services')}>
+            View packages
+          </button>
           </div>
         </div>
       </header>
@@ -279,18 +280,16 @@ function Home() {
           {proofAvatars.map((avatar, idx) => (
             <img key={avatar} src={avatar} alt="Client avatar" style={{ zIndex: proofAvatars.length - idx }} />
           ))}
-          <span>140+ Berlin collaborators</span>
+          <span>Over 140 Berlin collaborators</span>
         </div>
-        <h2>
-          Ready for film &amp; photo teams who understand galleries, ateliers, and the energy that makes Berlin glow?
-        </h2>
+        <h2>Work with a team that knows galleries, artists, and live sets, and keeps your visual language intact.</h2>
         <p className="home__proof-copy">
-          We create cinematic documentation for makers and the curators who elevate them&mdash;from gallery debuts to
-          experimental nights and collector previews.
+          We document exhibitions, performances, and artist projects with the polish you need for press, socials, and
+          collectors, while keeping the atmosphere intact.
         </p>
         <div className="home__proof-actions">
           <button type="button" onClick={() => navigate('/contact')}>
-            Book a session
+            Contact us
           </button>
           <button type="button" className="home__proof-secondary" onClick={() => handleScroll('#services')}>
             Explore services
@@ -300,8 +299,10 @@ function Home() {
 
       <section className="home__section home__cases" id="cases" ref={casesRef}>
         <div className="home__section-header">
-          <p>Choose your tier</p>
-          <h2>Select the offer that fits your launch.</h2>
+          <p>Coverage types</p>
+          <h2>Pick the format that fits your show, release, or live event.</h2>
+          <br />
+          <p>i need create content for my:</p>
         </div>
         <div className="home__cases-grid">
           {projectRows.map((row, rowIndex) => (
@@ -319,7 +320,7 @@ function Home() {
                     <h3>{project.title}</h3>
                     <p className="home__case-copy">{project.copy}</p>
                     <button type="button" onClick={() => navigate(project.link)}>
-                      Explore offer
+                      See coverage details
                     </button>
                   </div>
                 </article>
@@ -333,7 +334,7 @@ function Home() {
         <div className="home__pricing-header">
           <div>
             <p>Pricing</p>
-            <h2>Simple tiers for Berlin creators.</h2>
+            <h2>Straightforward packages for Berlin creators.</h2>
           </div>
         </div>
         <div className="home__pricing-grid">
@@ -352,7 +353,7 @@ function Home() {
                 </div>
                 <div className="home__pricing-value">
                   <span>{tier.price}</span>
-                  <small>{tier.cadence === 'Per activation' ? '/project' : tier.cadence === 'Retainer' ? '' : '/mo'}</small>
+                  <small>{tier.cadence === 'Per event' ? '/project' : tier.cadence === 'Retainer' ? '' : '/mo'}</small>
                 </div>
                 <p className="home__pricing-copy">{tier.description}</p>
                 <ul>
@@ -371,7 +372,8 @@ function Home() {
           })}
         </div>
         <p className="home__pricing-footnote">
-          Start with a single activation or scale into monthly and yearly retainers. Educational and artist-led initiatives receive preferred rates.
+          Start with a single event or scale into monthly coverage. Educational and artist-led initiatives receive preferred
+          rates.
         </p>
       </section>
       <Footer />

@@ -12,34 +12,34 @@ function Performance() {
   return (
     <WorkPageLayout
       title="Performance"
-      heroCopy="High-impact coverage for live sets—fast instincts, clean angles, and lighting that tracks the beat."
-      detail="From soundcheck to encore, we capture the energy without losing the artistry."
+      heroCopy="Live performance photo and video with fast instincts and clean angles."
+      detail="From soundcheck to encore, you get artist focus, crowd energy, and usable assets fast."
       cards={heroCards}
-      galleryTitle="Why it works"
-      galleryCopy="We balance crowd energy with artist focus, delivering assets you can share, sell, and archive right after the show."
+      galleryTitle="Why producers book us"
+      galleryCopy="We balance crowd energy and artist focus, then deliver edits you can share, sell, and archive quickly."
       gallery={[
-        { title: 'Energy + detail', subtitle: 'Crowd, artist, and stage captured without losing the vibe.' },
-        { title: 'Clean sightlines', subtitle: 'Angles planned so every key moment is covered and usable.' },
-        { title: 'Audio-aware shooting', subtitle: 'Footage paced to the beat, with sound pulls for edits.' },
-        { title: 'Shareable fast', subtitle: 'Selects and reels ready quickly so you can post while it’s hot.' },
+        { title: 'Energy and detail', subtitle: 'Crowd and artist coverage without losing the vibe.' },
+        { title: 'Clean sightlines', subtitle: 'Angles planned so every key moment is usable.' },
+        { title: 'Audio-aware shooting', subtitle: 'Footage paced to the beat with clean sound pulls.' },
+        { title: 'Shareable fast', subtitle: 'Selects and reels ready while the show is still hot.' },
       ]}
       extraGalleryTitle="What you get"
-      extraGalleryCopy="Performance packages that give you both hype reels and archival quality coverage."
+      extraGalleryCopy="Performance packages that give you hype reels and archival quality coverage."
       extraGallery={[
-        { title: 'Multi-format delivery', subtitle: 'Vertical reels, wides, and stills delivered together.' },
+        { title: 'Multi-format delivery', subtitle: 'Vertical reels, wides, and stills in one drop.' },
         { title: 'Hero edits', subtitle: 'Short and long cuts tailored for socials and partners.' },
-        { title: 'Backstage + crowd', subtitle: 'Texture shots that show the atmosphere beyond the stage.' },
+        { title: 'Backstage and crowd', subtitle: 'Texture shots beyond the stage.' },
         { title: 'Usage notes', subtitle: 'Organized files with naming and clearance guidance.' },
       ]}
       extraGallerySecondaryTitle="How we run shows"
       extraGallerySecondaryCopy="We sync with your run-of-show, keep gear lean, and hand off selects quickly."
       extraGallerySecondary={[
-        { title: 'Run-through prep', subtitle: 'Align on cues, blackout moments, and lighting changes.' },
-        { title: 'Lean crew', subtitle: 'Minimal footprint to stay out of sight and on-time.' },
-        { title: 'Audio coordination', subtitle: 'Patch options or board feeds when available for cleaner sound.' },
+        { title: 'Run-through prep', subtitle: 'Align on cues, blackouts, and lighting changes.' },
+        { title: 'Lean crew', subtitle: 'Minimal footprint to stay out of sight and on time.' },
+        { title: 'Audio coordination', subtitle: 'Board feeds or patch options when available.' },
         { title: 'Rapid delivery', subtitle: 'Same-night or next-day selects; finals right after.' },
       ]}
-      ctaText="Need your performance covered? Let’s lock in the brief and crew."
+      ctaText="Book performance coverage. Share your date, venue, and run-of-show."
       ctaHref="/contact"
     />
   )

@@ -12,35 +12,35 @@ function ArtistSessions() {
   return (
     <WorkPageLayout
       title="Artist Sessions"
-      heroCopy="Portraits and BTS built for artists—honest, stylized, and fast to deploy across your drops."
-      detail="We capture process, personality, and the little details that make your work yours."
+      heroCopy="Portraits and BTS for artists that feel honest, stylized, and ready to publish across releases."
+      detail="You’ll get portraits, process, and studio moments that make your work feel personal."
       cards={heroCards}
-      galleryTitle="Why artists book us"
-      galleryCopy="We collaborate on tone, styling, and pacing so you leave with assets that feel like your voice—ready for press, socials, and partner decks."
+      galleryTitle="Why artists work with us"
+      galleryCopy="We align on tone, styling, and pacing so you leave with assets for press, socials, and partner decks."
       gallery={[
         {
           title: 'Personality first',
-          subtitle: 'Portraits that feel like you—lighting, styling, and pacing aligned to your aesthetic.',
+          subtitle: 'Portraits aligned to your aesthetic with lighting, styling, and pacing.',
         },
         {
           title: 'Process captured',
           subtitle: 'Hands, tools, and in-between moments that show how the work is made.',
         },
         {
-          title: 'BTS + performance',
-          subtitle: 'One session covers BTS, live moments, and clean portraits to anchor your drop.',
+          title: 'One session, full set',
+          subtitle: 'BTS, live moments, and clean portraits in one shoot.',
         },
         {
           title: 'Press-ready delivery',
-          subtitle: 'Edits and stills organized for media, partners, and your own channels.',
+          subtitle: 'Edits and stills organized for media and partners.',
         },
       ]}
       extraGalleryTitle="What you get"
-      extraGalleryCopy="A streamlined shoot that gives you portraits, process, and launch-ready assets without slowing you down."
+      extraGalleryCopy="A streamlined shoot that delivers portraits, process, and launch-ready assets without slowing you down."
       extraGallery={[
         {
-          title: 'Shotlist + mood',
-          subtitle: 'We align on looks, props, and story beats before we roll.',
+          title: 'Shotlist and mood',
+          subtitle: 'We align on looks, props, and beats before we roll.',
         },
         {
           title: 'Mixed formats',
@@ -52,18 +52,18 @@ function ArtistSessions() {
         },
         {
           title: 'Quick selects',
-          subtitle: 'Fast turn on selects so you can tease the drop immediately.',
+          subtitle: 'Fast turnaround on selects to tease the release.',
         },
       ]}
       extraGallerySecondaryTitle="How we work"
       extraGallerySecondaryCopy="Small crew, quick setup, and a calm set so you can stay in your flow."
       extraGallerySecondary={[
         { title: 'One producer', subtitle: 'Single contact for scheduling and approvals.' },
-        { title: 'Lean footprint', subtitle: 'Minimal gear so your space stays clear and comfortable.' },
-        { title: 'On-set direction', subtitle: 'Light coaching to keep you relaxed and consistent on camera.' },
-        { title: 'Fast wrap + delivery', subtitle: 'We hand off selects quickly, with final edits right after.' },
+        { title: 'Lean footprint', subtitle: 'Minimal gear so your space stays clear.' },
+        { title: 'On-set direction', subtitle: 'Light coaching to keep you relaxed and consistent.' },
+        { title: 'Fast delivery', subtitle: 'Selects quickly; finals right after.' },
       ]}
-      ctaText="Book an artist session—portraits, process, and BTS in one shoot."
+      ctaText="Book an artist session. Share your date, location, and release goals."
       ctaHref="/contact"
     />
   )

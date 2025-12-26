@@ -12,70 +12,70 @@ function Exhibitions() {
   return (
     <WorkPageLayout
       title="Exhibitions"
-      heroCopy="Exhibition coverage that mirrors your curation—polished frames, controlled light, and the mood your viewers feel in the room."
-      detail="We blend documentation and storytelling so every install, detail, and guest moment lands exactly as intended."
+      heroCopy="Exhibition photo and video that preserves your curation with controlled light and clean sightlines."
+      detail="Installation coverage, guest atmosphere, and press-ready selects delivered fast and organized for teams and media."
       cards={heroCards}
-      galleryTitle="Why bring us in"
-      galleryCopy="We move quietly through the space, shaping light and angles that honor the work and the curator’s vision. Your show looks as intentional on screen as it does on the walls."
+      galleryTitle="Why galleries book us"
+      galleryCopy="We plan angles with your curator, work quietly, and deliver assets that look as intentional online as on the walls."
       gallery={[
         {
-          title: 'Art-first angles',
-          subtitle: 'We plan shots with curators to respect sightlines, lighting, and the narrative of the install.',
+          title: 'Curator-aligned angles',
+          subtitle: 'Shot list built with the curator to preserve sightlines and intent.',
         },
         {
-          title: 'Guest experience',
-          subtitle: 'Candid reactions and atmosphere so patrons, press, and partners feel the room from afar.',
+          title: 'Guest atmosphere',
+          subtitle: 'Candid reactions and crowd flow that show the room’s energy.',
         },
         {
-          title: 'Deliverables that work',
-          subtitle: 'Press-ready stills, social cuts, and full recaps—organized and delivered fast.',
+          title: 'Press-ready delivery',
+          subtitle: 'Stills and cuts labeled and organized for press, socials, and partners.',
         },
         {
-          title: 'On-brand pacing',
-          subtitle: 'Edits that match your tone—minimalist, bold, or intimate—so every output feels like you.',
+          title: 'Brand-matched edits',
+          subtitle: 'Minimalist, bold, or intimate pacing to match your tone.',
         },
       ]}
       extraGalleryTitle="What you get"
-      extraGalleryCopy="We handle the capture and delivery end-to-end so you can focus on your artists, guests, and partners."
+      extraGalleryCopy="We handle capture and delivery end to end so you can focus on artists, guests, and partners."
       extraGallery={[
         {
-          title: 'Shotlist alignment',
-          subtitle: 'We pre-plan must-have angles, key works, and people to feature so nothing is missed.',
+          title: 'Shotlist and schedule',
+          subtitle: 'We map works, key moments, and timing before the opening.',
         },
         {
           title: 'Deliverables mapped',
-          subtitle: 'Press-ready stills, reels, and long-form recaps delivered in organized folders with usage notes.',
+          subtitle: 'Press stills, reels, and recap cuts with clear usage notes.',
         },
         {
-          title: 'Flexible coverage',
-          subtitle: 'From installs to openings to talks—we staff for your needs and scale crew up or down.',
+          title: 'Flexible crew',
+          subtitle: 'Solo, dual, or multi-cam depending on the space and run-of-show.',
         },
         {
-          title: 'Post built for speed',
-          subtitle: 'Color, sound, and edits tuned to your brand; quick-turn selects so you can post while the buzz is live.',
+          title: 'Fast turnaround',
+          subtitle: 'Selects in 24 to 48 hours, finals on an agreed timeline.',
         },
       ]}
       extraGallerySecondaryTitle="How we work with you"
-      extraGallerySecondaryCopy="Clear communication, lean crews, and fast delivery—so you can focus on the show while we handle the capture."
+      extraGallerySecondaryCopy="Clear communication, lean crews, and fast delivery so you can focus on the show."
       extraGallerySecondary={[
         {
-          title: 'Single point of contact',
-          subtitle: 'One producer to align schedules, approvals, and delivery.',
+          title: 'One producer',
+          subtitle: 'Single contact for scheduling, approvals, and delivery.',
         },
         {
-          title: 'Flexible crews',
-          subtitle: 'Scale from solo to multi-cam depending on your space and run-of-show.',
+          title: 'Crew scale',
+          subtitle: 'Add a second shooter or sound as needed.',
         },
         {
-          title: 'Permits & logistics',
-          subtitle: 'We handle house rules, gear approvals, and access needs before the shoot.',
+          title: 'Venue coordination',
+          subtitle: 'We handle house rules, access, and gear approvals.',
         },
         {
-          title: 'Editing cadence',
-          subtitle: 'Daily selects, weekly cuts, and final masters timed to your announcements.',
+          title: 'Delivery cadence',
+          subtitle: 'Selects, reels, and masters aligned to your comms calendar.',
         },
       ]}
-      ctaText="Need an exhibition filmed or photographed? Let’s plan the shot list and delivery."
+      ctaText="Book exhibition coverage. Share your date, venue, and goals."
       ctaHref="/contact"
     />
   )
