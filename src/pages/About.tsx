@@ -60,7 +60,7 @@ function About() {
             <div className="about__row">
               <p className="about__label">How it feels</p>
               <p className="about__body">
-                Intentional coverage with clean edits, balanced light, and pacing that respects the work, not
+                Intentional documentation with clean edits, balanced light, and pacing that respects the work, not
                 generic event reels.
               </p>
             </div>
@@ -93,7 +93,7 @@ function About() {
             <div className="about__row">
               <p className="about__label">Collab</p>
               <p className="about__body">
-                Tell us what you’re launching. We’ll map coverage, crew, and delivery so your visuals feel unmistakably yours.
+                Tell us what you’re launching. We’ll map documentation, crew, and delivery so your visuals feel unmistakably yours.
               </p>
             </div>
           </div>

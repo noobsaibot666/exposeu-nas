@@ -106,7 +106,7 @@ const videos: VideoItem[] = [
   {
     id: 'v8',
     title: 'Night Gallery',
-    description: 'After-dark coverage with moody grading.',
+    description: 'After-dark documentation with moody grading.',
     year: '2024',
     location: 'Madrid',
     thumb: resolveImagePath('/src/assets/images/Daydream.jpg'),
@@ -138,7 +138,7 @@ const offers: OfferItem[] = [
   {
     id: 'offer-performance',
     title: 'Performance',
-    blurb: 'Live performance capture with cinematic coverage, multi-angle, crisp audio, and quick turnarounds.',
+    blurb: 'Live performance capture with cinematic documentation, multi-angle, crisp audio, and quick turnarounds.',
     link: '/contact',
     cta: 'Contact us',
     accent: '#fca5a5',

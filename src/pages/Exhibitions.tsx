@@ -13,7 +13,7 @@ function Exhibitions() {
     <WorkPageLayout
       title="Exhibitions"
       heroCopy="Exhibition photo and video that preserves your curation with controlled light and clean sightlines."
-      detail="Installation coverage, guest atmosphere, and press-ready selects delivered fast and organized for teams and media."
+      detail="Installation documentation, guest atmosphere, and press-ready selects delivered fast and organized for teams and media."
       cards={heroCards}
       galleryTitle="Why galleries book us"
       galleryCopy="We plan angles with your curator, work quietly, and deliver assets that look as intentional online as on the walls."
@@ -75,7 +75,7 @@ function Exhibitions() {
           subtitle: 'Selects, reels, and masters aligned to your comms calendar.',
         },
       ]}
-      ctaText="Book exhibition coverage. Share your date, venue, and goals."
+      ctaText="Book exhibition documentation. Share your date, venue, and goals."
       ctaHref="/contact"
     />
   )

@@ -12,7 +12,7 @@ const pricingTiers = [
     name: 'Single Event',
     cadence: 'Per event',
     price: '€2.9K',
-    description: 'One-off coverage for exhibitions, openings, or pop-up performances.',
+    description: 'One-off documentation for exhibitions, openings, or pop-up performances.',
     features: ['Editorial photo and video team', '48h highlight cut', 'Private proofing gallery'],
     cta: 'Book Single Event',
     link: '/contact',
@@ -40,7 +40,7 @@ const pricingTiers = [
 
 const projects = [
   {
-    title: 'Exhibition coverage',
+    title: 'Exhibition documentation',
     location: 'Paris galleries',
     year: '2024',
     image: resolveImagePath('/src/assets/images/PinonShowww.jpg'),
@@ -64,7 +64,7 @@ const projects = [
     link: '/artist-sessions',
   },
   {
-    title: 'Performance coverage',
+    title: 'Performance documentation',
     location: 'Berlin nights',
     year: '2024',
     image: resolveImagePath('/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg'),
@@ -76,7 +76,7 @@ const projects = [
     location: 'Milan runway',
     year: '2023',
     image: resolveImagePath('/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg'),
-    copy: 'Runway and backstage coverage with editorial framing and fast delivery.',
+    copy: 'Runway and backstage documentation with editorial framing and fast delivery.',
     link: '/fashion-show',
   },
   {
@@ -95,36 +95,36 @@ const heroGallery = [
   {
     id: 'thumb-1',
     image: resolveImagePath('/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg'),
-    label: 'Openings',
-    tone: 'designer',
+    label: 'Exhibitions',
+    tone: '',
     rotation: -3,
   },
   {
     id: 'thumb-2',
     image: resolveImagePath('/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg'),
-    label: 'Artists',
-    tone: 'artist',
+    label: 'Artist sessions',
+    tone: '',
     rotation: 2,
   },
   {
     id: 'thumb-3',
     image: resolveImagePath('/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg'),
-    label: 'Galleries',
-    tone: 'curator',
+    label: 'Documentations',
+    tone: '',
     rotation: -1,
   },
   {
     id: 'thumb-4',
     image: resolveImagePath('/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg'),
-    label: 'Runway',
-    tone: 'producer',
+    label: 'Performances',
+    tone: '',
     rotation: 4,
   },
   {
     id: 'thumb-5',
     image: resolveImagePath('/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg'),
-    label: 'Concerts',
-    tone: 'live',
+    label: 'Fashion shows',
+    tone: '',
     rotation: -4,
   },
 ]
@@ -320,7 +320,7 @@ function Home() {
                     <h3>{project.title}</h3>
                     <p className="home__case-copy">{project.copy}</p>
                     <button type="button" onClick={() => navigate(project.link)}>
-                      See coverage details
+                      See documentation details
                     </button>
                   </div>
                 </article>
@@ -372,7 +372,7 @@ function Home() {
           })}
         </div>
         <p className="home__pricing-footnote">
-          Start with a single event or scale into monthly coverage. Educational and artist-led initiatives receive preferred
+          Start with a single event or scale into monthly documentation. Educational and artist-led initiatives receive preferred
           rates.
         </p>
       </section>

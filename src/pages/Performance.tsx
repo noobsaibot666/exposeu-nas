@@ -18,13 +18,13 @@ function Performance() {
       galleryTitle="Why producers book us"
       galleryCopy="We balance crowd energy and artist focus, then deliver edits you can share, sell, and archive quickly."
       gallery={[
-        { title: 'Energy and detail', subtitle: 'Crowd and artist coverage without losing the vibe.' },
+        { title: 'Energy and detail', subtitle: 'Crowd and artist documentation without losing the vibe.' },
         { title: 'Clean sightlines', subtitle: 'Angles planned so every key moment is usable.' },
         { title: 'Audio-aware shooting', subtitle: 'Footage paced to the beat with clean sound pulls.' },
         { title: 'Shareable fast', subtitle: 'Selects and reels ready while the show is still hot.' },
       ]}
       extraGalleryTitle="What you get"
-      extraGalleryCopy="Performance packages that give you hype reels and archival quality coverage."
+      extraGalleryCopy="Performance packages that give you hype reels and archival quality documentation."
       extraGallery={[
         { title: 'Multi-format delivery', subtitle: 'Vertical reels, wides, and stills in one drop.' },
         { title: 'Hero edits', subtitle: 'Short and long cuts tailored for socials and partners.' },
@@ -39,7 +39,7 @@ function Performance() {
         { title: 'Audio coordination', subtitle: 'Board feeds or patch options when available.' },
         { title: 'Rapid delivery', subtitle: 'Same-night or next-day selects; finals right after.' },
       ]}
-      ctaText="Book performance coverage. Share your date, venue, and run-of-show."
+      ctaText="Book performance documentation. Share your date, venue, and run-of-show."
       ctaHref="/contact"
     />
   )

@@ -46,7 +46,7 @@ function Contact() {
       <section className="section contact__body">
         <div className="content contact__heading">
           <p className="contact__eyebrow">Contact</p>
-          <h1>Let&apos;s plan your coverage.</h1>
+          <h1>Let&apos;s plan your documentation.</h1>
           <p className="contact__lede">
             We reply within 24 hours. Share your dates, location, and goals, and we&apos;ll propose the right package.
           </p>

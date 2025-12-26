@@ -57,6 +57,10 @@
   gap: 32px;
 }
 
+.footer__intro {
+  padding-top: 6px;
+}
+
 .footer__brand {
   margin: 0;
   font-size: clamp(2.8rem, 7vw, 5.4rem);
@@ -70,6 +74,23 @@
   max-width: 420px;
   color: rgba(255, 255, 255, 0.65);
   font-size: 1rem;
+}
+
+.footer__cta {
+  margin: 16px 0 0;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.footer__cta a {
+  color: var(--link-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer__cta a:hover {
+  text-decoration: underline;
+  text-decoration-color: currentColor;
 }
 
 .footer__links {
