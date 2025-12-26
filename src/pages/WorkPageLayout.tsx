@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import TopNav from '../components/TopNav'
+import PricingSection from '../sections/PricingSection'
 import './WorkPage.css'
 
 export type WorkCard = {
@@ -21,6 +22,7 @@ type WorkPageLayoutProps = {
   gallery: WorkCard[]
   ctaText: string
   ctaHref: string
+  serviceSlug?: string
   extraGalleryTitle?: string
   extraGalleryCopy?: string
   extraGallery?: WorkCard[]
@@ -39,6 +41,7 @@ function WorkPageLayout({
   gallery,
   ctaText,
   ctaHref,
+  serviceSlug,
   extraGalleryTitle,
   extraGalleryCopy,
   extraGallery,
@@ -80,19 +83,46 @@ function WorkPageLayout({
         },
       })
 
-      const galleryItems = gsap.utils.toArray<HTMLElement>('.work-gallery__item')
-      galleryItems.forEach((item, index) => {
-        gsap.from(item, {
+      const gallerySections = gsap.utils.toArray<HTMLElement>('.work-gallery')
+      gallerySections.forEach((section) => {
+        const sequenceItems = section.querySelectorAll<HTMLElement>('.work-gallery__sequence-item')
+        const media = section.querySelector<HTMLElement>('.work-gallery__image')
+
+        gsap.from(sequenceItems, {
           opacity: 0,
-          y: 26,
+          y: 24,
           duration: 0.7,
-          delay: index * 0.04,
+          stagger: 0.08,
           ease: 'power2.out',
           scrollTrigger: {
-            trigger: item,
-            start: 'top 85%',
+            trigger: section,
+            start: 'top 70%',
           },
         })
+
+        if (media) {
+          gsap.from(media, {
+            opacity: 0,
+            scale: 1.03,
+            duration: 0.9,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 80%',
+            },
+          })
+
+          gsap.to(media, {
+            y: -40,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true,
+            },
+          })
+        }
       })
 
       const listeners: Array<() => void> = []
@@ -118,6 +148,50 @@ function WorkPageLayout({
 
     return () => ctx.revert()
   }, [])
+
+  const sectionImages = [
+    cards[0]?.image,
+    cards[1]?.image ?? cards[0]?.image,
+    cards[2]?.image ?? cards[0]?.image,
+  ]
+
+  const renderSection = (
+    label: string,
+    heading: string,
+    copy: string,
+    items: WorkCard[],
+    image?: string,
+    isFlipped?: boolean,
+    key?: string,
+  ) => (
+    <section className={`section work-gallery${isFlipped ? ' work-gallery--flipped' : ''}`} key={key}>
+      <div className="content work-gallery__split">
+        <div className="work-gallery__text">
+          <div className="work-gallery__header">
+            <div className="work-gallery__label">{label}</div>
+            <div>
+              <h2>{heading}</h2>
+              <p>{copy}</p>
+            </div>
+          </div>
+          <ol className="work-gallery__sequence">
+            {items.map((item, index) => (
+              <li className="work-gallery__sequence-item" key={`${item.title}-${index}`}>
+                <span className="work-gallery__sequence-index">{String(index + 1).padStart(2, '0')}</span>
+                <div>
+                  <h3 className="work-gallery__sequence-title">{item.title}</h3>
+                  {item.subtitle && <p className="work-gallery__sequence-copy">{item.subtitle}</p>}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <div className="work-gallery__media">
+          <div className="work-gallery__image" style={image ? { backgroundImage: `url(${image})` } : undefined} />
+        </div>
+      </div>
+    </section>
+  )
 
   return (
     <main className="work-page" ref={rootRef}>
@@ -183,107 +257,49 @@ function WorkPageLayout({
         </div>
       </section>
 
-      <section className="section work-gallery">
-        <div className="content work-gallery__header">
-          <div className="work-gallery__label">Why it matters</div>
-          <div>
-            <h2>{galleryTitle}</h2>
-            <p>{galleryCopy}</p>
-          </div>
-        </div>
-        <div className="content work-gallery__grid">
-          {gallery.map((item, index) => {
-            const ratios = ['square', 'wide', 'classic'] as const
-            const ratio = ratios[index % ratios.length]
-            const isTextOnly = !item.image
-            return (
-              <div
-                key={item.title}
-                className={`work-gallery__item ${isTextOnly ? 'work-gallery__item--text' : `work-gallery__item--${ratio}`}`}
-              >
-                {!isTextOnly && (
-                  <div className="work-gallery__image" style={{ backgroundImage: `url(${item.image})` }} />
-                )}
-                <div className="work-gallery__caption">
-                  <p className="work-gallery__title">{item.title}</p>
-                  {item.subtitle && <p className="work-gallery__subtitle">{item.subtitle}</p>}
-                </div>
-              </div>
-            )
-          })}
-        </div>
-      </section>
-
-      {extraGallery && extraGallery.length > 0 && (
-        <section className="section work-gallery work-gallery--secondary">
-          <div className="content work-gallery__header">
-            <div className="work-gallery__label">More to expect</div>
-            <div>
-              <h2>{extraGalleryTitle}</h2>
-              <p>{extraGalleryCopy}</p>
-            </div>
-          </div>
-          <div className="content work-gallery__grid">
-            {extraGallery.map((item, index) => {
-              const ratios = ['wide', 'classic', 'square'] as const
-              const ratio = ratios[index % ratios.length]
-              const isTextOnly = !item.image
-              return (
-                <div
-                  key={`${item.title}-${index}`}
-                  className={`work-gallery__item ${isTextOnly ? 'work-gallery__item--text' : `work-gallery__item--${ratio}`}`}
-                >
-                  {!isTextOnly && (
-                    <div className="work-gallery__image" style={{ backgroundImage: `url(${item.image})` }} />
-                  )}
-                  <div className="work-gallery__caption">
-                    <p className="work-gallery__title">{item.title}</p>
-                    {item.subtitle && <p className="work-gallery__subtitle">{item.subtitle}</p>}
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </section>
+      {renderSection(
+        'Why it matters',
+        galleryTitle,
+        galleryCopy,
+        gallery,
+        sectionImages[0],
+        false,
+        'gallery-primary',
       )}
 
-      {extraGallerySecondary && extraGallerySecondary.length > 0 && (
-        <section className="section work-gallery work-gallery--secondary">
-          <div className="content work-gallery__header">
-            <div className="work-gallery__label">How we deliver</div>
-            <div>
-              <h2>{extraGallerySecondaryTitle}</h2>
-              <p>{extraGallerySecondaryCopy}</p>
-            </div>
-          </div>
-          <div className="content work-gallery__grid">
-            {extraGallerySecondary.map((item, index) => {
-              const ratios = ['classic', 'square', 'wide'] as const
-              const ratio = ratios[index % ratios.length]
-              const isTextOnly = !item.image
-              return (
-                <div
-                  key={`${item.title}-secondary-${index}`}
-                  className={`work-gallery__item ${isTextOnly ? 'work-gallery__item--text' : `work-gallery__item--${ratio}`}`}
-                >
-                  {!isTextOnly && (
-                    <div className="work-gallery__image" style={{ backgroundImage: `url(${item.image})` }} />
-                  )}
-                  <div className="work-gallery__caption">
-                    <p className="work-gallery__title">{item.title}</p>
-                    {item.subtitle && <p className="work-gallery__subtitle">{item.subtitle}</p>}
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </section>
-      )}
+      {extraGallery &&
+        extraGallery.length > 0 &&
+        renderSection(
+          'More to expect',
+          extraGalleryTitle ?? '',
+          extraGalleryCopy ?? '',
+          extraGallery,
+          sectionImages[1],
+          true,
+          'gallery-secondary',
+        )}
+
+      {extraGallerySecondary &&
+        extraGallerySecondary.length > 0 &&
+        renderSection(
+          'How we deliver',
+          extraGallerySecondaryTitle ?? '',
+          extraGallerySecondaryCopy ?? '',
+          extraGallerySecondary,
+          sectionImages[2],
+          false,
+          'gallery-tertiary',
+        )}
+
+      <PricingSection
+        headline={`${title} packages for galleries, artists, and producers.`}
+        serviceSlug={serviceSlug}
+      />
 
       <section className="section work-cta">
         <div className="content work-cta__content">
           <div>
-            <p className="work-cta__eyebrow">Ready to collaborate</p>
+            <p className="work-cta__eyebrow">Ready to collaborate?</p>
             <h3>{ctaText}</h3>
           </div>
           <a className="work-cta__link" href={ctaHref}>

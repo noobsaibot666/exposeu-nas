@@ -13,6 +13,8 @@ import ArtistSessions from './pages/ArtistSessions'
 import Portfolio from './pages/Portfolio'
 import NotFound from './pages/NotFound'
 import Home from './pages/Home'
+import PricingRequest from './pages/PricingRequest'
+import PricingRequestSuccess from './pages/PricingRequestSuccess'
 import { ThemeProvider } from './ThemeContext'
 
 function App() {
@@ -74,6 +76,8 @@ function App() {
             }
           />
           <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/pricing-request/:plan" element={<PricingRequest />} />
+          <Route path="/pricing-request/success" element={<PricingRequestSuccess />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

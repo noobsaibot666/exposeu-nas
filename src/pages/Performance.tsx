@@ -41,6 +41,7 @@ function Performance() {
       ]}
       ctaText="Book performance documentation. Share your date, venue, and run-of-show."
       ctaHref="/contact"
+      serviceSlug="performance"
     />
   )
 }

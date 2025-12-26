@@ -77,6 +77,7 @@ function Exhibitions() {
       ]}
       ctaText="Book exhibition documentation. Share your date, venue, and goals."
       ctaHref="/contact"
+      serviceSlug="exhibitions"
     />
   )
 }

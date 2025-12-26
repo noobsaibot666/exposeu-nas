@@ -291,11 +291,13 @@ function Portfolio() {
     gridRef.current.scrollLeft = dragState.current.scrollLeft - deltaX
   }
 
-  const stopDragging = (_event?: PointerEvent<HTMLDivElement>) => {
+  const stopDragging = () => {
     const grid = gridRef.current
     if (!grid || !dragState.current.active) return
     dragState.current.active = false
-    dragState.current.pointerId && grid.releasePointerCapture(dragState.current.pointerId)
+    if (dragState.current.pointerId) {
+      grid.releasePointerCapture(dragState.current.pointerId)
+    }
     setIsDragging(false)
   }
 

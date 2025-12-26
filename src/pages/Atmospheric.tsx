@@ -41,6 +41,7 @@ function Atmospheric() {
       ]}
       ctaText="Book an atmospheric shoot. Share your mood, date, and goals."
       ctaHref="/contact"
+      serviceSlug="atmospheric"
     />
   )
 }

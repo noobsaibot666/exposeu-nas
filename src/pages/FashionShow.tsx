@@ -41,6 +41,7 @@ function FashionShow() {
       ]}
       ctaText="Book fashion show documentation. Share your date, venue, and show timing."
       ctaHref="/contact"
+      serviceSlug="fashion-show"
     />
   )
 }

@@ -1,0 +1,232 @@
+.pricing-request {
+  background: var(--bg-base);
+  color: var(--text-strong);
+  min-height: 100vh;
+}
+
+.pricing-request__nav {
+  padding: 20px 0 12px;
+}
+
+.pricing-request__hero {
+  position: relative;
+  min-height: 70vh;
+  display: flex;
+  align-items: flex-end;
+  background-size: cover;
+  background-position: center;
+  padding: 56px 0 72px;
+}
+
+.pricing-request__hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(5, 7, 11, 0.2) 0%, rgba(5, 7, 11, 0.78) 70%);
+}
+
+.pricing-request__hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.pricing-request__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+}
+
+.pricing-request__hero h1 {
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  font-weight: 600;
+  max-width: 720px;
+}
+
+.pricing-request__hero p {
+  max-width: 680px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.pricing-request__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.pricing-request__meta span {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border-soft);
+  background: rgba(0, 0, 0, 0.35);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.pricing-request__body {
+  padding-top: 60px;
+  padding-bottom: 80px;
+}
+
+.pricing-request__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(28px, 6vw, 80px);
+  align-items: start;
+}
+
+.pricing-request__copy h2 {
+  font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+  margin-bottom: 12px;
+}
+
+.pricing-request__copy p {
+  color: var(--text-secondary);
+  max-width: 460px;
+}
+
+.pricing-request__form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  padding: 24px;
+  border-radius: 22px;
+  border: 1px solid var(--border-soft);
+  background: var(--surface-base);
+}
+
+.pricing-request__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pricing-request__field label {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.pricing-request__field input,
+.pricing-request__field select,
+.pricing-request__field textarea {
+  background: transparent;
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: var(--text-strong);
+  font-size: 1rem;
+  font-family: var(--font-sans);
+}
+
+.pricing-request__field.is-error input,
+.pricing-request__field.is-error select,
+.pricing-request__field.is-error textarea {
+  border-color: #f87171;
+}
+
+.pricing-request__field input:focus,
+.pricing-request__field select:focus,
+.pricing-request__field textarea:focus {
+  outline: none;
+  border-color: var(--border-highlight);
+}
+
+.pricing-request__field-error {
+  font-size: 0.85rem;
+  color: #f87171;
+}
+
+.pricing-request__field--full {
+  grid-column: 1 / -1;
+}
+
+.pricing-request__form button {
+  grid-column: 1 / -1;
+  border-radius: 999px;
+  padding: 12px 20px;
+  border: 1px solid var(--button-solid-border);
+  background: var(--button-solid-bg);
+  color: var(--button-solid-text);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.pricing-request__form button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.pricing-request__success,
+.pricing-request__error {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.pricing-request__success {
+  color: #4ade80;
+}
+
+.pricing-request__error {
+  color: #f87171;
+}
+
+.pricing-request__success {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 640px;
+}
+
+.pricing-request__success p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.pricing-request__success-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.pricing-request__button {
+  border-radius: 999px;
+  padding: 12px 20px;
+  border: 1px solid var(--button-solid-border);
+  background: var(--button-solid-bg);
+  color: var(--button-solid-text);
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pricing-request__button--ghost {
+  background: transparent;
+  color: var(--text-strong);
+  border-color: var(--border-soft);
+}
+
+@media (max-width: 900px) {
+  .pricing-request__hero {
+    min-height: 60vh;
+    padding: 48px 0 56px;
+  }
+
+  .pricing-request__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pricing-request__form {
+    grid-template-columns: 1fr;
+  }
+}

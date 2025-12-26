@@ -41,6 +41,7 @@ function GalleryStories() {
       ]}
       ctaText="Book a gallery story. Share your date, venue, and goals."
       ctaHref="/contact"
+      serviceSlug="gallery-stories"
     />
   )
 }

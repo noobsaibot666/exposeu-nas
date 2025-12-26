@@ -6,37 +6,7 @@ import TopNav from '../components/TopNav'
 import './Home.css'
 import Footer from '../sections/Footer'
 import { resolveImagePath } from '../utils/resolveImagePath'
-
-const pricingTiers = [
-  {
-    name: 'Single Event',
-    cadence: 'Per event',
-    price: '€2.9K',
-    description: 'One-off documentation for exhibitions, openings, or pop-up performances.',
-    features: ['Editorial photo and video team', '48h highlight cut', 'Private proofing gallery'],
-    cta: 'Book Single Event',
-    link: '/contact',
-  },
-  {
-    name: 'Monthly Coverage',
-    cadence: '4 productions / month',
-    price: '€6.5K',
-    description: 'For galleries and producers running multiple shows each month.',
-    features: ['Priority crew and gear', 'Lookbook and reels delivered weekly', 'Creative direction support'],
-    cta: 'Start Monthly Coverage',
-    link: '/contact',
-    badge: 'Popular',
-  },
-  {
-    name: 'Retainer Studio',
-    cadence: 'Retainer',
-    price: 'Custom',
-    description: 'Embedded support for institutions and brands planning seasonal programming.',
-    features: ['Dedicated producer in Berlin', 'Archive and licensing support', 'Seasonal campaign strategy'],
-    cta: 'Talk to us',
-    link: '/contact',
-  },
-]
+import PricingSection from '../sections/PricingSection'
 
 const projects = [
   {
@@ -365,52 +335,7 @@ function Home() {
         </div>
       </section>
 
-      <section className="home__section home__pricing" id="services">
-        <div className="home__pricing-header">
-          <div>
-            <p>Pricing</p>
-            <h2>Straightforward packages for Berlin creators.</h2>
-          </div>
-        </div>
-        <div className="home__pricing-grid">
-          {pricingTiers.map((tier) => {
-            const isMonthly = tier.name === 'Monthly'
-            const classes = ['home__pricing-card']
-            if (tier.badge) classes.push('is-popular')
-            if (isMonthly) classes.push('home__pricing-card--monthly')
-
-            return (
-              <article key={tier.name} className={classes.join(' ')}>
-                {tier.badge && <span className="home__pricing-badge">{tier.badge}</span>}
-                <div className="home__pricing-meta">
-                  <h3>{tier.name}</h3>
-                  <p>{tier.cadence}</p>
-                </div>
-                <div className="home__pricing-value">
-                  <span>{tier.price}</span>
-                  <small>{tier.cadence === 'Per event' ? '/project' : tier.cadence === 'Retainer' ? '' : '/mo'}</small>
-                </div>
-                <p className="home__pricing-copy">{tier.description}</p>
-                <ul>
-                  {tier.features.map((feature) => (
-                    <li key={feature}>
-                      <span>✓</span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-                <button type="button" onClick={() => navigate(tier.link)}>
-                  {tier.cta}
-                </button>
-              </article>
-            )
-          })}
-        </div>
-        <p className="home__pricing-footnote">
-          Start with a single event or scale into monthly documentation. Educational and artist-led initiatives receive preferred
-          rates.
-        </p>
-      </section>
+      <PricingSection id="services" />
       <Footer />
     </main>
   )

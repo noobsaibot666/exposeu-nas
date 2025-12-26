@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -11,9 +11,9 @@ function About() {
   const navigate = useNavigate()
   const rootRef = useRef<HTMLElement | null>(null)
 
-  const goToHomeSection = (hash?: string) => {
+  const goToHomeSection = useCallback((hash?: string) => {
     navigate(hash ? `/${hash}` : '/')
-  }
+  }, [navigate])
 
   const navLinks = useMemo(
     () => ({
@@ -27,7 +27,7 @@ function About() {
         { label: 'Contact', onClick: () => navigate('/contact') },
       ],
     }),
-    [navigate],
+    [goToHomeSection, navigate],
   )
 
   useEffect(() => {

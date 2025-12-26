@@ -65,6 +65,7 @@ function ArtistSessions() {
       ]}
       ctaText="Book an artist session. Share your date, location, and release goals."
       ctaHref="/contact"
+      serviceSlug="artist-sessions"
     />
   )
 }
