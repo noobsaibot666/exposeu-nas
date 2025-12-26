@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import '../pages/Home.css'
 import { pricingTiers } from '../data/pricingTiers'
+import { pricingByService, type PricingOverridesByService } from '../data/pricingByService'
 
 type PricingSectionProps = {
   id?: string
@@ -11,6 +12,8 @@ type PricingSectionProps = {
 function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
   const navigate = useNavigate()
   const headlineText = headline ?? 'Straightforward packages for Berlin creators.'
+  const serviceOverrides = (pricingByService as PricingOverridesByService)[serviceSlug ?? ''] ?? {}
+  const tiers = pricingTiers.map((tier) => ({ ...tier, ...(serviceOverrides[tier.slug] ?? {}) }))
 
   const handleSelectPlan = (slug: string) => {
     const url = serviceSlug ? `/pricing-request/${slug}?service=${serviceSlug}` : `/pricing-request/${slug}`
@@ -26,7 +29,7 @@ function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
         </div>
       </div>
       <div className="home__pricing-grid">
-        {pricingTiers.map((tier) => {
+        {tiers.map((tier) => {
           const isMonthly = tier.name === 'Monthly'
           const classes = ['home__pricing-card']
           if (tier.badge) classes.push('is-popular')
