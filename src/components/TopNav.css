@@ -54,6 +54,7 @@
 .top-nav__brand {
   font-size: 1.5rem;
   font-weight: 800;
+  text-transform: lowercase;
   color: var(--link-color);
   background: transparent;
   border: none;

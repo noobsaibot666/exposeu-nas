@@ -87,6 +87,7 @@ function WorkPageLayout({
       gallerySections.forEach((section) => {
         const sequenceItems = section.querySelectorAll<HTMLElement>('.work-gallery__sequence-item')
         const media = section.querySelector<HTMLElement>('.work-gallery__image')
+        const split = section.querySelector<HTMLElement>('.work-gallery__split')
 
         gsap.from(sequenceItems, {
           opacity: 0,
@@ -99,6 +100,19 @@ function WorkPageLayout({
             start: 'top 70%',
           },
         })
+
+        if (split) {
+          gsap.from(split, {
+            opacity: 0,
+            y: 22,
+            duration: 0.7,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 80%',
+            },
+          })
+        }
 
         if (media) {
           gsap.from(media, {
@@ -123,6 +137,18 @@ function WorkPageLayout({
             },
           })
         }
+      })
+
+      gsap.from('.work-cta__content > *', {
+        opacity: 0,
+        y: 18,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.work-cta',
+          start: 'top 80%',
+        },
       })
 
       const listeners: Array<() => void> = []

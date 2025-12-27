@@ -30,20 +30,22 @@ function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
       </div>
       <div className="home__pricing-grid">
         {tiers.map((tier) => {
-          const isMonthly = tier.name === 'Monthly'
-          const classes = ['home__pricing-card']
-          if (tier.badge) classes.push('is-popular')
-          if (isMonthly) classes.push('home__pricing-card--monthly')
+            const isMonthly = tier.name === 'Monthly'
+            const classes = ['home__pricing-card']
+            if (tier.badge) classes.push('is-popular')
+            if (isMonthly) classes.push('home__pricing-card--monthly')
+            const showUpTo = !serviceSlug && tier.price.toLowerCase() !== 'custom'
+            const priceLabel = showUpTo ? `Up to ${tier.price}` : tier.price
 
-          return (
-            <article key={tier.name} className={classes.join(' ')}>
+            return (
+              <article key={tier.name} className={classes.join(' ')}>
               {tier.badge && <span className="home__pricing-badge">{tier.badge}</span>}
               <div className="home__pricing-meta">
                 <h3>{tier.name}</h3>
                 <p>{tier.cadence}</p>
               </div>
-              <div className="home__pricing-value">
-                <span>{tier.price}</span>
+                <div className="home__pricing-value">
+                  <span>{priceLabel}</span>
                 <small>{tier.cadence === 'Per event' ? '/project' : tier.cadence === 'Retainer' ? '' : '/mo'}</small>
               </div>
               <p className="home__pricing-copy">{tier.description}</p>
