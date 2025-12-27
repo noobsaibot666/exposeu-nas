@@ -88,13 +88,14 @@ function WorkPageLayout({
         const sequenceItems = section.querySelectorAll<HTMLElement>('.work-gallery__sequence-item')
         const media = section.querySelector<HTMLElement>('.work-gallery__image')
         const split = section.querySelector<HTMLElement>('.work-gallery__split')
+        const textItems = section.querySelectorAll<HTMLElement>('.work-gallery__text > *')
 
         gsap.from(sequenceItems, {
           opacity: 0,
-          y: 24,
-          duration: 0.7,
-          stagger: 0.08,
-          ease: 'power2.out',
+          y: 36,
+          duration: 0.85,
+          stagger: 0.1,
+          ease: 'power3.out',
           scrollTrigger: {
             trigger: section,
             start: 'top 70%',
@@ -104,9 +105,9 @@ function WorkPageLayout({
         if (split) {
           gsap.from(split, {
             opacity: 0,
-            y: 22,
-            duration: 0.7,
-            ease: 'power2.out',
+            y: 30,
+            duration: 0.8,
+            ease: 'power3.out',
             scrollTrigger: {
               trigger: section,
               start: 'top 80%',
@@ -114,12 +115,26 @@ function WorkPageLayout({
           })
         }
 
+        if (textItems.length) {
+          gsap.from(textItems, {
+            opacity: 0,
+            y: 18,
+            duration: 0.7,
+            stagger: 0.08,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 78%',
+            },
+          })
+        }
+
         if (media) {
           gsap.from(media, {
             opacity: 0,
-            scale: 1.03,
-            duration: 0.9,
-            ease: 'power2.out',
+            scale: 1.08,
+            duration: 1,
+            ease: 'power3.out',
             scrollTrigger: {
               trigger: section,
               start: 'top 80%',
@@ -127,7 +142,7 @@ function WorkPageLayout({
           })
 
           gsap.to(media, {
-            y: -40,
+            y: -70,
             ease: 'none',
             scrollTrigger: {
               trigger: section,
@@ -136,6 +151,23 @@ function WorkPageLayout({
               scrub: true,
             },
           })
+        }
+
+        if (media) {
+          gsap.fromTo(
+            media,
+            { clipPath: 'inset(12% 0% 12% 0%)', skewY: 1.5 },
+            {
+              clipPath: 'inset(0% 0% 0% 0%)',
+              skewY: 0,
+              duration: 0.9,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 78%',
+              },
+            },
+          )
         }
       })
 

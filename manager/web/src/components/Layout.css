@@ -1,0 +1,47 @@
+.layout {
+  min-height: 100vh;
+  background: var(--bg-base);
+  color: var(--text-strong);
+  padding: 32px 24px 48px;
+  font-family: 'Satoshi', system-ui, sans-serif;
+}
+
+.layout__header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-end;
+  border-bottom: 1px solid var(--border-soft);
+  padding-bottom: 16px;
+}
+
+.layout__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  margin: 0 0 8px;
+}
+
+.layout__actions {
+  display: inline-flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.layout__actions a,
+.layout__actions button {
+  border-radius: 999px;
+  padding: 8px 14px;
+  border: 1px solid var(--border-soft);
+  background: transparent;
+  text-decoration: none;
+  color: var(--text-strong);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.layout__content {
+  margin-top: 24px;
+}
