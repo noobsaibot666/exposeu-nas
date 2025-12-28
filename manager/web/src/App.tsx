@@ -4,6 +4,7 @@ import Dashboard from './pages/Dashboard'
 import CreateProject from './pages/CreateProject'
 import ProjectDetail from './pages/ProjectDetail'
 import SharePage from './pages/SharePage'
+import NotFound from './pages/NotFound'
 import { useAuth } from './components/useAuth'
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
         path="/projects/new"
         element={token ? <CreateProject /> : <Navigate to="/login" replace />} 
       />
-      <Route path="*" element={<Navigate to={token ? '/' : '/login'} replace />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   )
 }

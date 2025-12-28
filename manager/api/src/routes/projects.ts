@@ -102,11 +102,11 @@ router.get('/:id', async (req, res) => {
 
 router.patch('/:id', async (req, res) => {
   const id = Number(req.params.id)
-  const { status, dueDate } = req.body as { status?: string; dueDate?: string }
+  const { status, dueDate, startDate } = req.body as { status?: string; dueDate?: string; startDate?: string }
 
   const result = await query(
-    'UPDATE projects SET status = COALESCE($1, status), due_date = COALESCE($2, due_date), updated_at = NOW() WHERE id = $3 RETURNING *',
-    [status || null, dueDate || null, id],
+    'UPDATE projects SET status = COALESCE($1, status), due_date = COALESCE($2, due_date), start_date = COALESCE($3, start_date), updated_at = NOW() WHERE id = $4 RETURNING *',
+    [status || null, dueDate || null, startDate || null, id],
   )
 
   if (!result.rows[0]) return res.status(404).json({ error: 'Not found.' })

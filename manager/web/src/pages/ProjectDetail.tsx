@@ -49,6 +49,17 @@ type Step = {
   due_date: string | null
 }
 
+const formatDate = (value: string | null) => {
+  if (!value) return '—'
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return value
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: '2-digit',
+    year: 'numeric',
+  }).format(date)
+}
+
 function ProjectDetail() {
   const { id } = useParams()
   const { token } = useAuth()
@@ -186,6 +197,49 @@ function ProjectDetail() {
     )
   }
 
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  const dueDate = project.due_date ? new Date(project.due_date) : null
+  const daysUntilDue = dueDate ? Math.ceil((dueDate.getTime() - today.getTime()) / 86400000) : null
+  const overdueSteps = steps.filter((step) => {
+    if (!step.due_date || step.status === 'done') return false
+    const stepDate = new Date(step.due_date)
+    stepDate.setHours(0, 0, 0, 0)
+    return stepDate < today
+  })
+  const totalMinutes = timeLogs.reduce((sum, log) => sum + log.minutes, 0)
+
+  const alerts = [
+    ...(dueDate && daysUntilDue !== null && daysUntilDue < 0
+      ? [{
+          tone: 'danger',
+          title: 'Deadline missed',
+          detail: `Project due ${formatDate(project.due_date)}.`,
+        }]
+      : []),
+    ...(dueDate && daysUntilDue !== null && daysUntilDue >= 0 && daysUntilDue <= 5
+      ? [{
+          tone: 'warning',
+          title: 'Deadline approaching',
+          detail: `Due in ${daysUntilDue} day${daysUntilDue === 1 ? '' : 's'}.`,
+        }]
+      : []),
+    ...(overdueSteps.length > 0
+      ? [{
+          tone: 'danger',
+          title: 'Overdue steps',
+          detail: `${overdueSteps.length} workflow step${overdueSteps.length === 1 ? '' : 's'} past due.`,
+        }]
+      : []),
+    ...(totalMinutes > 360 && project.status !== 'delivery'
+      ? [{
+          tone: 'warning',
+          title: 'Time burn alert',
+          detail: `${totalMinutes} minutes logged before delivery.`,
+        }]
+      : []),
+  ]
+
   return (
     <Layout title={project.title}>
       <div className="detail">
@@ -208,137 +262,217 @@ function ProjectDetail() {
             </select>
             <button type="button" onClick={handleStatusUpdate}>Update</button>
           </div>
-          <p><strong>Start:</strong> {project.start_date ?? '—'}</p>
-          <p><strong>Due:</strong> {project.due_date ?? '—'}</p>
+          <p><strong>Start:</strong> {formatDate(project.start_date)}</p>
+          <p><strong>Due:</strong> {formatDate(project.due_date)}</p>
         </div>
         <div className="detail__notes">
           <h3>Notes</h3>
           <p>{project.notes ?? 'No notes yet.'}</p>
         </div>
-      </div>
-
-      <section className="panel">
-        <div className="panel__header">
-          <h3>Workflow</h3>
-        </div>
-        <ul>
-          {steps.map((step) => (
-            <li key={step.id} className="step-row">
-              <label>
-                <input
-                  type="checkbox"
-                  checked={step.status === 'done'}
-                  onChange={() => toggleStep(step)}
-                />
-                <span>{step.position}. {step.name}</span>
-              </label>
-              <span>{step.due_date ? `· ${step.due_date}` : ''}</span>
-              <button type="button" onClick={() => removeStep(step.id)}>Remove</button>
-            </li>
-          ))}
-        </ul>
-        <div className="step-add">
-          <input
-            placeholder="New step name"
-            value={newStepName}
-            onChange={(event) => setNewStepName(event.target.value)}
-          />
-          <input
-            type="date"
-            value={newStepDue}
-            onChange={(event) => setNewStepDue(event.target.value)}
-          />
-          <button type="button" onClick={addStep}>Add step</button>
-        </div>
-      </section>
-
-      <section className="panel">
-        <div className="panel__header">
-          <h3>Files</h3>
-          <input type="file" onChange={handleUpload} />
-        </div>
-        <ul>
-          {files.map((file) => (
-            <li key={file.id}>
-              {file.filename}
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="panel">
-        <div className="panel__header">
-          <h3>Deliveries</h3>
-          <div className="panel__actions">
-            <input
-              placeholder="Title"
-              value={deliveryTitle}
-              onChange={(event) => setDeliveryTitle(event.target.value)}
-            />
-            <input
-              placeholder="URL"
-              value={deliveryUrl}
-              onChange={(event) => setDeliveryUrl(event.target.value)}
-            />
-            <button type="button" onClick={handleAddDelivery}>
-              Add
-            </button>
-          </div>
-        </div>
-        <ul>
-          {deliveries.map((delivery) => (
-            <li key={delivery.id}>
-              <a href={delivery.url} target="_blank" rel="noreferrer">
-                {delivery.title}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="panel">
-        <div className="panel__header">
-          <h3>Time logs</h3>
-          <div className="panel__actions">
-            <input
-              placeholder="Minutes"
-              value={minutes}
-              onChange={(event) => setMinutes(event.target.value)}
-            />
-            <input
-              placeholder="Note"
-              value={logNote}
-              onChange={(event) => setLogNote(event.target.value)}
-            />
-            <button type="button" onClick={handleAddTime}>
-              Log
-            </button>
-          </div>
-        </div>
-        <ul>
-          {timeLogs.map((log) => (
-            <li key={log.id}>
-              {log.minutes} min {log.note ? `— ${log.note}` : ''}
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="panel">
-        <div className="panel__header">
-          <h3>Client share link</h3>
-          <button type="button" onClick={handleShare}>
-            Generate link
-          </button>
-        </div>
-        {shareToken && (
-          <div className="share">
-            <p>Share page:</p>
-            <Link to={`/share/${shareToken}`}>{`${window.location.origin}/share/${shareToken}`}</Link>
-            <p className="share__meta">API: {apiBase}/share/{shareToken}</p>
+        {alerts.length > 0 && (
+          <div className="detail__alerts">
+            <p className="eyebrow">Alerts</p>
+            <ul>
+              {alerts.map((alert) => (
+                <li key={alert.title} className={`alert alert--${alert.tone}`}>
+                  <strong>{alert.title}</strong>
+                  <span>{alert.detail}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         )}
-      </section>
+      </div>
+
+      <div className="panel-grid">
+        <section className="panel">
+          <div className="panel__header">
+            <div className="panel__title">
+              <span className="panel__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M4 6h10M4 12h16M4 18h7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              </span>
+              <div>
+                <p className="eyebrow">Sequence</p>
+                <h3>Workflow</h3>
+                <p className="panel__subtitle">Define the steps, dates, and progress for delivery.</p>
+              </div>
+            </div>
+          </div>
+          <ul>
+            {steps.map((step) => (
+              <li
+                key={step.id}
+                className={`step-row${step.status === 'done' ? ' step-row--done' : ''}${
+                  step.due_date && step.status !== 'done' && new Date(step.due_date) < today ? ' step-row--late' : ''
+                }`}
+              >
+                <div className="step-row__main">
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={step.status === 'done'}
+                      onChange={() => toggleStep(step)}
+                    />
+                    <span>{step.position}. {step.name}</span>
+                  </label>
+                  <span className="step-row__date">{step.due_date ? formatDate(step.due_date) : 'No date'}</span>
+                </div>
+                <button type="button" onClick={() => removeStep(step.id)}>Remove</button>
+              </li>
+            ))}
+          </ul>
+          <div className="step-add">
+            <input
+              placeholder="New step name"
+              value={newStepName}
+              onChange={(event) => setNewStepName(event.target.value)}
+            />
+            <input
+              type="date"
+              value={newStepDue}
+              onChange={(event) => setNewStepDue(event.target.value)}
+            />
+            <button type="button" onClick={addStep}>Add step</button>
+          </div>
+        </section>
+
+        <div className="panel-stack">
+          <section className="panel">
+            <div className="panel__header">
+              <div className="panel__title">
+                <span className="panel__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M4 7a2 2 0 0 1 2-2h5l3 3h4a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7z" stroke="currentColor" strokeWidth="1.5" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="eyebrow">Repository</p>
+                  <h3>Files</h3>
+                  <p className="panel__subtitle">Collect briefs, assets, and final exports in one place.</p>
+                </div>
+              </div>
+              <input type="file" onChange={handleUpload} />
+            </div>
+            <ul>
+              {files.map((file) => (
+                <li key={file.id}>
+                  {file.filename}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="panel">
+            <div className="panel__header">
+              <div className="panel__title">
+                <span className="panel__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M4 12h16M12 4v16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="eyebrow">Milestones</p>
+                  <h3>Deliveries</h3>
+                  <p className="panel__subtitle">Track client-ready links and approvals.</p>
+                </div>
+              </div>
+              <div className="panel__actions">
+                <input
+                  placeholder="Title"
+                  value={deliveryTitle}
+                  onChange={(event) => setDeliveryTitle(event.target.value)}
+                />
+                <input
+                  placeholder="URL"
+                  value={deliveryUrl}
+                  onChange={(event) => setDeliveryUrl(event.target.value)}
+                />
+                <button type="button" onClick={handleAddDelivery}>
+                  Add
+                </button>
+              </div>
+            </div>
+            <ul>
+              {deliveries.map((delivery) => (
+                <li key={delivery.id}>
+                  <a href={delivery.url} target="_blank" rel="noreferrer">
+                    {delivery.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="panel">
+            <div className="panel__header">
+              <div className="panel__title">
+                <span className="panel__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 6v6l4 2M4 12a8 8 0 1 0 16 0a8 8 0 0 0-16 0z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="eyebrow">Effort</p>
+                  <h3>Time logs</h3>
+                  <p className="panel__subtitle">Understand where the hours go and spot overruns.</p>
+                </div>
+              </div>
+              <div className="panel__actions">
+                <input
+                  placeholder="Minutes"
+                  value={minutes}
+                  onChange={(event) => setMinutes(event.target.value)}
+                />
+                <input
+                  placeholder="Note"
+                  value={logNote}
+                  onChange={(event) => setLogNote(event.target.value)}
+                />
+                <button type="button" onClick={handleAddTime}>
+                  Log
+                </button>
+              </div>
+            </div>
+            <ul>
+              {timeLogs.map((log) => (
+                <li key={log.id}>
+                  {log.minutes} min {log.note ? `— ${log.note}` : ''}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="panel">
+            <div className="panel__header">
+              <div className="panel__title">
+                <span className="panel__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-1 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    <path d="M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l1-1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="eyebrow">Sharing</p>
+                  <h3>Client share link</h3>
+                  <p className="panel__subtitle">Send a clean review link with zero logins.</p>
+                </div>
+              </div>
+              <button type="button" onClick={handleShare}>
+                Generate link
+              </button>
+            </div>
+            {shareToken && (
+              <div className="share">
+                <p>Share page:</p>
+                <Link to={`/share/${shareToken}`}>{`${window.location.origin}/share/${shareToken}`}</Link>
+                <p className="share__meta">API: {apiBase}/share/{shareToken}</p>
+              </div>
+            )}
+          </section>
+        </div>
+      </div>
     </Layout>
   )
 }
