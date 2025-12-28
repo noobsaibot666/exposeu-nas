@@ -33,3 +33,7 @@ Credentials are set in `manager/.env`:
 - Uploads are stored in `manager/uploads`.
 - Share links are public and live at `/share/:token`.
 - Upload limit is set to 2GB.
+
+From inside manager/, drop the path:
+docker compose up -d --build
+
