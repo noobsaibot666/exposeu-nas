@@ -240,6 +240,28 @@ function ProjectDetail() {
       : []),
   ]
 
+  if (alerts.length === 0) {
+    if (!project.due_date) {
+      alerts.push({
+        tone: 'warning',
+        title: 'No due date set',
+        detail: 'Add a due date to track runway and risk.',
+      })
+    } else if (daysUntilDue !== null && daysUntilDue > 5) {
+      alerts.push({
+        tone: 'ok',
+        title: 'On track',
+        detail: `Plenty of runway — due in ${daysUntilDue} days.`,
+      })
+    } else {
+      alerts.push({
+        tone: 'ok',
+        title: 'On track',
+        detail: 'Timeline is healthy.',
+      })
+    }
+  }
+
   return (
     <Layout title={project.title}>
       <div className="detail">
@@ -265,14 +287,39 @@ function ProjectDetail() {
           <p><strong>Start:</strong> {formatDate(project.start_date)}</p>
           <p><strong>Due:</strong> {formatDate(project.due_date)}</p>
         </div>
-        <div className="detail__notes">
-          <h3>Notes</h3>
-          <p>{project.notes ?? 'No notes yet.'}</p>
-        </div>
-        {alerts.length > 0 && (
-          <div className="detail__alerts">
-            <p className="eyebrow">Alerts</p>
-            <ul>
+        <div className="detail__stack">
+          <section className="panel panel--compact">
+            <div className="panel__header">
+              <div className="panel__title">
+                <span className="panel__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M7 7h10M7 12h6M7 17h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="eyebrow">Notes</p>
+                  <h3>Notes</h3>
+                </div>
+              </div>
+            </div>
+            <p>{project.notes ?? 'No notes yet.'}</p>
+          </section>
+          <section className="panel panel--compact">
+            <div className="panel__header">
+              <div className="panel__title">
+                <span className="panel__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 4l8 14H4L12 4z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                    <path d="M12 10v4M12 16v.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="eyebrow">Alerts</p>
+                  <h3>Alerts</h3>
+                </div>
+              </div>
+            </div>
+            <ul className="detail__alerts-list">
               {alerts.map((alert) => (
                 <li key={alert.title} className={`alert alert--${alert.tone}`}>
                   <strong>{alert.title}</strong>
@@ -280,8 +327,8 @@ function ProjectDetail() {
                 </li>
               ))}
             </ul>
-          </div>
-        )}
+          </section>
+        </div>
       </div>
 
       <div className="panel-grid">

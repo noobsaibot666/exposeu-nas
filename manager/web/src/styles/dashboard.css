@@ -86,6 +86,7 @@
   border-radius: 20px;
   border: 1px solid var(--border-soft);
   background: var(--surface-base);
+  overflow: hidden;
 }
 
 .timeline__header {
@@ -114,6 +115,9 @@
   gap: 16px;
   overflow-x: auto;
   padding-bottom: 8px;
+  overscroll-behavior-x: contain;
+  position: relative;
+  background: var(--surface-base);
 }
 
 .timeline-board__days {
@@ -159,11 +163,19 @@
   grid-template-columns: 220px minmax(0, 1fr) auto;
   gap: 16px;
   align-items: center;
+  position: relative;
 }
 
 .timeline-row__label {
   display: grid;
   gap: 6px;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  padding: 6px 8px;
+  background: transparent;
+  min-width: 180px;
+  box-shadow: none;
 }
 
 .timeline-row__title {
@@ -275,6 +287,10 @@
   padding: 6px 10px;
   border-radius: 999px;
   font-size: 0.8rem;
+  position: sticky;
+  right: 0;
+  z-index: 2;
+  background: var(--surface-base);
 }
 
 .timeline-project {
@@ -283,7 +299,7 @@
 
 @media (max-width: 900px) {
   .timeline-row {
-    grid-template-columns: 160px minmax(0, 1fr);
+    grid-template-columns: 150px minmax(0, 1fr);
   }
 
   .timeline-row__link {
@@ -291,8 +307,8 @@
   }
 
   .timeline-board__days {
-    grid-template-columns: 160px minmax(0, 1fr);
-    min-width: calc(160px + (var(--days) * 64px));
+    grid-template-columns: 150px minmax(0, 1fr);
+    min-width: calc(150px + (var(--days) * 64px));
   }
 
   .timeline-board__grid {
@@ -307,6 +323,38 @@
         rgba(255, 255, 255, 0.06) 1px,
         transparent 1px,
         transparent 64px
+      );
+  }
+}
+
+@media (max-width: 720px) {
+  .dashboard__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .timeline-row {
+    grid-template-columns: 130px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .timeline-board__days {
+    grid-template-columns: 130px minmax(0, 1fr);
+    min-width: calc(130px + (var(--days) * 56px));
+  }
+
+  .timeline-board__grid {
+    grid-template-columns: repeat(var(--days), 56px);
+  }
+
+  .timeline-row__track {
+    background:
+      repeating-linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.06),
+        rgba(255, 255, 255, 0.06) 1px,
+        transparent 1px,
+        transparent 56px
       );
   }
 }

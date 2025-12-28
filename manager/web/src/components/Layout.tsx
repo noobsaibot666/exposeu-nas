@@ -6,10 +6,12 @@ function Layout({
   title,
   children,
   headerClassName,
+  hideDashboardLink,
 }: {
   title: string
   children: React.ReactNode
   headerClassName?: string
+  hideDashboardLink?: boolean
 }) {
   const { saveToken } = useAuth()
 
@@ -25,9 +27,11 @@ function Layout({
         </div>
         <div className="layout__title">
           <h1>{title}</h1>
-          <Link to="/" className="layout__primary">
-            Dashboard
-          </Link>
+          {!hideDashboardLink && (
+            <Link to="/" className="layout__primary">
+              Dashboard
+            </Link>
+          )}
         </div>
       </header>
       <main className="layout__content">{children}</main>

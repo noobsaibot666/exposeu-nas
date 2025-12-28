@@ -178,7 +178,7 @@ function Dashboard() {
   }
 
   return (
-    <Layout title="Projects overview" headerClassName="layout__header--hero">
+    <Layout title="Projects overview" headerClassName="layout__header--hero" hideDashboardLink>
       <div className="dashboard">
         <div className="dashboard__header">
           <div>
