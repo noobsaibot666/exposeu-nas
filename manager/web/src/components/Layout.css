@@ -20,7 +20,7 @@
   letter-spacing: 0.28em;
   font-size: 0.7rem;
   color: var(--text-tertiary);
-  margin: 0 0 4px;
+  margin: 0 0 2px;
 }
 
 .layout__topline {
@@ -43,8 +43,13 @@
 
 .layout__title {
   display: grid;
-  gap: 4px;
+  gap: 2px;
   width: 100%;
+}
+
+.layout__title h1 {
+  margin: 0;
+  line-height: 1.1;
 }
 
 .layout__title h1 {
