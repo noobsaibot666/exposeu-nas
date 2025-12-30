@@ -333,7 +333,7 @@ function WorkPageLayout({
           extraGalleryCopy ?? '',
           extraGallery,
           sectionImages[1],
-          true,
+          false,
           'gallery-secondary',
         )}
 

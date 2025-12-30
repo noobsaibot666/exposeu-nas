@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { apiRequest, apiUpload, apiBase } from '../components/api'
@@ -78,7 +78,7 @@ function ProjectDetail() {
   const [logNote, setLogNote] = useState('')
   const [error, setError] = useState('')
 
-  const loadProject = () => {
+  const loadProject = useCallback(() => {
     if (!token || !id) return
     apiRequest<{ project: Project; steps: Step[]; files: FileItem[]; deliveries: Delivery[]; timeLogs: TimeLog[] }>(
       `/projects/${id}`,
@@ -94,11 +94,11 @@ function ProjectDetail() {
         setTimeLogs(data.timeLogs)
       })
       .catch(() => setError('Unable to load project.'))
-  }
+  }, [id, token])
 
   useEffect(() => {
     loadProject()
-  }, [token, id])
+  }, [loadProject])
 
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!token || !id || !event.target.files?.[0]) return

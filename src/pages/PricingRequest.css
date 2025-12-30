@@ -1,7 +1,7 @@
 .pricing-request {
   background: var(--bg-base);
   color: var(--text-strong);
-  min-height: 100vh;
+  min-height: 100svh;
 }
 
 .pricing-request__nav {
@@ -10,7 +10,7 @@
 
 .pricing-request__hero {
   position: relative;
-  min-height: 70vh;
+  min-height: clamp(420px, 70vh, 780px);
   display: flex;
   align-items: flex-end;
   background-size: cover;
@@ -122,6 +122,7 @@
   color: var(--text-strong);
   font-size: 1rem;
   font-family: var(--font-sans);
+  min-height: 46px;
 }
 
 .pricing-request__field.is-error input,
@@ -228,5 +229,17 @@
 
   .pricing-request__form {
     grid-template-columns: 1fr;
+    padding: 18px;
+  }
+}
+
+@media (max-width: 600px) {
+  .pricing-request__hero {
+    min-height: 55vh;
+    padding: 40px 0 48px;
+  }
+
+  .pricing-request__meta span {
+    width: 100%;
   }
 }

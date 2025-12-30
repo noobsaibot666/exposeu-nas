@@ -40,6 +40,9 @@
   --contrast-muted: rgba(0, 0, 0, 0.7);
   --avatar-border: #050505;
   --positive-accent: #4ade80;
+  --content-max: 1180px;
+  --content-gutter: clamp(18px, 5vw, 28px);
+  --section-padding-block: clamp(56px, 8vw, 92px);
   font-family: var(--font-sans);
   line-height: 1.6;
   font-weight: var(--weight-regular);
@@ -96,6 +99,7 @@ body {
   color: var(--text-strong);
   background: var(--page-bg);
   animation: page-fade-in 320ms ease;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 html {
@@ -109,7 +113,7 @@ body {
 }
 
 #root {
-  min-height: 100vh;
+  min-height: 100svh;
 }
 
 a {
@@ -143,13 +147,14 @@ p {
 }
 
 .section {
-  padding: 72px 12px; /* further reduce padding to open horizontal space */
-  scroll-margin-top: 100px;
+  padding: var(--section-padding-block) var(--content-gutter);
+  scroll-margin-top: clamp(78px, 10vh, 120px);
 }
 
 .content {
-  width: min(1180px, 98vw); /* widen content container for more spread */
+  width: min(var(--content-max), 100%);
   margin: 0 auto;
+  padding-inline: var(--content-gutter);
 }
 
 .pill {

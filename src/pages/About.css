@@ -1,5 +1,5 @@
 .about {
-  min-height: 100vh;
+  min-height: 100svh;
   background: var(--bg-base);
   color: var(--text-strong);
 }
@@ -144,5 +144,23 @@
 
   .about__portrait-meta {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .about {
+    min-height: 100svh;
+  }
+
+  .about__profile {
+    grid-template-columns: 1fr;
+  }
+
+  .about__row {
+    grid-template-columns: 1fr;
+  }
+
+  .about__portrait {
+    min-height: 420px;
   }
 }

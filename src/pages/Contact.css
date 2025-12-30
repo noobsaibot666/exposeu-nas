@@ -1,5 +1,5 @@
 .contact {
-  min-height: 100vh;
+  min-height: 100svh;
   background: var(--bg-base);
   color: var(--text-strong);
 }
@@ -15,7 +15,7 @@
 .contact__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 80px;
+  gap: clamp(32px, 6vw, 80px);
   align-items: start;
   
 }
@@ -115,9 +115,10 @@
   background: transparent;
   color: var(--text-strong);
   border-radius: 0;
-  padding: 10px 0;
+  padding: 12px 0;
   font-size: 1rem;
   outline: none;
+  min-height: 44px;
 }
 
 .contact__field input:focus,
@@ -168,5 +169,11 @@
 
   .contact__nav {
     padding: 16px 0 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .contact {
+    min-height: 100svh;
   }
 }

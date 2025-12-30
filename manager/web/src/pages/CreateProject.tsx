@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { apiRequest } from '../components/api'
@@ -50,7 +50,7 @@ function CreateProject() {
   const [draggingId, setDraggingId] = useState<number | null>(null)
   const [savingWorkflow, setSavingWorkflow] = useState(false)
 
-  const loadWorkflows = () => {
+  const loadWorkflows = useCallback(() => {
     if (!token) return
     apiRequest<{ templates: WorkflowTemplate[]; steps: WorkflowStep[] }>('/workflows', {}, token)
       .then((data) => {
@@ -59,11 +59,11 @@ function CreateProject() {
         if (data.templates[0]) setWorkflowTemplateId(data.templates[0].id)
       })
       .catch(() => setError('Unable to load workflows.'))
-  }
+  }, [token])
 
   useEffect(() => {
     loadWorkflows()
-  }, [token])
+  }, [loadWorkflows])
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()

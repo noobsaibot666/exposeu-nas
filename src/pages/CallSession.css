@@ -129,7 +129,7 @@
 
 .call-session__embed iframe {
   width: 100%;
-  min-height: 720px;
+  min-height: clamp(420px, 75vh, 680px);
   border: none;
   background: transparent;
 }
@@ -151,6 +151,6 @@
   }
 
   .call-session__embed iframe {
-    min-height: 600px;
+    min-height: clamp(400px, 70vh, 620px);
   }
 }

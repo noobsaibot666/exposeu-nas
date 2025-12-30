@@ -1,7 +1,7 @@
 .portfolio {
   background: var(--bg-base);
   color: var(--text-strong);
-  min-height: 100vh;
+  min-height: 100svh;
 }
 
 .portfolio__nav {
@@ -113,7 +113,7 @@
   scroll-behavior: smooth;
   overscroll-behavior: contain;
   touch-action: pan-x;
-  scroll-padding-inline: 40px;
+  scroll-padding-inline: clamp(22px, 5vw, 40px);
   cursor: grab;
 }
 
@@ -556,6 +556,11 @@
 }
 
 @media (max-width: 600px) {
+  .portfolio__grid {
+    grid-auto-columns: minmax(260px, 320px);
+    padding: 28px clamp(14px, 5vw, 20px) 20px;
+  }
+
   .portfolio__modal {
     padding: 14px;
   }

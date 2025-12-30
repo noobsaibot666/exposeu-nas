@@ -7,13 +7,6 @@ export function useAuth() {
   const [token, setToken] = useState<string | null>(() => localStorage.getItem(storageKey))
 
   useEffect(() => {
-    const stored = localStorage.getItem(storageKey)
-    if (stored !== token) {
-      setToken(stored)
-    }
-  }, [token])
-
-  useEffect(() => {
     const handleStorage = () => {
       setToken(localStorage.getItem(storageKey))
     }
