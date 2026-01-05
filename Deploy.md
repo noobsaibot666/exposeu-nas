@@ -49,10 +49,17 @@ These steps describe the normal workflow between the dev machine (local macOS) a
    cd /path/to/exposeu
    ```
 
-3. Pull the latest changes:
+3. Ensure the repo always matches GitHub exactly (pull-only box):
 
    ```bash
-   git pull
+   git fetch
+   git reset --hard origin/main
+   ```
+
+4. Optional one-time setup to reject non-fast-forward pulls:
+
+   ```bash
+   git config pull.ff only
    ```
 
 ## Optional: quick verification
