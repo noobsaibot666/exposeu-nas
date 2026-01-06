@@ -44,3 +44,13 @@ lerna-debug.log*
 # ======================
 letsencrypt/
 **/cloudflare-updater.log
+
+
+.env
+web/.env.local
+node_modules
+uploads
+/api/dist
+/web/dist
+
+update-cloudflare.sh
