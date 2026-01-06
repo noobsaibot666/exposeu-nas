@@ -19,6 +19,10 @@ Use this later when TrueNAS is ready.
 3) Prepare env
 - Copy `manager/.env.example` to `manager/.env`
 - Set strong `API_JWT_SECRET` and `ADMIN_PASSWORD`
+- For LAN access, set the web env in `manager/web/.env.local`:
+```
+VITE_MANAGER_API=http://<NAS_LAN_IP>:4001
+```
 
 4) Update Docker Compose volume paths
 - Map Postgres data to `exposeu_manager_db`
