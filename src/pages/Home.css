@@ -147,7 +147,7 @@
 }
 
 .home__hero-thumb {
-  width: clamp(110px, 14vw, 160px);
+  width: clamp(125px, 16vw, 180px);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -166,7 +166,7 @@
 
 .home__hero-thumb img {
   width: 100%;
-  height: 190px;
+  height: 210px;
   object-fit: cover;
   display: block;
 }

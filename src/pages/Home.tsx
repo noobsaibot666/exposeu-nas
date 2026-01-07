@@ -77,7 +77,7 @@ const heroGallery = [
   {
     id: 'thumb-3',
     image: resolveImagePath('/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg'),
-    label: 'Gallery documentation',
+    label: 'Documentations',
     rotation: -1,
   },
   {

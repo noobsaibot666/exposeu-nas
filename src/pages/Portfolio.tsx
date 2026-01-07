@@ -1,9 +1,12 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties, PointerEvent, WheelEvent } from 'react'
 import './Portfolio.css'
 import { resolveImagePath } from '../utils/resolveImagePath'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useNavigate } from 'react-router-dom'
+import TopNav from '../components/TopNav'
+import Footer from '../sections/Footer'
 
 type VideoItem = {
   id: string
@@ -123,7 +126,7 @@ const offers: OfferItem[] = [
     id: 'offer-exhibition',
     title: 'Exhibition',
     blurb: 'Full visual direction for galleries, openings, and installs with immersive screens, loops, and atmosphere.',
-    link: '/contact',
+    link: '/exhibitions',
     cta: 'Contact us',
     accent: '#ffffffff',
     background: resolveImagePath('/src/assets/images/5bcdeb6c6e929fdb9f16ed10665ca5e0.jpg'),
@@ -132,7 +135,7 @@ const offers: OfferItem[] = [
     id: 'offer-session',
     title: 'Artist Session',
     blurb: 'Studio and portrait sessions that capture process and story with polished deliverables for press and socials.',
-    link: '/contact',
+    link: '/artist-sessions',
     cta: 'Contact us',
     accent: '#c4b5fd',
     background: resolveImagePath('/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg'),
@@ -141,7 +144,7 @@ const offers: OfferItem[] = [
     id: 'offer-performance',
     title: 'Performance',
     blurb: 'Live performance capture with cinematic documentation, multi-angle, crisp audio, and quick turnarounds.',
-    link: '/contact',
+    link: '/performance',
     cta: 'Contact us',
     accent: '#fca5a5',
     background: resolveImagePath('/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg'),
@@ -150,7 +153,7 @@ const offers: OfferItem[] = [
     id: 'offer-atmospheric',
     title: 'Atmospheric',
     blurb: 'Mood-first films and stills that set the tone for your release, event, or install.',
-    link: '/contact',
+    link: '/atmospheric',
     cta: 'Contact us',
     accent: '#9bd1ff',
     background: resolveImagePath('/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg'),
@@ -159,7 +162,7 @@ const offers: OfferItem[] = [
     id: 'offer-gallery',
     title: 'Gallery Stories',
     blurb: 'Curator walkthroughs and features that make your space and artists shine online.',
-    link: '/contact',
+    link: '/gallery-stories',
     cta: 'Contact us',
     accent: '#fbcfe8',
     background: resolveImagePath('/src/assets/images/PinonShowww.jpg'),
@@ -168,7 +171,7 @@ const offers: OfferItem[] = [
     id: 'offer-fashion',
     title: 'Fashion Show',
     blurb: 'Editorial runway capture with clean angles, sharp detail, and fast delivery.',
-    link: '/contact',
+    link: '/fashion-show',
     cta: 'Contact us',
     accent: '#c7d2fe',
     background: resolveImagePath('/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg'),
@@ -176,12 +179,31 @@ const offers: OfferItem[] = [
 ]
 
 function Portfolio() {
+  const navigate = useNavigate()
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null)
   const [isDragging, setIsDragging] = useState(false)
   const [hoveredId, setHoveredId] = useState<string | null>(null)
   const gridRef = useRef<HTMLDivElement | null>(null)
   const rootRef = useRef<HTMLElement | null>(null)
   const dragState = useRef({ active: false, startX: 0, scrollLeft: 0, moved: false, pointerId: 0 })
+  const goToHomeSection = useCallback((hash?: string) => {
+    navigate(hash ? `/${hash}` : '/')
+  }, [navigate])
+
+  const navLinks = useMemo(
+    () => ({
+      left: [
+        { label: 'Studio', onClick: () => goToHomeSection('#hero') },
+        { label: 'Cases', onClick: () => goToHomeSection('#cases') },
+        { label: 'Pricing', onClick: () => goToHomeSection('#services') },
+      ],
+      right: [
+        { label: 'About', onClick: () => navigate('/about') },
+        { label: 'Contact', onClick: () => navigate('/contact') },
+      ],
+    }),
+    [goToHomeSection, navigate],
+  )
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' })
@@ -305,20 +327,14 @@ function Portfolio() {
 
   return (
     <main className="portfolio" ref={rootRef}>
-      <div className="content portfolio__nav">
-        <nav className="portfolio__links portfolio__links--left">
-          <a href="/">Home</a>
-          <a href="/#cases">Cases</a>
-          <a href="/#claim">Claim</a>
-          <a href="/#offer">Offer</a>
-        </nav>
-        <a className="portfolio__brand" href="/">
-          expose.u
-        </a>
-        <nav className="portfolio__links portfolio__links--right">
-          <a href="/about">About</a>
-          <a href="/contact">Contact</a>
-        </nav>
+      <div className="portfolio__nav">
+        <TopNav
+          className="top-nav--page"
+          leftLinks={navLinks.left}
+          rightLinks={navLinks.right}
+          onBrandClick={() => goToHomeSection('#hero')}
+          brandLabel="expose.u"
+        />
       </div>
 
       <section className="section portfolio__hero">
@@ -514,6 +530,7 @@ function Portfolio() {
           </div>
         </div>
       )}
+      <Footer />
     </main>
   )
 }
