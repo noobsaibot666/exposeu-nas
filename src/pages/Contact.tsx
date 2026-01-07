@@ -69,12 +69,15 @@ function Contact() {
       }
 
       const endpoint = resolveContactEndpoint()
+      console.log('Contact form endpoint:', endpoint)
 
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
+
+      console.log('Contact form response:', response.status, response.statusText)
 
       // Try to read JSON error if present
       if (!response.ok) {
@@ -83,7 +86,14 @@ function Contact() {
           const data = await response.json()
           if (data?.error) serverMsg = String(data.error)
         } catch {
-          // ignore
+          try {
+            const text = await response.text()
+            if (text) {
+              console.log('Contact form error body:', text)
+            }
+          } catch {
+            // ignore
+          }
         }
         throw new Error(serverMsg)
       }
