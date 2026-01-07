@@ -13,6 +13,10 @@ app.get('/health', (_req, res) => {
   res.json({ ok: true })
 })
 
+
+// Health checks (so HEAD/GET /contact doesn't show 404)
+app.get('/contact', (req, res) => res.status(200).send('OK'))
+app.head('/contact', (req, res) => res.status(200).end())
 app.post('/contact', async (req, res) => {
   try {
     const { firstName, lastName, email, message } = req.body || {}
