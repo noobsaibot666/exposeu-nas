@@ -6,23 +6,42 @@ import nodemailer from 'nodemailer'
 const app = express()
 const port = Number(process.env.CONTACT_API_PORT || 8787)
 
+// Middleware
 app.use(cors())
 app.use(express.json({ limit: '1mb' }))
-
-app.get('/health', (_req, res) => {
-  res.json({ ok: true })
+app.use((req, _res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`)
+  next()
 })
 
+// Health
+app.get('/health', (_req, res) => res.json({ ok: true }))
 
 // Health checks (so HEAD/GET /contact doesn't show 404)
-app.get('/contact', (req, res) => res.status(200).send('OK'))
-app.head('/contact', (req, res) => res.status(200).end())
+app.get('/contact', (_req, res) => res.status(200).send('OK'))
+app.head('/contact', (_req, res) => res.status(200).end())
+
+// Contact endpoint
 app.post('/contact', async (req, res) => {
   try {
-    const { firstName, lastName, email, message } = req.body || {}
+    console.log('CONTACT BODY:', req.body)
+
+    const {
+      firstName,
+      lastName,
+      name, // fallback if frontend sends "name"
+      email,
+      message,
+    } = req.body || {}
+
+    const senderName =
+      [firstName, lastName].filter(Boolean).join(' ').trim() ||
+      name ||
+      'N/A'
+
     if (!email || !message) {
-      res.status(400).json({ ok: false, error: 'Missing required fields.' })
-      return
+      console.error('Missing required fields:', { senderName, email, message })
+      return res.status(400).json({ ok: false, error: 'Missing required fields.' })
     }
 
     const host = process.env.SMTP_HOST
@@ -34,8 +53,15 @@ app.post('/contact', async (req, res) => {
     const from = process.env.CONTACT_FROM || user
 
     if (!host || !portValue || !user || !pass || !to || !from) {
-      res.status(500).json({ ok: false, error: 'Server email configuration missing.' })
-      return
+      console.error('Server email configuration missing:', {
+        SMTP_HOST: !!host,
+        SMTP_PORT: portValue,
+        SMTP_USER: !!user,
+        SMTP_PASS: !!pass,
+        CONTACT_TO: !!to,
+        CONTACT_FROM: !!from,
+      })
+      return res.status(500).json({ ok: false, error: 'Server email configuration missing.' })
     }
 
     const transporter = nodemailer.createTransport({
@@ -45,28 +71,32 @@ app.post('/contact', async (req, res) => {
       auth: { user, pass },
     })
 
-    const senderName = [firstName, lastName].filter(Boolean).join(' ').trim()
-    const subject = senderName ? `Contact form: ${senderName}` : 'Contact form submission'
+    const subject =
+      senderName && senderName !== 'N/A'
+        ? `Contact form: ${senderName}`
+        : 'Contact form submission'
 
     const text = [
-      `Name: ${senderName || 'N/A'}`,
+      `Name: ${senderName}`,
       `Email: ${email}`,
       '',
       message,
     ].join('\n')
 
-    await transporter.sendMail({
-      to,
-      from,
-      replyTo: email,
-      subject,
-      text,
-    })
+   const info = await transporter.sendMail({
+  to,
+  from,
+  replyTo: email,
+  subject,
+  text,
+})
 
-    res.json({ ok: true })
+console.log('MAIL SENT:', info.messageId)
+
+    return res.json({ ok: true })
   } catch (error) {
     console.error('Contact form error', error)
-    res.status(500).json({ ok: false, error: 'Failed to send email.' })
+    return res.status(500).json({ ok: false, error: 'Failed to send email.' })
   }
 })
 

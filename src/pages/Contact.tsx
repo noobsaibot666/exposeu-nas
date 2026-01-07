@@ -31,6 +31,18 @@ function Contact() {
     [goToHomeSection, navigate],
   )
 
+  const resolveContactEndpoint = () => {
+    // Best default for your Traefik routing: same-origin POST /contact -> exposeu-contact
+    const raw = String(import.meta.env.VITE_CONTACT_API_BASE || '').trim()
+    if (!raw) return '/contact'
+
+    // If user set "expose-u.com" (no scheme), fix it
+    const base = raw.startsWith('http://') || raw.startsWith('https://') ? raw : `https://${raw}`
+
+    // Ensure no trailing slash
+    return `${base.replace(/\/+$/, '')}/contact`
+  }
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (isSubmitting) return
@@ -39,28 +51,48 @@ function Contact() {
     setSubmitError(null)
 
     try {
-      const formData = new FormData(event.currentTarget)
+      const form = event.currentTarget
+      const formData = new FormData(form)
+
       const payload = {
-        firstName: String(formData.get('firstName') || ''),
-        lastName: String(formData.get('lastName') || ''),
-        email: String(formData.get('email') || ''),
-        message: String(formData.get('message') || ''),
+        firstName: String(formData.get('firstName') || '').trim(),
+        lastName: String(formData.get('lastName') || '').trim(),
+        email: String(formData.get('email') || '').trim(),
+        message: String(formData.get('message') || '').trim(),
       }
 
-      const apiBase = import.meta.env.VITE_CONTACT_API_BASE || ''
-      const response = await fetch(`${apiBase}/contact`, {
+      // Match your API validation: email + message required
+      if (!payload.email || !payload.message) {
+        setSubmitError('Please add your email and a message.')
+        setIsSubmitting(false)
+        return
+      }
+
+      const endpoint = resolveContactEndpoint()
+
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
 
+      // Try to read JSON error if present
       if (!response.ok) {
-        throw new Error('Contact request failed')
+        let serverMsg = 'Contact request failed'
+        try {
+          const data = await response.json()
+          if (data?.error) serverMsg = String(data.error)
+        } catch {
+          // ignore
+        }
+        throw new Error(serverMsg)
       }
 
+      form.reset()
       navigate('/contact-success')
-    } catch {
-      setSubmitError('Something went wrong. Please email us directly.')
+    } catch (err: any) {
+      console.error(err)
+      setSubmitError(err?.message || 'Something went wrong. Please email us directly.')
     } finally {
       setIsSubmitting(false)
     }
@@ -126,6 +158,7 @@ function Contact() {
             We reply within 24 hours. Share your dates, location, and goals, and we&apos;ll propose the right package.
           </p>
         </div>
+
         <div className="content contact__grid">
           <div className="contact__info">
             <div className="contact__list">
@@ -152,14 +185,17 @@ function Contact() {
               <label htmlFor="firstName">Name</label>
               <input id="firstName" name="firstName" type="text" placeholder="First name" />
             </div>
+
             <div className="contact__field">
               <label htmlFor="lastName">Last Name</label>
               <input id="lastName" name="lastName" type="text" placeholder="Last name" />
             </div>
+
             <div className="contact__field contact__field--full">
               <label htmlFor="email">Email</label>
-              <input id="email" name="email" type="email" placeholder="you@example.com" />
+              <input id="email" name="email" type="email" placeholder="you@example.com" required />
             </div>
+
             <div className="contact__field contact__field--full">
               <label htmlFor="message">Message</label>
               <textarea
@@ -167,15 +203,19 @@ function Contact() {
                 name="message"
                 placeholder="Tell us about your exhibition, performance, or event. Include date, venue, and goals."
                 rows={4}
+                required
               />
             </div>
+
             {submitError ? <p className="contact__error">{submitError}</p> : null}
+
             <button className="contact__submit" type="submit" disabled={isSubmitting}>
               {isSubmitting ? 'Sending...' : 'Submit'}
             </button>
           </form>
         </div>
       </section>
+
       <Footer />
     </main>
   )
