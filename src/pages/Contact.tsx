@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './Contact.css'
 import { useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
@@ -9,6 +9,8 @@ import Footer from '../sections/Footer'
 function Contact() {
   const navigate = useNavigate()
   const rootRef = useRef<HTMLElement | null>(null)
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const goToHomeSection = useCallback((hash?: string) => {
     navigate(hash ? `/${hash}` : '/')
@@ -29,9 +31,39 @@ function Contact() {
     [goToHomeSection, navigate],
   )
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    navigate('/contact-success')
+    if (isSubmitting) return
+
+    setIsSubmitting(true)
+    setSubmitError(null)
+
+    try {
+      const formData = new FormData(event.currentTarget)
+      const payload = {
+        firstName: String(formData.get('firstName') || ''),
+        lastName: String(formData.get('lastName') || ''),
+        email: String(formData.get('email') || ''),
+        message: String(formData.get('message') || ''),
+      }
+
+      const apiBase = import.meta.env.VITE_CONTACT_API_BASE || ''
+      const response = await fetch(`${apiBase}/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+
+      if (!response.ok) {
+        throw new Error('Contact request failed')
+      }
+
+      navigate('/contact-success')
+    } catch {
+      setSubmitError('Something went wrong. Please email us directly.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   useEffect(() => {
@@ -137,8 +169,9 @@ function Contact() {
                 rows={4}
               />
             </div>
-            <button className="contact__submit" type="submit">
-              Submit
+            {submitError ? <p className="contact__error">{submitError}</p> : null}
+            <button className="contact__submit" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Sending...' : 'Submit'}
             </button>
           </form>
         </div>

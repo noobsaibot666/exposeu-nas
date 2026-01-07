@@ -131,6 +131,12 @@
   grid-column: 1 / -1;
 }
 
+.contact__error {
+  grid-column: 1 / -1;
+  color: #b42318;
+  font-weight: 600;
+}
+
 .contact__submit {
   background: var(--button-ghost-bg);
   color: var(--text-strong);
@@ -142,6 +148,12 @@
   transition: transform 150ms ease, opacity 150ms ease;
   grid-column: 1 / -1;
   width: max-content;
+}
+
+.contact__submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
 }
 
 .contact__submit:hover {
