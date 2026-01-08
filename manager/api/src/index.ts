@@ -28,13 +28,16 @@ app.use('/share', shareRoutes)
 async function ensureAdmin() {
   const email = process.env.ADMIN_EMAIL
   const password = process.env.ADMIN_PASSWORD
-  if (!email || !password) return
+  const normalizedEmail = email?.trim()
+  if (!normalizedEmail || !password) return
 
-  const existing = await query<{ id: number }>('SELECT id FROM users WHERE email = $1', [email])
+  const existing = await query<{ id: number }>('SELECT id FROM users WHERE LOWER(email) = LOWER($1)', [
+    normalizedEmail,
+  ])
   if (existing.rows[0]) return
 
   const passwordHash = await bcrypt.hash(password, 12)
-  await query('INSERT INTO users (email, password_hash) VALUES ($1, $2)', [email, passwordHash])
+  await query('INSERT INTO users (email, password_hash) VALUES ($1, $2)', [normalizedEmail, passwordHash])
 }
 
 Promise.all([ensureAdmin(), ensureDefaultWorkflow()])

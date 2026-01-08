@@ -22,8 +22,15 @@ function Login() {
       })
       saveToken(response.token)
       navigate('/')
-    } catch {
-      setError('Login failed. Check credentials.')
+    } catch (err) {
+      const message = err instanceof Error ? err.message : ''
+      if (message === 'Invalid credentials.' || message === 'Email and password required.') {
+        setError(message)
+      } else if (message === 'Failed to fetch') {
+        setError('Unable to reach the manager API. Check your connection.')
+      } else {
+        setError('Login failed. Check credentials.')
+      }
     }
   }
 

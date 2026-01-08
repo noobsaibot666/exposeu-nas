@@ -11,8 +11,22 @@ export async function apiRequest<T>(path: string, options: RequestInit = {}, tok
   })
 
   if (!response.ok) {
-    const text = await response.text()
-    throw new Error(text || 'Request failed')
+    const contentType = response.headers.get('content-type') || ''
+    let message = 'Request failed'
+    if (contentType.includes('application/json')) {
+      const data = await response.json().catch(() => null)
+      if (data && typeof data.error === 'string') {
+        message = data.error
+      }
+    } else {
+      const text = await response.text()
+      if (text) {
+        message = text
+      }
+    }
+    const error = new Error(message)
+    ;(error as Error & { status?: number }).status = response.status
+    throw error
   }
 
   return (await response.json()) as T
