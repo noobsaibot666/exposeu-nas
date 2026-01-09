@@ -37,6 +37,12 @@ CREATE TABLE IF NOT EXISTS projects (
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS project_tags (
+  project_id INTEGER REFERENCES projects(id) ON DELETE CASCADE,
+  tag TEXT NOT NULL,
+  PRIMARY KEY (project_id, tag)
+);
+
 CREATE TABLE IF NOT EXISTS project_steps (
   id SERIAL PRIMARY KEY,
   project_id INTEGER REFERENCES projects(id) ON DELETE CASCADE,
@@ -78,4 +84,10 @@ CREATE TABLE IF NOT EXISTS share_links (
   token TEXT UNIQUE NOT NULL,
   created_at TIMESTAMP DEFAULT NOW(),
   expires_at TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS workflow_tags (
+  template_id INTEGER REFERENCES workflow_templates(id) ON DELETE CASCADE,
+  tag TEXT NOT NULL,
+  PRIMARY KEY (template_id, tag)
 );

@@ -32,15 +32,18 @@ function Contact() {
   )
 
   const resolveContactEndpoint = () => {
-    // Best default for your Traefik routing: same-origin POST /contact -> exposeu-contact
+    // Traefik routes the API at /api and strips /api before forwarding to the Node service.
+    // So frontend must POST to /api/contact (same origin).
     const raw = String(import.meta.env.VITE_CONTACT_API_BASE || '').trim()
-    if (!raw) return '/contact'
+
+    // Default: same-origin
+    if (!raw) return '/api/contact'
 
     // If user set "expose-u.com" (no scheme), fix it
     const base = raw.startsWith('http://') || raw.startsWith('https://') ? raw : `https://${raw}`
 
     // Ensure no trailing slash
-    return `${base.replace(/\/+$/, '')}/contact`
+    return `${base.replace(/\/+$/, '')}/api/contact`
   }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -61,7 +64,6 @@ function Contact() {
         message: String(formData.get('message') || '').trim(),
       }
 
-      // Match your API validation: email + message required
       if (!payload.email || !payload.message) {
         setSubmitError('Please add your email and a message.')
         setIsSubmitting(false)
@@ -69,7 +71,6 @@ function Contact() {
       }
 
       const endpoint = resolveContactEndpoint()
-      console.log('Contact form endpoint:', endpoint)
 
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -77,23 +78,13 @@ function Contact() {
         body: JSON.stringify(payload),
       })
 
-      console.log('Contact form response:', response.status, response.statusText)
-
-      // Try to read JSON error if present
       if (!response.ok) {
         let serverMsg = 'Contact request failed'
         try {
           const data = await response.json()
           if (data?.error) serverMsg = String(data.error)
         } catch {
-          try {
-            const text = await response.text()
-            if (text) {
-              console.log('Contact form error body:', text)
-            }
-          } catch {
-            // ignore
-          }
+          // ignore parsing errors
         }
         throw new Error(serverMsg)
       }
@@ -101,7 +92,6 @@ function Contact() {
       form.reset()
       navigate('/contact-success')
     } catch (err: any) {
-      console.error(err)
       setSubmitError(err?.message || 'Something went wrong. Please email us directly.')
     } finally {
       setIsSubmitting(false)
@@ -114,23 +104,14 @@ function Contact() {
 
     const ctx = gsap.context(() => {
       const headingItems = gsap.utils.toArray<HTMLElement>('.contact__heading > *')
-      gsap.from(headingItems, {
-        opacity: 0,
-        y: 18,
-        duration: 0.7,
-        stagger: 0.08,
-        ease: 'power2.out',
-      })
+      gsap.from(headingItems, { opacity: 0, y: 18, duration: 0.7, stagger: 0.08, ease: 'power2.out' })
 
       gsap.from('.contact__info', {
         opacity: 0,
         y: 18,
         duration: 0.7,
         ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.contact__grid',
-          start: 'top 80%',
-        },
+        scrollTrigger: { trigger: '.contact__grid', start: 'top 80%' },
       })
 
       gsap.from('.contact__form', {
@@ -138,10 +119,7 @@ function Contact() {
         y: 18,
         duration: 0.7,
         ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.contact__form',
-          start: 'top 85%',
-        },
+        scrollTrigger: { trigger: '.contact__form', start: 'top 85%' },
       })
     }, rootRef)
 

@@ -15,6 +15,7 @@ type Project = {
   start_date: string | null
   due_date: string | null
   created_at: string
+  tags?: string[]
 }
 
 const formatDate = (value: string | null) => {
@@ -27,7 +28,7 @@ const formatDate = (value: string | null) => {
   }).format(date)
 }
 
-function Dashboard() {
+export default function Dashboard() {
   const navigate = useNavigate()
   const { token } = useAuth()
   const [projects, setProjects] = useState<Project[]>([])
@@ -67,22 +68,30 @@ function Dashboard() {
       return project
     })
 
-  const overdue = projectsWithDue.filter((project) => project.due && project.due < today)
+  const overdue = projectsWithDue.filter((project) => project.status !== 'archive' && project.due && project.due < today)
   const dueSoon = projectsWithDue.filter((project) => {
+    if (project.status === 'archive') return false
     if (!project.due) return false
     const days = Math.ceil((project.due.getTime() - today.getTime()) / 86400000)
     return days >= 0 && days <= 5
   })
   const activeProjects = projectsWithDue.filter((project) => project.status !== 'archive')
   const timelineProjects = projectsWithDue
-    .filter((project) => project.due)
+    .filter((project) => project.due && project.status !== 'archive')
     .map((project) => {
       const start = project.start_date ? new Date(project.start_date) : new Date(project.created_at)
       start.setHours(0, 0, 0, 0)
       const end = project.due ?? start
       return { ...project, start, end }
     })
-    .sort((a, b) => a.start.getTime() - b.start.getTime())
+    .sort((a, b) => {
+      const tagA = (a.tags ?? []).slice().sort()[0]?.toLowerCase() ?? ''
+      const tagB = (b.tags ?? []).slice().sort()[0]?.toLowerCase() ?? ''
+      if (tagA && tagB && tagA !== tagB) return tagA.localeCompare(tagB)
+      if (tagA && !tagB) return -1
+      if (!tagA && tagB) return 1
+      return a.start.getTime() - b.start.getTime()
+    })
 
   const dayMs = 86400000
   const timelineStart = timelineProjects.reduce<Date | null>((min, project) => {
@@ -105,6 +114,18 @@ function Dashboard() {
     if (daysLeft < 0) return 'danger'
     if (daysLeft <= 5) return 'warning'
     return 'ok'
+  }
+
+  const handleMarkDone = async (id: number) => {
+    if (!token) return
+    try {
+      await apiRequest(`/projects/${id}`, { method: 'PATCH', body: JSON.stringify({ status: 'archive' }) }, token)
+      setProjects((prev) =>
+        prev.map((project) => (project.id === id ? { ...project, status: 'archive' } : project)),
+      )
+    } catch {
+      setError('Unable to mark project done.')
+    }
   }
 
   const handlePointerDown = (
@@ -244,18 +265,31 @@ function Dashboard() {
                   const rawEndIndex = Math.round((shiftedEnd.getTime() - baseStart.getTime()) / dayMs)
                   const startIndex = Math.max(0, Math.min(daysCount - 1, rawStartIndex))
                   const endIndex = Math.max(startIndex, Math.min(daysCount - 1, rawEndIndex))
-                  const width = (endIndex - startIndex + 1) * 72
+                  const spanDays = endIndex - startIndex + 1
+                  const width = spanDays * 72
                   const tone = getTone({ end: shiftedEnd })
+                  const compactClass =
+                    spanDays <= 1 ? 'timeline-chip--compact-1'
+                      : spanDays === 2
+                        ? 'timeline-chip--compact-2'
+                        : spanDays === 3
+                          ? 'timeline-chip--compact-3'
+                          : spanDays === 4
+                            ? 'timeline-chip--compact-4'
+                            : ''
 
                   return (
                     <div key={project.id} className="timeline-row">
                       <div className="timeline-row__label">
                         <span className="timeline-row__title">{project.title}</span>
                         <span className="timeline-row__meta">{project.client_name ?? 'No client'}</span>
+                        {project.tags && project.tags.length > 0 && (
+                          <span className="timeline-row__tag">{[...project.tags].sort()[0]}</span>
+                        )}
                       </div>
                       <div className="timeline-row__track timeline-project">
                         <div
-                          className={`timeline-chip timeline-chip--${tone}`}
+                          className={`timeline-chip timeline-chip--${tone}${compactClass ? ` ${compactClass}` : ''}`}
                           style={{ width, transform: `translateX(${startIndex * 72}px)` }}
                           role="button"
                           tabIndex={0}
@@ -286,11 +320,23 @@ function Dashboard() {
                           <div className="timeline-chip__meta">
                             {formatDate(shiftedStart.toISOString())} – {formatDate(shiftedEnd.toISOString())}
                           </div>
+                          {project.tags && project.tags.length > 0 && (
+                            <div className="timeline-chip__tag">{[...project.tags].sort().join(' · ')}</div>
+                          )}
                         </div>
                       </div>
-                      <Link to={`/projects/${project.id}`} className="timeline-row__link">
-                        View
-                      </Link>
+                      <div className="timeline-row__actions">
+                        <Link to={`/projects/${project.id}`} className="timeline-row__link">
+                          View
+                        </Link>
+                        <button
+                          type="button"
+                          className="timeline-row__done"
+                          onClick={() => handleMarkDone(project.id)}
+                        >
+                          Done
+                        </button>
+                      </div>
                     </div>
                   )
                 })}
@@ -306,6 +352,7 @@ function Dashboard() {
             <span>Service</span>
             <span>Status</span>
             <span>Due</span>
+            <span>Tags</span>
           </div>
           {projects.map((project) => (
             <Link key={project.id} to={`/projects/${project.id}`} className="table__row">
@@ -314,6 +361,7 @@ function Dashboard() {
               <span>{project.service_type ?? '—'}</span>
               <span>{project.status ?? '—'}</span>
               <span>{formatDate(project.due_date)}</span>
+              <span>{project.tags && project.tags.length > 0 ? project.tags.join(', ') : '—'}</span>
             </Link>
           ))}
         </div>
@@ -321,5 +369,3 @@ function Dashboard() {
     </Layout>
   )
 }
-
-export default Dashboard

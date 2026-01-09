@@ -12,9 +12,45 @@ const upload = multer({
   limits: { fileSize: Number(process.env.API_MAX_UPLOAD_BYTES || 2147483648) },
 })
 
+const normalizeTags = (value: unknown) => {
+  if (Array.isArray(value)) {
+    return value
+      .map((tag) => String(tag).trim())
+      .filter((tag) => tag.length > 0)
+  }
+  if (typeof value === 'string') {
+    return value
+      .split(',')
+      .map((tag) => tag.trim())
+      .filter((tag) => tag.length > 0)
+  }
+  return []
+}
+
 router.get('/', async (_req, res) => {
   const result = await query('SELECT * FROM projects ORDER BY created_at DESC')
-  return res.json(result.rows)
+  const projects = result.rows
+  const projectIds = projects.map((project) => project.id)
+  const tagsByProject = new Map<number, string[]>()
+
+  if (projectIds.length > 0) {
+    const tagsResult = await query<{ project_id: number; tag: string }>(
+      'SELECT project_id, tag FROM project_tags WHERE project_id = ANY($1)',
+      [projectIds],
+    )
+    for (const row of tagsResult.rows) {
+      const existing = tagsByProject.get(row.project_id) ?? []
+      existing.push(row.tag)
+      tagsByProject.set(row.project_id, existing)
+    }
+  }
+
+  return res.json(
+    projects.map((project) => ({
+      ...project,
+      tags: tagsByProject.get(project.id) ?? [],
+    })),
+  )
 })
 
 router.post('/', async (req, res) => {
@@ -30,7 +66,8 @@ router.post('/', async (req, res) => {
     dueDate,
     notes,
     workflowTemplateId,
-  } = req.body as Record<string, string>
+    tags,
+  } = req.body as Record<string, string | string[] | undefined>
 
   if (!title) {
     return res.status(400).json({ error: 'Title required.' })
@@ -57,6 +94,15 @@ router.post('/', async (req, res) => {
   )
 
   const project = result.rows[0]
+  const tagList = normalizeTags(tags)
+  if (tagList.length > 0) {
+    for (const tag of tagList) {
+      await query('INSERT INTO project_tags (project_id, tag) VALUES ($1, $2) ON CONFLICT DO NOTHING', [
+        project.id,
+        tag,
+      ])
+    }
+  }
 
   if (project.workflow_template_id) {
     const templateSteps = await query(
@@ -86,13 +132,14 @@ router.get('/:id', async (req, res) => {
   const project = await query('SELECT * FROM projects WHERE id = $1', [id])
   if (!project.rows[0]) return res.status(404).json({ error: 'Not found.' })
 
+  const tagsResult = await query<{ tag: string }>('SELECT tag FROM project_tags WHERE project_id = $1', [id])
   const steps = await query('SELECT * FROM project_steps WHERE project_id = $1 ORDER BY position ASC', [id])
   const files = await query('SELECT * FROM files WHERE project_id = $1 ORDER BY created_at DESC', [id])
   const deliveries = await query('SELECT * FROM deliveries WHERE project_id = $1 ORDER BY created_at DESC', [id])
   const timeLogs = await query('SELECT * FROM time_logs WHERE project_id = $1 ORDER BY logged_at DESC', [id])
 
   return res.json({
-    project: project.rows[0],
+    project: { ...project.rows[0], tags: tagsResult.rows.map((row) => row.tag) },
     steps: steps.rows,
     files: files.rows,
     deliveries: deliveries.rows,
@@ -102,14 +149,29 @@ router.get('/:id', async (req, res) => {
 
 router.patch('/:id', async (req, res) => {
   const id = Number(req.params.id)
-  const { status, dueDate, startDate } = req.body as { status?: string; dueDate?: string; startDate?: string }
+  const { status, dueDate, startDate, notes, tags } = req.body as {
+    status?: string
+    dueDate?: string
+    startDate?: string
+    notes?: string
+    tags?: string[] | string
+  }
 
   const result = await query(
-    'UPDATE projects SET status = COALESCE($1, status), due_date = COALESCE($2, due_date), start_date = COALESCE($3, start_date), updated_at = NOW() WHERE id = $4 RETURNING *',
-    [status || null, dueDate || null, startDate || null, id],
+    'UPDATE projects SET status = COALESCE($1, status), due_date = COALESCE($2, due_date), start_date = COALESCE($3, start_date), notes = COALESCE($4, notes), updated_at = NOW() WHERE id = $5 RETURNING *',
+    [status || null, dueDate || null, startDate || null, notes || null, id],
   )
 
   if (!result.rows[0]) return res.status(404).json({ error: 'Not found.' })
+
+  if (tags !== undefined) {
+    const tagList = normalizeTags(tags)
+    await query('DELETE FROM project_tags WHERE project_id = $1', [id])
+    for (const tag of tagList) {
+      await query('INSERT INTO project_tags (project_id, tag) VALUES ($1, $2) ON CONFLICT DO NOTHING', [id, tag])
+    }
+  }
+
   return res.json(result.rows[0])
 })
 

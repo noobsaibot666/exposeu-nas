@@ -18,6 +18,7 @@ type Project = {
   start_date: string | null
   due_date: string | null
   notes: string | null
+  tags?: string[]
 }
 
 type FileItem = {
@@ -70,6 +71,8 @@ function ProjectDetail() {
   const [steps, setSteps] = useState<Step[]>([])
   const [shareToken, setShareToken] = useState('')
   const [status, setStatus] = useState('')
+  const [notesDraft, setNotesDraft] = useState('')
+  const [tagsDraft, setTagsDraft] = useState('')
   const [newStepName, setNewStepName] = useState('')
   const [newStepDue, setNewStepDue] = useState('')
   const [deliveryTitle, setDeliveryTitle] = useState('')
@@ -88,6 +91,8 @@ function ProjectDetail() {
       .then((data) => {
         setProject(data.project)
         setStatus(data.project.status ?? '')
+        setNotesDraft(data.project.notes ?? '')
+        setTagsDraft((data.project.tags ?? []).join(', '))
         setSteps(data.steps ?? [])
         setFiles(data.files)
         setDeliveries(data.deliveries)
@@ -158,6 +163,41 @@ function ProjectDetail() {
       token,
     )
     loadProject()
+  }
+
+  const handleNotesSave = async () => {
+    if (!token || !id) return
+    const nextNotes = notesDraft.trim()
+    try {
+      await apiRequest(
+        `/projects/${id}`,
+        { method: 'PATCH', body: JSON.stringify({ notes: nextNotes || null }) },
+        token,
+      )
+      setProject((current) => (current ? { ...current, notes: nextNotes || null } : current))
+      setNotesDraft(nextNotes)
+    } catch {
+      setError('Unable to save notes.')
+    }
+  }
+
+  const handleTagsSave = async () => {
+    if (!token || !id) return
+    const tags = tagsDraft
+      .split(',')
+      .map((tag) => tag.trim())
+      .filter((tag) => tag.length > 0)
+    try {
+      await apiRequest(
+        `/projects/${id}`,
+        { method: 'PATCH', body: JSON.stringify({ tags }) },
+        token,
+      )
+      setProject((current) => (current ? { ...current, tags } : current))
+      setTagsDraft(tags.join(', '))
+    } catch {
+      setError('Unable to save tags.')
+    }
   }
 
   const toggleStep = async (step: Step) => {
@@ -264,153 +304,82 @@ function ProjectDetail() {
 
   return (
     <Layout title={project.title}>
-      <div className="detail">
-        <div className="detail__summary">
-          <p><strong>Client:</strong> {project.client_name ?? '—'}</p>
-          <p><strong>Email:</strong> {project.client_email ?? '—'}</p>
-          <p><strong>Phone:</strong> {project.client_phone ?? '—'}</p>
-          <p><strong>Service:</strong> {project.service_type ?? '—'}</p>
-          <p><strong>Plan:</strong> {project.plan_tier ?? '—'}</p>
-          <div className="detail__status">
-            <strong>Status:</strong>
-            <select value={status} onChange={(event) => setStatus(event.target.value)}>
-              <option value="briefing">Briefing</option>
-              <option value="scheduled">Scheduled</option>
-              <option value="shoot">Shoot</option>
-              <option value="edit">Edit</option>
-              <option value="review">Review</option>
-              <option value="delivery">Delivery</option>
-              <option value="archive">Archive</option>
-            </select>
-            <button type="button" onClick={handleStatusUpdate}>Update</button>
-          </div>
-          <p><strong>Start:</strong> {formatDate(project.start_date)}</p>
-          <p><strong>Due:</strong> {formatDate(project.due_date)}</p>
-        </div>
-        <div className="detail__stack">
-          <section className="panel panel--compact">
-            <div className="panel__header">
-              <div className="panel__title">
-                <span className="panel__icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M7 7h10M7 12h6M7 17h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                  </svg>
-                </span>
-                <div>
-                  <p className="eyebrow">Notes</p>
-                  <h3>Notes</h3>
-                </div>
-              </div>
+      <div className="detail-grid">
+        <div className="detail-column">
+          <div className="detail__summary">
+            <p><strong>Client:</strong> {project.client_name ?? '—'}</p>
+            <p><strong>Email:</strong> {project.client_email ?? '—'}</p>
+            <p><strong>Phone:</strong> {project.client_phone ?? '—'}</p>
+            <p><strong>Service:</strong> {project.service_type ?? '—'}</p>
+            <p><strong>Plan:</strong> {project.plan_tier ?? '—'}</p>
+            <div className="detail__status">
+              <strong>Status:</strong>
+              <select value={status} onChange={(event) => setStatus(event.target.value)}>
+                <option value="briefing">Briefing</option>
+                <option value="scheduled">Scheduled</option>
+                <option value="shoot">Shoot</option>
+                <option value="edit">Edit</option>
+                <option value="review">Review</option>
+                <option value="delivery">Delivery</option>
+                <option value="archive">Archive</option>
+              </select>
+              <button type="button" onClick={handleStatusUpdate}>Update</button>
             </div>
-            <p>{project.notes ?? 'No notes yet.'}</p>
-          </section>
-          <section className="panel panel--compact">
-            <div className="panel__header">
-              <div className="panel__title">
-                <span className="panel__icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M12 4l8 14H4L12 4z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-                    <path d="M12 10v4M12 16v.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                  </svg>
-                </span>
-                <div>
-                  <p className="eyebrow">Alerts</p>
-                  <h3>Alerts</h3>
-                </div>
-              </div>
-            </div>
-            <ul className="detail__alerts-list">
-              {alerts.map((alert) => (
-                <li key={alert.title} className={`alert alert--${alert.tone}`}>
-                  <strong>{alert.title}</strong>
-                  <span>{alert.detail}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-        </div>
-      </div>
-
-      <div className="panel-grid">
-        <section className="panel">
-          <div className="panel__header">
-            <div className="panel__title">
-              <span className="panel__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M4 6h10M4 12h16M4 18h7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                </svg>
-              </span>
-              <div>
-                <p className="eyebrow">Sequence</p>
-                <h3>Workflow</h3>
-                <p className="panel__subtitle">Define the steps, dates, and progress for delivery.</p>
-              </div>
-            </div>
+            <p><strong>Start:</strong> {formatDate(project.start_date)}</p>
+            <p><strong>Due:</strong> {formatDate(project.due_date)}</p>
           </div>
-          <ul>
-            {steps.map((step) => (
-              <li
-                key={step.id}
-                className={`step-row${step.status === 'done' ? ' step-row--done' : ''}${
-                  step.due_date && step.status !== 'done' && new Date(step.due_date) < today ? ' step-row--late' : ''
-                }`}
-              >
-                <div className="step-row__main">
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={step.status === 'done'}
-                      onChange={() => toggleStep(step)}
-                    />
-                    <span>{step.position}. {step.name}</span>
-                  </label>
-                  <span className="step-row__date">{step.due_date ? formatDate(step.due_date) : 'No date'}</span>
-                </div>
-                <button type="button" onClick={() => removeStep(step.id)}>Remove</button>
-              </li>
-            ))}
-          </ul>
-          <div className="step-add">
-            <input
-              placeholder="New step name"
-              value={newStepName}
-              onChange={(event) => setNewStepName(event.target.value)}
-            />
-            <input
-              type="date"
-              value={newStepDue}
-              onChange={(event) => setNewStepDue(event.target.value)}
-            />
-            <button type="button" onClick={addStep}>Add step</button>
-          </div>
-        </section>
-
-        <div className="panel-stack">
           <section className="panel">
             <div className="panel__header">
               <div className="panel__title">
                 <span className="panel__icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M4 7a2 2 0 0 1 2-2h5l3 3h4a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7z" stroke="currentColor" strokeWidth="1.5" />
+                    <path d="M4 6h10M4 12h16M4 18h7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                   </svg>
                 </span>
                 <div>
-                  <p className="eyebrow">Repository</p>
-                  <h3>Files</h3>
-                  <p className="panel__subtitle">Collect briefs, assets, and final exports in one place.</p>
+                  <p className="eyebrow">Sequence</p>
+                  <h3>Workflow</h3>
+                  <p className="panel__subtitle">Define the steps, dates, and progress for delivery.</p>
                 </div>
               </div>
-              <input type="file" onChange={handleUpload} />
             </div>
             <ul>
-              {files.map((file) => (
-                <li key={file.id}>
-                  {file.filename}
+              {steps.map((step) => (
+                <li
+                  key={step.id}
+                  className={`step-row${step.status === 'done' ? ' step-row--done' : ''}${
+                    step.due_date && step.status !== 'done' && new Date(step.due_date) < today ? ' step-row--late' : ''
+                  }`}
+                >
+                  <div className="step-row__main">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={step.status === 'done'}
+                        onChange={() => toggleStep(step)}
+                      />
+                      <span>{step.position}. {step.name}</span>
+                    </label>
+                    <span className="step-row__date">{step.due_date ? formatDate(step.due_date) : 'No date'}</span>
+                  </div>
+                  <button type="button" onClick={() => removeStep(step.id)}>Remove</button>
                 </li>
               ))}
             </ul>
+            <div className="step-add">
+              <input
+                placeholder="New step name"
+                value={newStepName}
+                onChange={(event) => setNewStepName(event.target.value)}
+              />
+              <input
+                type="date"
+                value={newStepDue}
+                onChange={(event) => setNewStepDue(event.target.value)}
+              />
+              <button type="button" onClick={addStep}>Add step</button>
+            </div>
           </section>
-
           <section className="panel">
             <div className="panel__header">
               <div className="panel__title">
@@ -447,6 +416,133 @@ function ProjectDetail() {
                   <a href={delivery.url} target="_blank" rel="noreferrer">
                     {delivery.title}
                   </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+          <section className="panel">
+            <div className="panel__header">
+              <div className="panel__title">
+                <span className="panel__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-1 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    <path d="M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l1-1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="eyebrow">Sharing</p>
+                  <h3>Client share link</h3>
+                  <p className="panel__subtitle">Send a clean review link with zero logins.</p>
+                </div>
+              </div>
+              <button type="button" onClick={handleShare}>
+                Generate link
+              </button>
+            </div>
+            {shareToken && (
+              <div className="share">
+                <p>Share page:</p>
+                <Link to={`/share/${shareToken}`}>{`${window.location.origin}/share/${shareToken}`}</Link>
+                <p className="share__meta">API: {apiBase}/share/{shareToken}</p>
+              </div>
+            )}
+          </section>
+        </div>
+
+        <div className="detail-column">
+          <section className="panel panel--compact">
+            <div className="panel__header">
+              <div className="panel__title">
+                <span className="panel__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 4l8 14H4L12 4z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                    <path d="M12 10v4M12 16v.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="eyebrow">Alerts</p>
+                  <h3>Alerts</h3>
+                </div>
+              </div>
+            </div>
+            <ul className="detail__alerts-list">
+              {alerts.map((alert) => (
+                <li key={alert.title} className={`alert alert--${alert.tone}`}>
+                  <strong>{alert.title}</strong>
+                  <span>{alert.detail}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+          <section className="panel panel--compact">
+            <div className="panel__header">
+              <div className="panel__title">
+                <span className="panel__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M7 7h10M7 12h6M7 17h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="eyebrow">Notes</p>
+                  <h3>Notes</h3>
+                </div>
+              </div>
+              <button type="button" onClick={handleNotesSave}>
+                Save
+              </button>
+            </div>
+            <textarea
+              className="detail__notes"
+              rows={4}
+              value={notesDraft}
+              onChange={(event) => setNotesDraft(event.target.value)}
+              placeholder="Add notes..."
+            />
+          </section>
+          <section className="panel panel--compact">
+            <div className="panel__header">
+              <div className="panel__title">
+                <span className="panel__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M5 7h14M5 12h10M5 17h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="eyebrow">Tags</p>
+                  <h3>Tags</h3>
+                </div>
+              </div>
+              <button type="button" onClick={handleTagsSave}>
+                Save
+              </button>
+            </div>
+            <input
+              className="detail__tags"
+              value={tagsDraft}
+              onChange={(event) => setTagsDraft(event.target.value)}
+              placeholder="Add tags, comma separated"
+            />
+          </section>
+          <section className="panel">
+            <div className="panel__header">
+              <div className="panel__title">
+                <span className="panel__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M4 7a2 2 0 0 1 2-2h5l3 3h4a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7z" stroke="currentColor" strokeWidth="1.5" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="eyebrow">Repository</p>
+                  <h3>Files</h3>
+                  <p className="panel__subtitle">Collect briefs, assets, and final exports in one place.</p>
+                </div>
+              </div>
+              <input type="file" onChange={handleUpload} />
+            </div>
+            <ul>
+              {files.map((file) => (
+                <li key={file.id}>
+                  {file.filename}
                 </li>
               ))}
             </ul>
@@ -489,34 +585,6 @@ function ProjectDetail() {
                 </li>
               ))}
             </ul>
-          </section>
-
-          <section className="panel">
-            <div className="panel__header">
-              <div className="panel__title">
-                <span className="panel__icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M10 14a4 4 0 0 0 6 0l3-3a4 4 0 0 0-6-6l-1 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                    <path d="M14 10a4 4 0 0 0-6 0l-3 3a4 4 0 0 0 6 6l1-1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                  </svg>
-                </span>
-                <div>
-                  <p className="eyebrow">Sharing</p>
-                  <h3>Client share link</h3>
-                  <p className="panel__subtitle">Send a clean review link with zero logins.</p>
-                </div>
-              </div>
-              <button type="button" onClick={handleShare}>
-                Generate link
-              </button>
-            </div>
-            {shareToken && (
-              <div className="share">
-                <p>Share page:</p>
-                <Link to={`/share/${shareToken}`}>{`${window.location.origin}/share/${shareToken}`}</Link>
-                <p className="share__meta">API: {apiBase}/share/{shareToken}</p>
-              </div>
-            )}
           </section>
         </div>
       </div>

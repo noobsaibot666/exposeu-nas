@@ -1,0 +1,124 @@
+services:
+  traefik:
+    image: traefik:v3.0
+    container_name: traefik
+    restart: always
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=webnet"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.myresolver.acme.email=alanxalves@me.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./letsencrypt:/letsencrypt
+    networks:
+      - webnet
+    labels:
+      - "traefik.enable=true"
+      # Global HTTP -> HTTPS redirect middleware
+      - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.https-redirect.redirectscheme.permanent=true"
+
+  website-nginx:
+    image: nginx:alpine
+    container_name: website-nginx
+    restart: always
+    networks:
+      - webnet
+    volumes:
+      - /mnt/Leviathan/www/website/dist:/usr/share/nginx/html:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=webnet"
+      - "traefik.http.services.website-svc.loadbalancer.server.port=80"
+
+      # HTTPS router
+      - "traefik.http.routers.website.entrypoints=websecure"
+      - "traefik.http.routers.website.rule=Host(`alan-design.com`) || Host(`www.alan-design.com`)"
+      - "traefik.http.routers.website.tls=true"
+      - "traefik.http.routers.website.tls.certresolver=myresolver"
+      - "traefik.http.routers.website.service=website-svc"
+
+      # HTTP -> HTTPS redirect
+      - "traefik.http.routers.website-http.entrypoints=web"
+      - "traefik.http.routers.website-http.rule=Host(`alan-design.com`)"
+      - "traefik.http.routers.website-http.middlewares=https-redirect"
+      - "traefik.http.routers.website-http.service=website-svc"
+
+      - "traefik.http.routers.website-www-http.entrypoints=web"
+      - "traefik.http.routers.website-www-http.rule=Host(`www.alan-design.com`)"
+      - "traefik.http.routers.website-www-http.middlewares=https-redirect"
+      - "traefik.http.routers.website-www-http.service=website-svc"
+
+  exposeu-nginx:
+    image: nginx:alpine
+    container_name: exposeu-nginx
+    restart: always
+    networks:
+      - webnet
+    volumes:
+      - /mnt/Leviathan/www/exposeu/dist:/usr/share/nginx/html:ro
+      - /mnt/Leviathan/www/exposeu/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=webnet"
+      - "traefik.http.services.exposeu-svc.loadbalancer.server.port=80"
+
+      # HTTPS router
+      - "traefik.http.routers.exposeu.entrypoints=websecure"
+      - "traefik.http.routers.exposeu.rule=Host(`expose-u.com`) || Host(`www.expose-u.com`)"
+      - "traefik.http.routers.exposeu.tls=true"
+      - "traefik.http.routers.exposeu.tls.certresolver=myresolver"
+      - "traefik.http.routers.exposeu.service=exposeu-svc"
+
+      # HTTP -> HTTPS redirect
+      - "traefik.http.routers.exposeu-http.entrypoints=web"
+      - "traefik.http.routers.exposeu-http.rule=Host(`expose-u.com`)"
+      - "traefik.http.routers.exposeu-http.middlewares=https-redirect"
+      - "traefik.http.routers.exposeu-http.service=exposeu-s
+     
+      - "traefik.http.routers.exposeu-www-http.service=exposeu-svc"
+
+  exposeu-contact:
+    image: node:20-alpine
+    container_name: exposeu-contact
+    working_dir: /app
+    restart: always
+    networks:
+      - webnet
+    env_file:
+      - /mnt/Leviathan/www/exposeu/.env
+    volumes:
+      - /mnt/Leviathan/www/exposeu:/app
+    command: sh -lc "node server/index.js"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=webnet"
+
+      # Middleware: strip /api so backend sees /contact
+      - "traefik.http.middlewares.exposeu-api-strip.stripprefix.prefixes=/api"
+
+      # API service
+      - "traefik.http.services.exposeu-api-svc.loadbalancer.server.port=8787"
+
+      # HTTPS router for API (/api/*)
+      - "traefik.http.routers.exposeu-api.entrypoints=websecure"
+      - "traefik.http.routers.exposeu-api.rule=(Host(`expose-u.com`) || Host(`www.expose-u.com`)) && PathPrefix(`/api`)"
+      - "traefik.http.routers.exposeu-api.tls=true"
+      - "traefik.http.routers.exposeu-api.tls.certresolver=myresolver"
+      - "traefik.http.routers.exposeu-api.middlewares=exposeu-api-strip"
+      - "traefik.http.routers.exposeu-api.service=exposeu-api-svc"
+      - "traefik.http.routers.exposeu-api.priority=100"
+
+
+networks:
+  webnet:
+    external: true

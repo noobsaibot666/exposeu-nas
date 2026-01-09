@@ -9,6 +9,7 @@ type WorkflowTemplate = {
   id: number
   name: string
   description: string | null
+  tags?: string[]
 }
 
 type WorkflowStep = {
@@ -24,6 +25,12 @@ type BuilderStep = {
   offsetDays: string
 }
 
+const parseTags = (value: string) =>
+  value
+    .split(',')
+    .map((tag) => tag.trim())
+    .filter((tag) => tag.length > 0)
+
 function CreateProject() {
   const navigate = useNavigate()
   const { token } = useAuth()
@@ -35,6 +42,7 @@ function CreateProject() {
   const [clientPhone, setClientPhone] = useState('')
   const [serviceType, setServiceType] = useState('')
   const [planTier, setPlanTier] = useState('')
+  const [tags, setTags] = useState('')
   const [status, setStatus] = useState('briefing')
   const [startDate, setStartDate] = useState('')
   const [dueDate, setDueDate] = useState('')
@@ -43,6 +51,7 @@ function CreateProject() {
   const [error, setError] = useState('')
   const [builderName, setBuilderName] = useState('')
   const [builderDescription, setBuilderDescription] = useState('')
+  const [builderTags, setBuilderTags] = useState('')
   const [builderStepName, setBuilderStepName] = useState('')
   const [builderStepOffset, setBuilderStepOffset] = useState('')
   const [builderSteps, setBuilderSteps] = useState<BuilderStep[]>([])
@@ -81,6 +90,7 @@ function CreateProject() {
             clientPhone,
             serviceType,
             planTier,
+            tags: parseTags(tags),
             status,
             startDate,
             dueDate,
@@ -141,6 +151,7 @@ function CreateProject() {
           body: JSON.stringify({
             name: builderName.trim(),
             description: builderDescription.trim() || null,
+            tags: parseTags(builderTags),
             steps: builderSteps.map((step, index) => ({
               name: step.name.trim(),
               position: index + 1,
@@ -208,6 +219,10 @@ function CreateProject() {
                   <input value={planTier} onChange={(event) => setPlanTier(event.target.value)} />
                 </label>
                 <label>
+                  Tags (comma separated)
+                  <input value={tags} onChange={(event) => setTags(event.target.value)} />
+                </label>
+                <label className="grid-span">
                   Status
                   <select value={status} onChange={(event) => setStatus(event.target.value)}>
                     <option value="briefing">Briefing</option>
@@ -219,14 +234,16 @@ function CreateProject() {
                     <option value="archive">Archive</option>
                   </select>
                 </label>
-                <label>
-                  Start date
-                  <input type="date" value={startDate} onChange={(event) => setStartDate(event.target.value)} />
-                </label>
-                <label>
-                  Due date
-                  <input type="date" value={dueDate} onChange={(event) => setDueDate(event.target.value)} />
-                </label>
+                <div className="grid grid-span">
+                  <label>
+                    Start date
+                    <input type="date" value={startDate} onChange={(event) => setStartDate(event.target.value)} />
+                  </label>
+                  <label>
+                    Due date
+                    <input type="date" value={dueDate} onChange={(event) => setDueDate(event.target.value)} />
+                  </label>
+                </div>
               </div>
             </div>
           </section>
@@ -256,13 +273,18 @@ function CreateProject() {
                   <div className="workflow-preview">
                     <p>Workflow steps:</p>
                     <ul>
-                      {selectedSteps.map((step) => (
-                        <li key={step.id}>{step.position}. {step.name}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </section>
+                    {selectedSteps.map((step) => (
+                      <li key={step.id}>{step.position}. {step.name}</li>
+                    ))}
+                  </ul>
+                  {templates.find((template) => template.id === workflowTemplateId)?.tags?.length ? (
+                    <p className="muted">
+                      Tags: {templates.find((template) => template.id === workflowTemplateId)?.tags?.join(', ')}
+                    </p>
+                  ) : null}
+                </div>
+              )}
+            </section>
 
               <section className="project-form__section">
                 <div className="workflow-builder">
@@ -290,6 +312,10 @@ function CreateProject() {
                         value={builderDescription}
                         onChange={(event) => setBuilderDescription(event.target.value)}
                       />
+                    </label>
+                    <label>
+                      Tags (comma separated)
+                      <input value={builderTags} onChange={(event) => setBuilderTags(event.target.value)} />
                     </label>
                   </div>
                   <div className="workflow-builder__steps">

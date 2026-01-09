@@ -137,6 +137,10 @@ button:disabled {
   max-width: none;
 }
 
+.grid-span {
+  grid-column: 1 / -1;
+}
+
 .project-form__sidebar {
   display: grid;
   gap: 18px;
