@@ -71,8 +71,12 @@ function Dashboard() {
   const [error, setError] = useState('')
   const [view, setView] = useState<ViewMode>(() => {
     if (typeof window === 'undefined') return 'timeline'
-    const stored = window.sessionStorage.getItem('dashboardView') as ViewMode | null
-    return stored ?? 'timeline'
+    try {
+      const stored = window.sessionStorage.getItem('dashboardView') as ViewMode | null
+      return stored ?? 'timeline'
+    } catch {
+      return 'timeline'
+    }
   })
   const [timelineOffsets, setTimelineOffsets] = useState<Record<number, number>>({})
   const [draggingProjectId, setDraggingProjectId] = useState<number | null>(null)
@@ -151,7 +155,11 @@ function Dashboard() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return
-    window.sessionStorage.setItem('dashboardView', view)
+    try {
+      window.sessionStorage.setItem('dashboardView', view)
+    } catch {
+      // Ignore storage write failures (e.g. private mode).
+    }
   }, [view])
 
   const today = new Date()
@@ -429,6 +437,8 @@ function Dashboard() {
       return { ...project, spanStart: start, spanEnd: end }
     })
   }, [activeProjects])
+
+  const maxCalendarItems = isCoarsePointer ? 2 : 3
 
   return (
     <Layout title="Projects overview" headerClassName="layout__header--hero" hideDashboardLink>
@@ -814,7 +824,7 @@ function Dashboard() {
                     >
                       <span className="calendar-day__date">{day.getDate()}</span>
                       <div className="calendar-day__items">
-                        {dayProjects.slice(0, 3).map((project) => {
+                        {dayProjects.slice(0, maxCalendarItems).map((project) => {
                           const isStart = day.getTime() === project.spanStart.getTime()
                           const isEnd = day.getTime() === project.spanEnd.getTime()
                           return (
@@ -834,9 +844,9 @@ function Dashboard() {
                             </Link>
                           )
                         })}
-                        {dayProjects.length > 3 && (
+                        {dayProjects.length > maxCalendarItems && (
                           <span className="calendar-item calendar-item--more">
-                            +{dayProjects.length - 3} more
+                            +{dayProjects.length - maxCalendarItems} more
                           </span>
                         )}
                       </div>
