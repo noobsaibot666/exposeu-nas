@@ -8,6 +8,8 @@ import { query } from '../db.js'
 const router = Router()
 
 const uploadDir = process.env.API_UPLOAD_DIR || '/uploads'
+const getUser = (req: { user?: unknown }) => req.user as { id: number; is_admin?: boolean }
+const isAdmin = (req: { user?: unknown }) => Boolean(getUser(req)?.is_admin)
 const upload = multer({
   dest: uploadDir,
   limits: { fileSize: Number(process.env.API_MAX_UPLOAD_BYTES || 2147483648) },
@@ -28,8 +30,13 @@ const normalizeTags = (value: unknown) => {
   return []
 }
 
-router.get('/', async (_req, res) => {
-  const result = await query('SELECT * FROM projects ORDER BY created_at DESC')
+router.get('/', async (req, res) => {
+  const user = getUser(req)
+  const admin = isAdmin(req)
+  const result = await query(
+    'SELECT * FROM projects WHERE ($1::boolean OR owner_user_id = $2) ORDER BY created_at DESC',
+    [admin, user.id],
+  )
   const projects = result.rows
   const projectIds = projects.map((project) => project.id)
   const tagsByProject = new Map<number, string[]>()
@@ -101,6 +108,7 @@ router.get('/', async (_req, res) => {
 })
 
 router.post('/', async (req, res) => {
+  const user = getUser(req)
   const {
     title,
     clientName,
@@ -123,10 +131,11 @@ router.post('/', async (req, res) => {
 
   const result = await query(
     `INSERT INTO projects
-      (title, client_name, client_email, client_phone, service_type, plan_tier, project_color, status, start_date, due_date, notes, workflow_template_id)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+      (owner_user_id, title, client_name, client_email, client_phone, service_type, plan_tier, project_color, status, start_date, due_date, notes, workflow_template_id)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
      RETURNING *`,
     [
+      user.id,
       title,
       clientName || null,
       clientEmail || null,
@@ -178,7 +187,13 @@ router.post('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   const id = Number(req.params.id)
-  const project = await query('SELECT * FROM projects WHERE id = $1', [id])
+  const user = getUser(req)
+  const admin = isAdmin(req)
+  const project = await query('SELECT * FROM projects WHERE id = $1 AND ($2::boolean OR owner_user_id = $3)', [
+    id,
+    admin,
+    user.id,
+  ])
   if (!project.rows[0]) return res.status(404).json({ error: 'Not found.' })
 
   const tagsResult = await query<{ tag: string }>('SELECT tag FROM project_tags WHERE project_id = $1', [id])
@@ -228,6 +243,8 @@ router.get('/:id', async (req, res) => {
 
 router.patch('/:id', async (req, res) => {
   const id = Number(req.params.id)
+  const user = getUser(req)
+  const admin = isAdmin(req)
   const { status, dueDate, startDate, notes, tags, clientName, clientEmail, clientPhone, serviceType, planTier, projectColor } = req.body as {
     status?: string
     dueDate?: string
@@ -259,7 +276,7 @@ router.patch('/:id', async (req, res) => {
            ELSE completed_at
          END,
          updated_at = NOW()
-     WHERE id = $11
+     WHERE id = $11 AND ($12::boolean OR owner_user_id = $13)
      RETURNING *`,
     [
       status || null,
@@ -273,6 +290,8 @@ router.patch('/:id', async (req, res) => {
       planTier || null,
       projectColor || null,
       id,
+      admin,
+      user.id,
     ],
   )
 
@@ -322,6 +341,14 @@ router.patch('/:id/review', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   const id = Number(req.params.id)
+  const user = getUser(req)
+  const admin = isAdmin(req)
+  const project = await query('SELECT id FROM projects WHERE id = $1 AND ($2::boolean OR owner_user_id = $3)', [
+    id,
+    admin,
+    user.id,
+  ])
+  if (!project.rows[0]) return res.status(404).json({ error: 'Not found.' })
   const files = await query<{ stored_path: string }>('SELECT stored_path FROM files WHERE project_id = $1', [id])
 
   await query('DELETE FROM project_reviews WHERE project_id = $1', [id])
@@ -349,6 +376,14 @@ router.delete('/:id', async (req, res) => {
 
 router.post('/:id/files', upload.single('file'), async (req, res) => {
   const id = Number(req.params.id)
+  const user = getUser(req)
+  const admin = isAdmin(req)
+  const project = await query('SELECT id FROM projects WHERE id = $1 AND ($2::boolean OR owner_user_id = $3)', [
+    id,
+    admin,
+    user.id,
+  ])
+  if (!project.rows[0]) return res.status(404).json({ error: 'Not found.' })
   if (!req.file) return res.status(400).json({ error: 'No file uploaded.' })
 
   const { originalname, filename, size, mimetype } = req.file
@@ -364,6 +399,14 @@ router.post('/:id/files', upload.single('file'), async (req, res) => {
 
 router.post('/:id/steps', async (req, res) => {
   const id = Number(req.params.id)
+  const user = getUser(req)
+  const admin = isAdmin(req)
+  const project = await query('SELECT id FROM projects WHERE id = $1 AND ($2::boolean OR owner_user_id = $3)', [
+    id,
+    admin,
+    user.id,
+  ])
+  if (!project.rows[0]) return res.status(404).json({ error: 'Not found.' })
   const { name, dueDate } = req.body as { name?: string; dueDate?: string }
   if (!name) return res.status(400).json({ error: 'Name required.' })
 
@@ -381,6 +424,14 @@ router.post('/:id/steps', async (req, res) => {
 router.patch('/:id/steps/:stepId', async (req, res) => {
   const id = Number(req.params.id)
   const stepId = Number(req.params.stepId)
+  const user = getUser(req)
+  const admin = isAdmin(req)
+  const project = await query('SELECT id FROM projects WHERE id = $1 AND ($2::boolean OR owner_user_id = $3)', [
+    id,
+    admin,
+    user.id,
+  ])
+  if (!project.rows[0]) return res.status(404).json({ error: 'Not found.' })
   const { status, dueDate, name } = req.body as { status?: string; dueDate?: string; name?: string }
 
   const result = await query(
@@ -401,6 +452,14 @@ router.patch('/:id/steps/:stepId', async (req, res) => {
 router.delete('/:id/steps/:stepId', async (req, res) => {
   const id = Number(req.params.id)
   const stepId = Number(req.params.stepId)
+  const user = getUser(req)
+  const admin = isAdmin(req)
+  const project = await query('SELECT id FROM projects WHERE id = $1 AND ($2::boolean OR owner_user_id = $3)', [
+    id,
+    admin,
+    user.id,
+  ])
+  if (!project.rows[0]) return res.status(404).json({ error: 'Not found.' })
   const result = await query('DELETE FROM project_steps WHERE id = $1 AND project_id = $2 RETURNING id', [stepId, id])
   if (!result.rows[0]) return res.status(404).json({ error: 'Not found.' })
   return res.json({ ok: true })
@@ -409,6 +468,14 @@ router.delete('/:id/steps/:stepId', async (req, res) => {
 router.get('/:id/files/:fileId', async (req, res) => {
   const id = Number(req.params.id)
   const fileId = Number(req.params.fileId)
+  const user = getUser(req)
+  const admin = isAdmin(req)
+  const project = await query('SELECT id FROM projects WHERE id = $1 AND ($2::boolean OR owner_user_id = $3)', [
+    id,
+    admin,
+    user.id,
+  ])
+  if (!project.rows[0]) return res.status(404).json({ error: 'Not found.' })
   const file = await query('SELECT filename, stored_path FROM files WHERE id = $1 AND project_id = $2', [fileId, id])
   const fileRow = file.rows[0]
   if (!fileRow) return res.status(404).json({ error: 'File not found.' })
@@ -419,6 +486,14 @@ router.get('/:id/files/:fileId', async (req, res) => {
 
 router.post('/:id/deliveries', async (req, res) => {
   const id = Number(req.params.id)
+  const user = getUser(req)
+  const admin = isAdmin(req)
+  const project = await query('SELECT id FROM projects WHERE id = $1 AND ($2::boolean OR owner_user_id = $3)', [
+    id,
+    admin,
+    user.id,
+  ])
+  if (!project.rows[0]) return res.status(404).json({ error: 'Not found.' })
   const { title, url } = req.body as { title?: string; url?: string }
   if (!title || !url) return res.status(400).json({ error: 'Title and url required.' })
 
@@ -432,6 +507,14 @@ router.post('/:id/deliveries', async (req, res) => {
 
 router.post('/:id/time-logs', async (req, res) => {
   const id = Number(req.params.id)
+  const user = getUser(req)
+  const admin = isAdmin(req)
+  const project = await query('SELECT id FROM projects WHERE id = $1 AND ($2::boolean OR owner_user_id = $3)', [
+    id,
+    admin,
+    user.id,
+  ])
+  if (!project.rows[0]) return res.status(404).json({ error: 'Not found.' })
   const { minutes, note } = req.body as { minutes?: number; note?: string }
   if (!minutes) return res.status(400).json({ error: 'Minutes required.' })
 
@@ -445,6 +528,14 @@ router.post('/:id/time-logs', async (req, res) => {
 
 router.post('/:id/share', async (req, res) => {
   const id = Number(req.params.id)
+  const user = getUser(req)
+  const admin = isAdmin(req)
+  const project = await query('SELECT id FROM projects WHERE id = $1 AND ($2::boolean OR owner_user_id = $3)', [
+    id,
+    admin,
+    user.id,
+  ])
+  if (!project.rows[0]) return res.status(404).json({ error: 'Not found.' })
   const token = nanoid(10)
   const result = await query(
     'INSERT INTO share_links (project_id, token) VALUES ($1,$2) RETURNING token',

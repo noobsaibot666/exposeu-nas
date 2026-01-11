@@ -13,6 +13,7 @@ type Budget = {
   total_budget: string
   production_budget: string
   profit_budget: string
+  profit_percent: string | null
   vat_amount: string | null
   vat_percent: string | null
   notes: string | null
@@ -205,10 +206,13 @@ export default function BudgetControl() {
                     <p className="metric-label">Spent</p>
                     <p className="metric-value">{formatAmount(spent)}</p>
                   </div>
-                  <div>
-                    <p className="metric-label">Profit</p>
-                    <p className="metric-value">{formatAmount(toNumber(budget.profit_budget))}</p>
-                  </div>
+                <div>
+                  <p className="metric-label">Profit</p>
+                  <p className="metric-value">
+                    {formatAmount(toNumber(budget.profit_budget))}
+                    {budget.profit_percent ? ` (${budget.profit_percent}%)` : ''}
+                  </p>
+                </div>
                   <div>
                     <p className="metric-label">VAT</p>
                     <p className="metric-value">{formatAmount(toNumber(budget.vat_amount))}</p>

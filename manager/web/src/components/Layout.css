@@ -47,6 +47,18 @@
   width: 100%;
 }
 
+.layout__title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.layout__title-main {
+  display: grid;
+  gap: 8px;
+}
+
 .layout__title h1 {
   margin: 0;
   line-height: 1.1;
@@ -94,6 +106,11 @@
 
   .layout__title {
     gap: 8px;
+  }
+
+  .layout__title-row {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .layout__primary {

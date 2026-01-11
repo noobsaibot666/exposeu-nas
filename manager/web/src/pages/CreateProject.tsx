@@ -68,6 +68,7 @@ function CreateProject() {
   const [budgetEnabled, setBudgetEnabled] = useState(false)
   const [totalBudget, setTotalBudget] = useState('')
   const [productionBudget, setProductionBudget] = useState('')
+  const [profitPercent, setProfitPercent] = useState('')
   const [profitBudget, setProfitBudget] = useState('')
   const [vatAmount, setVatAmount] = useState('')
   const [vatPercent, setVatPercent] = useState('')
@@ -132,6 +133,7 @@ function CreateProject() {
                 totalBudget,
                 productionBudget,
                 profitBudget,
+                profitPercent,
                 vatAmount,
                 vatPercent,
                 notes: budgetNotes.trim() || null,
@@ -228,13 +230,15 @@ function CreateProject() {
 
   useEffect(() => {
     const total = Number(totalBudget) || 0
-    const profit = Number(profitBudget) || 0
+    const profitPct = Number(profitPercent) || 0
     const vatPct = Number(vatPercent) || 0
+    const profit = total * (profitPct / 100)
     const vat = total * (vatPct / 100)
     const production = Math.max(0, total - profit - vat)
     setVatAmount(vat ? vat.toFixed(2) : '')
     setProductionBudget(production ? production.toFixed(2) : '')
-  }, [profitBudget, totalBudget, vatPercent])
+    setProfitBudget(profit ? profit.toFixed(2) : '')
+  }, [profitPercent, totalBudget, vatPercent])
 
   useEffect(() => {
     if (!budgetEnabled) return
@@ -357,11 +361,15 @@ function CreateProject() {
                     <input value={productionBudget} disabled />
                   </label>
                   <label>
-                    Profit target
+                    Profit target (%)
                     <input
-                      value={profitBudget}
-                      onChange={(event) => setProfitBudget(event.target.value)}
+                      value={profitPercent}
+                      onChange={(event) => setProfitPercent(event.target.value)}
                     />
+                  </label>
+                  <label>
+                    Profit amount
+                    <input value={profitBudget} disabled />
                   </label>
                   <label>
                     VAT (%)

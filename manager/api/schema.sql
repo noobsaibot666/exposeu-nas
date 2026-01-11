@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   email TEXT UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
+  is_admin BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP DEFAULT NOW()
 );
 
@@ -22,6 +23,7 @@ CREATE TABLE IF NOT EXISTS workflow_steps (
 
 CREATE TABLE IF NOT EXISTS projects (
   id SERIAL PRIMARY KEY,
+  owner_user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
   title TEXT NOT NULL,
   client_name TEXT,
   client_email TEXT,
@@ -107,10 +109,12 @@ CREATE TABLE IF NOT EXISTS workflow_tags (
 CREATE TABLE IF NOT EXISTS budgets (
   id SERIAL PRIMARY KEY,
   project_id INTEGER REFERENCES projects(id) ON DELETE SET NULL,
+  owner_user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
   project_title TEXT,
   total_budget NUMERIC(12, 2) DEFAULT 0 NOT NULL,
   production_budget NUMERIC(12, 2) NOT NULL,
   profit_budget NUMERIC(12, 2) NOT NULL,
+  profit_percent NUMERIC(5, 2) DEFAULT 0,
   vat_amount NUMERIC(12, 2) DEFAULT 0,
   vat_percent NUMERIC(5, 2) DEFAULT 0,
   notes TEXT,

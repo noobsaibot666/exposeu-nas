@@ -3,6 +3,7 @@ import express from 'express'
 import cors from 'cors'
 import bcrypt from 'bcrypt'
 import authRoutes from './routes/auth.js'
+import adminRoutes from './routes/admin.js'
 import budgetRoutes from './routes/budgets.js'
 import projectRoutes from './routes/projects.js'
 import shareRoutes from './routes/share.js'
@@ -22,6 +23,7 @@ app.get('/health', (_req, res) => {
 })
 
 app.use('/auth', authRoutes)
+app.use('/admin', requireAuth, adminRoutes)
 app.use('/budgets', requireAuth, budgetRoutes)
 app.use('/projects', requireAuth, projectRoutes)
 app.use('/workflows', requireAuth, workflowRoutes)
@@ -36,10 +38,16 @@ async function ensureAdmin() {
   const existing = await query<{ id: number }>('SELECT id FROM users WHERE LOWER(email) = LOWER($1)', [
     normalizedEmail,
   ])
-  if (existing.rows[0]) return
+  if (existing.rows[0]) {
+    await query('UPDATE users SET is_admin = TRUE WHERE id = $1', [existing.rows[0].id])
+    return
+  }
 
   const passwordHash = await bcrypt.hash(password, 12)
-  await query('INSERT INTO users (email, password_hash) VALUES ($1, $2)', [normalizedEmail, passwordHash])
+  await query('INSERT INTO users (email, password_hash, is_admin) VALUES ($1, $2, TRUE)', [
+    normalizedEmail,
+    passwordHash,
+  ])
 }
 
 Promise.all([ensureAdmin(), ensureDefaultWorkflow()])

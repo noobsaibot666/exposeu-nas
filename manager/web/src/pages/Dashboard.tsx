@@ -57,7 +57,7 @@ const getProjectColor = (project: { id: number; title: string; project_color?: s
 
 function Dashboard() {
   const navigate = useNavigate()
-  const { token } = useAuth()
+  const { token, user } = useAuth()
   const [projects, setProjects] = useState<Project[]>([])
   const [error, setError] = useState('')
   const [view, setView] = useState<ViewMode>(() => {
@@ -346,6 +346,11 @@ function Dashboard() {
             <Link to="/budgets" className="button button--ghost">
               Budget control
             </Link>
+            {user?.is_admin && (
+              <Link to="/admin/users" className="button button--ghost">
+                User access
+              </Link>
+            )}
             <Link to="/archive" className="button button--ghost">
               Archive
             </Link>

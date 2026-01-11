@@ -3,6 +3,7 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import BudgetControl from './pages/BudgetControl'
 import BudgetDetail from './pages/BudgetDetail'
+import AdminUsers from './pages/AdminUsers'
 import StatProjects from './pages/StatProjects'
 import CreateProject from './pages/CreateProject'
 import ProjectDetail from './pages/ProjectDetail'
@@ -29,6 +30,10 @@ function App() {
       <Route
         path="/budgets/:id"
         element={token ? <BudgetDetail /> : <Navigate to="/login" replace />} 
+      />
+      <Route
+        path="/admin/users"
+        element={token ? <AdminUsers /> : <Navigate to="/login" replace />} 
       />
       <Route
         path="/stats/:type"

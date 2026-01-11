@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { apiRequest, apiUpload, apiBase } from '../components/api'
 import { useAuth } from '../components/useAuth'
@@ -61,6 +61,7 @@ type Budget = {
   total_budget: string
   production_budget: string
   profit_budget: string
+  profit_percent: string | null
   vat_amount: string | null
   vat_percent: string | null
   notes: string | null
@@ -129,6 +130,7 @@ const formatAmount = (value: number) =>
 
 export default function ProjectDetail() {
   const { id } = useParams()
+  const navigate = useNavigate()
   const { token } = useAuth()
   const [project, setProject] = useState<Project | null>(null)
   const [files, setFiles] = useState<FileItem[]>([])
@@ -159,6 +161,7 @@ export default function ProjectDetail() {
   const [logNote, setLogNote] = useState('')
   const [budgetTotal, setBudgetTotal] = useState('')
   const [budgetProduction, setBudgetProduction] = useState('')
+  const [budgetProfitPercent, setBudgetProfitPercent] = useState('')
   const [budgetProfit, setBudgetProfit] = useState('')
   const [budgetVatPercent, setBudgetVatPercent] = useState('')
   const [budgetVat, setBudgetVat] = useState('')
@@ -230,6 +233,7 @@ export default function ProjectDetail() {
         if (!data.budget || data.budget.archived) {
           setBudgetTotal('')
           setBudgetProduction('')
+          setBudgetProfitPercent('')
           setBudgetProfit('')
           setBudgetVatPercent('')
           setBudgetVat('')
@@ -238,6 +242,7 @@ export default function ProjectDetail() {
         } else {
           setBudgetTotal(data.budget.total_budget ?? '')
           setBudgetProduction(data.budget.production_budget ?? '')
+          setBudgetProfitPercent(data.budget.profit_percent ?? '')
           setBudgetProfit(data.budget.profit_budget ?? '')
           setBudgetVatPercent(data.budget.vat_percent ?? '')
           setBudgetVat(data.budget.vat_amount ?? '')
@@ -265,13 +270,15 @@ export default function ProjectDetail() {
   useEffect(() => {
     if (budget) return
     const total = Number(budgetTotal) || 0
-    const profit = Number(budgetProfit) || 0
+    const profitPct = Number(budgetProfitPercent) || 0
     const vatPct = Number(budgetVatPercent) || 0
+    const profit = total * (profitPct / 100)
     const vat = total * (vatPct / 100)
     const production = Math.max(0, total - profit - vat)
     setBudgetVat(vat ? vat.toFixed(2) : '')
     setBudgetProduction(production ? production.toFixed(2) : '')
-  }, [budget, budgetProfit, budgetTotal, budgetVatPercent])
+    setBudgetProfit(profit ? profit.toFixed(2) : '')
+  }, [budget, budgetProfitPercent, budgetTotal, budgetVatPercent])
 
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!token || !id || !event.target.files?.[0]) return
@@ -346,6 +353,34 @@ export default function ProjectDetail() {
     loadProject()
   }
 
+  const handleArchiveProject = async () => {
+    if (!token || !id) return
+    const confirmed = window.confirm('Archive this project? You can still access it later from Archive.')
+    if (!confirmed) return
+    try {
+      await apiRequest(
+        `/projects/${id}`,
+        { method: 'PATCH', body: JSON.stringify({ status: 'archive' }) },
+        token,
+      )
+      navigate('/archive')
+    } catch {
+      setError('Unable to archive project.')
+    }
+  }
+
+  const handleDeleteProject = async () => {
+    if (!token || !id) return
+    const confirmed = window.confirm('Delete this project and all related data? This cannot be undone.')
+    if (!confirmed) return
+    try {
+      await apiRequest(`/projects/${id}`, { method: 'DELETE' }, token)
+      navigate('/')
+    } catch {
+      setError('Unable to delete project.')
+    }
+  }
+
   const handleNotesSave = async () => {
     if (!token || !id) return
     const nextNotes = notesDraft.trim()
@@ -410,6 +445,7 @@ export default function ProjectDetail() {
             totalBudget: budgetTotal,
             productionBudget: budgetProduction,
             profitBudget: budgetProfit,
+            profitPercent: budgetProfitPercent,
             vatAmount: budgetVat,
             vatPercent: budgetVatPercent,
             notes: budgetNotes.trim() || null,
@@ -645,7 +681,19 @@ export default function ProjectDetail() {
   const budgetProductionValue = budget ? toNumber(budget.production_budget) : toNumber(budgetProduction)
   const budgetRemaining = Math.max(0, budgetProductionValue - budgetSpent)
   return (
-    <Layout title={project.title}>
+    <Layout
+      title={project.title}
+      headerActions={
+        <div className="project-actions">
+          <button type="button" className="project-actions__ghost" onClick={handleArchiveProject}>
+            Archive project
+          </button>
+          <button type="button" className="project-actions__danger" onClick={handleDeleteProject}>
+            Delete project
+          </button>
+        </div>
+      }
+    >
       <div className="detail-grid">
         <div className="detail-column">
           <div className="detail__summary">
@@ -981,11 +1029,15 @@ export default function ProjectDetail() {
                     <input value={budgetProduction} disabled />
                   </label>
                   <label>
-                    Profit target
+                    Profit target (%)
                     <input
-                      value={budgetProfit}
-                      onChange={(event) => setBudgetProfit(event.target.value)}
+                      value={budgetProfitPercent}
+                      onChange={(event) => setBudgetProfitPercent(event.target.value)}
                     />
+                  </label>
+                  <label>
+                    Profit amount
+                    <input value={budgetProfit} disabled />
                   </label>
                   <label>
                     VAT (%)

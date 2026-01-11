@@ -13,8 +13,8 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Email and password required.' })
     }
 
-    const result = await query<{ id: number; email: string; password_hash: string }>(
-      'SELECT id, email, password_hash FROM users WHERE LOWER(email) = LOWER($1)',
+    const result = await query<{ id: number; email: string; password_hash: string; is_admin: boolean }>(
+      'SELECT id, email, password_hash, is_admin FROM users WHERE LOWER(email) = LOWER($1)',
       [normalizedEmail],
     )
 
@@ -28,7 +28,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials.' })
     }
 
-    const token = signToken({ id: user.id, email: user.email })
+    const token = signToken({ id: user.id, email: user.email, is_admin: user.is_admin })
     return res.json({ token })
   } catch {
     return res.status(500).json({ error: 'Unable to process login.' })
@@ -49,7 +49,10 @@ router.post('/seed', async (req, res) => {
     }
 
     const passwordHash = await bcrypt.hash(password, 12)
-    await query('INSERT INTO users (email, password_hash) VALUES ($1, $2)', [normalizedEmail, passwordHash])
+    await query('INSERT INTO users (email, password_hash, is_admin) VALUES ($1, $2, TRUE)', [
+      normalizedEmail,
+      passwordHash,
+    ])
     return res.json({ ok: true })
   } catch {
     return res.status(500).json({ error: 'Unable to seed admin.' })

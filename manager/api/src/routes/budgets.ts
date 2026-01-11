@@ -19,7 +19,12 @@ const toNumber = (value: unknown) => {
   return parsed
 }
 
+const getUser = (req: { user?: unknown }) => req.user as { id: number; is_admin?: boolean }
+const isAdmin = (req: { user?: unknown }) => Boolean(getUser(req)?.is_admin)
+
 router.get('/', async (req, res) => {
+  const user = getUser(req)
+  const admin = isAdmin(req)
   const includeArchived = String(req.query.includeArchived ?? 'false') === 'true'
   const projectId = req.query.projectId ? Number(req.query.projectId) : null
 
@@ -30,6 +35,7 @@ router.get('/', async (req, res) => {
     total_budget: string
     production_budget: string
     profit_budget: string
+    profit_percent: string | null
     vat_amount: string | null
     vat_percent: string | null
     notes: string | null
@@ -41,8 +47,9 @@ router.get('/', async (req, res) => {
      FROM budgets
      WHERE ($1::int IS NULL OR project_id = $1)
        AND ($2::boolean OR archived = false)
+       AND ($3::boolean OR owner_user_id = $4)
      ORDER BY created_at DESC`,
-    [projectId, includeArchived],
+    [projectId, includeArchived, admin, user.id],
   )
 
   const budgets = budgetsResult.rows
@@ -78,7 +85,13 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   const id = Number(req.params.id)
-  const budgetResult = await query('SELECT * FROM budgets WHERE id = $1', [id])
+  const user = getUser(req)
+  const admin = isAdmin(req)
+  const budgetResult = await query('SELECT * FROM budgets WHERE id = $1 AND ($2::boolean OR owner_user_id = $3)', [
+    id,
+    admin,
+    user.id,
+  ])
   const budget = budgetResult.rows[0]
   if (!budget) return res.status(404).json({ error: 'Not found.' })
 
@@ -117,16 +130,19 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  const { projectId, totalBudget, productionBudget, profitBudget, vatAmount, vatPercent, notes, steps } = req.body as {
+  const { projectId, totalBudget, productionBudget, profitBudget, profitPercent, vatAmount, vatPercent, notes, steps } = req.body as {
     projectId?: number
     totalBudget?: number | string
     productionBudget?: number | string
     profitBudget?: number | string
+    profitPercent?: number | string
     vatAmount?: number | string
     vatPercent?: number | string
     notes?: string | null
     steps?: BudgetStepInput[]
   }
+  const user = getUser(req)
+  const admin = isAdmin(req)
 
   if (!projectId) {
     return res.status(400).json({ error: 'Project id required.' })
@@ -135,11 +151,24 @@ router.post('/', async (req, res) => {
   const total = toNumber(totalBudget)
   const production = toNumber(productionBudget)
   const profit = toNumber(profitBudget)
+  const profitPercentValue = toNumber(profitPercent) ?? 0
   const vat = toNumber(vatAmount) ?? 0
   const vatPercentValue = toNumber(vatPercent) ?? 0
 
   if (total === null || production === null || profit === null) {
     return res.status(400).json({ error: 'Total, production, and profit budgets are required.' })
+  }
+
+  const projectResult = await query<{ title: string; owner_user_id: number | null }>(
+    'SELECT title, owner_user_id FROM projects WHERE id = $1',
+    [projectId],
+  )
+  const projectRow = projectResult.rows[0]
+  if (!projectRow) {
+    return res.status(404).json({ error: 'Project not found.' })
+  }
+  if (!admin && projectRow.owner_user_id !== user.id) {
+    return res.status(403).json({ error: 'Not allowed.' })
   }
 
   const existing = await query<{ id: number }>(
@@ -150,15 +179,15 @@ router.post('/', async (req, res) => {
     return res.status(409).json({ error: 'Active budget already exists.' })
   }
 
-  const projectResult = await query<{ title: string }>('SELECT title FROM projects WHERE id = $1', [projectId])
-  const projectTitle = projectResult.rows[0]?.title ?? 'Deleted project'
+  const projectTitle = projectRow.title ?? 'Deleted project'
+  const ownerUserId = projectRow.owner_user_id ?? user.id
 
   const budgetResult = await query(
     `INSERT INTO budgets
-      (project_id, project_title, total_budget, production_budget, profit_budget, vat_amount, vat_percent, notes)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+      (project_id, owner_user_id, project_title, total_budget, production_budget, profit_budget, profit_percent, vat_amount, vat_percent, notes)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
      RETURNING *`,
-    [projectId, projectTitle, total, production, profit, vat, vatPercentValue, notes || null],
+    [projectId, ownerUserId, projectTitle, total, production, profit, profitPercentValue, vat, vatPercentValue, notes || null],
   )
 
   const budget = budgetResult.rows[0]
@@ -190,10 +219,13 @@ router.post('/', async (req, res) => {
 
 router.patch('/:id', async (req, res) => {
   const id = Number(req.params.id)
-  const { totalBudget, productionBudget, profitBudget, vatAmount, vatPercent, notes, archived, steps } = req.body as {
+  const user = getUser(req)
+  const admin = isAdmin(req)
+  const { totalBudget, productionBudget, profitBudget, profitPercent, vatAmount, vatPercent, notes, archived, steps } = req.body as {
     totalBudget?: number | string
     productionBudget?: number | string
     profitBudget?: number | string
+    profitPercent?: number | string
     vatAmount?: number | string
     vatPercent?: number | string
     notes?: string | null
@@ -201,12 +233,17 @@ router.patch('/:id', async (req, res) => {
     steps?: BudgetStepInput[]
   }
 
-  const budgetResult = await query('SELECT * FROM budgets WHERE id = $1', [id])
+  const budgetResult = await query('SELECT * FROM budgets WHERE id = $1 AND ($2::boolean OR owner_user_id = $3)', [
+    id,
+    admin,
+    user.id,
+  ])
   if (!budgetResult.rows[0]) return res.status(404).json({ error: 'Not found.' })
 
   const total = toNumber(totalBudget)
   const production = toNumber(productionBudget)
   const profit = toNumber(profitBudget)
+  const profitPercentValue = toNumber(profitPercent)
   const vat = toNumber(vatAmount)
   const vatPercentValue = toNumber(vatPercent)
 
@@ -215,14 +252,15 @@ router.patch('/:id', async (req, res) => {
      SET total_budget = COALESCE($1, total_budget),
          production_budget = COALESCE($2, production_budget),
          profit_budget = COALESCE($3, profit_budget),
-         vat_amount = COALESCE($4, vat_amount),
-         vat_percent = COALESCE($5, vat_percent),
-         notes = COALESCE($6, notes),
-         archived = COALESCE($7, archived),
+         profit_percent = COALESCE($4, profit_percent),
+         vat_amount = COALESCE($5, vat_amount),
+         vat_percent = COALESCE($6, vat_percent),
+         notes = COALESCE($7, notes),
+         archived = COALESCE($8, archived),
          updated_at = NOW()
-     WHERE id = $8
+     WHERE id = $9
      RETURNING *`,
-    [total, production, profit, vat, vatPercentValue, notes ?? null, archived ?? null, id],
+    [total, production, profit, profitPercentValue, vat, vatPercentValue, notes ?? null, archived ?? null, id],
   )
 
   if (Array.isArray(steps)) {
@@ -252,7 +290,13 @@ router.patch('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   const id = Number(req.params.id)
-  const result = await query('DELETE FROM budgets WHERE id = $1 RETURNING id', [id])
+  const user = getUser(req)
+  const admin = isAdmin(req)
+  const result = await query('DELETE FROM budgets WHERE id = $1 AND ($2::boolean OR owner_user_id = $3) RETURNING id', [
+    id,
+    admin,
+    user.id,
+  ])
   if (!result.rows[0]) return res.status(404).json({ error: 'Not found.' })
   return res.json({ ok: true })
 })

@@ -14,6 +14,7 @@ type Budget = {
   total_budget: string
   production_budget: string
   profit_budget: string
+  profit_percent: string | null
   vat_amount: string | null
   vat_percent: string | null
   notes: string | null
@@ -56,6 +57,7 @@ export default function BudgetDetail() {
 
   const [totalBudget, setTotalBudget] = useState('')
   const [productionBudget, setProductionBudget] = useState('')
+  const [profitPercent, setProfitPercent] = useState('')
   const [profitBudget, setProfitBudget] = useState('')
   const [vatAmount, setVatAmount] = useState('')
   const [vatPercent, setVatPercent] = useState('')
@@ -69,6 +71,7 @@ export default function BudgetDetail() {
         setSteps(data.steps)
         setTotalBudget(data.budget.total_budget ?? '')
         setProductionBudget(data.budget.production_budget ?? '')
+        setProfitPercent(data.budget.profit_percent ?? '')
         setProfitBudget(data.budget.profit_budget ?? '')
         setVatAmount(data.budget.vat_amount ?? '')
         setVatPercent(data.budget.vat_percent ?? '')
@@ -79,13 +82,15 @@ export default function BudgetDetail() {
 
   useEffect(() => {
     const total = Number(totalBudget) || 0
-    const profit = Number(profitBudget) || 0
+    const profitPct = Number(profitPercent) || 0
     const vatPct = Number(vatPercent) || 0
+    const profit = total * (profitPct / 100)
     const vat = total * (vatPct / 100)
     const production = Math.max(0, total - profit - vat)
     setVatAmount(vat ? vat.toFixed(2) : '')
     setProductionBudget(production ? production.toFixed(2) : '')
-  }, [profitBudget, totalBudget, vatPercent])
+    setProfitBudget(profit ? profit.toFixed(2) : '')
+  }, [profitPercent, totalBudget, vatPercent])
 
   const spentTotal = useMemo(() => {
     return steps.reduce((sum, step) => sum + toNumber(step.cost_amount), 0)
@@ -112,6 +117,7 @@ export default function BudgetDetail() {
             totalBudget,
             productionBudget,
             profitBudget,
+            profitPercent,
             vatAmount,
             vatPercent,
             notes: notes.trim() || null,
@@ -134,6 +140,7 @@ export default function BudgetDetail() {
               total_budget: totalBudget,
               production_budget: productionBudget,
               profit_budget: profitBudget,
+              profit_percent: profitPercent,
               vat_amount: vatAmount,
               vat_percent: vatPercent,
               notes,
@@ -210,8 +217,12 @@ export default function BudgetDetail() {
               <input value={productionBudget} disabled />
             </label>
             <label>
-              Profit target
-              <input value={profitBudget} onChange={(event) => setProfitBudget(event.target.value)} />
+              Profit target (%)
+              <input value={profitPercent} onChange={(event) => setProfitPercent(event.target.value)} />
+            </label>
+            <label>
+              Profit amount
+              <input value={profitBudget} disabled />
             </label>
             <label>
               VAT (%)

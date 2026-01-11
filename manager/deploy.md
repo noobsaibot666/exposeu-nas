@@ -29,6 +29,33 @@ sudo docker exec -i exposeu-manager-db psql -U exposeu -d exposeu_manager < /mnt
 sudo docker exec -it exposeu-manager-db psql -U exposeu -d exposeu_manager -c "\dt"
 ```
 
+## Patch columns for existing tables
+```sh
+sudo docker exec -i exposeu-manager-db psql -U exposeu -d exposeu_manager <<'SQL'
+ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE;
+ALTER TABLE projects ADD COLUMN IF NOT EXISTS owner_user_id INTEGER REFERENCES users(id) ON DELETE SET NULL;
+ALTER TABLE projects ADD COLUMN IF NOT EXISTS project_color TEXT;
+ALTER TABLE budgets ADD COLUMN IF NOT EXISTS owner_user_id INTEGER REFERENCES users(id) ON DELETE SET NULL;
+ALTER TABLE budgets ADD COLUMN IF NOT EXISTS total_budget NUMERIC(12,2) DEFAULT 0 NOT NULL;
+ALTER TABLE budgets ADD COLUMN IF NOT EXISTS vat_percent NUMERIC(5,2) DEFAULT 0;
+ALTER TABLE budgets ADD COLUMN IF NOT EXISTS profit_percent NUMERIC(5,2) DEFAULT 0;
+SQL
+```
+
+## Backfill ownership (assign existing projects to admin)
+```sh
+sudo docker exec -i exposeu-manager-db psql -U exposeu -d exposeu_manager <<'SQL'
+UPDATE users SET is_admin = TRUE WHERE LOWER(email) = LOWER('alan@exposeu.local');
+UPDATE projects SET owner_user_id = (SELECT id FROM users WHERE LOWER(email) = LOWER('alan@exposeu.local')) WHERE owner_user_id IS NULL;
+UPDATE budgets SET owner_user_id = (SELECT id FROM users WHERE LOWER(email) = LOWER('alan@exposeu.local')) WHERE owner_user_id IS NULL;
+SQL
+```
+
+## Remove admin access from a user
+```sh
+sudo docker exec -i exposeu-manager-db psql -U exposeu -d exposeu_manager -c "UPDATE users SET is_admin = FALSE WHERE LOWER(email) = LOWER('asia@exposeu.local');"
+```
+
 ## Restart services
 ```sh
 sudo docker restart exposeu-manager-api
