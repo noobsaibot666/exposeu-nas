@@ -87,10 +87,24 @@ function Dashboard() {
   })
   const [calendarView, setCalendarView] = useState<CalendarMode>('month')
   const [daySize, setDaySize] = useState(72)
+  const [isCoarsePointer, setIsCoarsePointer] = useState(false)
 
   useEffect(() => {
     setCalendarAnchor((current) => new Date(current.getFullYear(), current.getMonth(), current.getDate()))
   }, [calendarView])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const media = window.matchMedia('(pointer: coarse)')
+    const updatePointer = () => setIsCoarsePointer(media.matches)
+    updatePointer()
+    if (media.addEventListener) {
+      media.addEventListener('change', updatePointer)
+      return () => media.removeEventListener('change', updatePointer)
+    }
+    media.addListener(updatePointer)
+    return () => media.removeListener(updatePointer)
+  }, [])
 
   useEffect(() => {
     const updateDaySize = () => {
@@ -112,11 +126,19 @@ function Dashboard() {
     startX: number
     offset: number
     mode: 'move' | 'resize-left' | 'resize-right'
+    active: boolean
+    pointerId: number | null
+    target: HTMLDivElement | null
+    holdTimer: number | null
   }>({
     id: null,
     startX: 0,
     offset: 0,
     mode: 'move',
+    active: false,
+    pointerId: null,
+    target: null,
+    holdTimer: null,
   })
   const draggedRef = useRef<{ id: number | null; moved: boolean }>({ id: null, moved: false })
 
@@ -237,14 +259,42 @@ function Dashboard() {
     event: React.PointerEvent<HTMLDivElement>,
   ) => {
     const currentOffset = timelineOffsets[id] ?? 0
-    event.preventDefault()
-    draggingRef.current = { id, startX: event.clientX, offset: currentOffset, mode }
+    const isTouchMove = event.pointerType === 'touch' && mode === 'move'
+    draggingRef.current = {
+      id,
+      startX: event.clientX,
+      offset: currentOffset,
+      mode,
+      active: !isTouchMove,
+      pointerId: event.pointerId,
+      target: event.currentTarget,
+      holdTimer: null,
+    }
     draggedRef.current = { id, moved: false }
-    event.currentTarget.setPointerCapture(event.pointerId)
+    if (!isTouchMove) {
+      event.preventDefault()
+      event.currentTarget.setPointerCapture(event.pointerId)
+      return
+    }
+    draggingRef.current.holdTimer = window.setTimeout(() => {
+      if (draggingRef.current.id !== id) return
+      draggingRef.current.active = true
+      draggingRef.current.target?.setPointerCapture(event.pointerId)
+    }, 180)
   }
 
   const handlePointerMove = (id: number, event: React.PointerEvent<HTMLDivElement>) => {
     if (draggingRef.current.id !== id) return
+    if (!draggingRef.current.active) {
+      const delta = event.clientX - draggingRef.current.startX
+      if (Math.abs(delta) > 8 && draggingRef.current.holdTimer) {
+        window.clearTimeout(draggingRef.current.holdTimer)
+        draggingRef.current.holdTimer = null
+        draggingRef.current.id = null
+        draggedRef.current = { id: null, moved: false }
+      }
+      return
+    }
     const delta = event.clientX - draggingRef.current.startX
     const offsetDays = Math.round(delta / daySize)
     if (Math.abs(delta) > 4) draggedRef.current.moved = true
@@ -258,12 +308,35 @@ function Dashboard() {
     end: Date,
   ) => {
     if (draggingRef.current.id !== id) return
-    event.currentTarget.releasePointerCapture(event.pointerId)
+    if (draggingRef.current.holdTimer) {
+      window.clearTimeout(draggingRef.current.holdTimer)
+      draggingRef.current.holdTimer = null
+    }
+    if (draggingRef.current.active) {
+      event.currentTarget.releasePointerCapture(event.pointerId)
+    }
     const offsetDays = timelineOffsets[id] ?? 0
     const moved = draggedRef.current.id === id && draggedRef.current.moved
     const mode = draggingRef.current.mode
-    draggingRef.current = { id: null, startX: 0, offset: 0, mode: 'move' }
+    const wasActive = draggingRef.current.active
+    draggingRef.current = {
+      id: null,
+      startX: 0,
+      offset: 0,
+      mode: 'move',
+      active: false,
+      pointerId: null,
+      target: null,
+      holdTimer: null,
+    }
     draggedRef.current = { id: null, moved: false }
+
+    if (!wasActive) {
+      if (!moved && mode === 'move') {
+        navigate(`/projects/${id}`)
+      }
+      return
+    }
 
     if (!moved && mode === 'move') {
       navigate(`/projects/${id}`)
@@ -632,7 +705,7 @@ function Dashboard() {
                         <div
                           key={project.id}
                           className={`board-card board-card--${project.due ? getTone({ end: project.due }) : 'ok'}`}
-                          draggable
+                          draggable={!isCoarsePointer}
                           onDragStart={() => setDraggingProjectId(project.id)}
                           onDragEnd={() => setDraggingProjectId(null)}
                           style={{ '--project-color': getProjectColor(project, 'hash') } as CSSProperties}
@@ -645,6 +718,18 @@ function Dashboard() {
                           {project.tags && project.tags.length > 0 && (
                             <span className="board-card__tag">{project.tags.join(' · ')}</span>
                           )}
+                          <select
+                            className="board-card__status-select"
+                            value={project.status ?? column.id}
+                            onChange={(event) => handleStatusDrop(event.target.value, project.id)}
+                            onPointerDown={(event) => event.stopPropagation()}
+                          >
+                            {statusColumns.map((option) => (
+                              <option key={option.id} value={option.id}>
+                                Move to {option.label}
+                              </option>
+                            ))}
+                          </select>
                         </div>
                       ))}
                       {columnProjects.length === 0 && <p className="muted">No projects yet.</p>}

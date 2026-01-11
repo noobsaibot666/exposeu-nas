@@ -30,6 +30,10 @@
   color: #05070b;
   text-decoration: none;
   font-weight: 600;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .button--ghost {
@@ -287,7 +291,7 @@
   cursor: grab;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
   overflow: visible;
-  touch-action: none;
+  touch-action: pan-x;
   user-select: none;
 }
 
@@ -304,6 +308,7 @@
   background: rgba(255, 255, 255, 0.15);
   opacity: 0;
   transition: opacity 0.2s ease;
+  touch-action: none;
 }
 
 .timeline-chip:hover .timeline-chip__handle {
@@ -578,6 +583,17 @@
   color: var(--text-tertiary);
 }
 
+.board-card__status-select {
+  display: none;
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid var(--border-soft);
+  background: rgba(10, 14, 28, 0.7);
+  color: var(--text-strong);
+  padding: 6px 10px;
+  font-size: 0.75rem;
+}
+
 .calendar-view {
   display: grid;
   gap: 12px;
@@ -737,6 +753,17 @@
     align-items: flex-start;
   }
 
+  .dashboard__actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .dashboard__actions .button {
+    width: 100%;
+  }
+
   .timeline-row {
     grid-template-columns: 130px minmax(0, 1fr);
     gap: 12px;
@@ -752,7 +779,20 @@
   }
 
   .view-switcher {
-    flex-wrap: wrap;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+  }
+
+  .view-switcher::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  .board-card__status-select {
+    display: block;
   }
 
   .calendar-grid {
