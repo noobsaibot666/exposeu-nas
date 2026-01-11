@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS projects (
   due_date DATE,
   notes TEXT,
   workflow_template_id INTEGER REFERENCES workflow_templates(id),
+  completed_at TIMESTAMP,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
@@ -78,6 +79,16 @@ CREATE TABLE IF NOT EXISTS time_logs (
   logged_at TIMESTAMP DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS project_reviews (
+  project_id INTEGER PRIMARY KEY REFERENCES projects(id) ON DELETE CASCADE,
+  delivered_on_time BOOLEAN,
+  flow_issues TEXT,
+  review_notes TEXT,
+  learnings TEXT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
 CREATE TABLE IF NOT EXISTS share_links (
   id SERIAL PRIMARY KEY,
   project_id INTEGER REFERENCES projects(id) ON DELETE CASCADE,
@@ -90,4 +101,4 @@ CREATE TABLE IF NOT EXISTS workflow_tags (
   template_id INTEGER REFERENCES workflow_templates(id) ON DELETE CASCADE,
   tag TEXT NOT NULL,
   PRIMARY KEY (template_id, tag)
-);
+)

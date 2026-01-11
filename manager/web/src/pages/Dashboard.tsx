@@ -16,7 +16,11 @@ type Project = {
   due_date: string | null
   created_at: string
   tags?: string[]
+  share_links?: Array<{ token: string; created_at: string; expires_at: string | null }>
 }
+
+const hasUrgentTag = (tags?: string[]) =>
+  (tags ?? []).some((tag) => tag.trim().toLowerCase() === 'urgent')
 
 const formatDate = (value: string | null) => {
   if (!value) return '—'
@@ -28,7 +32,7 @@ const formatDate = (value: string | null) => {
   }).format(date)
 }
 
-export default function Dashboard() {
+function Dashboard() {
   const navigate = useNavigate()
   const { token } = useAuth()
   const [projects, setProjects] = useState<Project[]>([])
@@ -76,6 +80,14 @@ export default function Dashboard() {
     return days >= 0 && days <= 5
   })
   const activeProjects = projectsWithDue.filter((project) => project.status !== 'archive')
+  const urgentProjects = activeProjects
+    .filter((project) => hasUrgentTag(project.tags))
+    .sort((a, b) => {
+      const aDue = a.due?.getTime() ?? Infinity
+      const bDue = b.due?.getTime() ?? Infinity
+      if (aDue !== bDue) return aDue - bDue
+      return a.created_at.localeCompare(b.created_at)
+    })
   const timelineProjects = projectsWithDue
     .filter((project) => project.due && project.status !== 'archive')
     .map((project) => {
@@ -207,31 +219,43 @@ export default function Dashboard() {
             <h2>Command center</h2>
             <p className="muted">Track deadlines, spot risk, and keep delivery momentum on one screen.</p>
           </div>
-          <Link to="/projects/new" className="button">
-            New project
-          </Link>
+          <div className="dashboard__actions">
+            <Link to="/projects/new" className="button">
+              New project
+            </Link>
+            <Link to="/archive" className="button button--ghost">
+              Archive
+            </Link>
+          </div>
         </div>
         <div className="dashboard__stats">
-          <div className="stat-card">
+          <Link to="/stats/active" className="stat-card">
             <p className="stat-card__label">Active projects</p>
             <div className="stat-card__value">{activeProjects.length}</div>
             <p className="stat-card__meta">Total: {projects.length}</p>
-          </div>
-          <div className="stat-card stat-card--warning">
+          </Link>
+          <Link to="/stats/focus" className="stat-card stat-card--focus">
+            <p className="stat-card__label">Focus today</p>
+            <div className="stat-card__value">{urgentProjects.length}</div>
+            <p className="stat-card__meta">Tagged urgent</p>
+          </Link>
+          <Link to="/stats/due-soon" className="stat-card stat-card--warning">
             <p className="stat-card__label">Due soon</p>
             <div className="stat-card__value">{dueSoon.length}</div>
             <p className="stat-card__meta">Next 5 days</p>
-          </div>
-          <div className="stat-card stat-card--danger">
+          </Link>
+          <Link to="/stats/overdue" className="stat-card stat-card--danger">
             <p className="stat-card__label">Overdue</p>
             <div className="stat-card__value">{overdue.length}</div>
             <p className="stat-card__meta">Needs attention</p>
-          </div>
-          <div className="stat-card stat-card--accent">
+          </Link>
+          <Link to="/stats/shared" className="stat-card stat-card--accent">
             <p className="stat-card__label">Shared links</p>
-            <div className="stat-card__value">{projects.filter((project) => project.status === 'review').length}</div>
-            <p className="stat-card__meta">In review</p>
-          </div>
+            <div className="stat-card__value">
+              {projects.filter((project) => (project.share_links ?? []).length > 0).length}
+            </div>
+            <p className="stat-card__meta">Active shares</p>
+          </Link>
         </div>
         <div className="dashboard__timeline">
           <div className="timeline__header">
@@ -240,7 +264,7 @@ export default function Dashboard() {
               <h3>Delivery timeline</h3>
               <p className="muted">Drag projects to adjust start/end dates in the schedule.</p>
             </div>
-            <span className="timeline__legend">Late • Soon • On track</span>
+            <span className="timeline__legend">Urgent • Late • Soon • On track</span>
           </div>
           {timelineProjects.length === 0 && <p className="muted">Add due dates to see the timeline.</p>}
           {timelineProjects.length > 0 && (
@@ -268,6 +292,7 @@ export default function Dashboard() {
                   const spanDays = endIndex - startIndex + 1
                   const width = spanDays * 72
                   const tone = getTone({ end: shiftedEnd })
+                  const urgent = hasUrgentTag(project.tags)
                   const compactClass =
                     spanDays <= 1 ? 'timeline-chip--compact-1'
                       : spanDays === 2
@@ -289,7 +314,9 @@ export default function Dashboard() {
                       </div>
                       <div className="timeline-row__track timeline-project">
                         <div
-                          className={`timeline-chip timeline-chip--${tone}${compactClass ? ` ${compactClass}` : ''}`}
+                          className={`timeline-chip timeline-chip--${tone}${compactClass ? ` ${compactClass}` : ''}${
+                            urgent ? ' timeline-chip--urgent' : ''
+                          }`}
                           style={{ width, transform: `translateX(${startIndex * 72}px)` }}
                           role="button"
                           tabIndex={0}
@@ -354,18 +381,22 @@ export default function Dashboard() {
             <span>Due</span>
             <span>Tags</span>
           </div>
-          {projects.map((project) => (
+          {projects
+            .filter((project) => project.status !== 'archive')
+            .map((project) => (
             <Link key={project.id} to={`/projects/${project.id}`} className="table__row">
-              <span>{project.title}</span>
-              <span>{project.client_name ?? '—'}</span>
-              <span>{project.service_type ?? '—'}</span>
-              <span>{project.status ?? '—'}</span>
-              <span>{formatDate(project.due_date)}</span>
-              <span>{project.tags && project.tags.length > 0 ? project.tags.join(', ') : '—'}</span>
+              <span data-label="Project">{project.title}</span>
+              <span data-label="Client">{project.client_name ?? '—'}</span>
+              <span data-label="Service">{project.service_type ?? '—'}</span>
+              <span data-label="Status">{project.status ?? '—'}</span>
+              <span data-label="Due">{formatDate(project.due_date)}</span>
+              <span data-label="Tags">{project.tags && project.tags.length > 0 ? project.tags.join(', ') : '—'}</span>
             </Link>
-          ))}
+            ))}
         </div>
       </div>
     </Layout>
   )
 }
+
+export default Dashboard

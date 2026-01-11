@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import path from 'path'
+import fs from 'fs/promises'
 import multer from 'multer'
 import { nanoid } from 'nanoid'
 import { query } from '../db.js'
@@ -32,6 +33,8 @@ router.get('/', async (_req, res) => {
   const projects = result.rows
   const projectIds = projects.map((project) => project.id)
   const tagsByProject = new Map<number, string[]>()
+  const reviewsByProject = new Map<number, Record<string, unknown>>()
+  const shareLinksByProject = new Map<number, Array<{ token: string; created_at: string; expires_at: string | null }>>()
 
   if (projectIds.length > 0) {
     const tagsResult = await query<{ project_id: number; tag: string }>(
@@ -43,12 +46,56 @@ router.get('/', async (_req, res) => {
       existing.push(row.tag)
       tagsByProject.set(row.project_id, existing)
     }
+
+    const reviewsResult = await query<{
+      project_id: number
+      delivered_on_time: boolean | null
+      flow_issues: string | null
+      review_notes: string | null
+      learnings: string | null
+      created_at: string
+      updated_at: string
+    }>(
+      'SELECT project_id, delivered_on_time, flow_issues, review_notes, learnings, created_at, updated_at FROM project_reviews WHERE project_id = ANY($1)',
+      [projectIds],
+    )
+    for (const row of reviewsResult.rows) {
+      reviewsByProject.set(row.project_id, {
+        delivered_on_time: row.delivered_on_time,
+        flow_issues: row.flow_issues,
+        review_notes: row.review_notes,
+        learnings: row.learnings,
+        created_at: row.created_at,
+        updated_at: row.updated_at,
+      })
+    }
+
+    const shareLinksResult = await query<{
+      project_id: number
+      token: string
+      created_at: string
+      expires_at: string | null
+    }>(
+      'SELECT project_id, token, created_at, expires_at FROM share_links WHERE project_id = ANY($1) ORDER BY created_at DESC',
+      [projectIds],
+    )
+    for (const row of shareLinksResult.rows) {
+      const existing = shareLinksByProject.get(row.project_id) ?? []
+      existing.push({
+        token: row.token,
+        created_at: row.created_at,
+        expires_at: row.expires_at,
+      })
+      shareLinksByProject.set(row.project_id, existing)
+    }
   }
 
   return res.json(
     projects.map((project) => ({
       ...project,
       tags: tagsByProject.get(project.id) ?? [],
+      review: reviewsByProject.get(project.id) ?? null,
+      share_links: shareLinksByProject.get(project.id) ?? [],
     })),
   )
 })
@@ -137,9 +184,13 @@ router.get('/:id', async (req, res) => {
   const files = await query('SELECT * FROM files WHERE project_id = $1 ORDER BY created_at DESC', [id])
   const deliveries = await query('SELECT * FROM deliveries WHERE project_id = $1 ORDER BY created_at DESC', [id])
   const timeLogs = await query('SELECT * FROM time_logs WHERE project_id = $1 ORDER BY logged_at DESC', [id])
+  const review = await query(
+    'SELECT delivered_on_time, flow_issues, review_notes, learnings, created_at, updated_at FROM project_reviews WHERE project_id = $1',
+    [id],
+  )
 
   return res.json({
-    project: { ...project.rows[0], tags: tagsResult.rows.map((row) => row.tag) },
+    project: { ...project.rows[0], tags: tagsResult.rows.map((row) => row.tag), review: review.rows[0] ?? null },
     steps: steps.rows,
     files: files.rows,
     deliveries: deliveries.rows,
@@ -149,17 +200,49 @@ router.get('/:id', async (req, res) => {
 
 router.patch('/:id', async (req, res) => {
   const id = Number(req.params.id)
-  const { status, dueDate, startDate, notes, tags } = req.body as {
+  const { status, dueDate, startDate, notes, tags, clientName, clientEmail, clientPhone, serviceType, planTier } = req.body as {
     status?: string
     dueDate?: string
     startDate?: string
     notes?: string
     tags?: string[] | string
+    clientName?: string
+    clientEmail?: string
+    clientPhone?: string
+    serviceType?: string
+    planTier?: string
   }
 
   const result = await query(
-    'UPDATE projects SET status = COALESCE($1, status), due_date = COALESCE($2, due_date), start_date = COALESCE($3, start_date), notes = COALESCE($4, notes), updated_at = NOW() WHERE id = $5 RETURNING *',
-    [status || null, dueDate || null, startDate || null, notes || null, id],
+    `UPDATE projects
+     SET status = COALESCE($1, status),
+         due_date = COALESCE($2, due_date),
+         start_date = COALESCE($3, start_date),
+         notes = COALESCE($4, notes),
+         client_name = COALESCE($5, client_name),
+         client_email = COALESCE($6, client_email),
+         client_phone = COALESCE($7, client_phone),
+         service_type = COALESCE($8, service_type),
+         plan_tier = COALESCE($9, plan_tier),
+         completed_at = CASE
+           WHEN COALESCE($1, status) = 'archive' AND completed_at IS NULL THEN NOW()
+           ELSE completed_at
+         END,
+         updated_at = NOW()
+     WHERE id = $10
+     RETURNING *`,
+    [
+      status || null,
+      dueDate || null,
+      startDate || null,
+      notes || null,
+      clientName || null,
+      clientEmail || null,
+      clientPhone || null,
+      serviceType || null,
+      planTier || null,
+      id,
+    ],
   )
 
   if (!result.rows[0]) return res.status(404).json({ error: 'Not found.' })
@@ -173,6 +256,60 @@ router.patch('/:id', async (req, res) => {
   }
 
   return res.json(result.rows[0])
+})
+
+router.patch('/:id/review', async (req, res) => {
+  const id = Number(req.params.id)
+  const { deliveredOnTime, flowIssues, reviewNotes, learnings } = req.body as {
+    deliveredOnTime?: boolean | null
+    flowIssues?: string | null
+    reviewNotes?: string | null
+    learnings?: string | null
+  }
+
+  const result = await query(
+    `INSERT INTO project_reviews
+      (project_id, delivered_on_time, flow_issues, review_notes, learnings, updated_at)
+     VALUES ($1, $2, $3, $4, $5, NOW())
+     ON CONFLICT (project_id)
+     DO UPDATE SET
+       delivered_on_time = EXCLUDED.delivered_on_time,
+       flow_issues = EXCLUDED.flow_issues,
+       review_notes = EXCLUDED.review_notes,
+       learnings = EXCLUDED.learnings,
+       updated_at = NOW()
+     RETURNING *`,
+    [id, deliveredOnTime ?? null, flowIssues ?? null, reviewNotes ?? null, learnings ?? null],
+  )
+
+  return res.json(result.rows[0])
+})
+
+router.delete('/:id', async (req, res) => {
+  const id = Number(req.params.id)
+  const files = await query<{ stored_path: string }>('SELECT stored_path FROM files WHERE project_id = $1', [id])
+
+  await query('DELETE FROM project_reviews WHERE project_id = $1', [id])
+  await query('DELETE FROM share_links WHERE project_id = $1', [id])
+  await query('DELETE FROM project_tags WHERE project_id = $1', [id])
+  await query('DELETE FROM project_steps WHERE project_id = $1', [id])
+  await query('DELETE FROM deliveries WHERE project_id = $1', [id])
+  await query('DELETE FROM time_logs WHERE project_id = $1', [id])
+  await query('DELETE FROM files WHERE project_id = $1', [id])
+
+  const result = await query('DELETE FROM projects WHERE id = $1 RETURNING id', [id])
+  if (!result.rows[0]) return res.status(404).json({ error: 'Not found.' })
+
+  for (const file of files.rows) {
+    const resolved = path.resolve(uploadDir, path.basename(file.stored_path))
+    try {
+      await fs.unlink(resolved)
+    } catch {
+      // Best effort cleanup.
+    }
+  }
+
+  return res.json({ ok: true })
 })
 
 router.post('/:id/files', upload.single('file'), async (req, res) => {

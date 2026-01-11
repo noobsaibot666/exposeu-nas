@@ -17,8 +17,10 @@ type Project = {
   status: string | null
   start_date: string | null
   due_date: string | null
+  completed_at: string | null
   notes: string | null
   tags?: string[]
+  review?: Review | null
 }
 
 type FileItem = {
@@ -42,6 +44,22 @@ type TimeLog = {
   logged_at: string
 }
 
+type Review = {
+  delivered_on_time: boolean | null
+  flow_issues: string | null
+  review_notes: string | null
+  learnings: string | null
+  created_at: string
+  updated_at: string
+}
+
+type ReviewDraft = {
+  deliveredOnTime: boolean | null
+  flowIssues: string
+  reviewNotes: string
+  learnings: string
+}
+
 type Step = {
   id: number
   name: string
@@ -61,7 +79,15 @@ const formatDate = (value: string | null) => {
   }).format(date)
 }
 
-function ProjectDetail() {
+const isUrgentTag = (tag: string) => tag.trim().toLowerCase() === 'urgent'
+const hasUrgentTag = (tags?: string[]) => (tags ?? []).some(isUrgentTag)
+const parseTags = (value: string) =>
+  value
+    .split(',')
+    .map((tag) => tag.trim())
+    .filter((tag) => tag.length > 0)
+
+export default function ProjectDetail() {
   const { id } = useParams()
   const { token } = useAuth()
   const [project, setProject] = useState<Project | null>(null)
@@ -69,8 +95,16 @@ function ProjectDetail() {
   const [deliveries, setDeliveries] = useState<Delivery[]>([])
   const [timeLogs, setTimeLogs] = useState<TimeLog[]>([])
   const [steps, setSteps] = useState<Step[]>([])
+  const [stepDrafts, setStepDrafts] = useState<Record<number, { name: string; dueDate: string }>>({})
   const [shareToken, setShareToken] = useState('')
   const [status, setStatus] = useState('')
+  const [clientName, setClientName] = useState('')
+  const [clientEmail, setClientEmail] = useState('')
+  const [clientPhone, setClientPhone] = useState('')
+  const [serviceType, setServiceType] = useState('')
+  const [planTier, setPlanTier] = useState('')
+  const [startDate, setStartDate] = useState('')
+  const [dueDate, setDueDate] = useState('')
   const [notesDraft, setNotesDraft] = useState('')
   const [tagsDraft, setTagsDraft] = useState('')
   const [newStepName, setNewStepName] = useState('')
@@ -79,6 +113,13 @@ function ProjectDetail() {
   const [deliveryUrl, setDeliveryUrl] = useState('')
   const [minutes, setMinutes] = useState('')
   const [logNote, setLogNote] = useState('')
+  const [reviewDraft, setReviewDraft] = useState<ReviewDraft>({
+    deliveredOnTime: null,
+    flowIssues: '',
+    reviewNotes: '',
+    learnings: '',
+  })
+  const [reviewStatus, setReviewStatus] = useState('')
   const [error, setError] = useState('')
 
   const loadProject = useCallback(() => {
@@ -91,9 +132,28 @@ function ProjectDetail() {
       .then((data) => {
         setProject(data.project)
         setStatus(data.project.status ?? '')
+        setClientName(data.project.client_name ?? '')
+        setClientEmail(data.project.client_email ?? '')
+        setClientPhone(data.project.client_phone ?? '')
+        setServiceType(data.project.service_type ?? '')
+        setPlanTier(data.project.plan_tier ?? '')
+        setStartDate(data.project.start_date ?? '')
+        setDueDate(data.project.due_date ?? '')
         setNotesDraft(data.project.notes ?? '')
         setTagsDraft((data.project.tags ?? []).join(', '))
+        setReviewDraft({
+          deliveredOnTime: data.project.review?.delivered_on_time ?? null,
+          flowIssues: data.project.review?.flow_issues ?? '',
+          reviewNotes: data.project.review?.review_notes ?? '',
+          learnings: data.project.review?.learnings ?? '',
+        })
+        setReviewStatus('')
         setSteps(data.steps ?? [])
+        setStepDrafts(
+          Object.fromEntries(
+            (data.steps ?? []).map((step) => [step.id, { name: step.name, dueDate: step.due_date ?? '' }]),
+          ),
+        )
         setFiles(data.files)
         setDeliveries(data.deliveries)
         setTimeLogs(data.timeLogs)
@@ -155,11 +215,23 @@ function ProjectDetail() {
     setShareToken(response.token)
   }
 
-  const handleStatusUpdate = async () => {
+  const handleProjectUpdate = async () => {
     if (!token || !id) return
     await apiRequest(
       `/projects/${id}`,
-      { method: 'PATCH', body: JSON.stringify({ status }) },
+      {
+        method: 'PATCH',
+        body: JSON.stringify({
+          status,
+          clientName: clientName.trim() || null,
+          clientEmail: clientEmail.trim() || null,
+          clientPhone: clientPhone.trim() || null,
+          serviceType: serviceType.trim() || null,
+          planTier: planTier.trim() || null,
+          startDate: startDate || null,
+          dueDate: dueDate || null,
+        }),
+      },
       token,
     )
     loadProject()
@@ -183,10 +255,7 @@ function ProjectDetail() {
 
   const handleTagsSave = async () => {
     if (!token || !id) return
-    const tags = tagsDraft
-      .split(',')
-      .map((tag) => tag.trim())
-      .filter((tag) => tag.length > 0)
+    const tags = parseTags(tagsDraft)
     try {
       await apiRequest(
         `/projects/${id}`,
@@ -197,6 +266,25 @@ function ProjectDetail() {
       setTagsDraft(tags.join(', '))
     } catch {
       setError('Unable to save tags.')
+    }
+  }
+
+  const handleUrgentToggle = async () => {
+    if (!token || !id || !project) return
+    const currentTags = parseTags(tagsDraft)
+    const urgentActive = hasUrgentTag(currentTags)
+    const cleanedTags = currentTags.filter((tag) => !isUrgentTag(tag))
+    const nextTags = urgentActive ? cleanedTags : [...cleanedTags, 'urgent']
+    try {
+      await apiRequest(
+        `/projects/${id}`,
+        { method: 'PATCH', body: JSON.stringify({ tags: nextTags }) },
+        token,
+      )
+      setProject((current) => (current ? { ...current, tags: nextTags } : current))
+      setTagsDraft(nextTags.join(', '))
+    } catch {
+      setError('Unable to update urgent status.')
     }
   }
 
@@ -229,6 +317,58 @@ function ProjectDetail() {
     loadProject()
   }
 
+  const handleStepDraftChange = (stepId: number, patch: { name?: string; dueDate?: string }) => {
+    setStepDrafts((prev) => ({
+      ...prev,
+      [stepId]: {
+        name: prev[stepId]?.name ?? '',
+        dueDate: prev[stepId]?.dueDate ?? '',
+        ...patch,
+      },
+    }))
+  }
+
+  const handleStepSave = async (stepId: number) => {
+    if (!token || !id) return
+    const step = steps.find((item) => item.id === stepId)
+    const draft = stepDrafts[stepId]
+    if (!step || !draft) return
+    const nextName = draft.name.trim()
+    if (!nextName) {
+      handleStepDraftChange(stepId, { name: step.name })
+      return
+    }
+    const nextDue = draft.dueDate || null
+    const nameChanged = nextName !== step.name
+    const dueChanged = (nextDue || null) !== (step.due_date || null)
+    if (!nameChanged && !dueChanged) {
+      return
+    }
+    const payload: { name?: string; dueDate?: string | null } = {}
+    if (nameChanged) payload.name = nextName
+    if (dueChanged) payload.dueDate = nextDue
+    try {
+      await apiRequest(
+        `/projects/${id}/steps/${stepId}`,
+        { method: 'PATCH', body: JSON.stringify(payload) },
+        token,
+      )
+      setSteps((prev) =>
+        prev.map((item) =>
+          item.id === stepId
+            ? {
+                ...item,
+                name: payload.name ?? item.name,
+                due_date: payload.dueDate ?? item.due_date,
+              }
+            : item,
+        ),
+      )
+    } catch {
+      setError('Unable to update step.')
+    }
+  }
+
   if (!project) {
     return (
       <Layout title="Project detail">
@@ -239,8 +379,10 @@ function ProjectDetail() {
 
   const today = new Date()
   today.setHours(0, 0, 0, 0)
-  const dueDate = project.due_date ? new Date(project.due_date) : null
-  const daysUntilDue = dueDate ? Math.ceil((dueDate.getTime() - today.getTime()) / 86400000) : null
+  const projectDueDate = project.due_date ? new Date(project.due_date) : null
+  const daysUntilDue = projectDueDate
+    ? Math.ceil((projectDueDate.getTime() - today.getTime()) / 86400000)
+    : null
   const overdueSteps = steps.filter((step) => {
     if (!step.due_date || step.status === 'done') return false
     const stepDate = new Date(step.due_date)
@@ -249,15 +391,69 @@ function ProjectDetail() {
   })
   const totalMinutes = timeLogs.reduce((sum, log) => sum + log.minutes, 0)
 
+  const handleReviewChange = (patch: Partial<ReviewDraft>) => {
+    setReviewDraft((prev) => ({ ...prev, ...patch }))
+  }
+
+  const handleSaveReview = async () => {
+    if (!token || !id) return
+    try {
+      await apiRequest(
+        `/projects/${id}/review`,
+        {
+          method: 'PATCH',
+          body: JSON.stringify({
+            deliveredOnTime: reviewDraft.deliveredOnTime,
+            flowIssues: reviewDraft.flowIssues.trim() || null,
+            reviewNotes: reviewDraft.reviewNotes.trim() || null,
+            learnings: reviewDraft.learnings.trim() || null,
+          }),
+        },
+        token,
+      )
+      setReviewStatus('Saved.')
+    } catch {
+      setReviewStatus('Unable to save review.')
+    }
+  }
+
+  const buildNotionSummary = (draft: ReviewDraft) => {
+    const onTime =
+      draft.deliveredOnTime === null ? '—' : draft.deliveredOnTime ? 'Yes' : 'No'
+    return [
+      `# ${project?.title ?? 'Project review'}`,
+      `Client: ${project?.client_name ?? '—'}`,
+      `Service: ${project?.service_type ?? '—'}`,
+      `Due: ${formatDate(project?.due_date ?? null)}`,
+      `Completed: ${formatDate(project?.completed_at ?? null)}`,
+      '',
+      '## Delivery review',
+      `Delivered on time: ${onTime}`,
+      `Flow issues: ${draft.flowIssues.trim() || '—'}`,
+      `Review notes: ${draft.reviewNotes.trim() || '—'}`,
+      'Learnings:',
+      draft.learnings.trim() || '—',
+    ].join('\n')
+  }
+
+  const handleCopySummary = async () => {
+    try {
+      await navigator.clipboard.writeText(buildNotionSummary(reviewDraft))
+      setReviewStatus('Copied for Notion.')
+    } catch {
+      setReviewStatus('Copy failed.')
+    }
+  }
+
   const alerts = [
-    ...(dueDate && daysUntilDue !== null && daysUntilDue < 0
+    ...(projectDueDate && daysUntilDue !== null && daysUntilDue < 0
       ? [{
           tone: 'danger',
           title: 'Deadline missed',
           detail: `Project due ${formatDate(project.due_date)}.`,
         }]
       : []),
-    ...(dueDate && daysUntilDue !== null && daysUntilDue >= 0 && daysUntilDue <= 5
+    ...(projectDueDate && daysUntilDue !== null && daysUntilDue >= 0 && daysUntilDue <= 5
       ? [{
           tone: 'warning',
           title: 'Deadline approaching',
@@ -302,31 +498,83 @@ function ProjectDetail() {
     }
   }
 
+  const urgentActive = hasUrgentTag(project.tags)
   return (
     <Layout title={project.title}>
       <div className="detail-grid">
         <div className="detail-column">
           <div className="detail__summary">
-            <p><strong>Client:</strong> {project.client_name ?? '—'}</p>
-            <p><strong>Email:</strong> {project.client_email ?? '—'}</p>
-            <p><strong>Phone:</strong> {project.client_phone ?? '—'}</p>
-            <p><strong>Service:</strong> {project.service_type ?? '—'}</p>
-            <p><strong>Plan:</strong> {project.plan_tier ?? '—'}</p>
-            <div className="detail__status">
-              <strong>Status:</strong>
-              <select value={status} onChange={(event) => setStatus(event.target.value)}>
-                <option value="briefing">Briefing</option>
-                <option value="scheduled">Scheduled</option>
-                <option value="shoot">Shoot</option>
-                <option value="edit">Edit</option>
-                <option value="review">Review</option>
-                <option value="delivery">Delivery</option>
-                <option value="archive">Archive</option>
-              </select>
-              <button type="button" onClick={handleStatusUpdate}>Update</button>
+            <div className="detail__field">
+              <label>Client</label>
+              <input
+                value={clientName}
+                onChange={(event) => setClientName(event.target.value)}
+                placeholder="Client name"
+              />
             </div>
-            <p><strong>Start:</strong> {formatDate(project.start_date)}</p>
-            <p><strong>Due:</strong> {formatDate(project.due_date)}</p>
+            <div className="detail__field">
+              <label>Email</label>
+              <input
+                value={clientEmail}
+                onChange={(event) => setClientEmail(event.target.value)}
+                placeholder="Email"
+              />
+            </div>
+            <div className="detail__field">
+              <label>Phone</label>
+              <input
+                value={clientPhone}
+                onChange={(event) => setClientPhone(event.target.value)}
+                placeholder="Phone"
+              />
+            </div>
+            <div className="detail__field">
+              <label>Service</label>
+              <input
+                value={serviceType}
+                onChange={(event) => setServiceType(event.target.value)}
+                placeholder="Service"
+              />
+            </div>
+            <div className="detail__field">
+              <label>Plan</label>
+              <input
+                value={planTier}
+                onChange={(event) => setPlanTier(event.target.value)}
+                placeholder="Plan"
+              />
+            </div>
+            <div className="detail__field detail__field--status">
+              <label>Status</label>
+              <div className="detail__status">
+                <select value={status} onChange={(event) => setStatus(event.target.value)}>
+                  <option value="briefing">Briefing</option>
+                  <option value="scheduled">Scheduled</option>
+                  <option value="shoot">Shoot</option>
+                  <option value="edit">Edit</option>
+                  <option value="review">Review</option>
+                  <option value="delivery">Delivery</option>
+                  <option value="archive">Archive</option>
+                </select>
+                <button type="button" onClick={handleProjectUpdate}>Update</button>
+              </div>
+            </div>
+            <div className="detail__field">
+              <label>Start</label>
+              <input
+                type="date"
+                value={startDate}
+                onChange={(event) => setStartDate(event.target.value)}
+              />
+            </div>
+            <div className="detail__field">
+              <label>Due</label>
+              <input
+                type="date"
+                value={dueDate}
+                onChange={(event) => setDueDate(event.target.value)}
+              />
+            </div>
           </div>
           <section className="panel">
             <div className="panel__header">
@@ -344,27 +592,38 @@ function ProjectDetail() {
               </div>
             </div>
             <ul>
-              {steps.map((step) => (
-                <li
-                  key={step.id}
-                  className={`step-row${step.status === 'done' ? ' step-row--done' : ''}${
-                    step.due_date && step.status !== 'done' && new Date(step.due_date) < today ? ' step-row--late' : ''
-                  }`}
-                >
-                  <div className="step-row__main">
-                    <label>
+              {steps.map((step) => {
+                const draft = stepDrafts[step.id] ?? { name: step.name, dueDate: step.due_date ?? '' }
+                return (
+                  <li
+                    key={step.id}
+                    className={`step-row${step.status === 'done' ? ' step-row--done' : ''}${
+                      step.due_date && step.status !== 'done' && new Date(step.due_date) < today ? ' step-row--late' : ''
+                    }`}
+                  >
+                    <div className="step-row__main">
+                      <label>
+                        <span className="step-row__index">{step.position}.</span>
+                        <input
+                          className="step-row__name"
+                          value={draft.name}
+                          onChange={(event) => handleStepDraftChange(step.id, { name: event.target.value })}
+                          onBlur={() => handleStepSave(step.id)}
+                          placeholder="Step name"
+                        />
+                      </label>
                       <input
-                        type="checkbox"
-                        checked={step.status === 'done'}
-                        onChange={() => toggleStep(step)}
+                        className="step-row__date-input"
+                        type="date"
+                        value={draft.dueDate}
+                        onChange={(event) => handleStepDraftChange(step.id, { dueDate: event.target.value })}
+                        onBlur={() => handleStepSave(step.id)}
                       />
-                      <span>{step.position}. {step.name}</span>
-                    </label>
-                    <span className="step-row__date">{step.due_date ? formatDate(step.due_date) : 'No date'}</span>
-                  </div>
-                  <button type="button" onClick={() => removeStep(step.id)}>Remove</button>
-                </li>
-              ))}
+                    </div>
+                    <button type="button" onClick={() => removeStep(step.id)}>Remove</button>
+                  </li>
+                )
+              })}
             </ul>
             <div className="step-add">
               <input
@@ -499,6 +758,30 @@ function ProjectDetail() {
               placeholder="Add notes..."
             />
           </section>
+          <section className="panel panel--compact detail__urgent">
+            <div className="panel__header">
+              <div className="panel__title">
+                <span className="panel__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 4l8 14H4L12 4z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                    <path d="M12 10v4M12 16v.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="eyebrow">Focus today</p>
+                  <h3>Urgent</h3>
+                  <p className="panel__subtitle">Highlights this project in Focus Today and the timeline.</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                className={`urgent-toggle${urgentActive ? ' urgent-toggle--active' : ''}`}
+                onClick={handleUrgentToggle}
+              >
+                {urgentActive ? 'Remove urgent' : 'Mark urgent'}
+              </button>
+            </div>
+          </section>
           <section className="panel panel--compact">
             <div className="panel__header">
               <div className="panel__title">
@@ -586,10 +869,82 @@ function ProjectDetail() {
               ))}
             </ul>
           </section>
+          <section className="panel">
+            <div className="panel__header">
+              <div className="panel__title">
+                <span className="panel__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M5 12l4 4L19 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="eyebrow">Review</p>
+                  <h3>Delivery notes</h3>
+                  <p className="panel__subtitle">Quick recap once the project is done.</p>
+                </div>
+              </div>
+            </div>
+            {project.status !== 'archive' && (
+              <p className="muted">Mark the project done to unlock the review.</p>
+            )}
+            {project.status === 'archive' && (
+              <div className="review-fields">
+                <label htmlFor="review-on-time">Delivered on time</label>
+                <select
+                  id="review-on-time"
+                  value={reviewDraft.deliveredOnTime === null ? '' : reviewDraft.deliveredOnTime ? 'yes' : 'no'}
+                  onChange={(event) =>
+                    handleReviewChange({
+                      deliveredOnTime:
+                        event.target.value === ''
+                          ? null
+                          : event.target.value === 'yes',
+                    })
+                  }
+                >
+                  <option value="">Not set</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+
+                <label htmlFor="review-flow">Flow issues</label>
+                <input
+                  id="review-flow"
+                  value={reviewDraft.flowIssues}
+                  onChange={(event) => handleReviewChange({ flowIssues: event.target.value })}
+                  placeholder="Short summary of blockers"
+                />
+
+                <label htmlFor="review-notes">Review notes</label>
+                <textarea
+                  id="review-notes"
+                  value={reviewDraft.reviewNotes}
+                  onChange={(event) => handleReviewChange({ reviewNotes: event.target.value })}
+                  placeholder="Timing, comms, or scope notes"
+                />
+
+                <label htmlFor="review-learnings">Learnings</label>
+                <textarea
+                  id="review-learnings"
+                  value={reviewDraft.learnings}
+                  onChange={(event) => handleReviewChange({ learnings: event.target.value })}
+                  placeholder="Lessons and playbook updates"
+                />
+
+                <div className="review-actions">
+                  <button type="button" onClick={handleSaveReview}>
+                    Save review
+                  </button>
+                  <button type="button" onClick={handleCopySummary}>
+                    Copy Notion summary
+                  </button>
+                </div>
+                {reviewStatus && <p className="muted">{reviewStatus}</p>}
+              </div>
+            )}
+          </section>
         </div>
       </div>
     </Layout>
   )
 }
-
-export default ProjectDetail
