@@ -14,6 +14,7 @@ type Project = {
   client_phone: string | null
   service_type: string | null
   plan_tier: string | null
+  project_color: string | null
   status: string | null
   start_date: string | null
   due_date: string | null
@@ -57,9 +58,11 @@ type Budget = {
   id: number
   project_id: number | null
   project_title: string | null
+  total_budget: string
   production_budget: string
   profit_budget: string
   vat_amount: string | null
+  vat_percent: string | null
   notes: string | null
   archived: boolean
   created_at: string
@@ -143,6 +146,7 @@ export default function ProjectDetail() {
   const [clientPhone, setClientPhone] = useState('')
   const [serviceType, setServiceType] = useState('')
   const [planTier, setPlanTier] = useState('')
+  const [projectColor, setProjectColor] = useState('')
   const [startDate, setStartDate] = useState('')
   const [dueDate, setDueDate] = useState('')
   const [notesDraft, setNotesDraft] = useState('')
@@ -153,8 +157,10 @@ export default function ProjectDetail() {
   const [deliveryUrl, setDeliveryUrl] = useState('')
   const [minutes, setMinutes] = useState('')
   const [logNote, setLogNote] = useState('')
+  const [budgetTotal, setBudgetTotal] = useState('')
   const [budgetProduction, setBudgetProduction] = useState('')
   const [budgetProfit, setBudgetProfit] = useState('')
+  const [budgetVatPercent, setBudgetVatPercent] = useState('')
   const [budgetVat, setBudgetVat] = useState('')
   const [budgetNotes, setBudgetNotes] = useState('')
   const [budgetStepCosts, setBudgetStepCosts] = useState<Record<number, string>>({})
@@ -191,6 +197,7 @@ export default function ProjectDetail() {
         setClientPhone(data.project.client_phone ?? '')
         setServiceType(data.project.service_type ?? '')
         setPlanTier(data.project.plan_tier ?? '')
+        setProjectColor(data.project.project_color ?? '')
         setStartDate(data.project.start_date ?? '')
         setDueDate(data.project.due_date ?? '')
         setNotesDraft(data.project.notes ?? '')
@@ -221,14 +228,18 @@ export default function ProjectDetail() {
         setDeliveries(data.deliveries)
         setTimeLogs(data.timeLogs)
         if (!data.budget || data.budget.archived) {
+          setBudgetTotal('')
           setBudgetProduction('')
           setBudgetProfit('')
+          setBudgetVatPercent('')
           setBudgetVat('')
           setBudgetNotes('')
           setBudgetStepCosts(Object.fromEntries((data.steps ?? []).map((step) => [step.id, ''])))
         } else {
+          setBudgetTotal(data.budget.total_budget ?? '')
           setBudgetProduction(data.budget.production_budget ?? '')
           setBudgetProfit(data.budget.profit_budget ?? '')
+          setBudgetVatPercent(data.budget.vat_percent ?? '')
           setBudgetVat(data.budget.vat_amount ?? '')
           setBudgetNotes(data.budget.notes ?? '')
         }
@@ -250,6 +261,17 @@ export default function ProjectDetail() {
       return next
     })
   }, [budget, steps])
+
+  useEffect(() => {
+    if (budget) return
+    const total = Number(budgetTotal) || 0
+    const profit = Number(budgetProfit) || 0
+    const vatPct = Number(budgetVatPercent) || 0
+    const vat = total * (vatPct / 100)
+    const production = Math.max(0, total - profit - vat)
+    setBudgetVat(vat ? vat.toFixed(2) : '')
+    setBudgetProduction(production ? production.toFixed(2) : '')
+  }, [budget, budgetProfit, budgetTotal, budgetVatPercent])
 
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!token || !id || !event.target.files?.[0]) return
@@ -314,6 +336,7 @@ export default function ProjectDetail() {
           clientPhone: clientPhone.trim() || null,
           serviceType: serviceType.trim() || null,
           planTier: planTier.trim() || null,
+          projectColor: projectColor || null,
           startDate: startDate || null,
           dueDate: dueDate || null,
         }),
@@ -384,9 +407,11 @@ export default function ProjectDetail() {
           method: 'POST',
           body: JSON.stringify({
             projectId: Number(id),
+            totalBudget: budgetTotal,
             productionBudget: budgetProduction,
             profitBudget: budgetProfit,
             vatAmount: budgetVat,
+            vatPercent: budgetVatPercent,
             notes: budgetNotes.trim() || null,
             steps: steps.map((step) => ({
               projectStepId: step.id,
@@ -664,6 +689,14 @@ export default function ProjectDetail() {
                 placeholder="Plan"
               />
             </div>
+            <div className="detail__field">
+              <label>Project color</label>
+              <input
+                type="color"
+                value={projectColor || '#9ca3af'}
+                onChange={(event) => setProjectColor(event.target.value)}
+              />
+            </div>
             <div className="detail__field detail__field--status">
               <label>Status</label>
               <div className="detail__status">
@@ -901,6 +934,10 @@ export default function ProjectDetail() {
             {budget ? (
               <div className="budget-summary">
                 <div>
+                  <p className="muted">Project budget</p>
+                  <strong>{formatAmount(toNumber(budget.total_budget))}</strong>
+                </div>
+                <div>
                   <p className="muted">Production</p>
                   <strong>{formatAmount(budgetProductionValue)}</strong>
                 </div>
@@ -933,11 +970,15 @@ export default function ProjectDetail() {
                 )}
                 <div className="budget-create__grid">
                   <label>
-                    Production budget
+                    Project budget
                     <input
-                      value={budgetProduction}
-                      onChange={(event) => setBudgetProduction(event.target.value)}
+                      value={budgetTotal}
+                      onChange={(event) => setBudgetTotal(event.target.value)}
                     />
+                  </label>
+                  <label>
+                    Production budget
+                    <input value={budgetProduction} disabled />
                   </label>
                   <label>
                     Profit target
@@ -947,8 +988,15 @@ export default function ProjectDetail() {
                     />
                   </label>
                   <label>
+                    VAT (%)
+                    <input
+                      value={budgetVatPercent}
+                      onChange={(event) => setBudgetVatPercent(event.target.value)}
+                    />
+                  </label>
+                  <label>
                     VAT amount
-                    <input value={budgetVat} onChange={(event) => setBudgetVat(event.target.value)} />
+                    <input value={budgetVat} disabled />
                   </label>
                 </div>
                 <label className="budget-create__notes">

@@ -11,9 +11,11 @@ type Budget = {
   id: number
   project_id: number | null
   project_title: string | null
+  total_budget: string
   production_budget: string
   profit_budget: string
   vat_amount: string | null
+  vat_percent: string | null
   notes: string | null
   archived: boolean
   created_at: string
@@ -52,9 +54,11 @@ export default function BudgetDetail() {
   const [error, setError] = useState('')
   const [saving, setSaving] = useState(false)
 
+  const [totalBudget, setTotalBudget] = useState('')
   const [productionBudget, setProductionBudget] = useState('')
   const [profitBudget, setProfitBudget] = useState('')
   const [vatAmount, setVatAmount] = useState('')
+  const [vatPercent, setVatPercent] = useState('')
   const [notes, setNotes] = useState('')
 
   useEffect(() => {
@@ -63,13 +67,25 @@ export default function BudgetDetail() {
       .then((data) => {
         setBudget(data.budget)
         setSteps(data.steps)
+        setTotalBudget(data.budget.total_budget ?? '')
         setProductionBudget(data.budget.production_budget ?? '')
         setProfitBudget(data.budget.profit_budget ?? '')
         setVatAmount(data.budget.vat_amount ?? '')
+        setVatPercent(data.budget.vat_percent ?? '')
         setNotes(data.budget.notes ?? '')
       })
       .catch(() => setError('Unable to load budget.'))
   }, [id, token])
+
+  useEffect(() => {
+    const total = Number(totalBudget) || 0
+    const profit = Number(profitBudget) || 0
+    const vatPct = Number(vatPercent) || 0
+    const vat = total * (vatPct / 100)
+    const production = Math.max(0, total - profit - vat)
+    setVatAmount(vat ? vat.toFixed(2) : '')
+    setProductionBudget(production ? production.toFixed(2) : '')
+  }, [profitBudget, totalBudget, vatPercent])
 
   const spentTotal = useMemo(() => {
     return steps.reduce((sum, step) => sum + toNumber(step.cost_amount), 0)
@@ -93,9 +109,11 @@ export default function BudgetDetail() {
         {
           method: 'PATCH',
           body: JSON.stringify({
+            totalBudget,
             productionBudget,
             profitBudget,
             vatAmount,
+            vatPercent,
             notes: notes.trim() || null,
             steps: steps.map((step) => ({
               projectStepId: step.project_step_id,
@@ -113,9 +131,11 @@ export default function BudgetDetail() {
         current
           ? {
               ...current,
+              total_budget: totalBudget,
               production_budget: productionBudget,
               profit_budget: profitBudget,
               vat_amount: vatAmount,
+              vat_percent: vatPercent,
               notes,
             }
           : current,
@@ -182,16 +202,24 @@ export default function BudgetDetail() {
         <section className="budget-panel">
           <div className="budget-panel__grid">
             <label>
+              Project budget
+              <input value={totalBudget} onChange={(event) => setTotalBudget(event.target.value)} />
+            </label>
+            <label>
               Production budget
-              <input value={productionBudget} onChange={(event) => setProductionBudget(event.target.value)} />
+              <input value={productionBudget} disabled />
             </label>
             <label>
               Profit target
               <input value={profitBudget} onChange={(event) => setProfitBudget(event.target.value)} />
             </label>
             <label>
+              VAT (%)
+              <input value={vatPercent} onChange={(event) => setVatPercent(event.target.value)} />
+            </label>
+            <label>
               VAT amount
-              <input value={vatAmount} onChange={(event) => setVatAmount(event.target.value)} />
+              <input value={vatAmount} disabled />
             </label>
           </div>
           <label className="budget-panel__notes">

@@ -114,6 +114,7 @@ router.post('/', async (req, res) => {
     notes,
     workflowTemplateId,
     tags,
+    projectColor,
   } = req.body as Record<string, string | string[] | undefined>
 
   if (!title) {
@@ -122,8 +123,8 @@ router.post('/', async (req, res) => {
 
   const result = await query(
     `INSERT INTO projects
-      (title, client_name, client_email, client_phone, service_type, plan_tier, status, start_date, due_date, notes, workflow_template_id)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
+      (title, client_name, client_email, client_phone, service_type, plan_tier, project_color, status, start_date, due_date, notes, workflow_template_id)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
      RETURNING *`,
     [
       title,
@@ -132,6 +133,7 @@ router.post('/', async (req, res) => {
       clientPhone || null,
       serviceType || null,
       planTier || null,
+      projectColor || null,
       status || 'briefing',
       startDate || null,
       dueDate || null,
@@ -226,7 +228,7 @@ router.get('/:id', async (req, res) => {
 
 router.patch('/:id', async (req, res) => {
   const id = Number(req.params.id)
-  const { status, dueDate, startDate, notes, tags, clientName, clientEmail, clientPhone, serviceType, planTier } = req.body as {
+  const { status, dueDate, startDate, notes, tags, clientName, clientEmail, clientPhone, serviceType, planTier, projectColor } = req.body as {
     status?: string
     dueDate?: string
     startDate?: string
@@ -237,6 +239,7 @@ router.patch('/:id', async (req, res) => {
     clientPhone?: string
     serviceType?: string
     planTier?: string
+    projectColor?: string
   }
 
   const result = await query(
@@ -250,12 +253,13 @@ router.patch('/:id', async (req, res) => {
          client_phone = COALESCE($7, client_phone),
          service_type = COALESCE($8, service_type),
          plan_tier = COALESCE($9, plan_tier),
+         project_color = COALESCE($10, project_color),
          completed_at = CASE
            WHEN COALESCE($1, status) = 'archive' AND completed_at IS NULL THEN NOW()
            ELSE completed_at
          END,
          updated_at = NOW()
-     WHERE id = $10
+     WHERE id = $11
      RETURNING *`,
     [
       status || null,
@@ -267,6 +271,7 @@ router.patch('/:id', async (req, res) => {
       clientPhone || null,
       serviceType || null,
       planTier || null,
+      projectColor || null,
       id,
     ],
   )

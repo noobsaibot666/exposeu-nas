@@ -48,6 +48,7 @@ function CreateProject() {
   const [clientPhone, setClientPhone] = useState('')
   const [serviceType, setServiceType] = useState('')
   const [planTier, setPlanTier] = useState('')
+  const [projectColor, setProjectColor] = useState('')
   const [tags, setTags] = useState('')
   const [status, setStatus] = useState('briefing')
   const [startDate, setStartDate] = useState('')
@@ -65,9 +66,11 @@ function CreateProject() {
   const [draggingId, setDraggingId] = useState<number | null>(null)
   const [savingWorkflow, setSavingWorkflow] = useState(false)
   const [budgetEnabled, setBudgetEnabled] = useState(false)
+  const [totalBudget, setTotalBudget] = useState('')
   const [productionBudget, setProductionBudget] = useState('')
   const [profitBudget, setProfitBudget] = useState('')
   const [vatAmount, setVatAmount] = useState('')
+  const [vatPercent, setVatPercent] = useState('')
   const [budgetNotes, setBudgetNotes] = useState('')
   const [stepCosts, setStepCosts] = useState<Record<number, string>>({})
 
@@ -108,6 +111,7 @@ function CreateProject() {
             dueDate,
             notes,
             workflowTemplateId: workflowTemplateId || null,
+            projectColor: projectColor || null,
           }),
         },
         token,
@@ -125,9 +129,11 @@ function CreateProject() {
               method: 'POST',
               body: JSON.stringify({
                 projectId: project.id,
+                totalBudget,
                 productionBudget,
                 profitBudget,
                 vatAmount,
+                vatPercent,
                 notes: budgetNotes.trim() || null,
                 steps: projectDetail.steps.map((step) => ({
                   projectStepId: step.id,
@@ -221,6 +227,16 @@ function CreateProject() {
   )
 
   useEffect(() => {
+    const total = Number(totalBudget) || 0
+    const profit = Number(profitBudget) || 0
+    const vatPct = Number(vatPercent) || 0
+    const vat = total * (vatPct / 100)
+    const production = Math.max(0, total - profit - vat)
+    setVatAmount(vat ? vat.toFixed(2) : '')
+    setProductionBudget(production ? production.toFixed(2) : '')
+  }, [profitBudget, totalBudget, vatPercent])
+
+  useEffect(() => {
     if (!budgetEnabled) return
     setStepCosts((current) => {
       const next: Record<number, string> = {}
@@ -276,6 +292,14 @@ function CreateProject() {
                   <input value={planTier} onChange={(event) => setPlanTier(event.target.value)} />
                 </label>
                 <label>
+                  Project color
+                  <input
+                    type="color"
+                    value={projectColor || '#9ca3af'}
+                    onChange={(event) => setProjectColor(event.target.value)}
+                  />
+                </label>
+                <label>
                   Tags (comma separated)
                   <input value={tags} onChange={(event) => setTags(event.target.value)} />
                 </label>
@@ -322,11 +346,15 @@ function CreateProject() {
               <div className="budget-section">
                 <div className="grid">
                   <label>
-                    Production budget
+                    Project budget
                     <input
-                      value={productionBudget}
-                      onChange={(event) => setProductionBudget(event.target.value)}
+                      value={totalBudget}
+                      onChange={(event) => setTotalBudget(event.target.value)}
                     />
+                  </label>
+                  <label>
+                    Production budget
+                    <input value={productionBudget} disabled />
                   </label>
                   <label>
                     Profit target
@@ -336,8 +364,15 @@ function CreateProject() {
                     />
                   </label>
                   <label>
+                    VAT (%)
+                    <input
+                      value={vatPercent}
+                      onChange={(event) => setVatPercent(event.target.value)}
+                    />
+                  </label>
+                  <label>
                     VAT amount
-                    <input value={vatAmount} onChange={(event) => setVatAmount(event.target.value)} />
+                    <input value={vatAmount} disabled />
                   </label>
                 </div>
                 <label className="notes-field">

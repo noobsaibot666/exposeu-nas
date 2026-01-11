@@ -10,9 +10,11 @@ type Budget = {
   id: number
   project_id: number | null
   project_title: string | null
+  total_budget: string
   production_budget: string
   profit_budget: string
   vat_amount: string | null
+  vat_percent: string | null
   notes: string | null
   archived: boolean
   created_at: string
@@ -52,11 +54,13 @@ export default function BudgetControl() {
   const archivedBudgets = useMemo(() => budgets.filter((budget) => budget.archived), [budgets])
 
   const totals = useMemo(() => {
+    const total = activeBudgets.reduce((sum, budget) => sum + toNumber(budget.total_budget), 0)
     const production = activeBudgets.reduce((sum, budget) => sum + toNumber(budget.production_budget), 0)
     const spent = activeBudgets.reduce((sum, budget) => sum + (budget.spent_total || 0), 0)
     const profit = activeBudgets.reduce((sum, budget) => sum + toNumber(budget.profit_budget), 0)
     const vat = activeBudgets.reduce((sum, budget) => sum + toNumber(budget.vat_amount), 0)
     return {
+      total,
       production,
       spent,
       remaining: Math.max(0, production - spent),
@@ -117,6 +121,10 @@ export default function BudgetControl() {
         </div>
         {error && <div className="form-error">{error}</div>}
         <div className="budget-summary">
+          <div className="summary-card summary-card--accent">
+            <p className="summary-card__label">Project budget</p>
+            <p className="summary-card__value">{formatAmount(totals.total)}</p>
+          </div>
           <div className="summary-card">
             <p className="summary-card__label">Production budget</p>
             <p className="summary-card__value">{formatAmount(totals.production)}</p>
@@ -164,19 +172,20 @@ export default function BudgetControl() {
             return (
               <div key={budget.id} className="budget-card">
                 <div className="budget-card__main">
-                  <div>
-                    <p className="eyebrow">Project</p>
-                    {budget.project_id ? (
-                      <Link to={`/projects/${budget.project_id}`} className="budget-card__title">
-                        {budget.project_title ?? 'Untitled project'}
-                      </Link>
-                    ) : (
-                      <p className="budget-card__title">{budget.project_title ?? 'Deleted project'}</p>
-                    )}
-                    <p className="muted">
-                      Production {formatAmount(production)} · Remaining {formatAmount(remaining)}
-                    </p>
-                  </div>
+                <div>
+                  <p className="eyebrow">Project</p>
+                  {budget.project_id ? (
+                    <Link to={`/projects/${budget.project_id}`} className="budget-card__title">
+                      {budget.project_title ?? 'Untitled project'}
+                    </Link>
+                  ) : (
+                    <p className="budget-card__title">{budget.project_title ?? 'Deleted project'}</p>
+                  )}
+                  <p className="muted">
+                    Total {formatAmount(toNumber(budget.total_budget))} · Production {formatAmount(production)} ·
+                    Remaining {formatAmount(remaining)}
+                  </p>
+                </div>
                   <div className="budget-card__actions">
                     <Link to={`/budgets/${budget.id}`} className="button button--ghost">
                       View

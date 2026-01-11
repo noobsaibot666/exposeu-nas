@@ -27,9 +27,11 @@ router.get('/', async (req, res) => {
     id: number
     project_id: number | null
     project_title: string | null
+    total_budget: string
     production_budget: string
     profit_budget: string
     vat_amount: string | null
+    vat_percent: string | null
     notes: string | null
     archived: boolean
     created_at: string
@@ -115,11 +117,13 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  const { projectId, productionBudget, profitBudget, vatAmount, notes, steps } = req.body as {
+  const { projectId, totalBudget, productionBudget, profitBudget, vatAmount, vatPercent, notes, steps } = req.body as {
     projectId?: number
+    totalBudget?: number | string
     productionBudget?: number | string
     profitBudget?: number | string
     vatAmount?: number | string
+    vatPercent?: number | string
     notes?: string | null
     steps?: BudgetStepInput[]
   }
@@ -128,12 +132,14 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ error: 'Project id required.' })
   }
 
+  const total = toNumber(totalBudget)
   const production = toNumber(productionBudget)
   const profit = toNumber(profitBudget)
   const vat = toNumber(vatAmount) ?? 0
+  const vatPercentValue = toNumber(vatPercent) ?? 0
 
-  if (production === null || profit === null) {
-    return res.status(400).json({ error: 'Production and profit budgets are required.' })
+  if (total === null || production === null || profit === null) {
+    return res.status(400).json({ error: 'Total, production, and profit budgets are required.' })
   }
 
   const existing = await query<{ id: number }>(
@@ -149,10 +155,10 @@ router.post('/', async (req, res) => {
 
   const budgetResult = await query(
     `INSERT INTO budgets
-      (project_id, project_title, production_budget, profit_budget, vat_amount, notes)
-     VALUES ($1,$2,$3,$4,$5,$6)
+      (project_id, project_title, total_budget, production_budget, profit_budget, vat_amount, vat_percent, notes)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
      RETURNING *`,
-    [projectId, projectTitle, production, profit, vat, notes || null],
+    [projectId, projectTitle, total, production, profit, vat, vatPercentValue, notes || null],
   )
 
   const budget = budgetResult.rows[0]
@@ -184,10 +190,12 @@ router.post('/', async (req, res) => {
 
 router.patch('/:id', async (req, res) => {
   const id = Number(req.params.id)
-  const { productionBudget, profitBudget, vatAmount, notes, archived, steps } = req.body as {
+  const { totalBudget, productionBudget, profitBudget, vatAmount, vatPercent, notes, archived, steps } = req.body as {
+    totalBudget?: number | string
     productionBudget?: number | string
     profitBudget?: number | string
     vatAmount?: number | string
+    vatPercent?: number | string
     notes?: string | null
     archived?: boolean
     steps?: BudgetStepInput[]
@@ -196,21 +204,25 @@ router.patch('/:id', async (req, res) => {
   const budgetResult = await query('SELECT * FROM budgets WHERE id = $1', [id])
   if (!budgetResult.rows[0]) return res.status(404).json({ error: 'Not found.' })
 
+  const total = toNumber(totalBudget)
   const production = toNumber(productionBudget)
   const profit = toNumber(profitBudget)
   const vat = toNumber(vatAmount)
+  const vatPercentValue = toNumber(vatPercent)
 
   const updated = await query(
     `UPDATE budgets
-     SET production_budget = COALESCE($1, production_budget),
-         profit_budget = COALESCE($2, profit_budget),
-         vat_amount = COALESCE($3, vat_amount),
-         notes = COALESCE($4, notes),
-         archived = COALESCE($5, archived),
+     SET total_budget = COALESCE($1, total_budget),
+         production_budget = COALESCE($2, production_budget),
+         profit_budget = COALESCE($3, profit_budget),
+         vat_amount = COALESCE($4, vat_amount),
+         vat_percent = COALESCE($5, vat_percent),
+         notes = COALESCE($6, notes),
+         archived = COALESCE($7, archived),
          updated_at = NOW()
-     WHERE id = $6
+     WHERE id = $8
      RETURNING *`,
-    [production, profit, vat, notes ?? null, archived ?? null, id],
+    [total, production, profit, vat, vatPercentValue, notes ?? null, archived ?? null, id],
   )
 
   if (Array.isArray(steps)) {

@@ -38,3 +38,9 @@ sudo docker restart exposeu-manager-api
 ```sh
 sudo docker exec -it exposeu-manager-db psql -U exposeu -d exposeu_manager -c "SELECT current_database(), current_user;"
 ```
+
+## Create or reset a user
+```sh
+HASH=$(sudo docker exec -i exposeu-manager-api node -e "const bcrypt=require('bcrypt');bcrypt.hash('0811',12).then(h=>console.log(h))" | tr -d '\r')
+sudo docker exec -i exposeu-manager-db psql -U exposeu -d exposeu_manager -c "INSERT INTO users (email, password_hash) VALUES ('asia@exposeu.local', '${HASH}') ON CONFLICT (email) DO UPDATE SET password_hash = EXCLUDED.password_hash;"
+```
