@@ -53,6 +53,29 @@ type Review = {
   updated_at: string
 }
 
+type Budget = {
+  id: number
+  project_id: number | null
+  project_title: string | null
+  production_budget: string
+  profit_budget: string
+  vat_amount: string | null
+  notes: string | null
+  archived: boolean
+  created_at: string
+  updated_at: string
+}
+
+type BudgetStep = {
+  id: number
+  project_step_id: number | null
+  step_name: string
+  step_position: number | null
+  cost_amount: string | null
+  vendor_name: string | null
+  vendor_cost: string | null
+}
+
 type ReviewDraft = {
   deliveredOnTime: boolean | null
   flowIssues: string
@@ -87,6 +110,20 @@ const parseTags = (value: string) =>
     .map((tag) => tag.trim())
     .filter((tag) => tag.length > 0)
 
+const toNumber = (value: string | null) => {
+  if (!value) return 0
+  const parsed = Number(value)
+  return Number.isNaN(parsed) ? 0 : parsed
+}
+
+const formatAmount = (value: number) =>
+  new Intl.NumberFormat('en-IE', {
+    style: 'currency',
+    currency: 'EUR',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(value)
+
 export default function ProjectDetail() {
   const { id } = useParams()
   const { token } = useAuth()
@@ -95,6 +132,9 @@ export default function ProjectDetail() {
   const [deliveries, setDeliveries] = useState<Delivery[]>([])
   const [timeLogs, setTimeLogs] = useState<TimeLog[]>([])
   const [steps, setSteps] = useState<Step[]>([])
+  const [budget, setBudget] = useState<Budget | null>(null)
+  const [budgetSteps, setBudgetSteps] = useState<BudgetStep[]>([])
+  const [archivedBudget, setArchivedBudget] = useState<Budget | null>(null)
   const [stepDrafts, setStepDrafts] = useState<Record<number, { name: string; dueDate: string }>>({})
   const [shareToken, setShareToken] = useState('')
   const [status, setStatus] = useState('')
@@ -113,6 +153,12 @@ export default function ProjectDetail() {
   const [deliveryUrl, setDeliveryUrl] = useState('')
   const [minutes, setMinutes] = useState('')
   const [logNote, setLogNote] = useState('')
+  const [budgetProduction, setBudgetProduction] = useState('')
+  const [budgetProfit, setBudgetProfit] = useState('')
+  const [budgetVat, setBudgetVat] = useState('')
+  const [budgetNotes, setBudgetNotes] = useState('')
+  const [budgetStepCosts, setBudgetStepCosts] = useState<Record<number, string>>({})
+  const [budgetStatus, setBudgetStatus] = useState('')
   const [reviewDraft, setReviewDraft] = useState<ReviewDraft>({
     deliveredOnTime: null,
     flowIssues: '',
@@ -124,7 +170,15 @@ export default function ProjectDetail() {
 
   const loadProject = useCallback(() => {
     if (!token || !id) return
-    apiRequest<{ project: Project; steps: Step[]; files: FileItem[]; deliveries: Delivery[]; timeLogs: TimeLog[] }>(
+    apiRequest<{
+      project: Project
+      steps: Step[]
+      files: FileItem[]
+      deliveries: Delivery[]
+      timeLogs: TimeLog[]
+      budget: Budget | null
+      budgetSteps: BudgetStep[]
+    }>(
       `/projects/${id}`,
       {},
       token,
@@ -149,6 +203,15 @@ export default function ProjectDetail() {
         })
         setReviewStatus('')
         setSteps(data.steps ?? [])
+        if (data.budget?.archived) {
+          setBudget(null)
+          setBudgetSteps([])
+          setArchivedBudget(data.budget)
+        } else {
+          setBudget(data.budget ?? null)
+          setBudgetSteps(data.budgetSteps ?? [])
+          setArchivedBudget(null)
+        }
         setStepDrafts(
           Object.fromEntries(
             (data.steps ?? []).map((step) => [step.id, { name: step.name, dueDate: step.due_date ?? '' }]),
@@ -157,6 +220,18 @@ export default function ProjectDetail() {
         setFiles(data.files)
         setDeliveries(data.deliveries)
         setTimeLogs(data.timeLogs)
+        if (!data.budget || data.budget.archived) {
+          setBudgetProduction('')
+          setBudgetProfit('')
+          setBudgetVat('')
+          setBudgetNotes('')
+          setBudgetStepCosts(Object.fromEntries((data.steps ?? []).map((step) => [step.id, ''])))
+        } else {
+          setBudgetProduction(data.budget.production_budget ?? '')
+          setBudgetProfit(data.budget.profit_budget ?? '')
+          setBudgetVat(data.budget.vat_amount ?? '')
+          setBudgetNotes(data.budget.notes ?? '')
+        }
       })
       .catch(() => setError('Unable to load project.'))
   }, [id, token])
@@ -164,6 +239,17 @@ export default function ProjectDetail() {
   useEffect(() => {
     loadProject()
   }, [loadProject])
+
+  useEffect(() => {
+    if (budget) return
+    setBudgetStepCosts((current) => {
+      const next = { ...current }
+      for (const step of steps) {
+        if (!(step.id in next)) next[step.id] = ''
+      }
+      return next
+    })
+  }, [budget, steps])
 
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!token || !id || !event.target.files?.[0]) return
@@ -285,6 +371,37 @@ export default function ProjectDetail() {
       setTagsDraft(nextTags.join(', '))
     } catch {
       setError('Unable to update urgent status.')
+    }
+  }
+
+  const handleBudgetCreate = async () => {
+    if (!token || !id) return
+    setBudgetStatus('')
+    try {
+      await apiRequest(
+        '/budgets',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            projectId: Number(id),
+            productionBudget: budgetProduction,
+            profitBudget: budgetProfit,
+            vatAmount: budgetVat,
+            notes: budgetNotes.trim() || null,
+            steps: steps.map((step) => ({
+              projectStepId: step.id,
+              stepName: step.name,
+              stepPosition: step.position,
+              costAmount: budgetStepCosts[step.id] ?? '',
+            })),
+          }),
+        },
+        token,
+      )
+      setBudgetStatus('Budget created.')
+      loadProject()
+    } catch {
+      setBudgetStatus('Unable to create budget.')
     }
   }
 
@@ -499,6 +616,9 @@ export default function ProjectDetail() {
   }
 
   const urgentActive = hasUrgentTag(project.tags)
+  const budgetSpent = budgetSteps.reduce((sum, step) => sum + toNumber(step.cost_amount), 0)
+  const budgetProductionValue = budget ? toNumber(budget.production_budget) : toNumber(budgetProduction)
+  const budgetRemaining = Math.max(0, budgetProductionValue - budgetSpent)
   return (
     <Layout title={project.title}>
       <div className="detail-grid">
@@ -757,6 +877,111 @@ export default function ProjectDetail() {
               onChange={(event) => setNotesDraft(event.target.value)}
               placeholder="Add notes..."
             />
+          </section>
+          <section className="panel panel--compact budget-panel">
+            <div className="panel__header">
+              <div className="panel__title">
+                <span className="panel__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="eyebrow">Budget</p>
+                  <h3>Budget control</h3>
+                  <p className="panel__subtitle">Track production spend and profit targets.</p>
+                </div>
+              </div>
+              {budget && (
+                <Link to={`/budgets/${budget.id}`} className="ghost-link">
+                  Open budget
+                </Link>
+              )}
+            </div>
+            {budget ? (
+              <div className="budget-summary">
+                <div>
+                  <p className="muted">Production</p>
+                  <strong>{formatAmount(budgetProductionValue)}</strong>
+                </div>
+                <div>
+                  <p className="muted">Spent</p>
+                  <strong>{formatAmount(budgetSpent)}</strong>
+                </div>
+                <div>
+                  <p className="muted">Remaining</p>
+                  <strong>{formatAmount(budgetRemaining)}</strong>
+                </div>
+                <div>
+                  <p className="muted">Profit</p>
+                  <strong>{formatAmount(toNumber(budget.profit_budget))}</strong>
+                </div>
+                <div>
+                  <p className="muted">VAT</p>
+                  <strong>{formatAmount(toNumber(budget.vat_amount))}</strong>
+                </div>
+              </div>
+            ) : (
+              <div className="budget-create">
+                {archivedBudget && (
+                  <div className="budget-archived-note">
+                    <p className="muted">An archived budget exists for this project.</p>
+                    <Link to={`/budgets/${archivedBudget.id}`} className="ghost-link">
+                      View archived budget
+                    </Link>
+                  </div>
+                )}
+                <div className="budget-create__grid">
+                  <label>
+                    Production budget
+                    <input
+                      value={budgetProduction}
+                      onChange={(event) => setBudgetProduction(event.target.value)}
+                    />
+                  </label>
+                  <label>
+                    Profit target
+                    <input
+                      value={budgetProfit}
+                      onChange={(event) => setBudgetProfit(event.target.value)}
+                    />
+                  </label>
+                  <label>
+                    VAT amount
+                    <input value={budgetVat} onChange={(event) => setBudgetVat(event.target.value)} />
+                  </label>
+                </div>
+                <label className="budget-create__notes">
+                  Notes
+                  <textarea
+                    value={budgetNotes}
+                    onChange={(event) => setBudgetNotes(event.target.value)}
+                    rows={2}
+                  />
+                </label>
+                {steps.length > 0 && (
+                  <div className="budget-create__steps">
+                    <p className="muted">Allocate production costs by workflow step.</p>
+                    {steps.map((step) => (
+                      <label key={step.id} className="budget-step-row">
+                        <span>{step.position}. {step.name}</span>
+                        <input
+                          value={budgetStepCosts[step.id] ?? ''}
+                          onChange={(event) =>
+                            setBudgetStepCosts((current) => ({ ...current, [step.id]: event.target.value }))
+                          }
+                          placeholder="0.00"
+                        />
+                      </label>
+                    ))}
+                  </div>
+                )}
+                <button type="button" onClick={handleBudgetCreate}>
+                  Create budget
+                </button>
+                {budgetStatus && <p className="muted">{budgetStatus}</p>}
+              </div>
+            )}
           </section>
           <section className="panel panel--compact detail__urgent">
             <div className="panel__header">

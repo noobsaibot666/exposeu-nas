@@ -119,6 +119,43 @@ button:disabled {
   gap: 20px;
 }
 
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.toggle-row input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+}
+
+.budget-section {
+  display: grid;
+  gap: 12px;
+}
+
+.budget-steps {
+  display: grid;
+  gap: 10px;
+}
+
+.budget-step-row {
+  display: grid;
+  grid-template-columns: 1fr minmax(120px, 160px);
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-soft);
+  background: rgba(10, 14, 28, 0.6);
+}
+
+.budget-step-row input {
+  padding: 8px 10px;
+}
+
 .project-form__section {
   background: var(--surface-base);
   border-radius: 18px;

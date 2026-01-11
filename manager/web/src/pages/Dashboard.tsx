@@ -223,6 +223,9 @@ function Dashboard() {
             <Link to="/projects/new" className="button">
               New project
             </Link>
+            <Link to="/budgets" className="button button--ghost">
+              Budget control
+            </Link>
             <Link to="/archive" className="button button--ghost">
               Archive
             </Link>

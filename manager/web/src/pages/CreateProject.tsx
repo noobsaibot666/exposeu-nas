@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { apiRequest } from '../components/api'
@@ -15,6 +15,12 @@ type WorkflowTemplate = {
 type WorkflowStep = {
   id: number
   template_id: number
+  name: string
+  position: number
+}
+
+type ProjectStep = {
+  id: number
   name: string
   position: number
 }
@@ -58,6 +64,12 @@ function CreateProject() {
   const [builderError, setBuilderError] = useState('')
   const [draggingId, setDraggingId] = useState<number | null>(null)
   const [savingWorkflow, setSavingWorkflow] = useState(false)
+  const [budgetEnabled, setBudgetEnabled] = useState(false)
+  const [productionBudget, setProductionBudget] = useState('')
+  const [profitBudget, setProfitBudget] = useState('')
+  const [vatAmount, setVatAmount] = useState('')
+  const [budgetNotes, setBudgetNotes] = useState('')
+  const [stepCosts, setStepCosts] = useState<Record<number, string>>({})
 
   const loadWorkflows = useCallback(() => {
     if (!token) return
@@ -100,6 +112,37 @@ function CreateProject() {
         },
         token,
       )
+      if (budgetEnabled) {
+        try {
+          const projectDetail = await apiRequest<{ steps: ProjectStep[] }>(`/projects/${project.id}`, {}, token)
+          const costByPosition = new Map<number, string>()
+          selectedSteps.forEach((step) => {
+            costByPosition.set(step.position, stepCosts[step.id] ?? '')
+          })
+          await apiRequest(
+            '/budgets',
+            {
+              method: 'POST',
+              body: JSON.stringify({
+                projectId: project.id,
+                productionBudget,
+                profitBudget,
+                vatAmount,
+                notes: budgetNotes.trim() || null,
+                steps: projectDetail.steps.map((step) => ({
+                  projectStepId: step.id,
+                  stepName: step.name,
+                  stepPosition: step.position,
+                  costAmount: costByPosition.get(step.position) ?? '',
+                })),
+              }),
+            },
+            token,
+          )
+        } catch {
+          // Budget creation is optional; project can still be created.
+        }
+      }
       navigate(`/projects/${project.id}`)
     } catch {
       setError('Unable to create project.')
@@ -172,7 +215,21 @@ function CreateProject() {
     }
   }
 
-  const selectedSteps = steps.filter((step) => step.template_id === workflowTemplateId)
+  const selectedSteps = useMemo(
+    () => steps.filter((step) => step.template_id === workflowTemplateId),
+    [steps, workflowTemplateId],
+  )
+
+  useEffect(() => {
+    if (!budgetEnabled) return
+    setStepCosts((current) => {
+      const next: Record<number, string> = {}
+      for (const step of selectedSteps) {
+        next[step.id] = current[step.id] ?? ''
+      }
+      return next
+    })
+  }, [budgetEnabled, selectedSteps])
 
   return (
     <Layout title="Start new project">
@@ -246,6 +303,70 @@ function CreateProject() {
                 </div>
               </div>
             </div>
+          </section>
+          <section className="project-form__section">
+            <div className="section-heading">
+              <p className="eyebrow">Budget</p>
+              <h3>Budget control (optional)</h3>
+              <p className="muted">Set production spend, profit target, and VAT for this project.</p>
+            </div>
+            <label className="toggle-row">
+              <input
+                type="checkbox"
+                checked={budgetEnabled}
+                onChange={(event) => setBudgetEnabled(event.target.checked)}
+              />
+              Enable budget control
+            </label>
+            {budgetEnabled && (
+              <div className="budget-section">
+                <div className="grid">
+                  <label>
+                    Production budget
+                    <input
+                      value={productionBudget}
+                      onChange={(event) => setProductionBudget(event.target.value)}
+                    />
+                  </label>
+                  <label>
+                    Profit target
+                    <input
+                      value={profitBudget}
+                      onChange={(event) => setProfitBudget(event.target.value)}
+                    />
+                  </label>
+                  <label>
+                    VAT amount
+                    <input value={vatAmount} onChange={(event) => setVatAmount(event.target.value)} />
+                  </label>
+                </div>
+                <label className="notes-field">
+                  Budget notes
+                  <textarea
+                    value={budgetNotes}
+                    onChange={(event) => setBudgetNotes(event.target.value)}
+                    rows={2}
+                  />
+                </label>
+                {selectedSteps.length > 0 && (
+                  <div className="budget-steps">
+                    <p className="muted">Allocate production costs by workflow step.</p>
+                    {selectedSteps.map((step) => (
+                      <label key={step.id} className="budget-step-row">
+                        <span>{step.position}. {step.name}</span>
+                        <input
+                          value={stepCosts[step.id] ?? ''}
+                          onChange={(event) =>
+                            setStepCosts((current) => ({ ...current, [step.id]: event.target.value }))
+                          }
+                          placeholder="0.00"
+                        />
+                      </label>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </section>
 
           <aside className="project-form__sidebar">

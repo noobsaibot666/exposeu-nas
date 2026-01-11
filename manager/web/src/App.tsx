@@ -1,6 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import BudgetControl from './pages/BudgetControl'
+import BudgetDetail from './pages/BudgetDetail'
 import StatProjects from './pages/StatProjects'
 import CreateProject from './pages/CreateProject'
 import ProjectDetail from './pages/ProjectDetail'
@@ -19,6 +21,14 @@ function App() {
       <Route
         path="/"
         element={token ? <Dashboard /> : <Navigate to="/login" replace />} 
+      />
+      <Route
+        path="/budgets"
+        element={token ? <BudgetControl /> : <Navigate to="/login" replace />} 
+      />
+      <Route
+        path="/budgets/:id"
+        element={token ? <BudgetDetail /> : <Navigate to="/login" replace />} 
       />
       <Route
         path="/stats/:type"

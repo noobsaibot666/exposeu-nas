@@ -20,6 +20,7 @@ docker compose -f manager/docker-compose.yml up -d --build
 ```
 psql postgresql://exposeu:exposeu@localhost:5432/exposeu_manager -f manager/api/schema.sql
 ```
+If you are updating an existing install, re-run the schema command to add new tables (budgets, budget steps).
 4) Open:
 - Web UI: http://localhost:5175
 - API health: http://localhost:4001/health

@@ -3,6 +3,7 @@ import express from 'express'
 import cors from 'cors'
 import bcrypt from 'bcrypt'
 import authRoutes from './routes/auth.js'
+import budgetRoutes from './routes/budgets.js'
 import projectRoutes from './routes/projects.js'
 import shareRoutes from './routes/share.js'
 import workflowRoutes from './routes/workflows.js'
@@ -21,6 +22,7 @@ app.get('/health', (_req, res) => {
 })
 
 app.use('/auth', authRoutes)
+app.use('/budgets', requireAuth, budgetRoutes)
 app.use('/projects', requireAuth, projectRoutes)
 app.use('/workflows', requireAuth, workflowRoutes)
 app.use('/share', shareRoutes)

@@ -101,4 +101,30 @@ CREATE TABLE IF NOT EXISTS workflow_tags (
   template_id INTEGER REFERENCES workflow_templates(id) ON DELETE CASCADE,
   tag TEXT NOT NULL,
   PRIMARY KEY (template_id, tag)
-)
+);
+
+CREATE TABLE IF NOT EXISTS budgets (
+  id SERIAL PRIMARY KEY,
+  project_id INTEGER REFERENCES projects(id) ON DELETE SET NULL,
+  project_title TEXT,
+  production_budget NUMERIC(12, 2) NOT NULL,
+  profit_budget NUMERIC(12, 2) NOT NULL,
+  vat_amount NUMERIC(12, 2) DEFAULT 0,
+  notes TEXT,
+  archived BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS budget_steps (
+  id SERIAL PRIMARY KEY,
+  budget_id INTEGER REFERENCES budgets(id) ON DELETE CASCADE,
+  project_step_id INTEGER REFERENCES project_steps(id) ON DELETE SET NULL,
+  step_name TEXT NOT NULL,
+  step_position INTEGER,
+  cost_amount NUMERIC(12, 2) DEFAULT 0,
+  vendor_name TEXT,
+  vendor_cost NUMERIC(12, 2),
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);

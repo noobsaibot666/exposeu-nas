@@ -188,6 +188,30 @@ router.get('/:id', async (req, res) => {
     'SELECT delivered_on_time, flow_issues, review_notes, learnings, created_at, updated_at FROM project_reviews WHERE project_id = $1',
     [id],
   )
+  const budget = await query(
+    'SELECT * FROM budgets WHERE project_id = $1 ORDER BY archived ASC, created_at DESC LIMIT 1',
+    [id],
+  )
+  const budgetRow = budget.rows[0] ?? null
+  const budgetSteps = budgetRow
+    ? await query(
+        `SELECT
+            budget_steps.id,
+            budget_steps.project_step_id,
+            COALESCE(project_steps.name, budget_steps.step_name) as step_name,
+            COALESCE(project_steps.position, budget_steps.step_position) as step_position,
+            budget_steps.cost_amount,
+            budget_steps.vendor_name,
+            budget_steps.vendor_cost,
+            budget_steps.created_at,
+            budget_steps.updated_at
+          FROM budget_steps
+          LEFT JOIN project_steps ON budget_steps.project_step_id = project_steps.id
+          WHERE budget_steps.budget_id = $1
+          ORDER BY step_position ASC NULLS LAST, budget_steps.id ASC`,
+        [budgetRow.id],
+      )
+    : { rows: [] }
 
   return res.json({
     project: { ...project.rows[0], tags: tagsResult.rows.map((row) => row.tag), review: review.rows[0] ?? null },
@@ -195,6 +219,8 @@ router.get('/:id', async (req, res) => {
     files: files.rows,
     deliveries: deliveries.rows,
     timeLogs: timeLogs.rows,
+    budget: budgetRow,
+    budgetSteps: budgetSteps.rows,
   })
 })
 
@@ -246,6 +272,10 @@ router.patch('/:id', async (req, res) => {
   )
 
   if (!result.rows[0]) return res.status(404).json({ error: 'Not found.' })
+  await query('UPDATE budgets SET project_title = $1, updated_at = NOW() WHERE project_id = $2', [
+    result.rows[0].title,
+    id,
+  ])
 
   if (tags !== undefined) {
     const tagList = normalizeTags(tags)
@@ -354,6 +384,12 @@ router.patch('/:id/steps/:stepId', async (req, res) => {
   )
 
   if (!result.rows[0]) return res.status(404).json({ error: 'Not found.' })
+  if (name || result.rows[0].name) {
+    await query(
+      'UPDATE budget_steps SET step_name = COALESCE($1, step_name), step_position = COALESCE($2, step_position), updated_at = NOW() WHERE project_step_id = $3',
+      [name || result.rows[0].name, result.rows[0].position ?? null, stepId],
+    )
+  }
   return res.json(result.rows[0])
 })
 
