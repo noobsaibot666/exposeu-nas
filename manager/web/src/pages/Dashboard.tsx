@@ -18,6 +18,7 @@ type Project = {
   created_at: string
   tags?: string[]
   share_links?: Array<{ token: string; created_at: string; expires_at: string | null }>
+  steps?: Array<{ id: number; name: string; due_date: string | null }>
 }
 
 type ViewMode = 'timeline' | 'list' | 'board' | 'calendar'
@@ -31,7 +32,6 @@ const formatDate = (value: string | null) => {
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return value
   return new Intl.DateTimeFormat('en-US', {
-    month: 'short',
     day: '2-digit',
   }).format(date)
 }
@@ -53,6 +53,15 @@ const getProjectColor = (project: { id: number; title: string; project_color?: s
   const seed = hashString(`${project.id}-${project.title}`)
   const hue = seed % 360
   return `hsl(${hue} 68% 62%)`
+}
+
+const hexToRgba = (value: string, alpha: number) => {
+  const normalized = value.replace('#', '')
+  if (normalized.length !== 6) return value
+  const r = parseInt(normalized.slice(0, 2), 16)
+  const g = parseInt(normalized.slice(2, 4), 16)
+  const b = parseInt(normalized.slice(4, 6), 16)
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`
 }
 
 function Dashboard() {
@@ -77,10 +86,27 @@ function Dashboard() {
     return new Date(current.getFullYear(), current.getMonth(), current.getDate())
   })
   const [calendarView, setCalendarView] = useState<CalendarMode>('month')
+  const [daySize, setDaySize] = useState(72)
 
   useEffect(() => {
     setCalendarAnchor((current) => new Date(current.getFullYear(), current.getMonth(), current.getDate()))
   }, [calendarView])
+
+  useEffect(() => {
+    const updateDaySize = () => {
+      const width = window.innerWidth
+      if (width <= 720) {
+        setDaySize(56)
+      } else if (width <= 900) {
+        setDaySize(64)
+      } else {
+        setDaySize(72)
+      }
+    }
+    updateDaySize()
+    window.addEventListener('resize', updateDaySize)
+    return () => window.removeEventListener('resize', updateDaySize)
+  }, [])
   const draggingRef = useRef<{
     id: number | null
     startX: number
@@ -211,6 +237,7 @@ function Dashboard() {
     event: React.PointerEvent<HTMLDivElement>,
   ) => {
     const currentOffset = timelineOffsets[id] ?? 0
+    event.preventDefault()
     draggingRef.current = { id, startX: event.clientX, offset: currentOffset, mode }
     draggedRef.current = { id, moved: false }
     event.currentTarget.setPointerCapture(event.pointerId)
@@ -219,7 +246,7 @@ function Dashboard() {
   const handlePointerMove = (id: number, event: React.PointerEvent<HTMLDivElement>) => {
     if (draggingRef.current.id !== id) return
     const delta = event.clientX - draggingRef.current.startX
-    const offsetDays = Math.round(delta / 72)
+    const offsetDays = Math.round(delta / daySize)
     if (Math.abs(delta) > 4) draggedRef.current.moved = true
     setTimelineOffsets((prev) => ({ ...prev, [id]: draggingRef.current.offset + offsetDays }))
   }
@@ -443,8 +470,8 @@ function Dashboard() {
             <>
               {timelineProjects.length === 0 && <p className="muted">Add due dates to see the timeline.</p>}
               {timelineProjects.length > 0 && (
-                <div className="timeline-board">
-                  <div className="timeline-board__days" style={{ '--days': daysCount } as CSSProperties}>
+                <div className="timeline-board" style={{ '--days': daysCount, '--day-size': `${daySize}px` } as CSSProperties}>
+                  <div className="timeline-board__days">
                     <div className="timeline-board__spacer" />
                     <div className="timeline-board__grid">
                       {days.map((day) => (
@@ -455,7 +482,7 @@ function Dashboard() {
                       ))}
                     </div>
                   </div>
-                  <div className="timeline-board__rows" style={{ '--days': daysCount } as CSSProperties}>
+                  <div className="timeline-board__rows">
                     {timelineProjects.map((project) => {
                       const offset = timelineOffsets[project.id] ?? 0
                       const shiftedStart = new Date(project.start.getTime() + offset * dayMs)
@@ -465,7 +492,7 @@ function Dashboard() {
                       const startIndex = Math.max(0, Math.min(daysCount - 1, rawStartIndex))
                       const endIndex = Math.max(startIndex, Math.min(daysCount - 1, rawEndIndex))
                       const spanDays = endIndex - startIndex + 1
-                      const width = spanDays * 72
+                      const width = spanDays * daySize
                       const tone = getTone({ end: shiftedEnd })
                       const urgent = hasUrgentTag(project.tags)
                       const compactClass =
@@ -481,7 +508,14 @@ function Dashboard() {
                       return (
                         <div key={project.id} className="timeline-row">
                           <div className="timeline-row__label">
-                            <span className="timeline-row__title">{project.title}</span>
+                            <span className="timeline-row__title">
+                              <span
+                                className="timeline-row__color"
+                                style={{ '--project-color': getProjectColor(project, 'fallback') } as CSSProperties}
+                                aria-hidden="true"
+                              />
+                              {project.title}
+                            </span>
                             <span className="timeline-row__meta">{project.client_name ?? 'No client'}</span>
                             {project.tags && project.tags.length > 0 && (
                               <span className="timeline-row__tag">{[...project.tags].sort()[0]}</span>
@@ -492,7 +526,14 @@ function Dashboard() {
                               className={`timeline-chip timeline-chip--${tone}${compactClass ? ` ${compactClass}` : ''}${
                                 urgent ? ' timeline-chip--urgent' : ''
                               }`}
-                              style={{ width, transform: `translateX(${startIndex * 72}px)` }}
+                              style={
+                                {
+                                  width,
+                                  transform: `translateX(${startIndex * daySize}px)`,
+                                  '--project-color': getProjectColor(project, 'fallback'),
+                                  '--project-color-soft': hexToRgba(getProjectColor(project, 'fallback'), 0.18),
+                                } as CSSProperties
+                              }
                               role="button"
                               tabIndex={0}
                               onPointerDown={(event) => handlePointerDown(project.id, 'move', event)}
@@ -522,9 +563,25 @@ function Dashboard() {
                               <div className="timeline-chip__meta">
                                 {formatDate(shiftedStart.toISOString())} – {formatDate(shiftedEnd.toISOString())}
                               </div>
-                              {project.tags && project.tags.length > 0 && (
-                                <div className="timeline-chip__tag">{[...project.tags].sort().join(' · ')}</div>
-                              )}
+                              {(project.steps ?? []).some((step) => step.due_date) && (() => {
+                                const dueSteps = (project.steps ?? []).filter((step) => step.due_date)
+                                const visibleSteps = dueSteps.slice(0, 3)
+                                const extraCount = Math.max(0, dueSteps.length - visibleSteps.length)
+                                return (
+                                  <div className="timeline-chip__steps">
+                                    {visibleSteps.map((step) => (
+                                      <div key={step.id} className="timeline-chip__step">
+                                        <span className="timeline-chip__dot" aria-hidden="true" />
+                                        <span className="timeline-chip__step-date">{formatDate(step.due_date)}</span>
+                                        <span className="timeline-chip__step-name">{step.name}</span>
+                                      </div>
+                                    ))}
+                                    {extraCount > 0 && (
+                                      <span className="timeline-chip__steps-more">+{extraCount} more</span>
+                                    )}
+                                  </div>
+                                )
+                              })()}
                             </div>
                           </div>
                           <div className="timeline-row__actions">

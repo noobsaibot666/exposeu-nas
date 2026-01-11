@@ -31,14 +31,20 @@ function Layout({
           <div className="layout__title-row">
             <div className="layout__title-main">
               <h1>{title}</h1>
-              {headerActions}
             </div>
-            {!hideDashboardLink && (
-              <Link to="/" className="layout__primary">
-                Dashboard
-              </Link>
-            )}
           </div>
+          {(!hideDashboardLink || headerActions) && (
+            <div className="layout__actions-row">
+              <div className="layout__actions-left">
+                {!hideDashboardLink && (
+                  <Link to="/" className="layout__primary">
+                    Dashboard
+                  </Link>
+                )}
+              </div>
+              <div className="layout__actions-right">{headerActions}</div>
+            </div>
+          )}
         </div>
       </header>
       <main className="layout__content">{children}</main>

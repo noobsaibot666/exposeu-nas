@@ -176,7 +176,7 @@
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
   gap: 16px;
-  min-width: calc(200px + (var(--days) * 72px));
+  min-width: calc(200px + (var(--days) * var(--day-size, 72px)));
 }
 
 .timeline-board__spacer {
@@ -185,7 +185,7 @@
 
 .timeline-board__grid {
   display: grid;
-  grid-template-columns: repeat(var(--days), 72px);
+  grid-template-columns: repeat(var(--days), var(--day-size, 72px));
   gap: 0;
 }
 
@@ -207,7 +207,7 @@
 .timeline-board__rows {
   display: grid;
   gap: 18px;
-  min-width: calc(200px + (var(--days) * 72px));
+  min-width: calc(200px + (var(--days) * var(--day-size, 72px)));
 }
 
 .timeline-row {
@@ -232,6 +232,17 @@
 
 .timeline-row__title {
   font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timeline-row__color {
+  width: 8px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--project-color, rgba(255, 255, 255, 0.6));
+  flex: 0 0 auto;
 }
 
 .timeline-row__meta {
@@ -258,7 +269,7 @@
       rgba(255, 255, 255, 0.06),
       rgba(255, 255, 255, 0.06) 1px,
       transparent 1px,
-      transparent 72px
+      transparent var(--day-size, 72px)
     );
 }
 
@@ -270,12 +281,14 @@
   padding: 8px 12px;
   display: grid;
   gap: 4px;
-  background: rgba(99, 230, 190, 0.18);
-  border: 1px solid rgba(99, 230, 190, 0.4);
+  background: rgba(148, 163, 184, 0.16);
+  border: 1px solid rgba(148, 163, 184, 0.35);
   color: var(--text-strong);
   cursor: grab;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
   overflow: visible;
+  touch-action: none;
+  user-select: none;
 }
 
 .timeline-chip:active {
@@ -370,19 +383,64 @@
 }
 
 .timeline-chip--warning {
-  background: rgba(244, 180, 106, 0.2);
+  background: rgba(244, 180, 106, 0.22);
   border-color: rgba(244, 180, 106, 0.5);
 }
 
 .timeline-chip--danger {
-  background: rgba(255, 123, 123, 0.2);
+  background: rgba(255, 123, 123, 0.22);
   border-color: rgba(255, 123, 123, 0.5);
 }
 
 .timeline-chip--urgent {
   background: rgba(255, 89, 89, 0.28);
   border-color: rgba(255, 89, 89, 0.6);
-  box-shadow: 0 0 0 1px rgba(255, 89, 89, 0.35);
+  box-shadow: 0 0 0 1px rgba(255, 89, 89, 0.3);
+}
+
+.timeline-chip__steps {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  margin-top: 2px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.timeline-chip__step {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.68rem;
+  color: var(--text-tertiary);
+  max-width: 140px;
+  min-width: 0;
+}
+
+.timeline-chip__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--project-color, rgba(255, 255, 255, 0.6));
+  flex: 0 0 auto;
+}
+
+.timeline-chip__step-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.timeline-chip__step-date {
+  color: var(--text-secondary);
+  font-size: 0.66rem;
+  flex: 0 0 auto;
+}
+
+.timeline-chip__steps-more {
+  font-size: 0.66rem;
+  color: var(--text-tertiary);
+  flex: 0 0 auto;
 }
 
 .timeline-row__link {
@@ -650,11 +708,11 @@
 
   .timeline-board__days {
     grid-template-columns: 150px minmax(0, 1fr);
-    min-width: calc(150px + (var(--days) * 64px));
+    min-width: calc(150px + (var(--days) * var(--day-size, 64px)));
   }
 
   .timeline-board__grid {
-    grid-template-columns: repeat(var(--days), 64px);
+    grid-template-columns: repeat(var(--days), var(--day-size, 64px));
   }
 
   .calendar-grid {
@@ -668,7 +726,7 @@
         rgba(255, 255, 255, 0.06),
         rgba(255, 255, 255, 0.06) 1px,
         transparent 1px,
-        transparent 64px
+        transparent var(--day-size, 64px)
       );
   }
 }
@@ -686,11 +744,11 @@
 
   .timeline-board__days {
     grid-template-columns: 130px minmax(0, 1fr);
-    min-width: calc(130px + (var(--days) * 56px));
+    min-width: calc(130px + (var(--days) * var(--day-size, 56px)));
   }
 
   .timeline-board__grid {
-    grid-template-columns: repeat(var(--days), 56px);
+    grid-template-columns: repeat(var(--days), var(--day-size, 56px));
   }
 
   .view-switcher {
@@ -708,7 +766,7 @@
         rgba(255, 255, 255, 0.06),
         rgba(255, 255, 255, 0.06) 1px,
         transparent 1px,
-        transparent 56px
+        transparent var(--day-size, 56px)
       );
   }
 }
@@ -787,6 +845,5 @@
   background: var(--project-color, rgba(138, 180, 255, 0.9));
   display: inline-block;
   margin-right: 8px;
-  box-shadow: 0 0 0 2px rgba(10, 15, 28, 0.6);
 }
 }

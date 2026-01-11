@@ -184,6 +184,8 @@ export default function ProjectDetail() {
   })
   const [reviewStatus, setReviewStatus] = useState('')
   const [error, setError] = useState('')
+  const [projectSaveStatus, setProjectSaveStatus] = useState('')
+  const [stepSaveStatus, setStepSaveStatus] = useState('')
 
   const loadProject = useCallback(() => {
     if (!token || !id) return
@@ -356,25 +358,31 @@ export default function ProjectDetail() {
 
   const handleProjectUpdate = async () => {
     if (!token || !id) return
-    await apiRequest(
-      `/projects/${id}`,
-      {
-        method: 'PATCH',
-        body: JSON.stringify({
-          status,
-          clientName: clientName.trim() || null,
-          clientEmail: clientEmail.trim() || null,
-          clientPhone: clientPhone.trim() || null,
-          serviceType: serviceType.trim() || null,
-          planTier: planTier.trim() || null,
-          projectColor: projectColor || null,
-          startDate: startDate || null,
-          dueDate: dueDate || null,
-        }),
-      },
-      token,
-    )
-    loadProject()
+    setProjectSaveStatus('')
+    try {
+      await apiRequest(
+        `/projects/${id}`,
+        {
+          method: 'PATCH',
+          body: JSON.stringify({
+            status,
+            clientName: clientName.trim() || null,
+            clientEmail: clientEmail.trim() || null,
+            clientPhone: clientPhone.trim() || null,
+            serviceType: serviceType.trim() || null,
+            planTier: planTier.trim() || null,
+            projectColor: projectColor || null,
+            startDate: startDate || null,
+            dueDate: dueDate || null,
+          }),
+        },
+        token,
+      )
+      setProjectSaveStatus('Saved.')
+      loadProject()
+    } catch {
+      setProjectSaveStatus('Unable to save changes.')
+    }
   }
 
   const handleArchiveProject = async () => {
@@ -544,7 +552,7 @@ export default function ProjectDetail() {
     const nameChanged = nextName !== step.name
     const dueChanged = (nextDue || null) !== (step.due_date || null)
     if (!nameChanged && !dueChanged) {
-      return
+      return true
     }
     const payload: { name?: string; dueDate?: string | null } = {}
     if (nameChanged) payload.name = nextName
@@ -566,9 +574,22 @@ export default function ProjectDetail() {
             : item,
         ),
       )
+      return true
     } catch {
       setError('Unable to update step.')
+      return false
     }
+  }
+
+  const handleSaveAllSteps = async () => {
+    if (!token || !id) return
+    setStepSaveStatus('')
+    const results = await Promise.all(steps.map((step) => handleStepSave(step.id)))
+    if (results.some((result) => result === false)) {
+      setStepSaveStatus('Unable to save some steps.')
+      return
+    }
+    setStepSaveStatus('Saved.')
   }
 
   if (!project) {
@@ -800,6 +821,12 @@ export default function ProjectDetail() {
                 onChange={(event) => setDueDate(event.target.value)}
               />
             </div>
+            <div className="detail__actions">
+              <button type="button" onClick={handleProjectUpdate}>
+                Save changes
+              </button>
+              {projectSaveStatus && <span className="muted">{projectSaveStatus}</span>}
+            </div>
           </div>
           <section className="panel">
             <div className="panel__header">
@@ -862,6 +889,12 @@ export default function ProjectDetail() {
                 onChange={(event) => setNewStepDue(event.target.value)}
               />
               <button type="button" onClick={addStep}>Add step</button>
+            </div>
+            <div className="detail__actions">
+              <button type="button" onClick={handleSaveAllSteps}>
+                Save changes
+              </button>
+              {stepSaveStatus && <span className="muted">{stepSaveStatus}</span>}
             </div>
           </section>
           <section className="panel">
@@ -971,9 +1004,6 @@ export default function ProjectDetail() {
                   <h3>Notes</h3>
                 </div>
               </div>
-              <button type="button" onClick={handleNotesSave}>
-                Save
-              </button>
             </div>
             <textarea
               className="detail__notes"
@@ -982,6 +1012,11 @@ export default function ProjectDetail() {
               onChange={(event) => setNotesDraft(event.target.value)}
               placeholder="Add notes..."
             />
+            <div className="detail__actions">
+              <button type="button" onClick={handleNotesSave}>
+                Save
+              </button>
+            </div>
           </section>
           <section className="panel panel--compact budget-panel">
             <div className="panel__header">
@@ -1153,9 +1188,6 @@ export default function ProjectDetail() {
                   <h3>Tags</h3>
                 </div>
               </div>
-              <button type="button" onClick={handleTagsSave}>
-                Save
-              </button>
             </div>
             <input
               className="detail__tags"
@@ -1163,6 +1195,11 @@ export default function ProjectDetail() {
               onChange={(event) => setTagsDraft(event.target.value)}
               placeholder="Add tags, comma separated"
             />
+            <div className="detail__actions">
+              <button type="button" onClick={handleTagsSave}>
+                Save
+              </button>
+            </div>
           </section>
           <section className="panel">
             <div className="panel__header">

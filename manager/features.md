@@ -15,6 +15,8 @@ Short reference for ongoing feature work in Exposeu Manager.
 ## Workflow templates
 - Steps support half-day offsets (stored as numeric offsets).
 - Step defaults include a baseline cost value for budget allocation.
+- Project creation supports calendar due dates per workflow step.
+- Timeline shows step due dates as compact dots per project.
 
 ## User isolation + admin access
 - Projects and budgets are owned by a user account.

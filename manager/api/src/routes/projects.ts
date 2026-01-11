@@ -42,6 +42,7 @@ router.get('/', async (req, res) => {
   const tagsByProject = new Map<number, string[]>()
   const reviewsByProject = new Map<number, Record<string, unknown>>()
   const shareLinksByProject = new Map<number, Array<{ token: string; created_at: string; expires_at: string | null }>>()
+  const stepsByProject = new Map<number, Array<{ id: number; name: string; due_date: string | null }>>()
 
   if (projectIds.length > 0) {
     const tagsResult = await query<{ project_id: number; tag: string }>(
@@ -95,6 +96,16 @@ router.get('/', async (req, res) => {
       })
       shareLinksByProject.set(row.project_id, existing)
     }
+
+    const stepsResult = await query<{ project_id: number; id: number; name: string; due_date: string | null }>(
+      'SELECT project_id, id, name, due_date FROM project_steps WHERE project_id = ANY($1) ORDER BY position ASC',
+      [projectIds],
+    )
+    for (const row of stepsResult.rows) {
+      const existing = stepsByProject.get(row.project_id) ?? []
+      existing.push({ id: row.id, name: row.name, due_date: row.due_date })
+      stepsByProject.set(row.project_id, existing)
+    }
   }
 
   return res.json(
@@ -103,6 +114,7 @@ router.get('/', async (req, res) => {
       tags: tagsByProject.get(project.id) ?? [],
       review: reviewsByProject.get(project.id) ?? null,
       share_links: shareLinksByProject.get(project.id) ?? [],
+      steps: stepsByProject.get(project.id) ?? [],
     })),
   )
 })
@@ -123,7 +135,23 @@ router.post('/', async (req, res) => {
     workflowTemplateId,
     tags,
     projectColor,
-  } = req.body as Record<string, string | string[] | undefined>
+    stepDueDates,
+  } = req.body as {
+    title?: string
+    clientName?: string
+    clientEmail?: string
+    clientPhone?: string
+    serviceType?: string
+    planTier?: string
+    status?: string
+    startDate?: string
+    dueDate?: string
+    notes?: string
+    workflowTemplateId?: number | string | null
+    tags?: string[] | string
+    projectColor?: string | null
+    stepDueDates?: Array<{ templateStepId: number; dueDate?: string | null }>
+  }
 
   if (!title) {
     return res.status(400).json({ error: 'Title required.' })
@@ -163,21 +191,49 @@ router.post('/', async (req, res) => {
   }
 
   if (project.workflow_template_id) {
+    const dueDateByTemplateId = new Map<number, string>()
+    if (stepDueDates) {
+      for (const entry of stepDueDates) {
+        if (entry?.templateStepId && entry.dueDate) {
+          dueDateByTemplateId.set(Number(entry.templateStepId), entry.dueDate)
+        }
+      }
+    }
     const templateSteps = await query(
-      'SELECT name, position, default_offset_days FROM workflow_steps WHERE template_id = $1 ORDER BY position ASC',
+      'SELECT id, name, position, default_offset_days FROM workflow_steps WHERE template_id = $1 ORDER BY position ASC',
       [project.workflow_template_id],
     )
-    for (const step of templateSteps.rows as Array<{ name: string; position: number; default_offset_days: number }>) {
+    for (const step of templateSteps.rows as Array<{ id: number; name: string; position: number; default_offset_days: number }>) {
+      const requestedDue = dueDateByTemplateId.get(step.id)
+      let dueDateValue: string | null = null
+      let offsetDaysValue = step.default_offset_days ?? 0
+      if (requestedDue) {
+        const parsedDate = new Date(requestedDue)
+        if (!Number.isNaN(parsedDate.getTime())) {
+          dueDateValue = requestedDue
+          if (project.start_date) {
+            const start = new Date(project.start_date)
+            start.setHours(0, 0, 0, 0)
+            const diff = Math.round((parsedDate.getTime() - start.getTime()) / 86400000)
+            offsetDaysValue = diff
+          } else {
+            offsetDaysValue = 0
+          }
+        }
+      }
+      if (!dueDateValue && project.start_date) {
+        dueDateValue = new Date(new Date(project.start_date).getTime() + step.default_offset_days * 86400000)
+          .toISOString()
+          .slice(0, 10)
+      }
       await query(
         'INSERT INTO project_steps (project_id, name, position, due_date, offset_days) VALUES ($1,$2,$3,$4,$5)',
         [
           project.id,
           step.name,
           step.position,
-          project.start_date
-            ? new Date(new Date(project.start_date).getTime() + step.default_offset_days * 86400000)
-            : null,
-          step.default_offset_days ?? 0,
+          dueDateValue,
+          offsetDaysValue,
         ],
       )
     }

@@ -78,6 +78,7 @@ function CreateProject() {
   const [vatPercent, setVatPercent] = useState('')
   const [budgetNotes, setBudgetNotes] = useState('')
   const [stepCosts, setStepCosts] = useState<Record<number, string>>({})
+  const [stepDueDates, setStepDueDates] = useState<Record<number, string>>({})
 
   const loadWorkflows = useCallback(() => {
     if (!token) return
@@ -99,7 +100,7 @@ function CreateProject() {
     if (!token) return
 
     try {
-      const project = await apiRequest<{ id: number }>(
+          const project = await apiRequest<{ id: number }>(
         '/projects',
         {
           method: 'POST',
@@ -117,6 +118,10 @@ function CreateProject() {
             notes,
             workflowTemplateId: workflowTemplateId || null,
             projectColor: projectColor || null,
+            stepDueDates: selectedSteps.map((step) => ({
+              templateStepId: step.id,
+              dueDate: stepDueDates[step.id] || null,
+            })),
           }),
         },
         token,
@@ -261,6 +266,16 @@ function CreateProject() {
       return next
     })
   }, [budgetEnabled, selectedSteps])
+
+  useEffect(() => {
+    setStepDueDates((current) => {
+      const next: Record<number, string> = {}
+      for (const step of selectedSteps) {
+        next[step.id] = current[step.id] ?? ''
+      }
+      return next
+    })
+  }, [selectedSteps])
 
   const productionRemaining = useMemo(() => {
     const production = Number(productionBudget) || 0
@@ -502,6 +517,25 @@ function CreateProject() {
                         Tags: {templates.find((template) => template.id === workflowTemplateId)?.tags?.join(', ')}
                       </p>
                     ) : null}
+                  </div>
+                )}
+                {selectedSteps.length > 0 && (
+                  <div className="workflow-schedule">
+                    <p className="muted">Set step due dates (calendar dates).</p>
+                    {selectedSteps.map((step) => (
+                      <label key={step.id} className="workflow-schedule__row">
+                        <span>
+                          {step.position}. {step.name}
+                        </span>
+                        <input
+                          type="date"
+                          value={stepDueDates[step.id] ?? ''}
+                          onChange={(event) =>
+                            setStepDueDates((current) => ({ ...current, [step.id]: event.target.value }))
+                          }
+                        />
+                      </label>
+                    ))}
                   </div>
                 )}
               </div>

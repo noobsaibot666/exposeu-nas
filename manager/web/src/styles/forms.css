@@ -385,6 +385,26 @@ button:disabled {
   gap: 10px;
 }
 
+.workflow-schedule {
+  display: grid;
+  gap: 8px;
+}
+
+.workflow-schedule__row {
+  display: grid;
+  grid-template-columns: 1fr minmax(140px, 180px);
+  gap: 12px;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border-soft);
+  background: rgba(9, 12, 22, 0.6);
+}
+
+.workflow-schedule__row input[type='date'] {
+  padding: 6px 8px;
+}
+
 .workflow-template-row {
   display: grid;
   grid-template-columns: 1fr auto;
