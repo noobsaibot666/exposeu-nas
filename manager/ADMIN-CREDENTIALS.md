@@ -10,6 +10,10 @@ Additional user:
 - Email: `alan@exposeu.local`
 - Password: `0811`
 
+Additional user:
+- Email: `asia@exposeu.local`
+- Password: `0811`
+
 ## Notes
 
 - `ADMIN_EMAIL` / `ADMIN_PASSWORD` only seed a user on first run.

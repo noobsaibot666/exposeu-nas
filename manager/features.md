@@ -16,9 +16,16 @@ Short reference for ongoing feature work in Exposeu Manager.
 - Steps support half-day offsets (stored as numeric offsets).
 - Step defaults include a baseline cost value for budget allocation.
 - Project creation supports calendar due dates per workflow step.
-- Timeline shows step due dates as compact dots per project.
+- Workflow templates can be deleted (projects are detached safely).
+- Timeline shows step due dates inside each project chip (dot · day · step).
+- Timeline uses urgency colors (focus/due soon/overdue) and shows project color in the left label.
 
 ## User isolation + admin access
 - Projects and budgets are owned by a user account.
 - Non-admins only see their own projects/budgets.
 - Admins can see all projects and access a user view switcher.
+
+## Mobile UX
+- Timeline drag uses touch-friendly long-press to avoid scroll conflicts.
+- Board view offers a status dropdown on touch devices.
+- Calendar density is reduced on small screens for legibility.
