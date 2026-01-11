@@ -6,6 +6,10 @@ Operational commands for the Exposeu Manager container.
 ```sh
 cd /mnt/Leviathan/www/exposeu/manager
 sudo docker compose up -d --force-recreate
+
+## Build Container
+sudo docker compose up -d --build --force-recreate
+
 ```
 
 ## Update database schema (interactive)
