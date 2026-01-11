@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS workflow_steps (
   template_id INTEGER REFERENCES workflow_templates(id) ON DELETE CASCADE,
   name TEXT NOT NULL,
   position INTEGER NOT NULL,
-  default_offset_days INTEGER DEFAULT 0
+  default_offset_days NUMERIC(6, 2) DEFAULT 0,
+  default_cost NUMERIC(12, 2) DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS projects (
@@ -53,6 +54,7 @@ CREATE TABLE IF NOT EXISTS project_steps (
   name TEXT NOT NULL,
   position INTEGER NOT NULL,
   due_date DATE,
+  offset_days NUMERIC(6, 2) DEFAULT 0,
   status TEXT DEFAULT 'pending'
 );
 

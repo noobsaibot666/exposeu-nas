@@ -8,8 +8,13 @@ Short reference for ongoing feature work in Exposeu Manager.
 - Profit target and VAT are percentage-based on total budget.
 - Step-level: production cost, optional vendor name/cost.
 - Production remaining is computed from step costs.
+- Production remaining indicator updates as costs are allocated.
 - Budgets persist even if a project or step is deleted.
 - Budgets can be archived/restored or deleted independently.
+
+## Workflow templates
+- Steps support half-day offsets (stored as numeric offsets).
+- Step defaults include a baseline cost value for budget allocation.
 
 ## User isolation + admin access
 - Projects and budgets are owned by a user account.

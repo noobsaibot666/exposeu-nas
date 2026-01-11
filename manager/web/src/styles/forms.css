@@ -135,6 +135,20 @@ button:disabled {
   gap: 20px;
 }
 
+.project-form__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+
+.budget-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+
 .toggle-row {
   display: flex;
   align-items: center;
@@ -157,6 +171,33 @@ button:disabled {
   gap: 10px;
 }
 
+.budget-remaining {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-soft);
+  background: rgba(6, 9, 18, 0.55);
+  font-weight: 600;
+}
+
+.budget-remaining--ok strong {
+  color: var(--accent-bright);
+}
+
+.budget-remaining--warning strong {
+  color: #f4b860;
+}
+
+.budget-remaining--danger strong {
+  color: #f87171;
+}
+
+.budget-remaining--neutral strong {
+  color: var(--text-muted);
+}
+
 .budget-step-row {
   display: grid;
   grid-template-columns: 1fr minmax(120px, 160px);
@@ -170,6 +211,13 @@ button:disabled {
 
 .budget-step-row input {
   padding: 8px 10px;
+}
+
+.budget-step-meta {
+  margin-left: 8px;
+  font-style: normal;
+  color: var(--text-tertiary);
+  font-weight: 500;
 }
 
 .project-form__section {
@@ -289,6 +337,14 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 
+  .project-form__row {
+    grid-template-columns: 1fr;
+  }
+
+  .budget-columns {
+    grid-template-columns: 1fr;
+  }
+
   .workflow-builder__add {
     grid-template-columns: 1fr;
   }
@@ -323,9 +379,28 @@ button:disabled {
   gap: 8px;
 }
 
+.workflow-assign {
+  margin-top: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.workflow-template-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.ghost-link--compact {
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
 .workflow-builder__steps li {
   display: grid;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: auto 1fr auto auto auto;
   gap: 12px;
   align-items: center;
   padding: 10px 12px;
@@ -342,7 +417,7 @@ button:disabled {
 
 .workflow-builder__add {
   display: grid;
-  grid-template-columns: 1.3fr 0.7fr auto;
+  grid-template-columns: 1.3fr 0.7fr 0.8fr auto;
   gap: 8px;
 }
 

@@ -49,7 +49,7 @@ router.post('/', async (req, res) => {
   const { name, description, steps, tags } = req.body as {
     name?: string
     description?: string
-    steps?: Array<{ name: string; position: number; defaultOffsetDays?: number }>
+    steps?: Array<{ name: string; position: number; defaultOffsetDays?: number; defaultCost?: number }>
     tags?: string[] | string
   }
 
@@ -65,8 +65,8 @@ router.post('/', async (req, res) => {
   const templateId = template.rows[0].id
   for (const step of steps) {
     await query(
-      'INSERT INTO workflow_steps (template_id, name, position, default_offset_days) VALUES ($1,$2,$3,$4)',
-      [templateId, step.name, step.position, step.defaultOffsetDays ?? 0],
+      'INSERT INTO workflow_steps (template_id, name, position, default_offset_days, default_cost) VALUES ($1,$2,$3,$4,$5)',
+      [templateId, step.name, step.position, step.defaultOffsetDays ?? 0, step.defaultCost ?? 0],
     )
   }
 
@@ -81,6 +81,16 @@ router.post('/', async (req, res) => {
   }
 
   return res.status(201).json({ template: template.rows[0] })
+})
+
+router.delete('/:id', async (req, res) => {
+  const id = Number(req.params.id)
+  if (!Number.isFinite(id)) {
+    return res.status(400).json({ error: 'Invalid template id.' })
+  }
+  await query('UPDATE projects SET workflow_template_id = NULL WHERE workflow_template_id = $1', [id])
+  await query('DELETE FROM workflow_templates WHERE id = $1', [id])
+  return res.status(204).send()
 })
 
 export default router

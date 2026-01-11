@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { apiRequest, apiUpload, apiBase } from '../components/api'
@@ -93,6 +93,7 @@ type Step = {
   position: number
   status: string
   due_date: string | null
+  offset_days?: number | string | null
 }
 
 const formatDate = (value: string | null) => {
@@ -127,6 +128,13 @@ const formatAmount = (value: number) =>
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   }).format(value)
+
+const formatOffset = (value?: number | string | null) => {
+  if (value === null || value === undefined) return ''
+  const numeric = Number(value)
+  if (Number.isNaN(numeric)) return ''
+  return `${numeric % 1 === 0 ? numeric.toFixed(0) : numeric}d`
+}
 
 export default function ProjectDetail() {
   const { id } = useParams()
@@ -279,6 +287,22 @@ export default function ProjectDetail() {
     setBudgetProduction(production ? production.toFixed(2) : '')
     setBudgetProfit(profit ? profit.toFixed(2) : '')
   }, [budget, budgetProfitPercent, budgetTotal, budgetVatPercent])
+
+  const budgetProductionRemaining = useMemo(() => {
+    if (budget) return 0
+    const production = Number(budgetProduction) || 0
+    const allocated = steps.reduce((total, step) => total + (Number(budgetStepCosts[step.id]) || 0), 0)
+    return production - allocated
+  }, [budget, budgetProduction, budgetStepCosts, steps])
+
+  const budgetRemainingTone = useMemo(() => {
+    if (budget) return 'neutral'
+    const production = Number(budgetProduction) || 0
+    if (production <= 0) return 'neutral'
+    if (budgetProductionRemaining <= 0) return 'danger'
+    if (budgetProductionRemaining <= production * 0.2) return 'warning'
+    return 'ok'
+  }, [budget, budgetProduction, budgetProductionRemaining])
 
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!token || !id || !event.target.files?.[0]) return
@@ -1062,9 +1086,18 @@ export default function ProjectDetail() {
                 {steps.length > 0 && (
                   <div className="budget-create__steps">
                     <p className="muted">Allocate production costs by workflow step.</p>
+                    <div className={`budget-remaining budget-remaining--${budgetRemainingTone}`}>
+                      <span>Production remaining</span>
+                      <strong>{formatAmount(budgetProductionRemaining)}</strong>
+                    </div>
                     {steps.map((step) => (
                       <label key={step.id} className="budget-step-row">
-                        <span>{step.position}. {step.name}</span>
+                        <span>
+                          {step.position}. {step.name}
+                          {formatOffset(step.offset_days) && (
+                            <em className="budget-step-meta">+{formatOffset(step.offset_days)}</em>
+                          )}
+                        </span>
                         <input
                           value={budgetStepCosts[step.id] ?? ''}
                           onChange={(event) =>

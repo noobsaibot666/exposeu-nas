@@ -169,7 +169,7 @@ router.post('/', async (req, res) => {
     )
     for (const step of templateSteps.rows as Array<{ name: string; position: number; default_offset_days: number }>) {
       await query(
-        'INSERT INTO project_steps (project_id, name, position, due_date) VALUES ($1,$2,$3,$4)',
+        'INSERT INTO project_steps (project_id, name, position, due_date, offset_days) VALUES ($1,$2,$3,$4,$5)',
         [
           project.id,
           step.name,
@@ -177,6 +177,7 @@ router.post('/', async (req, res) => {
           project.start_date
             ? new Date(new Date(project.start_date).getTime() + step.default_offset_days * 86400000)
             : null,
+          step.default_offset_days ?? 0,
         ],
       )
     }
