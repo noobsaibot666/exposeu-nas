@@ -1,3 +1,8 @@
+cd /Volumes/Leviathan/www/exposeu
+
+
+
+
 1) If you only changed frontend (Vite build → dist)
 cd /mnt/Leviathan/www/exposeu
 sudo docker run --rm -u 0 -v "$PWD:/app" -w /app node:20-alpine sh -lc "npm ci && npm run build"
@@ -17,4 +22,86 @@ sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu
 curl -kI https://localhost/ -H "Host: expose-u.com" | head -n 8
 curl -kI https://localhost/api/contact -H "Host: expose-u.com" | head -n 8
 curl -k https://localhost/api/contact -H "Host: expose-u.com" -H "Content-Type: application/json" --data '{"email":"test@example.com","message":"smoke"}'
+
+//
+
+# DEPLOY-SEQUENCE (ExposeU root project only)
+Safe deploy routine for https://expose-u.com (frontend + contact API).
+Goal: update ExposeU ONLY, without touching Traefik, alan-design.com, or the Manager stack.
+
+## Golden rules (DO NOT BREAK OTHER SITES)
+- **Do NOT recreate Traefik** during ExposeU updates.
+  - No `docker compose ... up -d traefik`
+  - No `docker compose ... up -d --force-recreate` without specifying services
+- Only ever restart:
+  - `exposeu-nginx` (frontend)
+  - `exposeu-contact` (API)
+- Traefik must be running and must stay the single router for all sites.
+
+---
+
+## 0) Pre-flight quick check (optional but recommended)
+```sh
+sudo docker ps --format "table {{.Names}}\t{{.Status}}" | egrep 'traefik|exposeu-nginx|exposeu-contact|website-nginx|exposeu-manager'
+
+
+1) Frontend-only change (Vite build → dist)
+cd /mnt/Leviathan/www/exposeu
+
+# Build dist using a clean container (no host npm required)
+sudo docker run --rm -u 0 -v "$PWD:/app" -w /app node:20-alpine sh -lc "npm ci && npm run build"
+
+# Restart ONLY ExposeU nginx
+sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-nginx
+
+
+2) Contact API-only change (server/index.js etc.)
+cd /mnt/Leviathan/www/exposeu
+
+# Restart ONLY the API container
+sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-contact
+
+3) Frontend + API change (both)
+cd /mnt/Leviathan/www/exposeu
+
+# Build dist
+sudo docker run --rm -u 0 -v "$PWD:/app" -w /app node:20-alpine sh -lc "npm ci && npm run build"
+
+# Restart ONLY ExposeU services (NOT traefik)
+sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-nginx exposeu-contact
+
+4) Always run smoke tests (must pass)
+
+# Website should be served by nginx
+curl -kI https://localhost/ -H "Host: expose-u.com" | head -n 12
+
+# API should respond via Traefik route (/api -> exposeu-contact, stripPrefix)
+curl -kI https://localhost/api/contact -H "Host: expose-u.com" | head -n 12
+
+curl -k https://localhost/api/contact -H "Host: expose-u.com" \
+  -H "Content-Type: application/json" \
+  --data '{"email":"test@example.com","message":"smoke"}'
+
+  Expected:
+	•	/ => server: nginx
+	•	/api/contact => x-powered-by: Express and JSON { "ok": true } on POST
+
+
+  5) Recovery if ExposeU returns 404 (most common pitfall)
+  5.1 Verify containers are running
+  sudo docker ps --format "table {{.Names}}\t{{.Status}}" | egrep 'traefik|exposeu-nginx|exposeu-contact'
+
+5.2 Verify webnet has the right members
+sudo docker network inspect webnet --format '{{range $id,$c := .Containers}}{{println $c.Name}}{{end}}' | sort
+
+Must include:
+	•	traefik
+	•	exposeu-nginx
+	•	exposeu-contact
+
+
+  5.3 Safest fix: start ExposeU services (do NOT touch Traefik)
+
+  cd /mnt/Leviathan/www/exposeu
+sudo docker compose -f docker-compose.traefik.yml up -d exposeu-nginx exposeu-contact
 

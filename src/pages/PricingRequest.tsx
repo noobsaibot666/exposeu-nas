@@ -22,32 +22,32 @@ const planDetails = {
 const serviceDetails = {
   exhibitions: {
     label: 'Exhibitions',
-    image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/1_ED_006.png'),
+    image: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
     intro: 'Curation-forward coverage designed for press kits, collector previews, and gallery archives.',
   },
   'gallery-stories': {
     label: 'Gallery Stories',
-    image: resolveImagePath('/src/assets/images/services/2_gallery_work/2_GW_008.png'),
+    image: resolveImagePath('/src/assets/images/services/2_gallery_work/2_GW_012.png'),
     intro: 'Narrative-led coverage with interviews and b-roll that keeps the curator voice intact.',
   },
   'artist-sessions': {
     label: 'Artist Sessions',
-    image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_005.png'),
+    image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
     intro: 'Portraits and BTS that capture process, personality, and the release story.',
   },
   performance: {
     label: 'Performance',
-    image: resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_012.png'),
+    image: resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_004.png'),
     intro: 'Live show coverage with sharp timing and fast turnarounds for socials and press.',
   },
   'fashion-show': {
     label: 'Fashion Show',
-    image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_024.png'),
+    image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
     intro: 'Runway coverage built for look-by-look documentation, press pushes, and same-day selects.',
   },
   atmospheric: {
     label: 'Atmospheric Films',
-    image: resolveImagePath('/src/assets/images/services/6_atmospheric_film/6_AF_019.png'),
+    image: resolveImagePath('/src/assets/images/services/6_atmospheric_film/6_AF_018.png'),
     intro: 'Mood-first storytelling with slow pacing, rich tones, and immersive art direction.',
   },
 }

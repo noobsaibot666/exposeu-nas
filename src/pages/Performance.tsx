@@ -2,10 +2,10 @@ import { resolveImagePath } from '../utils/resolveImagePath'
 import WorkPageLayout from './WorkPageLayout'
 
 const heroCards = [
-  { image: resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_010.png'), title: 'Live Set' },
-  { image: resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_002.png'), title: 'Stage Glow' },
-  { image: resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_004.png'), title: 'Energy Capture' },
-  { image: resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_012.png'), title: 'Motion Freeze' },
+  { image: resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_002.png'), title: 'Live Set' },
+  { image: resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_005.png'), title: 'Stage Glow' },
+  { image: resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_009.png'), title: 'Energy Capture' },
+  { image: resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_013.png'), title: 'Motion Freeze' },
 ]
 
 function Performance() {

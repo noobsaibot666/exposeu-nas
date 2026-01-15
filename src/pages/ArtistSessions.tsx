@@ -2,10 +2,10 @@ import { resolveImagePath } from '../utils/resolveImagePath'
 import WorkPageLayout from './WorkPageLayout'
 
 const heroCards = [
-  { image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_005.png'), title: 'Portrait' },
-  { image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_009.png'), title: 'In Studio' },
-  { image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_014.png'), title: 'Process' },
-  { image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_017.png'), title: 'Live Moment' },
+  { image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_008.png'), title: 'Portrait' },
+  { image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_015.png'), title: 'In Studio' },
+  { image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_024.png'), title: 'Process' },
+  { image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_045.png'), title: 'Live Moment' },
 ]
 
 function ArtistSessions() {

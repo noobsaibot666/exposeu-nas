@@ -2,10 +2,10 @@ import { resolveImagePath } from '../utils/resolveImagePath'
 import WorkPageLayout from './WorkPageLayout'
 
 const heroCards = [
-  { image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_024.png'), title: 'Runway Light' },
-  { image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_014.png'), title: 'Backstage' },
-  { image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_032.png'), title: 'Final Walk' },
-  { image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_006.jpeg'), title: 'Fabric Motion' },
+  { image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_009.jpeg'), title: 'Runway Light' },
+  { image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_022.png'), title: 'Backstage' },
+  { image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_030.png'), title: 'Final Walk' },
+  { image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_041.png'), title: 'Fabric Motion' },
 ]
 
 function FashionShow() {
