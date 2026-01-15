@@ -25,16 +25,19 @@ git push
 
 ## Server (TrueNAS)
 
-Pull latest code:
+No git commands on the server. Git is only used to store changes.
+
+If frontend changed (nginx serves the Vite build):
+```bash
+# From the repo root on TrueNAS
 cd /mnt/Leviathan/www/exposeu
-git pull
 
-Verify:
-git status
-→ should be clean
+# Build + restart the frontend container
+sudo docker compose -f docker-compose.traefik.yml up -d --build
 
-If frontend changed:
-docker compose up -d --build
+# If assets still look stale, force a clean recreate
+sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate
+```
 
 ---
 

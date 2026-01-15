@@ -1,4 +1,4 @@
-const imageModules = import.meta.glob('../assets/images/*', {
+const imageModules = import.meta.glob('../assets/images/**/*', {
   eager: true,
   import: 'default',
 }) as Record<string, string>
@@ -9,8 +9,10 @@ Object.entries(imageModules).forEach(([relativePath, url]) => {
   const fileName = relativePath.split('/').pop()
   if (!fileName) return
 
+  const normalizedPath = relativePath.replace('../assets/images', '/src/assets/images')
   imageMap.set(fileName, url)
   imageMap.set(`/src/assets/images/${fileName}`, url)
+  imageMap.set(normalizedPath, url)
 })
 
 export const resolveImagePath = (source: string) => {

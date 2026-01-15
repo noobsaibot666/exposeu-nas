@@ -10,8 +10,8 @@ function Footer() {
     <footer className="footer">
       <div className="footer__media">
         <img
-          src={resolveImagePath('/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg')}
-          alt="Silhouette portrait in blue light"
+          src={resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_033.png')}
+          alt="Audience in blue light"
         />
       </div>
       <div className="footer__content">

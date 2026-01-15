@@ -113,7 +113,7 @@ function About() {
 
           <div className="about__portrait-block">
             <div className="about__portrait">
-              <img src={resolveImagePath('/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg')} alt="Portrait" />
+              <img src={resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_001.png')} alt="Installation scene" />
             </div>
           </div>
 

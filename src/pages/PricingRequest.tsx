@@ -22,32 +22,32 @@ const planDetails = {
 const serviceDetails = {
   exhibitions: {
     label: 'Exhibitions',
-    image: resolveImagePath('/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg'),
+    image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/1_ED_006.png'),
     intro: 'Curation-forward coverage designed for press kits, collector previews, and gallery archives.',
   },
   'gallery-stories': {
     label: 'Gallery Stories',
-    image: resolveImagePath('/src/assets/images/PinonTheWall.jpg'),
+    image: resolveImagePath('/src/assets/images/services/2_gallery_work/2_GW_008.png'),
     intro: 'Narrative-led coverage with interviews and b-roll that keeps the curator voice intact.',
   },
   'artist-sessions': {
     label: 'Artist Sessions',
-    image: resolveImagePath('/src/assets/images/6d711f80a4aaf2374d2afe0c0e04cabd.jpg'),
+    image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_005.png'),
     intro: 'Portraits and BTS that capture process, personality, and the release story.',
   },
   performance: {
     label: 'Performance',
-    image: resolveImagePath('/src/assets/images/875f03b40c4bdca243073116d14a5d53.jpg'),
+    image: resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_012.png'),
     intro: 'Live show coverage with sharp timing and fast turnarounds for socials and press.',
   },
   'fashion-show': {
     label: 'Fashion Show',
-    image: resolveImagePath('/src/assets/images/56f63e4b665d321540b148912de0e62e.jpg'),
+    image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_024.png'),
     intro: 'Runway coverage built for look-by-look documentation, press pushes, and same-day selects.',
   },
   atmospheric: {
     label: 'Atmospheric Films',
-    image: resolveImagePath('/src/assets/images/Daydream.jpg'),
+    image: resolveImagePath('/src/assets/images/services/6_atmospheric_film/6_AF_019.png'),
     intro: 'Mood-first storytelling with slow pacing, rich tones, and immersive art direction.',
   },
 }
@@ -79,7 +79,7 @@ function PricingRequest() {
     return 'Share your dates, location, and goals so we can build the right coverage plan.'
   }, [planInfo, serviceInfo])
 
-  const heroImage = serviceInfo?.image ?? resolveImagePath('/src/assets/images/1f4e5f5b7870e45541c13674ff73f11e.jpg')
+  const heroImage = serviceInfo?.image ?? resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_004.png')
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()

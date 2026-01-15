@@ -2,10 +2,10 @@ import { resolveImagePath } from '../utils/resolveImagePath'
 import WorkPageLayout from './WorkPageLayout'
 
 const heroCards = [
-  { image: resolveImagePath('/src/assets/images/visualelectric-1755373701143.png'), title: 'Curator Voice' },
-  { image: resolveImagePath('/src/assets/images/3edbe916e873d29e3db7b1ab54c87597.jpg'), title: 'Install Details' },
-  { image: resolveImagePath('/src/assets/images/03ef1b2283de3cdc7781c5a2d3aa0cce.jpg'), title: 'Space Flow' },
-  { image: resolveImagePath('/src/assets/images/PinonTheWall.jpg'), title: 'Patron Moments' },
+  { image: resolveImagePath('/src/assets/images/services/2_gallery_work/2_GW_008.png'), title: 'Curator Voice' },
+  { image: resolveImagePath('/src/assets/images/services/2_gallery_work/2_GW_004.png'), title: 'Install Details' },
+  { image: resolveImagePath('/src/assets/images/services/2_gallery_work/2_GW_011.png'), title: 'Space Flow' },
+  { image: resolveImagePath('/src/assets/images/services/2_gallery_work/2_GW_017.png'), title: 'Patron Moments' },
 ]
 
 function GalleryStories() {
