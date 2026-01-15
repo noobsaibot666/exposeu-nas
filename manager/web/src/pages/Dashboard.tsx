@@ -18,7 +18,7 @@ type Project = {
   created_at: string
   tags?: string[]
   share_links?: Array<{ token: string; created_at: string; expires_at: string | null }>
-  steps?: Array<{ id: number; name: string; due_date: string | null }>
+  steps?: Array<{ id: number; name: string; due_date: string | null; status?: string }>
 }
 
 type ViewMode = 'timeline' | 'list' | 'board' | 'calendar'
@@ -168,6 +168,7 @@ function Dashboard() {
     .map((project) => ({
       ...project,
       due: project.due_date ? new Date(project.due_date) : null,
+      steps: project.steps ? project.steps.filter((step) => step.status !== 'done') : project.steps,
     }))
     .map((project) => {
       if (project.due) {
@@ -646,8 +647,8 @@ function Dashboard() {
                               <div className="timeline-chip__meta">
                                 {formatDate(shiftedStart.toISOString())} – {formatDate(shiftedEnd.toISOString())}
                               </div>
-                              {(project.steps ?? []).some((step) => step.due_date) && (() => {
-                                const dueSteps = (project.steps ?? []).filter((step) => step.due_date)
+                              {(project.steps ?? []).some((step) => step.due_date && step.status !== 'done') && (() => {
+                                const dueSteps = (project.steps ?? []).filter((step) => step.due_date && step.status !== 'done')
                                 const visibleSteps = dueSteps.slice(0, 3)
                                 const extraCount = Math.max(0, dueSteps.length - visibleSteps.length)
                                 return (

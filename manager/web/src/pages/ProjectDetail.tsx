@@ -872,7 +872,16 @@ export default function ProjectDetail() {
                         onBlur={() => handleStepSave(step.id)}
                       />
                     </div>
-                    <button type="button" onClick={() => removeStep(step.id)}>Remove</button>
+                    <div className="step-row__actions">
+                      <button
+                        type="button"
+                        className={`step-row__toggle${step.status === 'done' ? ' step-row__toggle--undo' : ''}`}
+                        onClick={() => toggleStep(step)}
+                      >
+                        {step.status === 'done' ? 'Undo' : 'Done'}
+                      </button>
+                      <button type="button" onClick={() => removeStep(step.id)}>Remove</button>
+                    </div>
                   </li>
                 )
               })}

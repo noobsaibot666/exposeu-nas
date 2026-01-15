@@ -379,6 +379,16 @@
   border: 1px solid var(--border-soft);
 }
 
+.step-row__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.step-row__toggle--undo {
+  color: var(--warning);
+  border-color: var(--warning);
+}
+
 .step-add {
   margin-top: 12px;
   display: grid;

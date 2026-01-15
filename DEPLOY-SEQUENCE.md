@@ -1,67 +1,20 @@
-# ExposeU – Dev → Deploy Flow
-
-Goal: Update design & pages without breaking server setup.
-
----
-
-## Dev machine (macOS)
-
-- Work only on:
-  - UI / design
-  - Pages
-  - App logic
-
-- Never touch:
-  - Docker
-  - nginx
-  - Traefik
-  - .env files
-
-Commit & push:
-git commit -m "update: pages / design"
-git push
-
----
-
-## Server (TrueNAS)
-
-No git commands on the server. Git is only used to store changes.
-
-If frontend changed (nginx serves the Vite build):
-```bash
-# From the repo root on TrueNAS
+1) If you only changed frontend (Vite build → dist)
 cd /mnt/Leviathan/www/exposeu
+sudo docker run --rm -u 0 -v "$PWD:/app" -w /app node:20-alpine sh -lc "npm ci && npm run build"
+sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-nginx
 
-# Build + restart the frontend container
-sudo docker compose -f docker-compose.traefik.yml up -d --build
 
-# If assets still look stale, force a clean recreate
-sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate
-```
+2) If you only changed the contact API code
+cd /mnt/Leviathan/www/exposeu
+sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-contact
 
----
+3) If you changed both
+cd /mnt/Leviathan/www/exposeu
+sudo docker run --rm -u 0 -v "$PWD:/app" -w /app node:20-alpine sh -lc "npm ci && npm run build"
+sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-nginx exposeu-contact
 
-## Safety
+4) Quick smoke test (always)
+curl -kI https://localhost/ -H "Host: expose-u.com" | head -n 8
+curl -kI https://localhost/api/contact -H "Host: expose-u.com" | head -n 8
+curl -k https://localhost/api/contact -H "Host: expose-u.com" -H "Content-Type: application/json" --data '{"email":"test@example.com","message":"smoke"}'
 
-- Server-only files are protected via:
-  .git/info/exclude
-
-- git pull will:
-  ✅ update app code
-  ❌ not overwrite infra
-
----
-
-## If something breaks
-
-docker ps
-docker logs traefik --tail=100
-docker logs exposeu-nginx --tail=100
-curl -I https://expose-u.com/any-route
-
----
-
-Rule:
-Dev = code  
-Server = infrastructure  
-They never cross

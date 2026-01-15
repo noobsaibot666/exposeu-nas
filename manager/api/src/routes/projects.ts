@@ -42,7 +42,7 @@ router.get('/', async (req, res) => {
   const tagsByProject = new Map<number, string[]>()
   const reviewsByProject = new Map<number, Record<string, unknown>>()
   const shareLinksByProject = new Map<number, Array<{ token: string; created_at: string; expires_at: string | null }>>()
-  const stepsByProject = new Map<number, Array<{ id: number; name: string; due_date: string | null }>>()
+  const stepsByProject = new Map<number, Array<{ id: number; name: string; due_date: string | null; status: string }>>()
 
   if (projectIds.length > 0) {
     const tagsResult = await query<{ project_id: number; tag: string }>(
@@ -97,13 +97,13 @@ router.get('/', async (req, res) => {
       shareLinksByProject.set(row.project_id, existing)
     }
 
-    const stepsResult = await query<{ project_id: number; id: number; name: string; due_date: string | null }>(
-      'SELECT project_id, id, name, due_date FROM project_steps WHERE project_id = ANY($1) ORDER BY position ASC',
+    const stepsResult = await query<{ project_id: number; id: number; name: string; due_date: string | null; status: string }>(
+      'SELECT project_id, id, name, due_date, status FROM project_steps WHERE project_id = ANY($1) ORDER BY position ASC',
       [projectIds],
     )
     for (const row of stepsResult.rows) {
       const existing = stepsByProject.get(row.project_id) ?? []
-      existing.push({ id: row.id, name: row.name, due_date: row.due_date })
+      existing.push({ id: row.id, name: row.name, due_date: row.due_date, status: row.status })
       stepsByProject.set(row.project_id, existing)
     }
   }
