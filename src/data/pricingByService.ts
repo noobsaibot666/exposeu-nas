@@ -4,85 +4,85 @@
 export const pricingByService = {
   exhibitions: {
     'single-event': {
-      price: '€1K',
-      description: 'Opening night coverage with curator-aligned angles and press-ready selects.',
+      price: '€2.4K',
+      description: 'Exhibition and opening documentation with curator-aligned framing and press-ready selects.',
     },
     'monthly-coverage': {
-      price: '€3.5K',
-      description: 'Multi-show coverage with consistent framing and fast delivery for galleries.',
+      price: '€5.6K',
+      description: 'Ongoing exhibition coverage with consistent tone and priority delivery.',
     },
     'retainer-studio': {
       price: 'Custom',
     },
   },
+
   'gallery-stories': {
     'single-event': {
-      price: '€2.9K',
-      description: 'Interview-led coverage with b-roll and stills for collector previews.',
+      price: '€2.4K',
+      description: 'Interview-led gallery documentation with stills and motion for collectors and press.',
     },
     'monthly-coverage': {
-      price: '€6.5K',
+      price: '€5.6K',
+      description: 'Recurring gallery storytelling aligned with exhibition cycles.',
     },
     'retainer-studio': {
       price: 'Custom',
     },
   },
+
   'artist-sessions': {
     'single-event': {
-      price: '€1.9K',
-      description: 'Portraits, BTS, and process shots tailored for releases and press.',
+      price: '€1.6K',
+      description: 'Editorial portraits and process documentation for releases and press kits.',
     },
     'monthly-coverage': {
-      price: '€4.5K',
+      price: '€3.9K',
+      description: 'Ongoing artist documentation across studio work, releases, and exhibitions.',
     },
     'retainer-studio': {
       price: 'Custom',
     },
   },
+
   performance: {
     'single-event': {
-      price: '€2.9K',
-      description: 'Live set coverage with fast selects and audio-aware edits.',
+      price: '€2.5K',
+      description: 'Live performance coverage with fast selects and atmosphere-aware edits.',
     },
     'monthly-coverage': {
-      price: '€6.5K',
+      price: '€5.9K',
+      description: 'Multi-performance documentation with consistent visual language.',
     },
     'retainer-studio': {
       price: 'Custom',
     },
   },
+
   'fashion-show': {
     'single-event': {
-      price: '€2.9K',
-      description: 'Runway coverage with look-by-look selects and same-day hero frames.',
+      price: '€2.6K',
+      description: 'Runway and backstage documentation with look-by-look clarity and hero frames.',
     },
     'monthly-coverage': {
-      price: '€6.5K',
+      price: '€6.2K',
+      description: 'Seasonal fashion documentation with editorial consistency.',
     },
     'retainer-studio': {
       price: 'Custom',
     },
   },
+
   atmospheric: {
     'single-event': {
-      price: '€2.9K',
-      description: 'Mood-driven coverage with intentional pacing and rich tone.',
+      price: '€2.7K',
+      description: 'Concept-driven atmospheric films with intentional pacing and cinematic tone.',
     },
     'monthly-coverage': {
       price: '€6.5K',
+      description: 'Ongoing atmospheric storytelling for programs or seasonal narratives.',
     },
     'retainer-studio': {
       price: 'Custom',
     },
   },
 } as const
-
-export type PricingOverride = {
-  price?: string
-  description?: string
-  features?: string[]
-  cadence?: string
-  cta?: string
-}
-
-export type PricingOverridesByService = Record<string, Record<string, PricingOverride>>
