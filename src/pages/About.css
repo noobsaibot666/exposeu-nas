@@ -79,7 +79,7 @@
   border-radius: 0;
   overflow: hidden;
   box-shadow: none;
-  border: 1px solid var(--border-soft);
+  border: none;
   height: 100%;
   min-height: 520px;
 }
