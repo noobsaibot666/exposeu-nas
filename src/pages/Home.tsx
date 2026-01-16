@@ -230,8 +230,10 @@ function Home() {
 
   return (
     <main className="home" ref={rootRef}>
+      {/* Background layers */}
       <div className="home__background" aria-hidden />
       <div className="home__floaters" aria-hidden />
+      {/* Hero */}
       <header className="home__section home__hero" id="hero">
         <div className="home__nav">
           <TopNav
@@ -280,6 +282,7 @@ function Home() {
         </div>
       </header>
 
+      {/* Proof */}
       <section className="home__section home__proof">
         <div className="home__proof-avatars">
           {proofAvatars.map((avatar, idx) => (
@@ -302,6 +305,7 @@ function Home() {
         </div>
       </section>
 
+      {/* Cases */}
       <section className="home__section home__cases" id="cases" ref={casesRef}>
         <div className="home__section-header">
           <p>Coverage types</p>
@@ -338,7 +342,9 @@ function Home() {
         </p>
       </section>
 
+      {/* Pricing */}
       <PricingSection id="services" />
+      {/* Footer */}
       <Footer />
     </main>
   )
