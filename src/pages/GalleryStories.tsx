@@ -11,10 +11,12 @@ const heroCards = [
 function GalleryStories() {
   return (
     <WorkPageLayout
+      /* Hero */
       title="Gallery Stories"
       heroCopy="Short films and photo essays that translate the space with curator intent and artist voice."
       detail="Built for socials, press kits, and collector previews with clear deliverables and fast turnaround."
       cards={heroCards}
+      /* Primary gallery */
       galleryTitle="Why gallery teams choose us"
       galleryCopy="We structure the story, guide interviews, and deliver a package ready for patrons, press, and partners."
       gallery={[
@@ -23,6 +25,7 @@ function GalleryStories() {
         { title: 'Space and detail', subtitle: 'Wide establishing frames and close details that show the work clearly.' },
         { title: 'Multi-use cuts', subtitle: 'Versions sized for socials, web, and media kits.' },
       ]}
+      /* What you get */
       extraGalleryTitle="What you get"
       extraGalleryCopy="A complete story package with interviews, b-roll, and stills ready to share."
       extraGallery={[
@@ -31,6 +34,7 @@ function GalleryStories() {
         { title: 'Press stills', subtitle: 'Hi-res frames for catalogues and media drops.' },
         { title: 'Usage clarity', subtitle: 'Folder structure and naming for fast publishing.' },
       ]}
+      /* How we work */
       extraGallerySecondaryTitle="How we produce"
       extraGallerySecondaryCopy="Tight schedules, lean crews, and pre-pro that keeps you focused on guests."
       extraGallerySecondary={[
@@ -39,8 +43,10 @@ function GalleryStories() {
         { title: 'Run-of-show sync', subtitle: 'We align with your agenda to capture key moments.' },
         { title: 'Fast edits', subtitle: 'Selects in 48h; finals on an agreed schedule.' },
       ]}
+      /* CTA */
       ctaText="Book a gallery story. Share your date, venue, and goals."
       ctaHref="/contact"
+      /* Pricing overrides */
       serviceSlug="gallery-stories"
     />
   )

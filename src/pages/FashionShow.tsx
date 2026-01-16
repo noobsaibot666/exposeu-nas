@@ -11,10 +11,12 @@ const heroCards = [
 function FashionShow() {
   return (
     <WorkPageLayout
+      /* Hero */
       title="Fashion Show"
       heroCopy="Runway photo and video with attitude, sharp angles, and fabric motion from backstage to finale."
       detail="For designers, producers, and PR teams who need fast editorial assets."
       cards={heroCards}
+      /* Primary gallery */
       galleryTitle="Why fashion teams book us"
       galleryCopy="We sync with your show flow, capture every look cleanly, and deliver hero shots and social cuts fast."
       gallery={[
@@ -23,6 +25,7 @@ function FashionShow() {
         { title: 'Fabric and motion', subtitle: 'Angles and shutter choices that show texture and flow.' },
         { title: 'Press-ready delivery', subtitle: 'Hero images and reels ready for media and socials.' },
       ]}
+      /* What you get */
       extraGalleryTitle="What you get"
       extraGalleryCopy="Editorial documentation and fast delivery so your collection hits every channel on time."
       extraGallery={[
@@ -31,6 +34,7 @@ function FashionShow() {
         { title: 'Designer features', subtitle: 'Selects spotlighting craft and signature elements.' },
         { title: 'Usage notes', subtitle: 'Organized folders with naming and delivery checklists.' },
       ]}
+      /* How we work */
       extraGallerySecondaryTitle="How we cover shows"
       extraGallerySecondaryCopy="We plan with production, lock sightlines, and stay agile so we never miss a look."
       extraGallerySecondary={[
@@ -39,8 +43,10 @@ function FashionShow() {
         { title: 'Low footprint', subtitle: 'Minimal rigging to keep aisles clear and timelines tight.' },
         { title: 'Same-day selects', subtitle: 'Priority frames the day of; full delivery follows quickly.' },
       ]}
+      /* CTA */
       ctaText="Book fashion show documentation. Share your date, venue, and show timing."
       ctaHref="/contact"
+      /* Pricing overrides */
       serviceSlug="fashion-show"
     />
   )

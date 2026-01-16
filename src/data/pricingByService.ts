@@ -4,11 +4,11 @@
 export const pricingByService = {
   exhibitions: {
     'single-event': {
-      price: '€2.9K',
+      price: '€1K',
       description: 'Opening night coverage with curator-aligned angles and press-ready selects.',
     },
     'monthly-coverage': {
-      price: '€6.5K',
+      price: '€3.5K',
       description: 'Multi-show coverage with consistent framing and fast delivery for galleries.',
     },
     'retainer-studio': {
@@ -29,11 +29,11 @@ export const pricingByService = {
   },
   'artist-sessions': {
     'single-event': {
-      price: '€2.9K',
+      price: '€1.9K',
       description: 'Portraits, BTS, and process shots tailored for releases and press.',
     },
     'monthly-coverage': {
-      price: '€6.5K',
+      price: '€4.5K',
     },
     'retainer-studio': {
       price: 'Custom',

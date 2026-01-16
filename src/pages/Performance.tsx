@@ -11,10 +11,12 @@ const heroCards = [
 function Performance() {
   return (
     <WorkPageLayout
+      /* Hero */
       title="Performance"
       heroCopy="Live performance photo and video with fast instincts and clean angles."
       detail="From soundcheck to encore, you get artist focus, crowd energy, and usable assets fast."
       cards={heroCards}
+      /* Primary gallery */
       galleryTitle="Why producers book us"
       galleryCopy="We balance crowd energy and artist focus, then deliver edits you can share, sell, and archive quickly."
       gallery={[
@@ -23,6 +25,7 @@ function Performance() {
         { title: 'Audio-aware shooting', subtitle: 'Footage paced to the beat with clean sound pulls.' },
         { title: 'Shareable fast', subtitle: 'Selects and reels ready while the show is still hot.' },
       ]}
+      /* What you get */
       extraGalleryTitle="What you get"
       extraGalleryCopy="Performance packages that give you hype reels and archival quality documentation."
       extraGallery={[
@@ -31,6 +34,7 @@ function Performance() {
         { title: 'Backstage and crowd', subtitle: 'Texture shots beyond the stage.' },
         { title: 'Usage notes', subtitle: 'Organized files with naming and clearance guidance.' },
       ]}
+      /* How we work */
       extraGallerySecondaryTitle="How we run shows"
       extraGallerySecondaryCopy="We sync with your run-of-show, keep gear lean, and hand off selects quickly."
       extraGallerySecondary={[
@@ -39,8 +43,10 @@ function Performance() {
         { title: 'Audio coordination', subtitle: 'Board feeds or patch options when available.' },
         { title: 'Rapid delivery', subtitle: 'Same-night or next-day selects; finals right after.' },
       ]}
+      /* CTA */
       ctaText="Book performance documentation. Share your date, venue, and run-of-show."
       ctaHref="/contact"
+      /* Pricing overrides */
       serviceSlug="performance"
     />
   )

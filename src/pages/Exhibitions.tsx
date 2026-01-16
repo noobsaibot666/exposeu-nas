@@ -11,10 +11,12 @@ const heroCards = [
 function Exhibitions() {
   return (
     <WorkPageLayout
+      /* Hero */
       title="Exhibitions"
       heroCopy="Exhibition photo and video that preserves your curation with controlled light and clean sightlines."
       detail="Installation documentation, guest atmosphere, and press-ready selects delivered fast and organized for teams and media."
       cards={heroCards}
+      /* Primary gallery */
       galleryTitle="Why galleries book us"
       galleryCopy="We plan angles with your curator, work quietly, and deliver assets that look as intentional online as on the walls."
       gallery={[
@@ -35,6 +37,7 @@ function Exhibitions() {
           subtitle: 'Minimalist, bold, or intimate pacing to match your tone.',
         },
       ]}
+      /* What you get */
       extraGalleryTitle="What you get"
       extraGalleryCopy="We handle capture and delivery end to end so you can focus on artists, guests, and partners."
       extraGallery={[
@@ -55,6 +58,7 @@ function Exhibitions() {
           subtitle: 'Selects in 24 to 48 hours, finals on an agreed timeline.',
         },
       ]}
+      /* How we work */
       extraGallerySecondaryTitle="How we work with you"
       extraGallerySecondaryCopy="Clear communication, lean crews, and fast delivery so you can focus on the show."
       extraGallerySecondary={[
@@ -75,8 +79,10 @@ function Exhibitions() {
           subtitle: 'Selects, reels, and masters aligned to your comms calendar.',
         },
       ]}
+      /* CTA */
       ctaText="Book exhibition documentation. Share your date, venue, and goals."
       ctaHref="/contact"
+      /* Pricing overrides */
       serviceSlug="exhibitions"
     />
   )

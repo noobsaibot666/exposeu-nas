@@ -11,10 +11,12 @@ const heroCards = [
 function ArtistSessions() {
   return (
     <WorkPageLayout
+      /* Hero */
       title="Artist Sessions"
       heroCopy="Portraits and BTS for artists that feel honest, stylized, and ready to publish across releases."
       detail="You’ll get portraits, process, and studio moments that make your work feel personal."
       cards={heroCards}
+      /* Primary gallery */
       galleryTitle="Why artists work with us"
       galleryCopy="We align on tone, styling, and pacing so you leave with assets for press, socials, and partner decks."
       gallery={[
@@ -35,6 +37,7 @@ function ArtistSessions() {
           subtitle: 'Edits and stills organized for media and partners.',
         },
       ]}
+      /* What you get */
       extraGalleryTitle="What you get"
       extraGalleryCopy="A streamlined shoot that delivers portraits, process, and launch-ready assets without slowing you down."
       extraGallery={[
@@ -55,6 +58,7 @@ function ArtistSessions() {
           subtitle: 'Fast turnaround on selects to tease the release.',
         },
       ]}
+      /* How we work */
       extraGallerySecondaryTitle="How we work"
       extraGallerySecondaryCopy="Small crew, quick setup, and a calm set so you can stay in your flow."
       extraGallerySecondary={[
@@ -63,8 +67,10 @@ function ArtistSessions() {
         { title: 'On-set direction', subtitle: 'Light coaching to keep you relaxed and consistent.' },
         { title: 'Fast delivery', subtitle: 'Selects quickly; finals right after.' },
       ]}
+      /* CTA */
       ctaText="Book an artist session. Share your date, location, and release goals."
       ctaHref="/contact"
+      /* Pricing overrides */
       serviceSlug="artist-sessions"
     />
   )

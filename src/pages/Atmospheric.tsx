@@ -11,10 +11,12 @@ const heroCards = [
 function Atmospheric() {
   return (
     <WorkPageLayout
+      /* Hero */
       title="Atmospheric"
       heroCopy="Tone-rich visuals built to set a mood with tight framing and patient movement."
       detail="For teaser films, lookbooks, and art pieces that need a lush, textural feel."
       cards={heroCards}
+      /* Primary gallery */
       galleryTitle="Why it works"
       galleryCopy="We design motion and stills that feel handcrafted with rich blacks, intentional grain, and pacing that lets the scene bloom."
       gallery={[
@@ -23,6 +25,7 @@ function Atmospheric() {
         { title: 'Pacing for feeling', subtitle: 'Slow camera, long takes, and breathing room.' },
         { title: 'Sound and motion', subtitle: 'Ambient soundbeds and subtle movement that feels immersive.' },
       ]}
+      /* What you get */
       extraGalleryTitle="What you get"
       extraGalleryCopy="Atmospheric packages tuned for teasers, lookbooks, and art films ready to drop across channels."
       extraGallery={[
@@ -31,6 +34,7 @@ function Atmospheric() {
         { title: 'Music beds', subtitle: 'Licensed tracks or bespoke soundbeds to hold the tone.' },
         { title: 'Usage clarity', subtitle: 'Organized folders with usage notes for partners and press.' },
       ]}
+      /* How we work */
       extraGallerySecondaryTitle="How we shoot"
       extraGallerySecondaryCopy="Lean crew, thoughtful prelight, and a calm set so the mood stays intact."
       extraGallerySecondary={[
@@ -39,8 +43,10 @@ function Atmospheric() {
         { title: 'On-set direction', subtitle: 'Clear cues to keep movement slow and intentional.' },
         { title: 'Swift handoff', subtitle: 'Selects and cuts fast so you can release while the buzz is fresh.' },
       ]}
+      /* CTA */
       ctaText="Book an atmospheric shoot. Share your mood, date, and goals."
       ctaHref="/contact"
+      /* Pricing overrides */
       serviceSlug="atmospheric"
     />
   )
