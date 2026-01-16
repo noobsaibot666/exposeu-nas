@@ -443,6 +443,8 @@
   color: var(--text-strong);
   text-decoration: none;
   overflow: hidden;
+  isolation: isolate;
+  background-clip: padding-box;
   aspect-ratio: 4 / 5;
   background-size: cover;
   background-position: center;
@@ -475,6 +477,7 @@
   justify-content: flex-end;
   gap: 8px;
   background: linear-gradient(180deg, rgba(5, 7, 11, 0.1) 0%, rgba(5, 7, 11, 0.8) 100%);
+  border-radius: inherit;
 }
 
 .portfolio__offer-pill {

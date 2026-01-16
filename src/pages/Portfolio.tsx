@@ -218,17 +218,30 @@ function Portfolio() {
         },
       })
 
-      gsap.from('.portfolio__offer-card', {
-        opacity: 0,
-        y: 26,
-        duration: 0.7,
-        stagger: 0.06,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.portfolio__offers-grid',
-          start: 'top 85%',
+      gsap.fromTo(
+        '.portfolio__offer-card',
+        {
+          opacity: 0,
+          y: 48,
+          scale: 0.96,
+          rotateX: 6,
+          transformOrigin: 'center center',
         },
-      })
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          rotateX: 0,
+          duration: 0.95,
+          stagger: { each: 0.08, from: 'start' },
+          ease: 'power2.inOut',
+          clearProps: 'transform',
+          scrollTrigger: {
+            trigger: '.portfolio__offers-grid',
+            start: 'top 85%',
+          },
+        },
+      )
     }, rootRef)
 
     return () => ctx.revert()
