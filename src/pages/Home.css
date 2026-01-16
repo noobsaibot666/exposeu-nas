@@ -223,6 +223,21 @@
   margin: 12px 0 0;
 }
 
+.home__section-note {
+  margin: 12px 0 0;
+  padding-inline: var(--content-gutter);
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: 1rem;
+  color: var(--text-soft);
+}
+
+.home__section-note a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .home__pricing {
   display: flex;
   flex-direction: column;

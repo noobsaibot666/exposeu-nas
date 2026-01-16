@@ -333,6 +333,9 @@ function Home() {
             </div>
           ))}
         </div>
+        <p className="home__section-note">
+          Not sure which coverage fits you best? <a href="/contact">Get in contact with us</a> and we will guide you.
+        </p>
       </section>
 
       <PricingSection id="services" />
