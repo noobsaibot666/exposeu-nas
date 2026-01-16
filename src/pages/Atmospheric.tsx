@@ -2,10 +2,10 @@ import { resolveImagePath } from '../utils/resolveImagePath'
 import WorkPageLayout from './WorkPageLayout'
 
 const heroCards = [
-  { image: resolveImagePath('/src/assets/images/services/6_atmospheric_film/6_AF_012.png'), title: 'Moody Portraits' },
-  { image: resolveImagePath('/src/assets/images/services/6_atmospheric_film/6_AF_017.png'), title: 'Slow Motion' },
-  { image: resolveImagePath('/src/assets/images/services/6_atmospheric_film/6_AF_020.png'), title: 'Ambient Scenes' },
-  { image: resolveImagePath('/src/assets/images/services/6_atmospheric_film/6_AF_027.png'), title: 'Stillness & Tone' },
+  { image: resolveImagePath('/src/assets/images/services/6_atmospheric_film/_thumb/9_16/6_AF_001.png'), title: 'Moody Portraits' },
+  { image: resolveImagePath('/src/assets/images/services/6_atmospheric_film/_thumb/9_16/6_AF_019.png'), title: 'Slow Motion' },
+  { image: resolveImagePath('/src/assets/images/services/6_atmospheric_film/_thumb/9_16/6_AF_013.png'), title: 'Ambient Scenes' },
+  { image: resolveImagePath('/src/assets/images/services/6_atmospheric_film/_thumb/9_16/6_AF_019.png'), title: 'Stillness & Tone' },
 ]
 
 function Atmospheric() {
