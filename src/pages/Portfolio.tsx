@@ -138,7 +138,6 @@ function Portfolio() {
   const navigate = useNavigate()
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null)
   const [isDragging, setIsDragging] = useState(false)
-  const [hoveredId, setHoveredId] = useState<string | null>(null)
   const gridRef = useRef<HTMLDivElement | null>(null)
   const rootRef = useRef<HTMLElement | null>(null)
   const dragState = useRef({ active: false, startX: 0, scrollLeft: 0, moved: false, pointerId: 0 })
@@ -181,17 +180,30 @@ function Portfolio() {
         ease: 'power2.out',
       })
 
-      gsap.from('.portfolio__card', {
-        opacity: 0,
-        y: 24,
-        duration: 0.6,
-        stagger: 0.04,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.portfolio__gallery',
-          start: 'top 80%',
+      gsap.fromTo(
+        '.portfolio__card',
+        {
+          opacity: 0,
+          y: 56,
+          scale: 0.96,
+          rotateX: 6,
+          transformOrigin: 'center center',
         },
-      })
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          rotateX: 0,
+          duration: 0.95,
+          stagger: { each: 0.08, from: 'start' },
+          ease: 'power2.inOut',
+          clearProps: 'transform',
+          scrollTrigger: {
+            trigger: '.portfolio__gallery',
+            start: 'top 80%',
+          },
+        },
+      )
 
       const offerItems = gsap.utils.toArray<HTMLElement>('.portfolio__offers-copy > *')
       gsap.from(offerItems, {
@@ -221,6 +233,31 @@ function Portfolio() {
 
     return () => ctx.revert()
   }, [])
+
+  useEffect(() => {
+    if (!activeVideo) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.portfolio__overlay',
+        { opacity: 0 },
+        { opacity: 1, duration: 0.35, ease: 'power2.out' },
+      )
+      gsap.fromTo(
+        '.portfolio__modal',
+        { opacity: 0, y: 24, scale: 0.98 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: 'power3.out' },
+      )
+      gsap.fromTo(
+        '.portfolio__player',
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out', delay: 0.05 },
+      )
+    }, rootRef)
+
+    return () => ctx.revert()
+  }, [activeVideo])
 
   const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
     const grid = gridRef.current
@@ -253,7 +290,6 @@ function Portfolio() {
       moved: false,
       pointerId: event.pointerId,
     }
-    setHoveredId(null)
   }
 
   const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
@@ -279,7 +315,19 @@ function Portfolio() {
     setIsDragging(false)
   }
 
-  const hoveredIndex = hoveredId ? videos.findIndex((v) => v.id === hoveredId) : -1
+  const getEmbedSrc = (src: string) => {
+    const youTubeMatch = src.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^?&/]+)/i)
+    if (youTubeMatch) {
+      return `https://www.youtube.com/embed/${youTubeMatch[1]}?autoplay=1&rel=0`
+    }
+
+    const vimeoMatch = src.match(/vimeo\.com\/(?:video\/)?(\d+)/i)
+    if (vimeoMatch) {
+      return `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1&title=0&byline=0&portrait=0`
+    }
+
+    return null
+  }
 
   return (
     <main className="portfolio" ref={rootRef}>
@@ -311,25 +359,11 @@ function Portfolio() {
               onPointerUp={stopDragging}
               onPointerLeave={stopDragging}
             >
-              {videos.map((video, index) => {
-                const shift =
-                  hoveredIndex === -1
-                    ? 0
-                    : index < hoveredIndex
-                      ? -48
-                      : index > hoveredIndex
-                        ? 48
-                        : 0
-                const cardStyle: CSSProperties & { '--card-shift'?: string } = {
-                  '--card-shift': `${shift}px`,
-                }
-
-                return (
+              {videos.map((video) => (
                   <button
                     key={video.id}
                     type="button"
                     className="portfolio__card"
-                    style={cardStyle}
                     onClick={() => {
                       if (dragState.current.moved) {
                         dragState.current.moved = false
@@ -337,8 +371,6 @@ function Portfolio() {
                       }
                       setActiveVideo(video)
                     }}
-                    onMouseEnter={() => setHoveredId(video.id)}
-                    onMouseLeave={() => setHoveredId(null)}
                   >
                     <div
                       className="portfolio__thumb"
@@ -385,8 +417,7 @@ function Portfolio() {
                       </div>
                     </div>
                   </button>
-                )
-              })}
+                ))}
             </div>
           </div>
         </div>
@@ -465,14 +496,31 @@ function Portfolio() {
               </svg>
             </button>
             <div className="portfolio__player">
-              <video
-                key={activeVideo.id}
-                controls
-                autoPlay
-                playsInline
-                poster={activeVideo.thumb}
-                src={activeVideo.videoSrc}
-              />
+              {(() => {
+                const embedSrc = getEmbedSrc(activeVideo.videoSrc)
+                if (embedSrc) {
+                  return (
+                    <iframe
+                      key={activeVideo.id}
+                      title={activeVideo.title}
+                      src={embedSrc}
+                      allow="autoplay; fullscreen; picture-in-picture"
+                      allowFullScreen
+                    />
+                  )
+                }
+
+                return (
+                  <video
+                    key={activeVideo.id}
+                    controls
+                    autoPlay
+                    playsInline
+                    poster={activeVideo.thumb}
+                    src={activeVideo.videoSrc}
+                  />
+                )
+              })()}
               <div className="portfolio__player-meta">
                 <div className="portfolio__eyebrow">
                   <span>{activeVideo.year}</span>

@@ -50,7 +50,7 @@ function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
               </div>
               <p className="home__pricing-copy">{tier.description}</p>
               <ul>
-                {tier.features.map((feature) => (
+                {tier.features.map((feature: string) => (
                   <li key={feature}>
                     <span>✓</span>
                     {feature}
