@@ -95,10 +95,10 @@ const heroGallery = [
 ]
 
 const proofAvatars = [
-  resolveImagePath('/src/assets/images/services/1_exhibition_doc/1_ED_006.png'),
-  resolveImagePath('/src/assets/images/services/2_gallery_work/2_GW_004.png'),
-  resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_005.png'),
-  resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_010.png'),
+  resolveImagePath('/src/assets/images/services/1_exhibition_doc/_thumb/1_1/1_ED_005t.png'),
+  resolveImagePath('/src/assets/images/services/2_gallery_work/_thumb/1_1/2_GW_009t.png'),
+  resolveImagePath('/src/assets/images/services/3_artist_sessions/_thumb/1_1/3_AS_022t.png'),
+  resolveImagePath('/src/assets/images/services/4_performance_doc/_thumb/1_1/4_PD_001t.png'),
 ]
 
 function Home() {
@@ -288,7 +288,7 @@ function Home() {
           {proofAvatars.map((avatar, idx) => (
             <img key={avatar} src={avatar} alt="Client avatar" style={{ zIndex: proofAvatars.length - idx }} />
           ))}
-          <span>Over 140 Berlin collaborators</span>
+          <span>Make us part of your creative hub</span>
         </div>
         <h2>Work with a team that knows galleries, artists, and live sets, and keeps your visual language intact.</h2>
         <p className="home__proof-copy">
