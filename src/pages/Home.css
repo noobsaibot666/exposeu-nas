@@ -683,6 +683,27 @@
   .home__hero-subhead {
     font-size: 1.4rem;
   }
+
+  .home__proof-avatars {
+    gap: 4px;
+    overflow-x: auto;
+    max-width: 100%;
+    padding: 0 8px 6px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .home__proof-avatars img {
+    flex: 0 0 auto;
+    margin-left: -10px;
+    scroll-snap-align: start;
+  }
+
+  .home__proof-avatars span {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    padding-left: 6px;
+  }
 }
 
 @media (max-width: 768px) {
