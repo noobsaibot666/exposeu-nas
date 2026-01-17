@@ -9,8 +9,8 @@ function PricingRequestSuccess() {
         <TopNav
           leftLinks={[
             { label: 'Studio', href: '/#hero' },
-            { label: 'Cases', href: '/#cases' },
-            { label: 'Pricing', href: '/#services' },
+            { label: 'Services', href: '/#cases' },
+            { label: 'Start Now', href: '/#services' },
           ]}
           rightLinks={[
             { label: 'About', href: '/about' },

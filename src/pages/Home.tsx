@@ -116,8 +116,8 @@ function Home() {
     () => ({
       left: [
         { label: 'Studio', onClick: () => handleScroll('#hero') },
-        { label: 'Cases', onClick: () => handleScroll('#cases') },
-        { label: 'Pricing', onClick: () => handleScroll('#services') },
+        { label: 'Services', onClick: () => handleScroll('#cases') },
+        { label: 'Start Now', onClick: () => handleScroll('#services') },
       ],
       right: [
         { label: 'About', onClick: () => navigate('/about') },

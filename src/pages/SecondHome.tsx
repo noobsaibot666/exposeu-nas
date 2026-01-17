@@ -115,8 +115,8 @@ function SecondHome() {
     () => ({
       left: [
         { label: 'Studio', onClick: () => handleScroll('#hero') },
-        { label: 'Cases', onClick: () => handleScroll('#cases') },
-        { label: 'Pricing', onClick: () => handleScroll('#services') },
+        { label: 'Services', onClick: () => handleScroll('#cases') },
+        { label: 'Start Now', onClick: () => handleScroll('#services') },
       ],
       right: [
         { label: 'About', onClick: () => navigate('/about') },
@@ -341,8 +341,23 @@ function SecondHome() {
         </p>
       </section>
 
-      {/* Pricing removed for A/B test, keep anchor for smooth scroll targets */}
-      <section className="home__section" id="services" aria-hidden />
+      {/* CTA replaces pricing for A/B test, keep anchor for smooth scroll targets */}
+      <section className="home__section home__proof" id="services">
+        <h2>Start a project.</h2>
+        <p className="home__proof-copy">
+          We document exhibitions, performances, and artist-led work with care for tone, space, and intent.
+          If you&rsquo;re preparing an opening, release, or live event in Berlin, we&rsquo;d be glad to hear about it.
+        </p>
+        
+        <div className="home__proof-actions">
+          <button type="button" onClick={() => navigate('/contact')}>
+            Tell us about your project
+          </button>
+          <button type="button" className="home__proof-secondary" onClick={() => navigate('/contact')}>
+            Request availability
+          </button>
+        </div>
+      </section>
       {/* Footer */}
       <Footer />
     </main>

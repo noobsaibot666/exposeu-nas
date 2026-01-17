@@ -149,8 +149,8 @@ function Portfolio() {
     () => ({
       left: [
         { label: 'Studio', onClick: () => goToHomeSection('#hero') },
-        { label: 'Cases', onClick: () => goToHomeSection('#cases') },
-        { label: 'Pricing', onClick: () => goToHomeSection('#services') },
+        { label: 'Services', onClick: () => goToHomeSection('#cases') },
+        { label: 'Start Now', onClick: () => goToHomeSection('#services') },
       ],
       right: [
         { label: 'About', onClick: () => navigate('/about') },

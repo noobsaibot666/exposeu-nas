@@ -166,8 +166,8 @@ function PricingRequest() {
         <TopNav
           leftLinks={[
             { label: 'Studio', onClick: () => navigate('/#hero') },
-            { label: 'Cases', onClick: () => navigate('/#cases') },
-            { label: 'Pricing', onClick: () => navigate('/#services') },
+            { label: 'Services', onClick: () => navigate('/#cases') },
+            { label: 'Start Now', onClick: () => navigate('/#services') },
           ]}
           rightLinks={[
             { label: 'About', onClick: () => navigate('/about') },
