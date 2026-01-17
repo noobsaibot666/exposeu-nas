@@ -1,4 +1,4 @@
-cd /Volumes/Leviathan/www/exposeu
+cd /mnt/Leviathan/www/exposeu
 
 
 

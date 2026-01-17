@@ -6,7 +6,6 @@ import TopNav from '../components/TopNav'
 import './Home.css'
 import Footer from '../sections/Footer'
 import { resolveImagePath } from '../utils/resolveImagePath'
-import PricingSection from '../sections/PricingSection'
 
 const projects = [
   {
@@ -342,8 +341,22 @@ function Home() {
         </p>
       </section>
 
-      {/* Pricing */}
-      <PricingSection id="services" />
+      {/* CTA replaces pricing for A/B test, keep anchor for smooth scroll targets */}
+      <section className="home__section home__proof" id="services">
+        <h2>Start a project.</h2>
+        <p className="home__proof-copy">
+          We document exhibitions, performances, and artist-led work with care for tone, space, and intent. If
+          you&rsquo;re preparing an opening, release, or live event in Berlin, we&rsquo;d be glad to hear about it.
+        </p>
+        <div className="home__proof-actions">
+          <button type="button" onClick={() => navigate('/contact')}>
+            Tell us about your project
+          </button>
+          <button type="button" className="home__proof-secondary" onClick={() => navigate('/contact')}>
+            Request availability
+          </button>
+        </div>
+      </section>
       {/* Footer */}
       <Footer />
     </main>

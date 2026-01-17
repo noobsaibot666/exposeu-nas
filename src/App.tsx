@@ -13,7 +13,6 @@ import ArtistSessions from './pages/ArtistSessions'
 import Portfolio from './pages/Portfolio'
 import NotFound from './pages/NotFound'
 import Home from './pages/Home'
-import SecondHome from './pages/SecondHome'
 import PricingRequest from './pages/PricingRequest'
 import PricingRequestSuccess from './pages/PricingRequestSuccess'
 import { ThemeProvider } from './ThemeContext'
@@ -24,7 +23,6 @@ function App() {
       <div className="page">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/second-home" element={<SecondHome />} />
           <Route path="/about" element={<About />} />
           <Route path="/call-session" element={<CallSession />} />
           <Route path="/contact" element={<Contact />} />

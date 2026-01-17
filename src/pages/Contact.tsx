@@ -99,6 +99,8 @@ function Contact() {
   }
 
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+
     gsap.registerPlugin(ScrollTrigger)
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
@@ -141,7 +143,7 @@ function Contact() {
       <section className="section contact__body">
         <div className="content contact__heading">
           <p className="contact__eyebrow">Contact</p>
-          <h1>Let&apos;s plan your documentation.</h1>
+          <h1>Let&apos;s plan your project.</h1>
           <p className="contact__lede">
             We reply within 24 hours. Share your dates, location, and goals, and we&apos;ll propose the right package.
           </p>
