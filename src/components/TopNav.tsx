@@ -16,6 +16,7 @@ type TopNavProps = {
   brandHref?: string
   onBrandClick?: () => void
   className?: string
+  activeLabel?: string
 }
 
 function TopNav({
@@ -25,6 +26,7 @@ function TopNav({
   brandLabel = 'expose.u',
   onBrandClick,
   className,
+  activeLabel,
 }: TopNavProps) {
   const [open, setOpen] = useState(false)
   const { theme, toggleTheme } = useThemeContext()
@@ -55,11 +57,16 @@ function TopNav({
   }, [open, closeMenu])
 
   const renderLink = (item: NavItem) => {
+    const isActive = item.label === activeLabel
+    const linkClassName = ['top-nav__link', isActive ? 'top-nav__link--active' : ''].filter(Boolean).join(' ')
+    const ariaCurrent = isActive ? 'location' : undefined
+
     if (item.onClick) {
       return (
         <button
           type="button"
-          className="top-nav__link"
+          className={linkClassName}
+          aria-current={ariaCurrent}
           onClick={() => {
             item.onClick?.()
             closeMenu()
@@ -71,7 +78,7 @@ function TopNav({
     }
 
     return (
-      <a className="top-nav__link" href={item.href ?? '#'} onClick={closeMenu}>
+      <a className={linkClassName} href={item.href ?? '#'} onClick={closeMenu} aria-current={ariaCurrent}>
         {item.label}
       </a>
     )

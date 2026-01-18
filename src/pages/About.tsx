@@ -74,6 +74,7 @@ function About() {
           onBrandClick={() => goToHomeSection('#hero')}
           brandLabel="expose.u"
           className="top-nav--page"
+          activeLabel="About"
         />
       </div>
 

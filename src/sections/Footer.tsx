@@ -38,6 +38,10 @@ function Footer() {
             <a href="/call-session">Book a call</a>
             <a href="/portfolio">View portfolio</a>
           </div>
+          <div className="footer__group">
+            <p className="footer__label">Legal</p>
+            <a href="/impressum">Impressum</a>
+          </div>
         </div>
       </div>
       <button type="button" className="footer__to-top" onClick={scrollToTop} aria-label="Back to top">

@@ -184,22 +184,25 @@ function WorkPageLayout({
       })
 
       const listeners: Array<() => void> = []
+      const hoverMedia = window.matchMedia('(hover: hover) and (pointer: fine)')
 
-      cards.forEach((card) => {
-        const baseScale = Number(card.dataset.scale) || 1
-        const enter = () => {
-          gsap.to(card, { scale: baseScale * 1.03, y: '-=4', duration: 0.35, ease: 'power2.out' })
-        }
-        const leave = () => {
-          gsap.to(card, { scale: baseScale, y: `+=4`, duration: 0.4, ease: 'power2.out' })
-        }
-        card.addEventListener('mouseenter', enter)
-        card.addEventListener('mouseleave', leave)
-        listeners.push(() => {
-          card.removeEventListener('mouseenter', enter)
-          card.removeEventListener('mouseleave', leave)
+      if (hoverMedia.matches) {
+        cards.forEach((card) => {
+          const baseScale = Number(card.dataset.scale) || 1
+          const enter = () => {
+            gsap.to(card, { scale: baseScale * 1.03, y: '-=4', duration: 0.35, ease: 'power2.out' })
+          }
+          const leave = () => {
+            gsap.to(card, { scale: baseScale, y: `+=4`, duration: 0.4, ease: 'power2.out' })
+          }
+          card.addEventListener('mouseenter', enter)
+          card.addEventListener('mouseleave', leave)
+          listeners.push(() => {
+            card.removeEventListener('mouseenter', enter)
+            card.removeEventListener('mouseleave', leave)
+          })
         })
-      })
+      }
 
       return () => listeners.forEach((off) => off())
     }, rootRef)
@@ -265,6 +268,7 @@ function WorkPageLayout({
             { label: 'Contact', href: '/contact' },
           ]}
           className="top-nav--page"
+          activeLabel="Services"
         />
       </div>
 

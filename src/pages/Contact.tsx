@@ -137,6 +137,7 @@ function Contact() {
           onBrandClick={() => goToHomeSection('#hero')}
           brandLabel="expose.u"
           className="top-nav--page"
+          activeLabel="Contact"
         />
       </div>
 

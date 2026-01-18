@@ -146,6 +146,10 @@
   justify-content: center;
 }
 
+.home__hero-gallery--mobile {
+  display: none;
+}
+
 .home__hero-thumb {
   width: clamp(140px, 17vw, 200px);
   display: flex;
@@ -221,6 +225,14 @@
 .home__section-header h2 {
   font-size: clamp(2rem, 4vw, 3rem);
   margin: 12px 0 0;
+}
+
+.home__section-subcopy {
+  margin-top: 14px;
+  font-size: 0.95rem;
+  color: var(--text-soft);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .home__section-note {
@@ -662,22 +674,51 @@
     width: 100%;
   }
 
-  .home__hero-gallery {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding-bottom: 12px;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: 8px;
+  .home__hero-gallery--desktop {
+    display: none;
   }
 
-  .home__hero-thumb {
-    width: 160px;
-    flex: 0 0 auto;
-    scroll-snap-align: start;
+  .home__hero-gallery--mobile {
+    display: grid;
+    grid-template-columns: 1fr;
+    place-items: center;
+    width: min(420px, 100%);
+    max-width: 420px;
+    height: clamp(260px, 58vw, 360px);
+    margin: 12px auto 8px;
+    position: relative;
+    transform-origin: center;
+    align-self: center;
+    overflow: visible;
   }
+
+  .home__hero-gallery--mobile .home__hero-thumb {
+    position: absolute;
+    top: 46%;
+    left: 50%;
+    width: var(--mobile-card, clamp(168px, 44vw, 240px));
+    transform-origin: center;
+  }
+
+  .home__hero-thumb-image {
+    aspect-ratio: 1 / 1;
+  }
+
+  .home__hero-gallery--mobile .home__hero-thumb-image {
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+  }
+
 
   .home__hero-thumb img {
-    height: 180px;
+    height: 100%;
+  }
+
+  .home__hero-thumb figcaption {
+    display: none;
+  }
+
+  .home__hero-gallery--mobile .home__hero-thumb {
+    pointer-events: none;
   }
 
   .home__hero-subhead {
@@ -703,6 +744,13 @@
     flex: 0 0 auto;
     white-space: nowrap;
     padding-left: 6px;
+  }
+}
+
+@media (hover: none) {
+  .home__hero-thumb:hover {
+    transform: rotate(var(--thumb-rotation, 0deg));
+    filter: none;
   }
 }
 
@@ -748,6 +796,7 @@
   .home__hero-gallery {
     transition: none;
   }
+
 }
 
 [data-theme='light'] .home {

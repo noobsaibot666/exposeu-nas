@@ -176,6 +176,7 @@ function PricingRequest() {
           onBrandClick={() => navigate('/')}
           brandLabel="expose.u"
           className="top-nav--page"
+          activeLabel="Start Now"
         />
       </div>
 

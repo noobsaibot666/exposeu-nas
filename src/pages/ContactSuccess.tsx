@@ -17,6 +17,7 @@ function ContactSuccess() {
             { label: 'Contact', href: '/contact' },
           ]}
           className="top-nav--page"
+          activeLabel="Contact"
         />
       </div>
 

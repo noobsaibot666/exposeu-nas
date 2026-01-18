@@ -415,3 +415,10 @@
     padding-bottom: 24px;
   }
 }
+
+@media (hover: none) {
+  .work-hero__card,
+  .work-gallery__image {
+    pointer-events: none;
+  }
+}

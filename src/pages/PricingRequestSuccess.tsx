@@ -17,6 +17,7 @@ function PricingRequestSuccess() {
             { label: 'Contact', href: '/contact' },
           ]}
           className="top-nav--page"
+          activeLabel="Start Now"
         />
       </div>
 

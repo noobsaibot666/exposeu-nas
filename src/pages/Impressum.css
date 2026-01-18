@@ -1,0 +1,62 @@
+.impressum {
+  min-height: 100svh;
+  background: var(--bg-base);
+  color: var(--text-strong);
+}
+
+.impressum__nav {
+  margin-bottom: 24px;
+}
+
+.impressum__shell {
+  padding-top: 42px;
+}
+
+.impressum__content {
+  max-width: 820px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.impressum__content h1 {
+  margin: 0;
+  font-size: clamp(2rem, 3.4vw + 1rem, 2.8rem);
+  letter-spacing: -0.02em;
+}
+
+.impressum__block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.impressum__block h2 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-tertiary);
+}
+
+.impressum__block p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.impressum__block a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+.impressum__block a:hover {
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+}
+
+@media (max-width: 720px) {
+  .impressum__shell {
+    padding-top: 32px;
+  }
+}

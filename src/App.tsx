@@ -8,6 +8,7 @@ import ContactSuccess from './pages/ContactSuccess'
 import Exhibitions from './pages/Exhibitions'
 import FashionShow from './pages/FashionShow'
 import GalleryStories from './pages/GalleryStories'
+import Impressum from './pages/Impressum'
 import Performance from './pages/Performance'
 import ArtistSessions from './pages/ArtistSessions'
 import Portfolio from './pages/Portfolio'
@@ -59,6 +60,7 @@ function App() {
               </>
             }
           />
+          <Route path="/impressum" element={<Impressum />} />
           <Route
             path="/artist-sessions"
             element={

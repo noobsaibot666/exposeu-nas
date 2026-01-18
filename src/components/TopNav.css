@@ -56,6 +56,13 @@
   text-decoration-color: currentColor;
 }
 
+.top-nav__link--active {
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
 .top-nav__brand {
   font-size: 1.5rem;
   font-weight: 800;
