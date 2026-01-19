@@ -167,6 +167,12 @@ function Contact() {
                   Duden Straße 24, Kreuzberg, Berlin
                 </p>
               </div>
+              <div>
+                <p className="contact__label">Instagram</p>
+                <a href="https://instagram.com/xposeu_official" target="_blank" rel="noreferrer">
+                  xposeu_official
+                </a>
+              </div>
             </div>
           </div>
 
