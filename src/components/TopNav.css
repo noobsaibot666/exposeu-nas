@@ -57,6 +57,7 @@
 
 .top-nav__links--right {
   justify-content: flex-end;
+  padding-right: 84px;
 }
 
 .top-nav__link {
@@ -104,7 +105,7 @@
   justify-content: flex-end;
   gap: 8px;
   position: absolute;
-  right: 30px;
+  right: 22px;
   top: 50%;
   transform: translateY(-50%);
 }
