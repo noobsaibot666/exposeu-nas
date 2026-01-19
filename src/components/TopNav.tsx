@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useThemeContext } from '../ThemeContext'
 import './TopNav.css'
@@ -29,7 +29,10 @@ function TopNav({
   activeLabel,
 }: TopNavProps) {
   const [open, setOpen] = useState(false)
+  const [isHidden, setIsHidden] = useState(false)
   const { theme, toggleTheme } = useThemeContext()
+  const lastScrollY = useRef(0)
+  const ticking = useRef(false)
 
   const navLinks = useMemo(() => [...leftLinks, ...rightLinks], [leftLinks, rightLinks])
 
@@ -55,6 +58,42 @@ function TopNav({
       mql.removeEventListener('change', handleBreakpoint)
     }
   }, [open, closeMenu])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined
+    const mql = window.matchMedia('(min-width: 901px)')
+    lastScrollY.current = window.scrollY
+
+    const handleScroll = () => {
+      if (!mql.matches || open) return
+      if (ticking.current) return
+      ticking.current = true
+      window.requestAnimationFrame(() => {
+        const current = window.scrollY
+        if (current <= 0) {
+          setIsHidden(false)
+        } else if (current > lastScrollY.current && current > 120) {
+          setIsHidden(true)
+        } else if (current < lastScrollY.current) {
+          setIsHidden(false)
+        }
+        lastScrollY.current = current
+        ticking.current = false
+      })
+    }
+
+    const handleChange = (event: MediaQueryListEvent) => {
+      if (!event.matches) setIsHidden(false)
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    mql.addEventListener('change', handleChange)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      mql.removeEventListener('change', handleChange)
+    }
+  }, [open])
 
   const renderLink = (item: NavItem) => {
     const isActive = item.label === activeLabel
@@ -107,7 +146,12 @@ function TopNav({
     )
   }
 
-  const containerClassName = ['top-nav', className ?? '', open ? 'is-open' : ''].filter(Boolean).join(' ')
+  const containerClassName = [
+    'top-nav',
+    className ?? '',
+    open ? 'is-open' : '',
+    isHidden ? 'is-hidden' : '',
+  ].filter(Boolean).join(' ')
 
   const drawer = typeof document !== 'undefined'
     ? createPortal(
@@ -184,7 +228,6 @@ function TopNav({
             aria-label={open ? 'Close menu' : 'Open menu'}
             onClick={() => setOpen((prev) => !prev)}
           >
-            <span>{open ? 'Close' : 'Menu'}</span>
             <div className="top-nav__toggle-lines" aria-hidden />
           </button>
         </div>

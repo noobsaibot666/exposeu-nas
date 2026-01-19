@@ -110,7 +110,7 @@ const proofAvatars = [
   resolveImagePath('/src/assets/images/services/4_performance_doc/_thumb/1_1/4_PD_001t.png'),
 ]
 
-function Home() {
+function HomeB() {
   const navigate = useNavigate()
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
   const [activeSection, setActiveSection] = useState('Studio')
@@ -168,17 +168,6 @@ function Home() {
         .from('.home__hero-gallery', { opacity: 0, y: 20, scale: 0.98, duration: 0.7 }, '-=0.35')
         .from('.home__hero-subhead', { opacity: 0, y: 16, duration: 0.6 }, '-=0.35')
         .from('.home__actions button', { opacity: 0, y: 12, duration: 0.5, stagger: 0.12 }, '-=0.3')
-
-      const heroThumbs = gsap.utils.toArray<HTMLElement>('.home__hero-gallery--desktop .home__hero-thumb')
-      gsap.from(heroThumbs, {
-        opacity: 0,
-        y: 24,
-        scale: 0.96,
-        duration: 0.9,
-        ease: 'power3.out',
-        stagger: { each: 0.12, from: 'center' },
-        delay: 0.15,
-      })
 
       mm.add('(max-width: 640px)', () => {
         const thumbs = gsap.utils.toArray<HTMLElement>('.home__hero-gallery--mobile .home__hero-thumb')
@@ -512,4 +501,4 @@ function Home() {
   )
 }
 
-export default Home
+export default HomeB
