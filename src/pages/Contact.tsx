@@ -155,7 +155,7 @@ function Contact() {
             <div className="contact__list">
               <div>
                 <p className="contact__label">Email</p>
-                <a href="mailto:hello@exposeu.studio">hello@exposeu.studio</a>
+                <a href="mailto:hello@expose-u.com">hello@expose-u.com</a>
               </div>
               <div>
                 <p className="contact__label">Phone</p>
@@ -164,8 +164,7 @@ function Contact() {
               <div>
                 <p className="contact__label">Studio</p>
                 <p className="contact__address">
-                  Kreuzberg, Berlin<br />
-                  Germany
+                  Duden Straße 24, Kreuzberg, Berlin
                 </p>
               </div>
             </div>
