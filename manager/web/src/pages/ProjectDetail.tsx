@@ -20,6 +20,7 @@ type Project = {
   due_date: string | null
   completed_at: string | null
   notes: string | null
+  workflow_template_id?: number | null
   tags?: string[]
   review?: Review | null
 }
@@ -94,6 +95,22 @@ type Step = {
   status: string
   due_date: string | null
   offset_days?: number | string | null
+}
+
+type WorkflowTemplate = {
+  id: number
+  name: string
+  description?: string | null
+  tags?: string[]
+}
+
+type WorkflowStep = {
+  id: number
+  template_id: number
+  name: string
+  position: number
+  default_offset_days?: number | null
+  default_cost?: number | null
 }
 
 const formatDate = (value: string | null) => {
@@ -186,6 +203,12 @@ export default function ProjectDetail() {
   const [error, setError] = useState('')
   const [projectSaveStatus, setProjectSaveStatus] = useState('')
   const [stepSaveStatus, setStepSaveStatus] = useState('')
+  const [workflowTemplates, setWorkflowTemplates] = useState<WorkflowTemplate[]>([])
+  const [workflowSteps, setWorkflowSteps] = useState<WorkflowStep[]>([])
+  const [replaceTemplateId, setReplaceTemplateId] = useState<number | ''>('')
+  const [workflowLoading, setWorkflowLoading] = useState(false)
+  const [workflowError, setWorkflowError] = useState('')
+  const [replaceStatus, setReplaceStatus] = useState('')
 
   const loadProject = useCallback(() => {
     if (!token || !id) return
@@ -262,9 +285,40 @@ export default function ProjectDetail() {
       .catch(() => setError('Unable to load project.'))
   }, [id, token])
 
+  const loadWorkflows = useCallback(() => {
+    if (!token) return
+    setWorkflowLoading(true)
+    apiRequest<{ templates: WorkflowTemplate[]; steps: WorkflowStep[] }>('/workflows', {}, token)
+      .then((data) => {
+        setWorkflowTemplates(data.templates ?? [])
+        setWorkflowSteps(data.steps ?? [])
+        setWorkflowError('')
+      })
+      .catch(() => setWorkflowError('Unable to load workflows.'))
+      .finally(() => setWorkflowLoading(false))
+  }, [token])
+
   useEffect(() => {
     loadProject()
   }, [loadProject])
+
+  useEffect(() => {
+    loadWorkflows()
+  }, [loadWorkflows])
+
+  useEffect(() => {
+    if (replaceTemplateId) return
+    if (project?.workflow_template_id) {
+      const match = workflowTemplates.find((template) => template.id === project.workflow_template_id)
+      if (match) {
+        setReplaceTemplateId(project.workflow_template_id)
+        return
+      }
+    }
+    if (workflowTemplates.length > 0) {
+      setReplaceTemplateId(workflowTemplates[0].id)
+    }
+  }, [project?.workflow_template_id, replaceTemplateId, workflowTemplates])
 
   useEffect(() => {
     if (budget) return
@@ -305,6 +359,16 @@ export default function ProjectDetail() {
     if (budgetProductionRemaining <= production * 0.2) return 'warning'
     return 'ok'
   }, [budget, budgetProduction, budgetProductionRemaining])
+
+  const selectedTemplate = useMemo(
+    () => workflowTemplates.find((template) => template.id === replaceTemplateId),
+    [replaceTemplateId, workflowTemplates],
+  )
+
+  const selectedTemplateSteps = useMemo(() => {
+    if (!replaceTemplateId) return []
+    return workflowSteps.filter((step) => step.template_id === replaceTemplateId)
+  }, [replaceTemplateId, workflowSteps])
 
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!token || !id || !event.target.files?.[0]) return
@@ -382,6 +446,27 @@ export default function ProjectDetail() {
       loadProject()
     } catch {
       setProjectSaveStatus('Unable to save changes.')
+    }
+  }
+
+  const handleReplaceWorkflow = async () => {
+    if (!token || !id || !replaceTemplateId) return
+    setReplaceStatus('')
+    const confirmed = window.confirm(
+      `Replace this project's workflow with "${selectedTemplate?.name ?? 'this template'}"? This will overwrite existing steps and recreate budget allocations.`,
+    )
+    if (!confirmed) return
+    try {
+      setReplaceStatus('Replacing workflow...')
+      await apiRequest(
+        `/projects/${id}/workflow/replace`,
+        { method: 'POST', body: JSON.stringify({ templateId: replaceTemplateId }) },
+        token,
+      )
+      setReplaceStatus('Workflow replaced.')
+      loadProject()
+    } catch {
+      setReplaceStatus('Unable to replace workflow.')
     }
   }
 
@@ -904,6 +989,56 @@ export default function ProjectDetail() {
                 Save changes
               </button>
               {stepSaveStatus && <span className="muted">{stepSaveStatus}</span>}
+            </div>
+            <div className="workflow-assign">
+              <div className="section-heading">
+                <p className="eyebrow">Replace workflow</p>
+                <h3>Apply a saved template</h3>
+                <p className="muted">Swap the entire sequence with a saved workflow template.</p>
+              </div>
+              <label>
+                Workflow template
+                <div className="workflow-template-row">
+                  <select
+                    value={replaceTemplateId}
+                    onChange={(event) => setReplaceTemplateId(Number(event.target.value))}
+                    disabled={workflowLoading || workflowTemplates.length === 0}
+                  >
+                    {workflowTemplates.map((template) => (
+                      <option key={template.id} value={template.id}>
+                        {template.name}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    onClick={handleReplaceWorkflow}
+                    disabled={!replaceTemplateId || workflowLoading}
+                  >
+                    Replace workflow
+                  </button>
+                </div>
+              </label>
+              {workflowError && <p className="form-error">{workflowError}</p>}
+              {workflowTemplates.length === 0 && !workflowLoading ? (
+                <p className="muted">No saved workflows yet. Create one on the new project screen.</p>
+              ) : null}
+              {selectedTemplateSteps.length > 0 && (
+                <div className="workflow-preview">
+                  <p>Workflow preview:</p>
+                  <ul>
+                    {selectedTemplateSteps.map((step) => (
+                      <li key={step.id}>
+                        {step.position}. {step.name}
+                      </li>
+                    ))}
+                  </ul>
+                  {selectedTemplate?.tags?.length ? (
+                    <p className="muted">Tags: {selectedTemplate.tags.join(', ')}</p>
+                  ) : null}
+                </div>
+              )}
+              {replaceStatus && <span className="muted">{replaceStatus}</span>}
             </div>
           </section>
           <section className="panel">

@@ -3,7 +3,7 @@ import path from 'path'
 import fs from 'fs/promises'
 import multer from 'multer'
 import { nanoid } from 'nanoid'
-import { query } from '../db.js'
+import { pool, query } from '../db.js'
 
 const router = Router()
 
@@ -394,6 +394,88 @@ router.patch('/:id/review', async (req, res) => {
   )
 
   return res.json(result.rows[0])
+})
+
+router.post('/:id/workflow/replace', async (req, res) => {
+  const id = Number(req.params.id)
+  const user = getUser(req)
+  const admin = isAdmin(req)
+  const { templateId } = req.body as { templateId?: number | string }
+
+  if (!templateId) return res.status(400).json({ error: 'Template required.' })
+
+  const client = await pool.connect()
+  try {
+    await client.query('BEGIN')
+    const projectResult = await client.query(
+      'SELECT * FROM projects WHERE id = $1 AND ($2::boolean OR owner_user_id = $3)',
+      [id, admin, user.id],
+    )
+    const project = projectResult.rows[0]
+    if (!project) {
+      await client.query('ROLLBACK')
+      return res.status(404).json({ error: 'Not found.' })
+    }
+
+    const templateResult = await client.query('SELECT id FROM workflow_templates WHERE id = $1', [Number(templateId)])
+    if (!templateResult.rows[0]) {
+      await client.query('ROLLBACK')
+      return res.status(404).json({ error: 'Workflow template not found.' })
+    }
+
+    const budgetResult = await client.query(
+      'SELECT id FROM budgets WHERE project_id = $1 AND archived = false ORDER BY created_at DESC LIMIT 1',
+      [id],
+    )
+    const budgetId = budgetResult.rows[0]?.id
+    if (budgetId) {
+      await client.query('DELETE FROM budget_steps WHERE budget_id = $1', [budgetId])
+    }
+
+    await client.query('DELETE FROM project_steps WHERE project_id = $1', [id])
+    await client.query('UPDATE projects SET workflow_template_id = $1, updated_at = NOW() WHERE id = $2', [
+      Number(templateId),
+      id,
+    ])
+
+    const stepsResult = await client.query(
+      'SELECT id, name, position, default_offset_days FROM workflow_steps WHERE template_id = $1 ORDER BY position ASC',
+      [Number(templateId)],
+    )
+
+    const createdSteps: Array<{ id: number; name: string; position: number }> = []
+    for (const step of stepsResult.rows as Array<{ id: number; name: string; position: number; default_offset_days: number }>) {
+      const offsetDaysValue = step.default_offset_days ?? 0
+      let dueDateValue: string | null = null
+      if (project.start_date) {
+        dueDateValue = new Date(new Date(project.start_date).getTime() + offsetDaysValue * 86400000)
+          .toISOString()
+          .slice(0, 10)
+      }
+      const created = await client.query(
+        'INSERT INTO project_steps (project_id, name, position, due_date, offset_days, status) VALUES ($1,$2,$3,$4,$5,$6) RETURNING id, name, position',
+        [id, step.name, step.position, dueDateValue, offsetDaysValue, 'pending'],
+      )
+      createdSteps.push(created.rows[0])
+    }
+
+    if (budgetId) {
+      for (const step of createdSteps) {
+        await client.query(
+          'INSERT INTO budget_steps (budget_id, project_step_id, step_name, step_position, cost_amount) VALUES ($1,$2,$3,$4,$5)',
+          [budgetId, step.id, step.name, step.position, 0],
+        )
+      }
+    }
+
+    await client.query('COMMIT')
+    return res.json({ ok: true })
+  } catch (error) {
+    await client.query('ROLLBACK')
+    return res.status(500).json({ error: 'Unable to replace workflow.' })
+  } finally {
+    client.release()
+  }
 })
 
 router.delete('/:id', async (req, res) => {

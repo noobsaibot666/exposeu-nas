@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { Filter } from 'lucide-react'
 import Layout from '../components/Layout'
 import { apiRequest } from '../components/api'
 import { useAuth } from '../components/useAuth'
@@ -9,6 +10,7 @@ type Project = {
   id: number
   title: string
   client_name: string | null
+  client_email?: string | null
   service_type: string | null
   plan_tier: string | null
   project_color?: string | null
@@ -64,6 +66,17 @@ const hexToRgba = (value: string, alpha: number) => {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`
 }
 
+const normalizeValue = (value: string | null | undefined) => (value ?? '').trim().toLowerCase()
+
+type TimelineFilterType =
+  | 'none'
+  | 'project_color'
+  | 'tag'
+  | 'client_name'
+  | 'client_email'
+  | 'service_type'
+  | 'plan_tier'
+
 function Dashboard() {
   const navigate = useNavigate()
   const { token, user } = useAuth()
@@ -92,6 +105,9 @@ function Dashboard() {
   const [calendarView, setCalendarView] = useState<CalendarMode>('month')
   const [daySize, setDaySize] = useState(72)
   const [isCoarsePointer, setIsCoarsePointer] = useState(false)
+  const [timelineFilterOpen, setTimelineFilterOpen] = useState(false)
+  const [timelineFilterType, setTimelineFilterType] = useState<TimelineFilterType>('none')
+  const [timelineFilterValue, setTimelineFilterValue] = useState('')
 
   useEffect(() => {
     setCalendarAnchor((current) => new Date(current.getFullYear(), current.getMonth(), current.getDate()))
@@ -206,22 +222,106 @@ function Dashboard() {
     ],
     [],
   )
-  const timelineProjects = projectsWithDue
-    .filter((project) => project.due && project.status !== 'archive')
-    .map((project) => {
-      const start = project.start_date ? new Date(project.start_date) : new Date(project.created_at)
-      start.setHours(0, 0, 0, 0)
-      const end = project.due ?? start
-      return { ...project, start, end }
+  const baseTimelineProjects = useMemo(
+    () =>
+      projectsWithDue
+        .filter((project) => project.due && project.status !== 'archive')
+        .map((project) => {
+          const start = project.start_date ? new Date(project.start_date) : new Date(project.created_at)
+          start.setHours(0, 0, 0, 0)
+          const end = project.due ?? start
+          return { ...project, start, end }
+        })
+        .sort((a, b) => {
+          const tagA = (a.tags ?? []).slice().sort()[0]?.toLowerCase() ?? ''
+          const tagB = (b.tags ?? []).slice().sort()[0]?.toLowerCase() ?? ''
+          if (tagA && tagB && tagA !== tagB) return tagA.localeCompare(tagB)
+          if (tagA && !tagB) return -1
+          if (!tagA && tagB) return 1
+          return a.start.getTime() - b.start.getTime()
+        }),
+    [projectsWithDue],
+  )
+
+  const timelineFilterValues = useMemo(() => {
+    const colors = new Set<string>()
+    const tags = new Set<string>()
+    const clientNames = new Set<string>()
+    const clientEmails = new Set<string>()
+    const serviceTypes = new Set<string>()
+    const planTiers = new Set<string>()
+    for (const project of baseTimelineProjects) {
+      if (project.project_color) colors.add(project.project_color)
+      for (const tag of project.tags ?? []) {
+        const normalized = tag.trim()
+        if (normalized) tags.add(normalized)
+      }
+      if (project.client_name) clientNames.add(project.client_name)
+      if (project.client_email) clientEmails.add(project.client_email)
+      if (project.service_type) serviceTypes.add(project.service_type)
+      if (project.plan_tier) planTiers.add(project.plan_tier)
+    }
+    return {
+      project_color: Array.from(colors).sort(),
+      tag: Array.from(tags).sort(),
+      client_name: Array.from(clientNames).sort(),
+      client_email: Array.from(clientEmails).sort(),
+      service_type: Array.from(serviceTypes).sort(),
+      plan_tier: Array.from(planTiers).sort(),
+    }
+  }, [baseTimelineProjects])
+
+  useEffect(() => {
+    if (timelineFilterType === 'none') {
+      setTimelineFilterValue('')
+      return
+    }
+    const values = timelineFilterValues[timelineFilterType]
+    if (!values || values.length === 0) {
+      setTimelineFilterValue('')
+      return
+    }
+    if (!values.includes(timelineFilterValue)) {
+      setTimelineFilterValue(values[0])
+    }
+  }, [timelineFilterType, timelineFilterValue, timelineFilterValues])
+
+  const timelineProjects = useMemo(() => {
+    if (timelineFilterType === 'none' || !timelineFilterValue) return baseTimelineProjects
+    const matched: typeof baseTimelineProjects = []
+    const other: typeof baseTimelineProjects = []
+    for (const project of baseTimelineProjects) {
+      const match = (() => {
+        switch (timelineFilterType) {
+          case 'project_color':
+            return normalizeValue(project.project_color) === normalizeValue(timelineFilterValue)
+          case 'tag':
+            return (project.tags ?? []).some((tag) => normalizeValue(tag) === normalizeValue(timelineFilterValue))
+          case 'client_name':
+            return normalizeValue(project.client_name) === normalizeValue(timelineFilterValue)
+          case 'client_email':
+            return normalizeValue(project.client_email) === normalizeValue(timelineFilterValue)
+          case 'service_type':
+            return normalizeValue(project.service_type) === normalizeValue(timelineFilterValue)
+          case 'plan_tier':
+            return normalizeValue(project.plan_tier) === normalizeValue(timelineFilterValue)
+          default:
+            return false
+        }
+      })()
+      if (match) {
+        matched.push(project)
+      } else {
+        other.push(project)
+      }
+    }
+    matched.sort((a, b) => {
+      const aDue = a.end?.getTime() ?? Infinity
+      const bDue = b.end?.getTime() ?? Infinity
+      return aDue - bDue
     })
-    .sort((a, b) => {
-      const tagA = (a.tags ?? []).slice().sort()[0]?.toLowerCase() ?? ''
-      const tagB = (b.tags ?? []).slice().sort()[0]?.toLowerCase() ?? ''
-      if (tagA && tagB && tagA !== tagB) return tagA.localeCompare(tagB)
-      if (tagA && !tagB) return -1
-      if (!tagA && tagB) return 1
-      return a.start.getTime() - b.start.getTime()
-    })
+    return [...matched, ...other]
+  }, [baseTimelineProjects, timelineFilterType, timelineFilterValue])
 
   const dayMs = 86400000
   const timelineStart = timelineProjects.reduce<Date | null>((min, project) => {
@@ -519,35 +619,152 @@ function Dashboard() {
                       : 'Scan all active projects in one list.'}
               </p>
             </div>
-            <div className="view-switcher" role="tablist" aria-label="Project views">
-              <button
-                type="button"
-                className={`view-switcher__button${view === 'timeline' ? ' is-active' : ''}`}
-                onClick={() => handleViewChange('timeline')}
-              >
-                Timeline
-              </button>
-              <button
-                type="button"
-                className={`view-switcher__button${view === 'board' ? ' is-active' : ''}`}
-                onClick={() => handleViewChange('board')}
-              >
-                Board
-              </button>
-              <button
-                type="button"
-                className={`view-switcher__button${view === 'calendar' ? ' is-active' : ''}`}
-                onClick={() => handleViewChange('calendar')}
-              >
-                Calendar
-              </button>
-              <button
-                type="button"
-                className={`view-switcher__button${view === 'list' ? ' is-active' : ''}`}
-                onClick={() => handleViewChange('list')}
-              >
-                List
-              </button>
+            <div className="timeline__actions">
+              {view === 'timeline' && (
+                <div className={`timeline-filter${timelineFilterOpen ? ' is-open' : ''}`}>
+                  <button
+                    type="button"
+                    className={`timeline-filter__button${timelineFilterType !== 'none' ? ' is-active' : ''}`}
+                    onClick={() => setTimelineFilterOpen((current) => !current)}
+                    aria-label="Filter timeline"
+                  >
+                    <Filter aria-hidden="true" />
+                  </button>
+                  {timelineFilterOpen && (
+                    <div className="timeline-filter__panel">
+                      <div className="timeline-filter__header">
+                        <p className="timeline-filter__title">Filter by</p>
+                        <button
+                          type="button"
+                          className="timeline-filter__close"
+                          onClick={() => setTimelineFilterOpen(false)}
+                          aria-label="Close filter"
+                        >
+                          ×
+                        </button>
+                      </div>
+                      <div className="timeline-filter__options">
+                        <button
+                          type="button"
+                          className={timelineFilterType === 'project_color' ? 'is-active' : ''}
+                          onClick={() => setTimelineFilterType('project_color')}
+                        >
+                          Project colors
+                        </button>
+                        <button
+                          type="button"
+                          className={timelineFilterType === 'tag' ? 'is-active' : ''}
+                          onClick={() => setTimelineFilterType('tag')}
+                        >
+                          Tag
+                        </button>
+                        <button
+                          type="button"
+                          className={timelineFilterType === 'client_name' ? 'is-active' : ''}
+                          onClick={() => setTimelineFilterType('client_name')}
+                        >
+                          Client name
+                        </button>
+                        <button
+                          type="button"
+                          className={timelineFilterType === 'client_email' ? 'is-active' : ''}
+                          onClick={() => setTimelineFilterType('client_email')}
+                        >
+                          Client email
+                        </button>
+                        <button
+                          type="button"
+                          className={timelineFilterType === 'service_type' ? 'is-active' : ''}
+                          onClick={() => setTimelineFilterType('service_type')}
+                        >
+                          Service type
+                        </button>
+                        <button
+                          type="button"
+                          className={timelineFilterType === 'plan_tier' ? 'is-active' : ''}
+                          onClick={() => setTimelineFilterType('plan_tier')}
+                        >
+                          Plan tier
+                        </button>
+                      </div>
+                      {timelineFilterType !== 'none' && (
+                        <div className="timeline-filter__value">
+                          <span>Value</span>
+                          {timelineFilterType === 'project_color' ? (
+                            <div className="timeline-filter__swatches">
+                              {(timelineFilterValues.project_color ?? []).map((value) => (
+                                <button
+                                  key={value}
+                                  type="button"
+                                  className={`timeline-filter__swatch${
+                                    timelineFilterValue === value ? ' is-active' : ''
+                                  }`}
+                                  onClick={() => setTimelineFilterValue(value)}
+                                  style={{ backgroundColor: value }}
+                                  aria-label={`Filter by color ${value}`}
+                                />
+                              ))}
+                            </div>
+                          ) : (
+                            <select
+                              value={timelineFilterValue}
+                              onChange={(event) => setTimelineFilterValue(event.target.value)}
+                            >
+                              {(timelineFilterValues[timelineFilterType] ?? []).map((value) => (
+                                <option key={value} value={value}>
+                                  {value}
+                                </option>
+                              ))}
+                            </select>
+                          )}
+                        </div>
+                      )}
+                      <div className="timeline-filter__actions">
+                        <button
+                          type="button"
+                          className="ghost-link ghost-link--compact"
+                          onClick={() => {
+                            setTimelineFilterType('none')
+                            setTimelineFilterValue('')
+                          }}
+                        >
+                          Clear filter
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+              <div className="view-switcher" role="tablist" aria-label="Project views">
+                <button
+                  type="button"
+                  className={`view-switcher__button${view === 'timeline' ? ' is-active' : ''}`}
+                  onClick={() => handleViewChange('timeline')}
+                >
+                  Timeline
+                </button>
+                <button
+                  type="button"
+                  className={`view-switcher__button${view === 'board' ? ' is-active' : ''}`}
+                  onClick={() => handleViewChange('board')}
+                >
+                  Board
+                </button>
+                <button
+                  type="button"
+                  className={`view-switcher__button${view === 'calendar' ? ' is-active' : ''}`}
+                  onClick={() => handleViewChange('calendar')}
+                >
+                  Calendar
+                </button>
+                <button
+                  type="button"
+                  className={`view-switcher__button${view === 'list' ? ' is-active' : ''}`}
+                  onClick={() => handleViewChange('list')}
+                >
+                  List
+                </button>
+              </div>
             </div>
           </div>
           {view === 'timeline' && (

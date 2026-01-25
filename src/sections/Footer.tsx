@@ -41,6 +41,9 @@ function Footer() {
           <div className="footer__group">
             <p className="footer__label">Legal</p>
             <a href="/impressum">Impressum</a>
+            <a href="https://instagram.com/xposeu_official" target="_blank" rel="noreferrer">
+              Instagram
+            </a>
           </div>
         </div>
       </div>
