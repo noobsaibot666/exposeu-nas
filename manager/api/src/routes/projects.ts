@@ -136,6 +136,8 @@ router.post('/', async (req, res) => {
     tags,
     projectColor,
     stepDueDates,
+    excludedTemplateStepIds,
+    stepNameOverrides,
   } = req.body as {
     title?: string
     clientName?: string
@@ -151,6 +153,8 @@ router.post('/', async (req, res) => {
     tags?: string[] | string
     projectColor?: string | null
     stepDueDates?: Array<{ templateStepId: number; dueDate?: string | null }>
+    excludedTemplateStepIds?: number[]
+    stepNameOverrides?: Array<{ templateStepId: number; name?: string | null }>
   }
 
   if (!title) {
@@ -192,10 +196,20 @@ router.post('/', async (req, res) => {
 
   if (project.workflow_template_id) {
     const dueDateByTemplateId = new Map<number, string>()
+    const excludedSet = new Set<number>((excludedTemplateStepIds ?? []).map((value) => Number(value)))
+    const nameOverrides = new Map<number, string>()
     if (stepDueDates) {
       for (const entry of stepDueDates) {
         if (entry?.templateStepId && entry.dueDate) {
           dueDateByTemplateId.set(Number(entry.templateStepId), entry.dueDate)
+        }
+      }
+    }
+    if (stepNameOverrides) {
+      for (const entry of stepNameOverrides) {
+        const name = entry?.name?.trim()
+        if (entry?.templateStepId && name) {
+          nameOverrides.set(Number(entry.templateStepId), name)
         }
       }
     }
@@ -204,6 +218,8 @@ router.post('/', async (req, res) => {
       [project.workflow_template_id],
     )
     for (const step of templateSteps.rows as Array<{ id: number; name: string; position: number; default_offset_days: number }>) {
+      if (excludedSet.has(step.id)) continue
+      const stepName = nameOverrides.get(step.id) ?? step.name
       const requestedDue = dueDateByTemplateId.get(step.id)
       let dueDateValue: string | null = null
       let offsetDaysValue = step.default_offset_days ?? 0
@@ -230,7 +246,7 @@ router.post('/', async (req, res) => {
         'INSERT INTO project_steps (project_id, name, position, due_date, offset_days) VALUES ($1,$2,$3,$4,$5)',
         [
           project.id,
-          step.name,
+          stepName,
           step.position,
           dueDateValue,
           offsetDaysValue,

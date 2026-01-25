@@ -48,6 +48,10 @@ function Layout({
         </div>
       </header>
       <main className="layout__content">{children}</main>
+      <footer className="layout__footer">
+        <span>Version 1.0</span>
+        <span>Copyright: Alan Alves</span>
+      </footer>
     </div>
   )
 }

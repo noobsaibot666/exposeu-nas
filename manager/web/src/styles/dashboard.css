@@ -989,6 +989,11 @@
   color: inherit;
 }
 
+.table__row:not(.table__row--header) {
+  border-left: 4px solid var(--project-color, transparent);
+  padding-left: 10px;
+}
+
 .table__delete {
   border-radius: 999px;
   padding: 6px 12px;
@@ -1002,6 +1007,25 @@
 .table__row--header {
   font-weight: 700;
   background: var(--surface-muted);
+  align-items: center;
+}
+
+.table__header-button {
+  border: 0;
+  background: transparent;
+  color: var(--text-strong);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.7rem;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+  width: 100%;
+}
+
+.table__row--header .table__header-button:first-child {
+  padding-left: 16px;
 }
 
 @media (max-width: 720px) {

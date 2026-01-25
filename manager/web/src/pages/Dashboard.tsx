@@ -38,6 +38,16 @@ const formatDate = (value: string | null) => {
   }).format(date)
 }
 
+const formatDateMonthDay = (value: string | null) => {
+  if (!value) return '—'
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return value
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: '2-digit',
+  }).format(date)
+}
+
 const hashString = (value: string) => {
   let hash = 0
   for (let i = 0; i < value.length; i += 1) {
@@ -77,6 +87,26 @@ type TimelineFilterType =
   | 'service_type'
   | 'plan_tier'
 
+const matchesFilter = (project: Project, filterType: TimelineFilterType, filterValue: string) => {
+  if (filterType === 'none' || !filterValue) return false
+  switch (filterType) {
+    case 'project_color':
+      return normalizeValue(project.project_color) === normalizeValue(filterValue)
+    case 'tag':
+      return (project.tags ?? []).some((tag) => normalizeValue(tag) === normalizeValue(filterValue))
+    case 'client_name':
+      return normalizeValue(project.client_name) === normalizeValue(filterValue)
+    case 'client_email':
+      return normalizeValue(project.client_email) === normalizeValue(filterValue)
+    case 'service_type':
+      return normalizeValue(project.service_type) === normalizeValue(filterValue)
+    case 'plan_tier':
+      return normalizeValue(project.plan_tier) === normalizeValue(filterValue)
+    default:
+      return false
+  }
+}
+
 function Dashboard() {
   const navigate = useNavigate()
   const { token, user } = useAuth()
@@ -108,6 +138,8 @@ function Dashboard() {
   const [timelineFilterOpen, setTimelineFilterOpen] = useState(false)
   const [timelineFilterType, setTimelineFilterType] = useState<TimelineFilterType>('none')
   const [timelineFilterValue, setTimelineFilterValue] = useState('')
+  const [listSortKey, setListSortKey] = useState<'project' | 'client' | 'service' | 'status' | 'due' | 'tags'>('due')
+  const [listSortDir, setListSortDir] = useState<'asc' | 'desc'>('asc')
 
   useEffect(() => {
     setCalendarAnchor((current) => new Date(current.getFullYear(), current.getMonth(), current.getDate()))
@@ -250,7 +282,7 @@ function Dashboard() {
     const clientEmails = new Set<string>()
     const serviceTypes = new Set<string>()
     const planTiers = new Set<string>()
-    for (const project of baseTimelineProjects) {
+    for (const project of activeProjects) {
       if (project.project_color) colors.add(project.project_color)
       for (const tag of project.tags ?? []) {
         const normalized = tag.trim()
@@ -269,7 +301,7 @@ function Dashboard() {
       service_type: Array.from(serviceTypes).sort(),
       plan_tier: Array.from(planTiers).sort(),
     }
-  }, [baseTimelineProjects])
+  }, [activeProjects])
 
   useEffect(() => {
     if (timelineFilterType === 'none') {
@@ -291,25 +323,7 @@ function Dashboard() {
     const matched: typeof baseTimelineProjects = []
     const other: typeof baseTimelineProjects = []
     for (const project of baseTimelineProjects) {
-      const match = (() => {
-        switch (timelineFilterType) {
-          case 'project_color':
-            return normalizeValue(project.project_color) === normalizeValue(timelineFilterValue)
-          case 'tag':
-            return (project.tags ?? []).some((tag) => normalizeValue(tag) === normalizeValue(timelineFilterValue))
-          case 'client_name':
-            return normalizeValue(project.client_name) === normalizeValue(timelineFilterValue)
-          case 'client_email':
-            return normalizeValue(project.client_email) === normalizeValue(timelineFilterValue)
-          case 'service_type':
-            return normalizeValue(project.service_type) === normalizeValue(timelineFilterValue)
-          case 'plan_tier':
-            return normalizeValue(project.plan_tier) === normalizeValue(timelineFilterValue)
-          default:
-            return false
-        }
-      })()
-      if (match) {
+      if (matchesFilter(project, timelineFilterType, timelineFilterValue)) {
         matched.push(project)
       } else {
         other.push(project)
@@ -322,6 +336,46 @@ function Dashboard() {
     })
     return [...matched, ...other]
   }, [baseTimelineProjects, timelineFilterType, timelineFilterValue])
+
+  const listProjects = useMemo(() => {
+    const sorted = (items: typeof activeProjects) => {
+      const multiplier = listSortDir === 'asc' ? 1 : -1
+      return [...items].sort((a, b) => {
+        switch (listSortKey) {
+          case 'project':
+            return multiplier * (a.title ?? '').localeCompare(b.title ?? '')
+          case 'client':
+            return multiplier * (a.client_name ?? '').localeCompare(b.client_name ?? '')
+          case 'service':
+            return multiplier * (a.service_type ?? '').localeCompare(b.service_type ?? '')
+          case 'status':
+            return multiplier * (a.status ?? '').localeCompare(b.status ?? '')
+          case 'tags': {
+            const tagA = (a.tags ?? []).slice().sort()[0]?.toLowerCase() ?? ''
+            const tagB = (b.tags ?? []).slice().sort()[0]?.toLowerCase() ?? ''
+            return multiplier * tagA.localeCompare(tagB)
+          }
+          case 'due':
+          default: {
+            const aDue = a.due?.getTime() ?? Infinity
+            const bDue = b.due?.getTime() ?? Infinity
+            return multiplier * (aDue - bDue)
+          }
+        }
+      })
+    }
+    if (timelineFilterType === 'none' || !timelineFilterValue) return sorted(activeProjects)
+    const matched: typeof activeProjects = []
+    const other: typeof activeProjects = []
+    for (const project of activeProjects) {
+      if (matchesFilter(project, timelineFilterType, timelineFilterValue)) {
+        matched.push(project)
+      } else {
+        other.push(project)
+      }
+    }
+    return [...sorted(matched), ...sorted(other)]
+  }, [activeProjects, timelineFilterType, timelineFilterValue, listSortDir, listSortKey])
 
   const dayMs = 86400000
   const timelineStart = timelineProjects.reduce<Date | null>((min, project) => {
@@ -620,13 +674,13 @@ function Dashboard() {
               </p>
             </div>
             <div className="timeline__actions">
-              {view === 'timeline' && (
+              {(view === 'timeline' || view === 'list') && (
                 <div className={`timeline-filter${timelineFilterOpen ? ' is-open' : ''}`}>
                   <button
                     type="button"
                     className={`timeline-filter__button${timelineFilterType !== 'none' ? ' is-active' : ''}`}
                     onClick={() => setTimelineFilterOpen((current) => !current)}
-                    aria-label="Filter timeline"
+                    aria-label="Filter projects"
                   >
                     <Filter aria-hidden="true" />
                   </button>
@@ -1077,26 +1131,84 @@ function Dashboard() {
           {view === 'list' && (
             <div className="table">
               <div className="table__row table__row--header">
-                <span>Project</span>
-                <span>Client</span>
-                <span>Service</span>
-                <span>Status</span>
-                <span>Due</span>
-                <span>Tags</span>
+                <button
+                  type="button"
+                  className="table__header-button"
+                  onClick={() => {
+                    setListSortKey('project')
+                    setListSortDir((current) => (listSortKey === 'project' && current === 'asc' ? 'desc' : 'asc'))
+                  }}
+                >
+                  Project
+                </button>
+                <button
+                  type="button"
+                  className="table__header-button"
+                  onClick={() => {
+                    setListSortKey('client')
+                    setListSortDir((current) => (listSortKey === 'client' && current === 'asc' ? 'desc' : 'asc'))
+                  }}
+                >
+                  Client
+                </button>
+                <button
+                  type="button"
+                  className="table__header-button"
+                  onClick={() => {
+                    setListSortKey('service')
+                    setListSortDir((current) => (listSortKey === 'service' && current === 'asc' ? 'desc' : 'asc'))
+                  }}
+                >
+                  Service
+                </button>
+                <button
+                  type="button"
+                  className="table__header-button"
+                  onClick={() => {
+                    setListSortKey('status')
+                    setListSortDir((current) => (listSortKey === 'status' && current === 'asc' ? 'desc' : 'asc'))
+                  }}
+                >
+                  Status
+                </button>
+                <button
+                  type="button"
+                  className="table__header-button"
+                  onClick={() => {
+                    setListSortKey('due')
+                    setListSortDir((current) => (listSortKey === 'due' && current === 'asc' ? 'desc' : 'asc'))
+                  }}
+                >
+                  Due
+                </button>
+                <button
+                  type="button"
+                  className="table__header-button"
+                  onClick={() => {
+                    setListSortKey('tags')
+                    setListSortDir((current) => (listSortKey === 'tags' && current === 'asc' ? 'desc' : 'asc'))
+                  }}
+                >
+                  Tags
+                </button>
               </div>
-              {activeProjects.map((project) => (
-                <Link key={project.id} to={`/projects/${project.id}`} className="table__row">
+              {listProjects.map((project) => (
+                <Link
+                  key={project.id}
+                  to={`/projects/${project.id}`}
+                  className="table__row"
+                  style={{ '--project-color': getProjectColor(project, 'fallback') } as CSSProperties}
+                >
                   <span data-label="Project">
                     <span
                       className="project-dot"
-                      style={{ '--project-color': getProjectColor(project, 'fallback') } as CSSProperties}
                     />
                     {project.title}
                   </span>
                   <span data-label="Client">{project.client_name ?? '—'}</span>
                   <span data-label="Service">{project.service_type ?? '—'}</span>
                   <span data-label="Status">{project.status ?? '—'}</span>
-                  <span data-label="Due">{formatDate(project.due_date)}</span>
+                  <span data-label="Due">{formatDateMonthDay(project.due_date)}</span>
                   <span data-label="Tags">{project.tags && project.tags.length > 0 ? project.tags.join(', ') : '—'}</span>
                 </Link>
               ))}

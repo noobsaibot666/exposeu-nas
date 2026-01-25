@@ -392,7 +392,7 @@ button:disabled {
 
 .workflow-schedule__row {
   display: grid;
-  grid-template-columns: 1fr minmax(140px, 180px);
+  grid-template-columns: 1fr minmax(140px, 180px) auto;
   gap: 12px;
   align-items: center;
   padding: 8px 10px;
@@ -403,6 +403,31 @@ button:disabled {
 
 .workflow-schedule__row input[type='date'] {
   padding: 6px 8px;
+}
+
+.workflow-schedule__name {
+  margin-left: 6px;
+  width: min(260px, 100%);
+  background: transparent;
+  border: 0;
+  color: var(--text-strong);
+  font-weight: 600;
+}
+
+.workflow-schedule__name:focus {
+  outline: 1px solid var(--border-soft);
+  border-radius: 8px;
+  padding: 4px 6px;
+  background: rgba(9, 12, 22, 0.6);
+}
+
+.workflow-schedule__row--removed {
+  grid-template-columns: 1fr auto;
+  opacity: 0.75;
+}
+
+.workflow-schedule--removed {
+  margin-top: 10px;
 }
 
 .workflow-template-row {

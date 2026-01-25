@@ -199,6 +199,14 @@ export default function BudgetControl() {
                     >
                       Archive
                     </button>
+                    <button
+                      type="button"
+                      className="button button--danger"
+                      onClick={() => deleteBudget(budget.id)}
+                      disabled={busyId === budget.id}
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
                 <div className="budget-card__metrics">

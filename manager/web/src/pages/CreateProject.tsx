@@ -79,6 +79,8 @@ function CreateProject() {
   const [budgetNotes, setBudgetNotes] = useState('')
   const [stepCosts, setStepCosts] = useState<Record<number, string>>({})
   const [stepDueDates, setStepDueDates] = useState<Record<number, string>>({})
+  const [stepNameOverrides, setStepNameOverrides] = useState<Record<number, string>>({})
+  const [excludedTemplateStepIds, setExcludedTemplateStepIds] = useState<number[]>([])
 
   const loadWorkflows = useCallback(() => {
     if (!token) return
@@ -118,6 +120,11 @@ function CreateProject() {
             notes,
             workflowTemplateId: workflowTemplateId || null,
             projectColor: projectColor || null,
+            excludedTemplateStepIds,
+            stepNameOverrides: Object.entries(stepNameOverrides).map(([templateStepId, name]) => ({
+              templateStepId: Number(templateStepId),
+              name: name.trim(),
+            })),
             stepDueDates: selectedSteps.map((step) => ({
               templateStepId: step.id,
               dueDate: stepDueDates[step.id] || null,
@@ -235,9 +242,16 @@ function CreateProject() {
   }
 
   const selectedSteps = useMemo(
-    () => steps.filter((step) => step.template_id === workflowTemplateId),
-    [steps, workflowTemplateId],
+    () =>
+      steps.filter(
+        (step) => step.template_id === workflowTemplateId && !excludedTemplateStepIds.includes(step.id),
+      ),
+    [steps, workflowTemplateId, excludedTemplateStepIds],
   )
+
+  useEffect(() => {
+    setExcludedTemplateStepIds([])
+  }, [workflowTemplateId])
 
   useEffect(() => {
     const total = Number(totalBudget) || 0
@@ -277,6 +291,16 @@ function CreateProject() {
     })
   }, [selectedSteps])
 
+  useEffect(() => {
+    setStepNameOverrides((current) => {
+      const next: Record<number, string> = {}
+      for (const step of selectedSteps) {
+        next[step.id] = current[step.id] ?? step.name
+      }
+      return next
+    })
+  }, [selectedSteps])
+
   const productionRemaining = useMemo(() => {
     const production = Number(productionBudget) || 0
     const allocated = selectedSteps.reduce((total, step) => total + (Number(stepCosts[step.id]) || 0), 0)
@@ -297,6 +321,25 @@ function CreateProject() {
     const numeric = Number(value)
     if (Number.isNaN(numeric)) return ''
     return `${numeric % 1 === 0 ? numeric.toFixed(0) : numeric}d`
+  }
+
+  const removeTemplateStep = (stepId: number) => {
+    setExcludedTemplateStepIds((current) => (current.includes(stepId) ? current : [...current, stepId]))
+    setStepDueDates((current) => {
+      const next = { ...current }
+      delete next[stepId]
+      return next
+    })
+    setStepCosts((current) => {
+      const next = { ...current }
+      delete next[stepId]
+      return next
+    })
+    setStepNameOverrides((current) => {
+      const next = { ...current }
+      delete next[stepId]
+      return next
+    })
   }
 
   return (
@@ -525,7 +568,14 @@ function CreateProject() {
                     {selectedSteps.map((step) => (
                       <label key={step.id} className="workflow-schedule__row">
                         <span>
-                          {step.position}. {step.name}
+                          {step.position}.
+                          <input
+                            className="workflow-schedule__name"
+                            value={stepNameOverrides[step.id] ?? step.name}
+                            onChange={(event) =>
+                              setStepNameOverrides((current) => ({ ...current, [step.id]: event.target.value }))
+                            }
+                          />
                         </span>
                         <input
                           type="date"
@@ -534,8 +584,38 @@ function CreateProject() {
                             setStepDueDates((current) => ({ ...current, [step.id]: event.target.value }))
                           }
                         />
+                        <button
+                          type="button"
+                          className="ghost-link ghost-link--compact"
+                          onClick={() => removeTemplateStep(step.id)}
+                        >
+                          Remove
+                        </button>
                       </label>
                     ))}
+                  </div>
+                )}
+                {excludedTemplateStepIds.length > 0 && (
+                  <div className="workflow-schedule workflow-schedule--removed">
+                    <p className="muted">Removed steps (undo to restore).</p>
+                    {steps
+                      .filter((step) => step.template_id === workflowTemplateId && excludedTemplateStepIds.includes(step.id))
+                      .map((step) => (
+                        <div key={step.id} className="workflow-schedule__row workflow-schedule__row--removed">
+                          <span>
+                            {step.position}. {step.name}
+                          </span>
+                          <button
+                            type="button"
+                            className="ghost-link ghost-link--compact"
+                            onClick={() =>
+                              setExcludedTemplateStepIds((current) => current.filter((id) => id !== step.id))
+                            }
+                          >
+                            Undo
+                          </button>
+                        </div>
+                      ))}
                   </div>
                 )}
               </div>
