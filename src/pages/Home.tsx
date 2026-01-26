@@ -112,7 +112,6 @@ const proofAvatars = [
 
 function Home() {
   const navigate = useNavigate()
-  const [tilt, setTilt] = useState({ x: 0, y: 0 })
   const [activeSection, setActiveSection] = useState('Studio')
   const [mobileLayout, setMobileLayout] = useState({
     card: 160,
@@ -124,10 +123,24 @@ function Home() {
   const rootRef = useRef<HTMLElement | null>(null)
   const casesRef = useRef<HTMLElement | null>(null)
   const mobileHeroRef = useRef<HTMLDivElement | null>(null)
+  const galleryRef = useRef<HTMLDivElement | null>(null)
+  const tiltX = useRef<((value: number) => void) | null>(null)
+  const tiltY = useRef<((value: number) => void) | null>(null)
 
   const handleScroll = (id: string) => {
     const target = document.querySelector(id)
     target?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  const handleHeroCardClick = () => {
+    handleScroll('#cases')
+  }
+
+  const handleHeroCardKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      handleScroll('#cases')
+    }
   }
 
   const navLinks = useMemo(
@@ -146,55 +159,52 @@ function Home() {
   )
 
   const handleGalleryMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    const bounds = event.currentTarget.getBoundingClientRect()
+    if (!galleryRef.current || !tiltX.current || !tiltY.current) return
+    const bounds = galleryRef.current.getBoundingClientRect()
     const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 6
     const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 6
-    setTilt({ x, y })
+    tiltX.current(x)
+    tiltY.current(-y)
   }
 
-  const resetTilt = () => setTilt({ x: 0, y: 0 })
+  const resetTilt = () => {
+    tiltX.current?.(0)
+    tiltY.current?.(0)
+  }
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const ctx = gsap.context(() => {
+      if (galleryRef.current) {
+        tiltX.current = gsap.quickTo(galleryRef.current, '--hero-tilt-x', { duration: 0.45, ease: 'power3.out' })
+        tiltY.current = gsap.quickTo(galleryRef.current, '--hero-tilt-y', { duration: 0.45, ease: 'power3.out' })
+      }
+
       const heroTimeline = gsap.timeline({ defaults: { ease: 'power3.out' } })
       const mm = gsap.matchMedia()
 
       heroTimeline
         .from('.home__nav', { opacity: 0, y: -12, duration: 0.5 })
         .from('.home__hero-title', { opacity: 0, y: 28, duration: 0.7 }, '-=0.2')
-        .from('.home__hero-gallery', { opacity: 0, y: 20, scale: 0.98, duration: 0.7 }, '-=0.35')
+        .from('.home__hero-gallery', { opacity: 0, duration: 0.7 }, '-=0.35')
         .from('.home__hero-subhead', { opacity: 0, y: 16, duration: 0.6 }, '-=0.35')
         .from('.home__actions button', { opacity: 0, y: 12, duration: 0.5, stagger: 0.12 }, '-=0.3')
 
       const heroThumbs = gsap.utils.toArray<HTMLElement>('.home__hero-gallery--desktop .home__hero-thumb')
       gsap.from(heroThumbs, {
         opacity: 0,
-        y: 24,
-        scale: 0.96,
-        duration: 0.9,
+        y: 18,
+        duration: 0.8,
         ease: 'power3.out',
         stagger: { each: 0.12, from: 'center' },
         delay: 0.15,
+        force3D: true,
+        clearProps: 'transform',
       })
 
-      mm.add('(max-width: 640px)', () => {
-        const thumbs = gsap.utils.toArray<HTMLElement>('.home__hero-gallery--mobile .home__hero-thumb')
-        if (!thumbs.length) return undefined
-
-        gsap.from(thumbs, {
-          opacity: 0,
-          y: 24,
-          scale: 0.9,
-          duration: 0.8,
-          ease: 'power3.out',
-          stagger: 0.08,
-        })
-
-        return () => undefined
-      })
+      mm.add('(max-width: 640px)', () => undefined)
 
       const cards = gsap.utils.toArray<HTMLElement>('.home__case-card')
 
@@ -293,22 +303,20 @@ function Home() {
 
     if (!nodes.length) return undefined
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.filter((entry) => entry.isIntersecting)
-        if (!visible.length) return
-        const topEntry = visible.sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
-        const match = nodes.find((node) => node.element === topEntry.target)
-        if (match) setActiveSection(match.label)
-      },
-      {
-        rootMargin: '-35% 0px -55% 0px',
-        threshold: [0.2, 0.4, 0.6, 0.8],
-      },
-    )
+    const updateActive = () => {
+      const marker = window.scrollY + 160
+      const active = nodes.reduce((current, node) => (node.element.offsetTop <= marker ? node : current), nodes[0])
+      setActiveSection(active.label)
+    }
 
-    nodes.forEach((node) => observer.observe(node.element))
-    return () => observer.disconnect()
+    updateActive()
+    window.addEventListener('scroll', updateActive, { passive: true })
+    window.addEventListener('resize', updateActive)
+
+    return () => {
+      window.removeEventListener('scroll', updateActive)
+      window.removeEventListener('resize', updateActive)
+    }
   }, [])
 
   useEffect(() => {
@@ -361,9 +369,9 @@ function Home() {
           <h1 className="home__hero-title">Photo and video for Berlin&rsquo;s galleries, artists, and live events.</h1>
           <div
             className="home__hero-gallery home__hero-gallery--desktop"
+            ref={galleryRef}
             onMouseMove={handleGalleryMouseMove}
             onMouseLeave={resetTilt}
-            style={{ transform: `rotateX(${-tilt.y}deg) rotateY(${tilt.x}deg)` }}
           >
             {heroGallery.map((thumb) => (
               <figure
@@ -371,6 +379,10 @@ function Home() {
                 className="home__hero-thumb"
                 data-rotation={thumb.rotation}
                 style={{ '--thumb-rotation': `${thumb.rotation}deg` } as CSSProperties}
+                role="link"
+                tabIndex={0}
+                onClick={handleHeroCardClick}
+                onKeyDown={handleHeroCardKeyDown}
               >
                 <div className="home__hero-thumb-image">
                   <img src={thumb.image} alt={thumb.label} loading="lazy" />
@@ -413,6 +425,10 @@ function Home() {
                   className="home__hero-thumb"
                   data-rotation={thumb.rotation}
                   style={style}
+                  role="link"
+                  tabIndex={0}
+                  onClick={handleHeroCardClick}
+                  onKeyDown={handleHeroCardKeyDown}
                 >
                   <div className="home__hero-thumb-image">
                     <img src={thumb.image} alt={thumb.label} loading="lazy" />

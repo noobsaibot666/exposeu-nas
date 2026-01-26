@@ -159,7 +159,7 @@ function Contact() {
               </div>
               <div>
                 <p className="contact__label">Phone</p>
-                <a href="tel:+49123456789">+49 123 456 789</a>
+                <a href="tel:+4917622132950">+49 176 2213 2950</a>
               </div>
               <div>
                 <p className="contact__label">Studio</p>

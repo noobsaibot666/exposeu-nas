@@ -57,13 +57,8 @@ function Impressum() {
               <a href="mailto:infor@expose-u.com">infor@expose-u.com</a>
             </p>
             <p>
-              <a href="tel:+4917622132950">+49 176 22132950</a>
+              <a href="tel:+4917622132950">+49 176 2213 2950</a>
             </p>
-          </div>
-
-          <div className="impressum__block">
-            <h2>Umsatzsteuer-ID</h2>
-            <p>Keine Umsatzsteuer-ID vorhanden.</p>
           </div>
 
           <div className="impressum__block">
