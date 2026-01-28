@@ -33,25 +33,26 @@ type OfferItem = {
 const videos: VideoItem[] = [
   {
     id: 'v1',
-    title: 'Exhibition Prelude',
-    description: 'Moody prelude that walks viewers through the build-out.',
-    year: '2024',
+    title: 'HOLON Berlin - Lick The Walls',
+    description: 'Placeholder preview, awaiting final cut.',
+    year: '2025',
     location: 'Berlin',
-    thumb: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
+    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/01/thumb_0.jpg'),
     videoSrc: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
-    tag: 'Live',
-    cta: 'Play',
+    tag: 'Preview',
+    cta: 'Watch',
   },
   {
     id: 'v2',
-    title: 'Gallery Warmup',
-    description: 'Portrait-led teaser for the opening night.',
-    year: '2024',
-    location: 'Paris',
-    thumb: resolveImagePath('/src/assets/images/services/2_gallery_work/2_GW_012.png'),
-    videoSrc: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
-    tag: 'Feature',
-    cta: 'Play',
+    title: 'Abigail Toll - IDOL - Silent Green Berlin',
+    description: 'Music performance captured at Silent Green, Berlin.',
+    year: '2025',
+    location: 'Berlin',
+    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/02/thumb_0.jpg'),
+    videoSrc:
+      'https://www.youtube-nocookie.com/embed/DkruqulWupw?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0',
+    tag: 'Performance',
+    cta: 'Watch',
   },
   {
     id: 'v3',
@@ -329,9 +330,11 @@ function Portfolio() {
   }
 
   const getEmbedSrc = (src: string) => {
-    const youTubeMatch = src.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^?&/]+)/i)
+    const youTubeMatch = src.match(
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube-nocookie\.com\/embed\/)([^?&/]+)/i,
+    )
     if (youTubeMatch) {
-      return `https://www.youtube.com/embed/${youTubeMatch[1]}?autoplay=1&rel=0`
+      return `https://www.youtube-nocookie.com/embed/${youTubeMatch[1]}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0`
     }
 
     const vimeoMatch = src.match(/vimeo\.com\/(?:video\/)?(\d+)/i)
