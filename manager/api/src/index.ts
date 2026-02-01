@@ -8,6 +8,8 @@ import budgetRoutes from './routes/budgets.js'
 import projectRoutes from './routes/projects.js'
 import shareRoutes from './routes/share.js'
 import workflowRoutes from './routes/workflows.js'
+import roadmapRoutes from './routes/roadmaps.js'
+import calendarRoutes from './routes/calendar.js'
 import { requireAuth } from './middleware/auth.js'
 import { query } from './db.js'
 import { ensureDefaultWorkflow } from './utils/seed.js'
@@ -27,6 +29,8 @@ app.use('/admin', requireAuth, adminRoutes)
 app.use('/budgets', requireAuth, budgetRoutes)
 app.use('/projects', requireAuth, projectRoutes)
 app.use('/workflows', requireAuth, workflowRoutes)
+app.use('/roadmaps', requireAuth, roadmapRoutes)
+app.use('/calendar', calendarRoutes)
 app.use('/share', shareRoutes)
 
 async function ensureAdmin() {

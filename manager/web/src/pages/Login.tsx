@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { apiRequest } from '../components/api'
 import { useAuth } from '../components/useAuth'
@@ -36,8 +37,22 @@ function Login() {
 
   return (
     <div className="login">
-      <form className="card" onSubmit={handleSubmit}>
-        <h1>Exposeu Manager</h1>
+      <motion.form
+        className="card"
+        onSubmit={handleSubmit}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -8 }}
+        transition={{ duration: 0.28, ease: 'easeOut' }}
+      >
+        <motion.h1
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.26, ease: 'easeOut', delay: 0.04 }}
+        >
+          Exposeu Manager
+        </motion.h1>
         <p>Log in to manage projects, deliveries, and workflows.</p>
         {error && <div className="form-error">{error}</div>}
         <label>
@@ -49,7 +64,7 @@ function Login() {
           <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
         </label>
         <button type="submit">Log in</button>
-      </form>
+      </motion.form>
     </div>
   )
 }

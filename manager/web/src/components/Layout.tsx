@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { useAuth } from './useAuth'
 import './Layout.css'
 
@@ -19,7 +20,13 @@ function Layout({
 
   return (
     <div className="layout">
-      <header className={`layout__header${headerClassName ? ` ${headerClassName}` : ''}`}>
+      <motion.header
+        className={`layout__header${headerClassName ? ` ${headerClassName}` : ''}`}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -8 }}
+        transition={{ duration: 0.28, ease: 'easeOut' }}
+      >
         <div className="layout__topline">
           <p className="layout__eyebrow">Exposeu Manager</p>
           <button type="button" className="layout__logout" onClick={() => saveToken(null)}>
@@ -30,7 +37,13 @@ function Layout({
         <div className="layout__title">
           <div className="layout__title-row">
             <div className="layout__title-main">
-              <h1>{title}</h1>
+              <motion.h1
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, ease: 'easeOut', delay: 0.05 }}
+              >
+                {title}
+              </motion.h1>
             </div>
           </div>
           {(!hideDashboardLink || headerActions) && (
@@ -46,8 +59,16 @@ function Layout({
             </div>
           )}
         </div>
-      </header>
-      <main className="layout__content">{children}</main>
+      </motion.header>
+      <motion.main
+        className="layout__content"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -6 }}
+        transition={{ duration: 0.3, ease: 'easeOut', delay: 0.04 }}
+      >
+        {children}
+      </motion.main>
       <footer className="layout__footer">
         <span>Version 1.0</span>
         <span>Copyright: Alan Alves</span>

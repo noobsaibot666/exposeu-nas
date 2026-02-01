@@ -1,31 +1,46 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 :root {
-  --bg-base: #05060a;
-  --bg-glow: rgba(67, 90, 128, 0.35);
-  --surface-base: #0c0f1a;
-  --surface-elevated: #11162a;
-  --surface-muted: #151a2f;
-  --text-strong: #f6f7fb;
-  --text-secondary: rgba(246, 247, 251, 0.72);
-  --text-tertiary: rgba(246, 247, 251, 0.5);
-  --border-soft: rgba(255, 255, 255, 0.12);
-  --border-strong: rgba(255, 255, 255, 0.28);
-  --accent: #dfe7f6;
-  --accent-strong: #8ab4ff;
-  --danger: #ff7b7b;
-  --warning: #f4b46a;
-  --ok: #63e6be;
+  --bg-base: #0a0b0d;
+  --bg-elevated: #101215;
+  --bg-glow: rgba(110, 170, 255, 0.08);
+  --bg-glow-strong: rgba(120, 210, 255, 0.12);
+  --surface-base: #15171a;
+  --surface-elevated: #1a1c20;
+  --surface-muted: #202329;
+  --surface-frost: rgba(18, 20, 24, 0.88);
+  --text-strong: #f2f3f4;
+  --text-secondary: rgba(242, 243, 244, 0.72);
+  --text-tertiary: rgba(242, 243, 244, 0.46);
+  --border-soft: rgba(255, 255, 255, 0.06);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --accent: #6fd3ff;
+  --accent-strong: #3f8bff;
+  --accent-vivid: #7ef0ff;
+  --accent-purple: #8b5cff;
+  --accent-green: #6bffa0;
+  --accent-orange: #ffae4d;
+  --accent-red: #ff5f5f;
+  --danger: #ff6f6f;
+  --warning: #ffb15a;
+  --ok: #6fe6b5;
+  --shadow-soft: 0 20px 50px rgba(0, 0, 0, 0.45);
+  --shadow-strong: 0 30px 70px rgba(0, 0, 0, 0.6);
+  --radius-lg: 18px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
 }
 
 body {
   margin: 0;
-  font-family: 'Instrument Sans', 'Satoshi', system-ui, sans-serif;
+  font-family: 'Geist', system-ui, sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(100, 132, 204, 0.25), transparent 40%),
-    radial-gradient(circle at 20% 20%, var(--bg-glow), transparent 45%),
+    radial-gradient(900px 520px at 10% -20%, rgba(90, 150, 255, 0.12), transparent 60%),
+    radial-gradient(600px 360px at 90% 0%, rgba(110, 240, 255, 0.1), transparent 60%),
+    linear-gradient(155deg, rgba(120, 170, 255, 0.04), transparent 35%),
     var(--bg-base);
   color: var(--text-strong);
+  font-weight: 400;
 }
 
 * {
@@ -43,18 +58,29 @@ button {
 h1,
 h2,
 h3 {
-  font-family: 'Sora', 'Instrument Sans', sans-serif;
-  letter-spacing: -0.02em;
+  font-family: 'Space Grotesk', 'Geist', sans-serif;
+  letter-spacing: -0.025em;
+  font-weight: 500;
 }
 
 .eyebrow {
   text-transform: uppercase;
-  letter-spacing: 0.28em;
-  font-size: 0.68rem;
+  letter-spacing: 0.32em;
+  font-size: 0.62rem;
   color: var(--text-tertiary);
   margin: 0 0 4px;
 }
 
 .muted {
   color: var(--text-secondary);
+}
+
+input,
+select,
+textarea {
+  font-family: 'Geist', system-ui, sans-serif;
+}
+
+button {
+  font-family: 'Geist', system-ui, sans-serif;
 }

@@ -34,6 +34,23 @@ type BuilderStep = {
   cost: string
 }
 
+type RoadmapPhase = {
+  title: string
+  goal?: string
+  startDay?: number | null
+  endDay?: number | null
+  steps: string[]
+  checkpoints: string[]
+}
+
+type RoadmapPayload = {
+  title: string
+  phases: RoadmapPhase[]
+  metrics: string[]
+  rules: string[]
+  sourceType: 'markdown' | 'json'
+}
+
 const parseTags = (value: string) =>
   value
     .split(',')
@@ -78,6 +95,13 @@ function CreateProject() {
   const [vatPercent, setVatPercent] = useState('')
   const [budgetNotes, setBudgetNotes] = useState('')
   const [stepCosts, setStepCosts] = useState<Record<number, string>>({})
+  const [roadmapEnabled, setRoadmapEnabled] = useState(false)
+  const [roadmapAutoSchedule, setRoadmapAutoSchedule] = useState(true)
+  const [roadmapInput, setRoadmapInput] = useState('')
+  const [roadmapParsed, setRoadmapParsed] = useState<RoadmapPayload | null>(null)
+  const [roadmapError, setRoadmapError] = useState('')
+  const [roadmapFileName, setRoadmapFileName] = useState('')
+  const [roadmapSourceType, setRoadmapSourceType] = useState<'markdown' | 'json'>('markdown')
   const [stepDueDates, setStepDueDates] = useState<Record<number, string>>({})
   const [stepNameOverrides, setStepNameOverrides] = useState<Record<number, string>>({})
   const [excludedTemplateStepIds, setExcludedTemplateStepIds] = useState<number[]>([])
@@ -88,7 +112,14 @@ function CreateProject() {
       .then((data) => {
         setTemplates(data.templates)
         setSteps(data.steps)
-        if (data.templates[0]) setWorkflowTemplateId(data.templates[0].id)
+        const preferred = data.templates.find((template) =>
+          template.name.toLowerCase().includes('standard workflow'),
+        )
+        if (preferred) {
+          setWorkflowTemplateId(preferred.id)
+        } else if (data.templates[0]) {
+          setWorkflowTemplateId(data.templates[0].id)
+        }
       })
       .catch(() => setError('Unable to load workflows.'))
   }, [token])
@@ -102,7 +133,7 @@ function CreateProject() {
     if (!token) return
 
     try {
-          const project = await apiRequest<{ id: number }>(
+      const project = await apiRequest<{ id: number }>(
         '/projects',
         {
           method: 'POST',
@@ -133,6 +164,51 @@ function CreateProject() {
         },
         token,
       )
+      if (roadmapEnabled && roadmapParsed) {
+        try {
+          const roadmapPayload = buildRoadmapPayload(roadmapParsed, startDate, roadmapAutoSchedule)
+          await apiRequest(
+            '/roadmaps',
+            {
+              method: 'POST',
+              body: JSON.stringify({
+                projectId: project.id,
+                title: roadmapPayload.title,
+                sourceType: roadmapPayload.sourceType,
+                autoSchedule: roadmapAutoSchedule,
+                phases: roadmapPayload.phases.map((phase, index) => ({
+                  title: phase.title,
+                  goal: phase.goal || null,
+                  position: index + 1,
+                  startDay: phase.startDay ?? null,
+                  endDay: phase.endDay ?? null,
+                  steps: phase.steps.map((step, stepIndex) => ({
+                    title: step.title,
+                    position: stepIndex + 1,
+                    dueDate: step.dueDate,
+                    status: 'pending',
+                  })),
+                  checkpoints: phase.checkpoints.map((checkpoint, checkpointIndex) => ({
+                    title: checkpoint,
+                    position: checkpointIndex + 1,
+                  })),
+                })),
+                metrics: roadmapPayload.metrics.map((metric, index) => ({
+                  title: metric,
+                  position: index + 1,
+                })),
+                rules: roadmapPayload.rules.map((rule, index) => ({
+                  title: rule,
+                  position: index + 1,
+                })),
+              }),
+            },
+            token,
+          )
+        } catch {
+          // Roadmap creation is optional.
+        }
+      }
       if (budgetEnabled) {
         try {
           const projectDetail = await apiRequest<{ steps: ProjectStep[] }>(`/projects/${project.id}`, {}, token)
@@ -171,6 +247,180 @@ function CreateProject() {
     } catch {
       setError('Unable to create project.')
     }
+  }
+
+  const parseMarkdownRoadmap = (value: string): RoadmapPayload => {
+    const lines = value.split(/\r?\n/)
+    let title = 'Roadmap'
+    const phases: RoadmapPhase[] = []
+    const metrics: string[] = []
+    const rules: string[] = []
+    let currentPhase: RoadmapPhase | null = null
+    let section: 'steps' | 'checkpoints' | 'metrics' | 'rules' | null = null
+
+    const addPhase = (phaseTitle: string, startDay?: number | null, endDay?: number | null) => {
+      currentPhase = {
+        title: phaseTitle || `Phase ${phases.length + 1}`,
+        goal: '',
+        startDay: startDay ?? null,
+        endDay: endDay ?? null,
+        steps: [],
+        checkpoints: [],
+      }
+      phases.push(currentPhase)
+      section = 'steps'
+    }
+
+    for (const rawLine of lines) {
+      const line = rawLine.trim()
+      if (!line) continue
+      if (line.startsWith('# ')) {
+        title = line.replace(/^#\s+/, '').trim()
+        continue
+      }
+      if (line.startsWith('## ')) {
+        const heading = line.replace(/^##\s+/, '').trim()
+        const lower = heading.toLowerCase()
+        if (lower.includes('phase')) {
+          const rangeMatch = heading.match(/days?\s*(\d+)\s*[–-]\s*(\d+)/i)
+          const startDay = rangeMatch ? Number(rangeMatch[1]) : null
+          const endDay = rangeMatch ? Number(rangeMatch[2]) : null
+          const cleanTitle = heading
+            .replace(/phase\s*\d*\s*[—-]\s*/i, '')
+            .replace(/\(.*\)/, '')
+            .trim()
+          addPhase(cleanTitle || heading, startDay, endDay)
+        } else if (lower.includes('metric')) {
+          section = 'metrics'
+          currentPhase = null
+        } else if (lower.includes('rule')) {
+          section = 'rules'
+          currentPhase = null
+        } else {
+          section = null
+          currentPhase = null
+        }
+        continue
+      }
+      if (line.startsWith('**Goal:**')) {
+        if (currentPhase) currentPhase.goal = line.replace('**Goal:**', '').trim()
+        continue
+      }
+      if (line.toLowerCase().startsWith('checkpoint')) {
+        section = 'checkpoints'
+        continue
+      }
+      if (line.startsWith('---')) {
+        continue
+      }
+
+      const bulletMatch = line.match(/^[-*]\s+(.*)$/) || line.match(/^\d+\.\s+(.*)$/)
+      const text = bulletMatch ? bulletMatch[1].trim() : line
+
+      if (section === 'metrics') {
+        metrics.push(text)
+        continue
+      }
+      if (section === 'rules') {
+        rules.push(text)
+        continue
+      }
+      if (currentPhase) {
+        if (section === 'checkpoints') {
+          currentPhase.checkpoints.push(text)
+        } else {
+          currentPhase.steps.push(text)
+        }
+      }
+    }
+
+    return { title, phases, metrics, rules, sourceType: 'markdown' }
+  }
+
+  const parseJsonRoadmap = (value: string): RoadmapPayload => {
+    const parsed = JSON.parse(value) as Partial<RoadmapPayload>
+    return {
+      title: parsed.title || 'Roadmap',
+      phases: parsed.phases ?? [],
+      metrics: parsed.metrics ?? [],
+      rules: parsed.rules ?? [],
+      sourceType: 'json',
+    }
+  }
+
+  const buildRoadmapPayload = (
+    roadmap: RoadmapPayload,
+    start: string,
+    autoSchedule: boolean,
+  ): {
+    title: string
+    sourceType: 'markdown' | 'json'
+    phases: Array<{
+      title: string
+      goal?: string
+      startDay?: number | null
+      endDay?: number | null
+      steps: Array<{ title: string; dueDate?: string | null }>
+      checkpoints: string[]
+    }>
+    metrics: string[]
+    rules: string[]
+  } => {
+    const startDate = start ? new Date(start) : null
+    return {
+      title: roadmap.title,
+      sourceType: roadmap.sourceType,
+      phases: roadmap.phases.map((phase) => {
+        const steps = phase.steps.map((step, index) => ({ title: step, dueDate: null }))
+        if (autoSchedule && startDate && phase.startDay !== null && phase.endDay !== null && steps.length > 0) {
+          const span = Math.max(phase.endDay - phase.startDay, 0)
+          steps.forEach((step, index) => {
+            const offset = steps.length === 1 ? phase.endDay : phase.startDay + Math.round((span * index) / (steps.length - 1))
+            const due = new Date(startDate.getTime() + offset * 86400000)
+            step.dueDate = due.toISOString().slice(0, 10)
+          })
+        }
+        return {
+          title: phase.title,
+          goal: phase.goal,
+          startDay: phase.startDay,
+          endDay: phase.endDay,
+          steps,
+          checkpoints: phase.checkpoints,
+        }
+      }),
+      metrics: roadmap.metrics,
+      rules: roadmap.rules,
+    }
+  }
+
+  const handleRoadmapParse = (value: string, sourceType: 'markdown' | 'json') => {
+    setRoadmapError('')
+    if (!value.trim()) {
+      setRoadmapParsed(null)
+      return
+    }
+    try {
+      const parsed = sourceType === 'json' ? parseJsonRoadmap(value) : parseMarkdownRoadmap(value)
+      setRoadmapParsed(parsed)
+    } catch {
+      setRoadmapParsed(null)
+      setRoadmapError('Unable to parse roadmap input. Check the format.')
+    }
+  }
+
+  const handleRoadmapFile = (file: File) => {
+    const extension = file.name.split('.').pop()?.toLowerCase()
+    const nextSource = extension === 'json' ? 'json' : 'markdown'
+    setRoadmapSourceType(nextSource)
+    setRoadmapFileName(file.name)
+    const reader = new FileReader()
+    reader.onload = () => {
+      const value = String(reader.result || '')
+      setRoadmapInput(value)
+      handleRoadmapParse(value, nextSource)
+    }
+    reader.readAsText(file)
   }
 
   const addBuilderStep = () => {
@@ -355,89 +605,210 @@ function CreateProject() {
         {error && <div className="form-error">{error}</div>}
         <div className="project-form__body">
           <div className="project-form__row">
-            <section className="project-form__section">
-              <div className="section-heading">
-                <p className="eyebrow">Essentials</p>
-                <h3>Project information</h3>
-                <p className="muted">Make sure the client and scope details are accurate.</p>
-              </div>
-              <div className="project-form__fields">
-                <label>
-                  Project title
-                  <input value={title} onChange={(event) => setTitle(event.target.value)} required />
-                </label>
-                <div className="grid">
-                  <label>
-                    Client name
-                    <input value={clientName} onChange={(event) => setClientName(event.target.value)} />
-                  </label>
-                  <label>
-                    Client email
-                    <input value={clientEmail} onChange={(event) => setClientEmail(event.target.value)} />
-                  </label>
-                  <label>
-                    Client phone
-                    <input value={clientPhone} onChange={(event) => setClientPhone(event.target.value)} />
-                  </label>
-                  <label>
-                    Service type
-                    <input value={serviceType} onChange={(event) => setServiceType(event.target.value)} />
-                  </label>
-                  <label>
-                    Plan tier
-                    <input value={planTier} onChange={(event) => setPlanTier(event.target.value)} />
-                  </label>
-                  <label>
-                    Project color
-                    <input
-                      type="color"
-                      value={projectColor || '#9ca3af'}
-                      onChange={(event) => setProjectColor(event.target.value)}
-                    />
-                  </label>
-                  <label>
-                    Tags (comma separated)
-                    <input value={tags} onChange={(event) => setTags(event.target.value)} />
-                  </label>
-                  <label className="grid-span">
-                    Status
-                    <select value={status} onChange={(event) => setStatus(event.target.value)}>
-                      <option value="briefing">Briefing</option>
-                      <option value="scheduled">Scheduled</option>
-                      <option value="shoot">Shoot</option>
-                      <option value="edit">Edit</option>
-                      <option value="review">Review</option>
-                      <option value="delivery">Delivery</option>
-                      <option value="archive">Archive</option>
-                    </select>
-                  </label>
-                  <div className="grid grid-span">
-                    <label>
-                      Start date
-                      <input type="date" value={startDate} onChange={(event) => setStartDate(event.target.value)} />
-                    </label>
-                    <label>
-                      Due date
-                      <input type="date" value={dueDate} onChange={(event) => setDueDate(event.target.value)} />
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </section>
-            <section className="project-form__section">
-              <div className="workflow-builder">
-                <div className="workflow-builder__header">
+            <div className="project-form__col">
+              <section className="project-form__section">
+                <div className="section-heading section-heading--numbered">
+                  <span className="section-number">1</span>
+                  <span className="section-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M4 7h16M4 12h10M4 17h7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    </svg>
+                  </span>
                   <div>
-                    <p className="eyebrow">Workflow builder</p>
-                    <h3>Personalize your steps</h3>
-                    <p className="muted">
-                      Drag steps into a sequence, save the template, and reuse it across projects.
-                    </p>
+                    <p className="eyebrow">Essentials</p>
+                    <h3>Project info</h3>
+                    <p className="muted">Client, scope, dates.</p>
                   </div>
-                  <button type="button" onClick={saveWorkflowTemplate} disabled={savingWorkflow}>
-                    {savingWorkflow ? 'Saving...' : 'Save workflow'}
-                  </button>
                 </div>
+                <div className="project-form__fields">
+                  <label>
+                    Project title
+                    <input value={title} onChange={(event) => setTitle(event.target.value)} required />
+                  </label>
+                  <div className="grid">
+                    <label>
+                      Client name
+                      <input value={clientName} onChange={(event) => setClientName(event.target.value)} />
+                    </label>
+                    <label>
+                      Client email
+                      <input value={clientEmail} onChange={(event) => setClientEmail(event.target.value)} />
+                    </label>
+                    <label>
+                      Client phone
+                      <input value={clientPhone} onChange={(event) => setClientPhone(event.target.value)} />
+                    </label>
+                    <label>
+                      Service type
+                      <input value={serviceType} onChange={(event) => setServiceType(event.target.value)} />
+                    </label>
+                    <label>
+                      Plan tier
+                      <input value={planTier} onChange={(event) => setPlanTier(event.target.value)} />
+                    </label>
+                    <label>
+                      Project color
+                      <input
+                        type="color"
+                        value={projectColor || '#9ca3af'}
+                        onChange={(event) => setProjectColor(event.target.value)}
+                      />
+                    </label>
+                    <label>
+                      Tags (comma separated)
+                      <input value={tags} onChange={(event) => setTags(event.target.value)} />
+                    </label>
+                    <label className="grid-span">
+                      Status
+                      <select value={status} onChange={(event) => setStatus(event.target.value)}>
+                        <option value="briefing">Briefing</option>
+                        <option value="scheduled">Scheduled</option>
+                        <option value="shoot">Shoot</option>
+                        <option value="edit">Edit</option>
+                        <option value="review">Review</option>
+                        <option value="delivery">Delivery</option>
+                        <option value="archive">Archive</option>
+                      </select>
+                    </label>
+                    <div className="grid grid-span">
+                      <label>
+                        Start date
+                        <input type="date" value={startDate} onChange={(event) => setStartDate(event.target.value)} />
+                      </label>
+                      <label>
+                        Due date
+                        <input type="date" value={dueDate} onChange={(event) => setDueDate(event.target.value)} />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              <section className="project-form__section">
+                <div className="section-heading section-heading--numbered">
+                  <span className="section-number">3</span>
+                  <span className="section-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M5 7h14M5 12h10M5 17h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    </svg>
+                  </span>
+                  <div>
+                    <p className="eyebrow">Roadmap</p>
+                    <h3>Attach roadmap</h3>
+                    <p className="muted">Upload .md / .json or paste.</p>
+                  </div>
+                </div>
+                <label className="toggle-row">
+                  <input
+                    type="checkbox"
+                    checked={roadmapEnabled}
+                    onChange={(event) => setRoadmapEnabled(event.target.checked)}
+                  />
+                  Enable roadmap
+                </label>
+                {roadmapEnabled && (
+                  <div className="roadmap-input">
+                    <div className="roadmap-input__actions">
+                      <label
+                        className="roadmap-input__drop"
+                        onDragOver={(event) => event.preventDefault()}
+                        onDrop={(event) => {
+                          event.preventDefault()
+                          const file = event.dataTransfer.files?.[0]
+                          if (file) handleRoadmapFile(file)
+                        }}
+                      >
+                        <input
+                          type="file"
+                          accept=".md,.markdown,.json"
+                          onChange={(event) => {
+                            const file = event.target.files?.[0]
+                            if (file) handleRoadmapFile(file)
+                          }}
+                        />
+                        <span>Drop file or choose</span>
+                        {roadmapFileName && <em>{roadmapFileName}</em>}
+                      </label>
+                      <label>
+                        Input format
+                        <select
+                          value={roadmapSourceType}
+                          onChange={(event) => {
+                            const next = event.target.value === 'json' ? 'json' : 'markdown'
+                            setRoadmapSourceType(next)
+                            handleRoadmapParse(roadmapInput, next)
+                          }}
+                        >
+                          <option value="markdown">Markdown</option>
+                          <option value="json">JSON</option>
+                        </select>
+                      </label>
+                      <label className="toggle-row">
+                        <input
+                          type="checkbox"
+                          checked={roadmapAutoSchedule}
+                          onChange={(event) => setRoadmapAutoSchedule(event.target.checked)}
+                        />
+                        Auto-schedule dates
+                      </label>
+                    </div>
+                    <label className="roadmap-input__field">
+                      Paste roadmap
+                      <textarea
+                        rows={6}
+                        value={roadmapInput}
+                        onChange={(event) => {
+                          const value = event.target.value
+                          setRoadmapInput(value)
+                          handleRoadmapParse(value, roadmapSourceType)
+                        }}
+                        placeholder="Paste Markdown or JSON roadmap..."
+                      />
+                    </label>
+                    {roadmapError && <div className="form-error">{roadmapError}</div>}
+                    {roadmapParsed && (
+                      <div className="roadmap-preview">
+                        <p className="muted">Preview</p>
+                        <strong>{roadmapParsed.title}</strong>
+                        <div className="roadmap-preview__grid">
+                          {roadmapParsed.phases.map((phase, index) => (
+                            <div key={`${phase.title}-${index}`} className="roadmap-preview__card">
+                              <h4>{phase.title}</h4>
+                              {phase.goal && <p className="muted">{phase.goal}</p>}
+                              <p className="muted">{phase.steps.length} steps • {phase.checkpoints.length} checkpoints</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </section>
+            </div>
+            <div className="project-form__col">
+              <section className="project-form__section">
+                <div className="section-heading section-heading--numbered">
+                  <span className="section-number">2</span>
+                  <span className="section-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path d="M7 7h10M7 12h6M7 17h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    </svg>
+                  </span>
+                  <div>
+                    <p className="eyebrow">Workflow</p>
+                    <h3>Build workflow</h3>
+                    <p className="muted">Create steps or assign a template.</p>
+                  </div>
+                </div>
+                <div className="workflow-builder">
+                  <div className="workflow-builder__header">
+                    <div>
+                      <p className="eyebrow">Builder</p>
+                      <h3>Personalize steps</h3>
+                    </div>
+                    <button type="button" onClick={saveWorkflowTemplate} disabled={savingWorkflow}>
+                      {savingWorkflow ? 'Saving...' : 'Save workflow'}
+                    </button>
+                  </div>
                 {builderError && <div className="form-error">{builderError}</div>}
                 <div className="grid">
                   <label>
@@ -506,9 +877,9 @@ function CreateProject() {
               </div>
               <div className="workflow-assign">
                 <div className="section-heading">
-                  <p className="eyebrow">Workflow</p>
+                  <p className="eyebrow">Template</p>
                   <h3>Assign a template</h3>
-                  <p className="muted">Pick a proven sequence or build a new one above.</p>
+                  <p className="muted">Pick a proven sequence.</p>
                 </div>
                 <label>
                   Workflow template
@@ -621,12 +992,21 @@ function CreateProject() {
               </div>
             </section>
           </div>
-          <div className="budget-columns">
+          </div>
+          <div className="project-form__row">
             <section className="project-form__section">
-              <div className="section-heading">
-                <p className="eyebrow">Budget</p>
-                <h3>Budget control (optional)</h3>
-                <p className="muted">Set production spend, profit target, and VAT for this project.</p>
+              <div className="section-heading section-heading--numbered">
+                <span className="section-number">4</span>
+                <span className="section-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="eyebrow">Budget</p>
+                  <h3>Budget (optional)</h3>
+                  <p className="muted">Set totals, profit, VAT.</p>
+                </div>
               </div>
               <label className="toggle-row">
                 <input
@@ -685,10 +1065,18 @@ function CreateProject() {
               )}
             </section>
             <section className="project-form__section">
-              <div className="section-heading">
-                <p className="eyebrow">Production</p>
-                <h3>Allocate production costs</h3>
-                <p className="muted">Allocate production costs by workflow step.</p>
+              <div className="section-heading section-heading--numbered">
+                <span className="section-number">5</span>
+                <span className="section-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M6 7h12M6 12h8M6 17h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="eyebrow">Production</p>
+                  <h3>Allocate costs</h3>
+                  <p className="muted">Map costs to workflow steps.</p>
+                </div>
               </div>
               {budgetEnabled && selectedSteps.length > 0 ? (
                 <div className="budget-steps">

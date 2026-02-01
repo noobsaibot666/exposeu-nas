@@ -29,3 +29,14 @@ Short reference for ongoing feature work in Exposeu Manager.
 - Timeline drag uses touch-friendly long-press to avoid scroll conflicts.
 - Board view offers a status dropdown on touch devices.
 - Calendar density is reduced on small screens for legibility.
+
+## Roadmaps
+- Projects can attach one roadmap (schema supports multiple in the future).
+- Roadmaps are created from Markdown or JSON uploads with drag-and-drop input.
+- Phases, steps, checkpoints, metrics, and rules are editable on the roadmap page.
+- Passive alerts highlight due-soon and overdue steps.
+
+## Calendar export
+- Download or subscribe to iCal feed for all projects.
+- Optional step due dates included in feed.
+- Due-only or start→due range modes available.

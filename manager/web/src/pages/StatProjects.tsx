@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import Layout from '../components/Layout'
 import { apiRequest } from '../components/api'
 import { useAuth } from '../components/useAuth'
@@ -126,10 +127,23 @@ export default function StatProjects() {
         </div>
         {error && <div className="form-error">{error}</div>}
         {type === 'shared' ? (
-          <div className="shared-list">
+          <motion.div
+            className="shared-list"
+            initial="hidden"
+            animate="show"
+            variants={{
+              hidden: {},
+              show: { transition: { staggerChildren: 0.05 } },
+            }}
+          >
             {filteredProjects.length === 0 && <p className="muted">No shared links yet.</p>}
             {filteredProjects.map((project) => (
-              <div key={project.id} className="shared-card">
+              <motion.div
+                key={project.id}
+                className="shared-card"
+                variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}
+                transition={{ duration: 0.28, ease: 'easeOut' }}
+              >
                 <div className="shared-card__header">
                   <Link to={`/projects/${project.id}`} className="shared-card__title">
                     {project.title}
@@ -147,9 +161,9 @@ export default function StatProjects() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         ) : (
           <div className="table">
             <div className="table__row table__row--header">

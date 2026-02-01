@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS users (
   email TEXT UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
   is_admin BOOLEAN DEFAULT FALSE,
+  calendar_token TEXT UNIQUE,
   created_at TIMESTAMP DEFAULT NOW()
 );
 
@@ -136,4 +137,55 @@ CREATE TABLE IF NOT EXISTS budget_steps (
   vendor_cost NUMERIC(12, 2),
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS roadmaps (
+  id SERIAL PRIMARY KEY,
+  project_id INTEGER REFERENCES projects(id) ON DELETE SET NULL,
+  title TEXT NOT NULL,
+  source_type TEXT DEFAULT 'markdown',
+  auto_schedule BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS roadmap_phases (
+  id SERIAL PRIMARY KEY,
+  roadmap_id INTEGER REFERENCES roadmaps(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  goal TEXT,
+  position INTEGER NOT NULL,
+  start_day INTEGER,
+  end_day INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS roadmap_steps (
+  id SERIAL PRIMARY KEY,
+  roadmap_phase_id INTEGER REFERENCES roadmap_phases(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  position INTEGER NOT NULL,
+  due_date DATE,
+  status TEXT DEFAULT 'pending',
+  notes TEXT
+);
+
+CREATE TABLE IF NOT EXISTS roadmap_checkpoints (
+  id SERIAL PRIMARY KEY,
+  roadmap_phase_id INTEGER REFERENCES roadmap_phases(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  position INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS roadmap_metrics (
+  id SERIAL PRIMARY KEY,
+  roadmap_id INTEGER REFERENCES roadmaps(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  position INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS roadmap_rules (
+  id SERIAL PRIMARY KEY,
+  roadmap_id INTEGER REFERENCES roadmaps(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  position INTEGER NOT NULL
 );

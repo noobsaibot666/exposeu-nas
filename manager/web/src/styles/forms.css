@@ -7,13 +7,13 @@
 
 .card {
   width: min(520px, 90vw);
-  background: var(--surface-base);
-  border-radius: 20px;
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.04), rgba(16, 18, 22, 0.96));
+  border-radius: var(--radius-lg);
   padding: 28px;
-  border: 1px solid var(--border-soft);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   display: grid;
   gap: 16px;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+  box-shadow: var(--shadow-strong);
 }
 
 .card h1,
@@ -24,7 +24,7 @@
 label {
   display: grid;
   gap: 8px;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 0.9rem;
   max-width: 100%;
 }
@@ -32,11 +32,11 @@ label {
 input,
 select,
 textarea {
-  border-radius: 12px;
-  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   padding: 12px 16px;
   font-size: 1rem;
-  background: var(--surface-elevated);
+  background: rgba(20, 22, 26, 0.88);
   color: var(--text-strong);
   width: 100%;
 }
@@ -64,12 +64,22 @@ input[type='color']::-webkit-color-swatch {
 
 button {
   border-radius: 999px;
-  border: 1px solid var(--border-strong);
-  background: var(--accent);
-  color: #05070b;
-  padding: 10px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(145deg, #bfe4ff, #7bb6ff);
+  color: #0b0c0f;
+  padding: 8px 14px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 500;
+  font-size: 0.9rem;
+  min-height: 36px;
+  box-shadow: 0 10px 24px rgba(8, 12, 22, 0.45);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+  box-shadow: 0 14px 30px rgba(10, 14, 24, 0.5);
 }
 
 button:disabled {
@@ -78,8 +88,8 @@ button:disabled {
 }
 
 .form-error {
-  background: rgba(248, 113, 113, 0.15);
-  color: #fca5a5;
+  background: rgba(255, 124, 124, 0.16);
+  color: #ffd1d1;
   padding: 10px 12px;
   border-radius: 10px;
   font-size: 0.9rem;
@@ -92,10 +102,10 @@ button:disabled {
 }
 
 .workflow-preview {
-  background: var(--surface-muted);
-  border-radius: 12px;
+  background: rgba(22, 24, 28, 0.82);
+  border-radius: var(--radius-md);
   padding: 12px;
-  border: 1px dashed var(--border-soft);
+  border: 1px dashed rgba(255, 255, 255, 0.2);
 }
 
 .project-form {
@@ -105,9 +115,9 @@ button:disabled {
   gap: 20px;
   padding: clamp(18px, 3vw, 28px);
   border-radius: 24px;
-  border: 1px solid var(--border-soft);
-  background: linear-gradient(145deg, rgba(10, 14, 28, 0.92), rgba(10, 14, 28, 0.7));
-  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(160deg, rgba(20, 22, 26, 0.94), rgba(14, 16, 19, 0.92));
+  box-shadow: var(--shadow-strong);
   box-sizing: border-box;
 }
 
@@ -117,7 +127,7 @@ button:disabled {
   justify-content: space-between;
   gap: 16px;
   align-items: center;
-  border-bottom: 1px solid var(--border-soft);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding-bottom: 16px;
 }
 
@@ -142,11 +152,55 @@ button:disabled {
   align-items: start;
 }
 
-.budget-columns {
+.project-form__col {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
-  align-items: start;
+  align-content: start;
+}
+
+.section-heading--numbered {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.section-number {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #05070b;
+  background: linear-gradient(135deg, var(--accent), var(--accent-purple));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+  font-size: 0.85rem;
+}
+
+.section-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--accent-vivid);
+  background: linear-gradient(145deg, rgba(80, 140, 255, 0.2), rgba(18, 20, 24, 0.8));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 6px 14px rgba(0, 0, 0, 0.35);
+}
+
+.section-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.4;
 }
 
 .toggle-row {
@@ -176,9 +230,9 @@ button:disabled {
   align-items: center;
   justify-content: space-between;
   padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid var(--border-soft);
-  background: rgba(6, 9, 18, 0.55);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 12, 20, 0.7);
   font-weight: 600;
 }
 
@@ -341,10 +395,6 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 
-  .budget-columns {
-    grid-template-columns: 1fr;
-  }
-
   .workflow-builder__add {
     grid-template-columns: 1fr;
   }
@@ -403,6 +453,58 @@ button:disabled {
 
 .workflow-schedule__row input[type='date'] {
   padding: 6px 8px;
+}
+
+.roadmap-input {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+}
+
+.roadmap-input__actions {
+  display: grid;
+  gap: 10px;
+}
+
+.roadmap-input__drop {
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px dashed var(--border-soft);
+  background: rgba(10, 14, 28, 0.5);
+  cursor: pointer;
+}
+
+.roadmap-input__drop input[type='file'] {
+  display: none;
+}
+
+.roadmap-input__drop em {
+  color: var(--text-tertiary);
+  font-size: 0.8rem;
+}
+
+.roadmap-input__field textarea {
+  width: 100%;
+}
+
+.roadmap-preview {
+  display: grid;
+  gap: 10px;
+}
+
+.roadmap-preview__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.roadmap-preview__card {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-soft);
+  background: rgba(9, 12, 22, 0.6);
 }
 
 .workflow-schedule__name {

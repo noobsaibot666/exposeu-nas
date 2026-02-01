@@ -1,8 +1,8 @@
 .share-page {
   min-height: 100vh;
   background:
-    radial-gradient(circle at 15% 10%, rgba(120, 170, 255, 0.18), transparent 40%),
-    radial-gradient(circle at 80% 20%, rgba(99, 230, 190, 0.08), transparent 45%),
+    radial-gradient(circle at 15% 10%, rgba(255, 255, 255, 0.06), transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.04), transparent 55%),
     var(--bg-base);
   color: var(--text-strong);
 }
@@ -21,11 +21,12 @@
   align-items: flex-start;
   gap: 16px;
   padding: 20px;
-  border-radius: 20px;
-  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   background:
-    radial-gradient(circle at top left, rgba(120, 170, 255, 0.18), transparent 45%),
-    var(--surface-base);
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.05), transparent 45%),
+    var(--surface-elevated);
+  box-shadow: var(--shadow-soft);
 }
 
 .share-page__header-actions {
@@ -37,12 +38,12 @@
 .share-page__dashboard {
   border-radius: 999px;
   padding: 8px 16px;
-  border: 1px solid rgba(138, 180, 255, 0.5);
-  background: linear-gradient(120deg, rgba(138, 180, 255, 0.9), rgba(223, 231, 246, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(145deg, #bfe4ff, #7bb6ff);
   color: #05070b;
   text-decoration: none;
-  font-weight: 700;
-  box-shadow: 0 12px 28px rgba(138, 180, 255, 0.35);
+  font-weight: 500;
+  box-shadow: 0 12px 28px rgba(108, 146, 255, 0.4);
 }
 
 .share-page__meta {
@@ -53,10 +54,10 @@
 .share-page__badge {
   border-radius: 999px;
   padding: 10px 16px;
-  border: 1px solid var(--border-soft);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   font-weight: 700;
   text-transform: lowercase;
-  background: rgba(10, 14, 28, 0.4);
+  background: rgba(12, 16, 26, 0.6);
 }
 
 .share-page h1 {
@@ -64,12 +65,13 @@
 }
 
 .share-page__section {
-  border-radius: 20px;
-  border: 1px solid var(--border-soft);
-  background: var(--surface-base);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--surface-elevated);
   padding: 20px;
   display: grid;
   gap: 14px;
+  box-shadow: var(--shadow-soft);
 }
 
 .share-page__section-header h2 {
@@ -90,9 +92,9 @@
 
 .share-page__list li {
   padding: 12px 14px;
-  border-radius: 12px;
-  border: 1px solid var(--border-soft);
-  background: rgba(11, 15, 28, 0.8);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(12, 16, 26, 0.8);
 }
 
 .share-page__list a {
@@ -129,13 +131,13 @@
 .share-modal__content {
   position: relative;
   width: min(420px, 90vw);
-  border-radius: 20px;
-  border: 1px solid var(--border-soft);
-  background: var(--surface-base);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--surface-elevated);
   padding: 22px;
   display: grid;
   gap: 16px;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  box-shadow: var(--shadow-strong);
   animation: pop-in 160ms ease-out;
 }
 
@@ -145,11 +147,11 @@
   align-items: center;
   padding: 10px 16px;
   border-radius: 999px;
-  border: 1px solid rgba(138, 180, 255, 0.5);
-  background: linear-gradient(120deg, rgba(138, 180, 255, 0.9), rgba(223, 231, 246, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(145deg, #bfe4ff, #7bb6ff);
   color: #05070b;
   text-decoration: none;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .share-modal__close {

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Layout from '../components/Layout'
-import { apiRequest, apiUpload, apiBase } from '../components/api'
+import { apiRequest, apiUpload } from '../components/api'
 import { useAuth } from '../components/useAuth'
 import '../styles/forms.css'
 import './ProjectDetail.css'
@@ -203,6 +203,7 @@ export default function ProjectDetail() {
   const [error, setError] = useState('')
   const [projectSaveStatus, setProjectSaveStatus] = useState('')
   const [stepSaveStatus, setStepSaveStatus] = useState('')
+  const [roadmapId, setRoadmapId] = useState<number | null>(null)
   const [workflowTemplates, setWorkflowTemplates] = useState<WorkflowTemplate[]>([])
   const [workflowSteps, setWorkflowSteps] = useState<WorkflowStep[]>([])
   const [replaceTemplateId, setReplaceTemplateId] = useState<number | ''>('')
@@ -263,6 +264,9 @@ export default function ProjectDetail() {
         setFiles(data.files)
         setDeliveries(data.deliveries)
         setTimeLogs(data.timeLogs)
+        apiRequest<Array<{ id: number }>>(`/roadmaps?projectId=${id}`, {}, token)
+          .then((roadmaps) => setRoadmapId(roadmaps[0]?.id ?? null))
+          .catch(() => setRoadmapId(null))
         if (!data.budget || data.budget.archived) {
           setBudgetTotal('')
           setBudgetProduction('')
@@ -284,6 +288,7 @@ export default function ProjectDetail() {
       })
       .catch(() => setError('Unable to load project.'))
   }, [id, token])
+
 
   const loadWorkflows = useCallback(() => {
     if (!token) return
@@ -1111,6 +1116,29 @@ export default function ProjectDetail() {
         </div>
 
         <div className="detail-column">
+          <div className="detail-group">
+            <p className="detail-group__title">Overview</p>
+            <section className="panel panel--compact">
+            <div className="panel__header">
+              <div className="panel__title">
+                <span className="panel__icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M4 6h16M4 12h10M4 18h7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </span>
+                <div>
+                  <p className="eyebrow">Roadmap</p>
+                  <h3>Project roadmap</h3>
+                </div>
+              </div>
+              {roadmapId && (
+                <Link to={`/roadmaps/${roadmapId}`} className="ghost-link">
+                  Open
+                </Link>
+              )}
+            </div>
+            {!roadmapId && <p className="muted">No roadmap attached.</p>}
+          </section>
           <section className="panel panel--compact">
             <div className="panel__header">
               <div className="panel__title">
@@ -1162,7 +1190,10 @@ export default function ProjectDetail() {
               </button>
             </div>
           </section>
-          <section className="panel panel--compact budget-panel">
+          </div>
+          <div className="detail-group">
+            <p className="detail-group__title">Controls</p>
+            <section className="panel panel--compact budget-panel">
             <div className="panel__header">
               <div className="panel__title">
                 <span className="panel__icon" aria-hidden="true">
@@ -1345,7 +1376,10 @@ export default function ProjectDetail() {
               </button>
             </div>
           </section>
-          <section className="panel">
+          </div>
+          <div className="detail-group">
+            <p className="detail-group__title">Archive</p>
+            <section className="panel">
             <div className="panel__header">
               <div className="panel__title">
                 <span className="panel__icon" aria-hidden="true">
@@ -1482,6 +1516,7 @@ export default function ProjectDetail() {
               </div>
             )}
           </section>
+          </div>
         </div>
       </div>
     </Layout>

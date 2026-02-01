@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { Filter } from 'lucide-react'
 import Layout from '../components/Layout'
-import { apiRequest } from '../components/api'
+import { apiRequest, apiBase } from '../components/api'
 import { useAuth } from '../components/useAuth'
 import '../styles/dashboard.css'
 
@@ -25,6 +26,8 @@ type Project = {
 
 type ViewMode = 'timeline' | 'list' | 'board' | 'calendar'
 type CalendarMode = 'month' | 'week'
+
+const MotionLink = motion(Link)
 
 const hasUrgentTag = (tags?: string[]) =>
   (tags ?? []).some((tag) => tag.trim().toLowerCase() === 'urgent')
@@ -138,6 +141,11 @@ function Dashboard() {
   const [timelineFilterOpen, setTimelineFilterOpen] = useState(false)
   const [timelineFilterType, setTimelineFilterType] = useState<TimelineFilterType>('none')
   const [timelineFilterValue, setTimelineFilterValue] = useState('')
+  const [calendarOpen, setCalendarOpen] = useState(false)
+  const [calendarToken, setCalendarToken] = useState('')
+  const [calendarStatus, setCalendarStatus] = useState('')
+  const filterRef = useRef<HTMLDivElement | null>(null)
+  const calendarRef = useRef<HTMLDivElement | null>(null)
   const [listSortKey, setListSortKey] = useState<'project' | 'client' | 'service' | 'status' | 'due' | 'tags'>('due')
   const [listSortDir, setListSortDir] = useState<'asc' | 'desc'>('asc')
 
@@ -200,6 +208,72 @@ function Dashboard() {
       .then(setProjects)
       .catch(() => setError('Unable to load projects.'))
   }, [token])
+
+  useEffect(() => {
+    if (!calendarOpen || calendarToken || !token) return
+    apiRequest<{ token: string }>('/calendar/token', {}, token)
+      .then((data) => {
+        setCalendarToken(data.token)
+        setCalendarStatus('')
+      })
+      .catch((error) => {
+        const message =
+          error instanceof Error && error.message ? error.message : 'Unable to load calendar link.'
+        setCalendarStatus(message)
+      })
+  }, [calendarOpen, calendarToken, token])
+
+  const calendarFeedUrl = useMemo(() => {
+    if (!calendarToken) return ''
+    const params = new URLSearchParams()
+    params.set('includeSteps', '1')
+    params.set('mode', 'due')
+    return `${apiBase}/calendar/${calendarToken}?${params.toString()}`
+  }, [calendarToken])
+
+  useEffect(() => {
+    if (!timelineFilterOpen && !calendarOpen) return
+    const handleClick = (event: MouseEvent) => {
+      const target = event.target as Node
+      if (timelineFilterOpen && filterRef.current && !filterRef.current.contains(target)) {
+        setTimelineFilterOpen(false)
+      }
+      if (calendarOpen && calendarRef.current && !calendarRef.current.contains(target)) {
+        setCalendarOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [timelineFilterOpen, calendarOpen])
+
+  const handleCalendarCopy = async () => {
+    if (!calendarFeedUrl) return
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(calendarFeedUrl)
+        setCalendarStatus('Link copied.')
+        return
+      }
+    } catch {
+      // fall back to manual copy
+    }
+
+    const textarea = document.createElement('textarea')
+    textarea.value = calendarFeedUrl
+    textarea.setAttribute('readonly', 'true')
+    textarea.style.position = 'absolute'
+    textarea.style.left = '-9999px'
+    document.body.appendChild(textarea)
+    textarea.select()
+    try {
+      const success = document.execCommand('copy')
+      setCalendarStatus(success ? 'Link copied.' : 'Copy failed. Please copy manually.')
+    } catch {
+      setCalendarStatus('Copy failed. Please copy manually.')
+    } finally {
+      document.body.removeChild(textarea)
+    }
+  }
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -611,6 +685,9 @@ function Dashboard() {
             <Link to="/budgets" className="button button--ghost">
               Budget control
             </Link>
+            <Link to="/roadmaps" className="button button--ghost">
+              Roadmaps
+            </Link>
             {user?.is_admin && (
               <Link to="/admin/users" className="button button--ghost">
                 User access
@@ -621,35 +698,68 @@ function Dashboard() {
             </Link>
           </div>
         </div>
-        <div className="dashboard__stats">
-          <Link to="/stats/active" className="stat-card">
+        <motion.div
+          className="dashboard__stats"
+          initial="hidden"
+          animate="show"
+          variants={{
+            hidden: {},
+            show: { transition: { staggerChildren: 0.06 } },
+          }}
+        >
+          <MotionLink
+            to="/stats/active"
+            className="stat-card"
+            variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}
+            transition={{ duration: 0.28, ease: 'easeOut' }}
+          >
             <p className="stat-card__label">Active projects</p>
             <div className="stat-card__value">{activeProjects.length}</div>
             <p className="stat-card__meta">Total: {projects.length}</p>
-          </Link>
-          <Link to="/stats/focus" className="stat-card stat-card--focus">
+          </MotionLink>
+          <MotionLink
+            to="/stats/focus"
+            className="stat-card stat-card--focus"
+            variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}
+            transition={{ duration: 0.28, ease: 'easeOut' }}
+          >
             <p className="stat-card__label">Focus today</p>
             <div className="stat-card__value">{urgentProjects.length}</div>
             <p className="stat-card__meta">Tagged urgent</p>
-          </Link>
-          <Link to="/stats/due-soon" className="stat-card stat-card--warning">
+          </MotionLink>
+          <MotionLink
+            to="/stats/due-soon"
+            className="stat-card stat-card--warning"
+            variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}
+            transition={{ duration: 0.28, ease: 'easeOut' }}
+          >
             <p className="stat-card__label">Due soon</p>
             <div className="stat-card__value">{dueSoon.length}</div>
             <p className="stat-card__meta">Next 5 days</p>
-          </Link>
-          <Link to="/stats/overdue" className="stat-card stat-card--danger">
+          </MotionLink>
+          <MotionLink
+            to="/stats/overdue"
+            className="stat-card stat-card--danger"
+            variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}
+            transition={{ duration: 0.28, ease: 'easeOut' }}
+          >
             <p className="stat-card__label">Overdue</p>
             <div className="stat-card__value">{overdue.length}</div>
             <p className="stat-card__meta">Needs attention</p>
-          </Link>
-          <Link to="/stats/shared" className="stat-card stat-card--accent">
+          </MotionLink>
+          <MotionLink
+            to="/stats/shared"
+            className="stat-card stat-card--accent"
+            variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}
+            transition={{ duration: 0.28, ease: 'easeOut' }}
+          >
             <p className="stat-card__label">Shared links</p>
             <div className="stat-card__value">
               {projects.filter((project) => (project.share_links ?? []).length > 0).length}
             </div>
             <p className="stat-card__meta">Active shares</p>
-          </Link>
-        </div>
+          </MotionLink>
+        </motion.div>
         <div className="dashboard__timeline">
           <div className="timeline__header">
             <div>
@@ -675,7 +785,7 @@ function Dashboard() {
             </div>
             <div className="timeline__actions">
               {(view === 'timeline' || view === 'list') && (
-                <div className={`timeline-filter${timelineFilterOpen ? ' is-open' : ''}`}>
+                <div ref={filterRef} className={`timeline-filter${timelineFilterOpen ? ' is-open' : ''}`}>
                   <button
                     type="button"
                     className={`timeline-filter__button${timelineFilterType !== 'none' ? ' is-active' : ''}`}
@@ -789,6 +899,46 @@ function Dashboard() {
                   )}
                 </div>
               )}
+              <div ref={calendarRef} className={`timeline-calendar${calendarOpen ? ' is-open' : ''}`}>
+                <button
+                  type="button"
+                  className="timeline-filter__button timeline__icon-link"
+                  aria-label="Calendar subscription"
+                  onClick={() => setCalendarOpen((current) => !current)}
+                >
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M8 4v4M16 4v4M4.5 9.5h15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                    <rect x="4.5" y="6" width="15" height="13" rx="2.5" stroke="currentColor" strokeWidth="1.6" />
+                  </svg>
+                </button>
+                {calendarOpen && (
+                  <div className="timeline-calendar__panel">
+                    <div className="timeline-calendar__header">
+                      <p className="timeline-calendar__title">Calendar link</p>
+                      <button
+                        type="button"
+                        className="timeline-calendar__close"
+                        onClick={() => setCalendarOpen(false)}
+                        aria-label="Close calendar link"
+                      >
+                        ×
+                      </button>
+                    </div>
+                    <div className="timeline-calendar__link">
+                      <input readOnly value={calendarFeedUrl || 'Loading...'} />
+                      <button
+                        type="button"
+                        className="ghost-link ghost-link--compact"
+                        onClick={handleCalendarCopy}
+                        disabled={!calendarFeedUrl}
+                      >
+                        Copy
+                      </button>
+                    </div>
+                    {calendarStatus && <p className="muted">{calendarStatus}</p>}
+                  </div>
+                )}
+              </div>
               <div className="view-switcher" role="tablist" aria-label="Project views">
                 <button
                   type="button"
@@ -880,7 +1030,7 @@ function Dashboard() {
                             <div
                               className={`timeline-chip timeline-chip--${tone}${compactClass ? ` ${compactClass}` : ''}${
                                 urgent ? ' timeline-chip--urgent' : ''
-                              }`}
+                              }${draggingProjectId === project.id ? ' is-dragging' : ''}`}
                               style={
                                 {
                                   width,
