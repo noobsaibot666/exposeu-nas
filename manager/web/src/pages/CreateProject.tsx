@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { apiRequest } from '../components/api'
 import { useAuth } from '../components/useAuth'
+import { parseRoadmapInput } from '../utils/roadmapParser'
 import '../styles/forms.css'
 
 type WorkflowTemplate = {
@@ -249,105 +250,6 @@ function CreateProject() {
     }
   }
 
-  const parseMarkdownRoadmap = (value: string): RoadmapPayload => {
-    const lines = value.split(/\r?\n/)
-    let title = 'Roadmap'
-    const phases: RoadmapPhase[] = []
-    const metrics: string[] = []
-    const rules: string[] = []
-    let currentPhase: RoadmapPhase | null = null
-    let section: 'steps' | 'checkpoints' | 'metrics' | 'rules' | null = null
-
-    const addPhase = (phaseTitle: string, startDay?: number | null, endDay?: number | null) => {
-      currentPhase = {
-        title: phaseTitle || `Phase ${phases.length + 1}`,
-        goal: '',
-        startDay: startDay ?? null,
-        endDay: endDay ?? null,
-        steps: [],
-        checkpoints: [],
-      }
-      phases.push(currentPhase)
-      section = 'steps'
-    }
-
-    for (const rawLine of lines) {
-      const line = rawLine.trim()
-      if (!line) continue
-      if (line.startsWith('# ')) {
-        title = line.replace(/^#\s+/, '').trim()
-        continue
-      }
-      if (line.startsWith('## ')) {
-        const heading = line.replace(/^##\s+/, '').trim()
-        const lower = heading.toLowerCase()
-        if (lower.includes('phase')) {
-          const rangeMatch = heading.match(/days?\s*(\d+)\s*[–-]\s*(\d+)/i)
-          const startDay = rangeMatch ? Number(rangeMatch[1]) : null
-          const endDay = rangeMatch ? Number(rangeMatch[2]) : null
-          const cleanTitle = heading
-            .replace(/phase\s*\d*\s*[—-]\s*/i, '')
-            .replace(/\(.*\)/, '')
-            .trim()
-          addPhase(cleanTitle || heading, startDay, endDay)
-        } else if (lower.includes('metric')) {
-          section = 'metrics'
-          currentPhase = null
-        } else if (lower.includes('rule')) {
-          section = 'rules'
-          currentPhase = null
-        } else {
-          section = null
-          currentPhase = null
-        }
-        continue
-      }
-      if (line.startsWith('**Goal:**')) {
-        if (currentPhase) currentPhase.goal = line.replace('**Goal:**', '').trim()
-        continue
-      }
-      if (line.toLowerCase().startsWith('checkpoint')) {
-        section = 'checkpoints'
-        continue
-      }
-      if (line.startsWith('---')) {
-        continue
-      }
-
-      const bulletMatch = line.match(/^[-*]\s+(.*)$/) || line.match(/^\d+\.\s+(.*)$/)
-      const text = bulletMatch ? bulletMatch[1].trim() : line
-
-      if (section === 'metrics') {
-        metrics.push(text)
-        continue
-      }
-      if (section === 'rules') {
-        rules.push(text)
-        continue
-      }
-      if (currentPhase) {
-        if (section === 'checkpoints') {
-          currentPhase.checkpoints.push(text)
-        } else {
-          currentPhase.steps.push(text)
-        }
-      }
-    }
-
-    return { title, phases, metrics, rules, sourceType: 'markdown' }
-  }
-
-  const parseJsonRoadmap = (value: string): RoadmapPayload => {
-    const parsed = JSON.parse(value) as Partial<RoadmapPayload>
-    return {
-      title: parsed.title || 'Roadmap',
-      phases: parsed.phases ?? [],
-      metrics: parsed.metrics ?? [],
-      rules: parsed.rules ?? [],
-      sourceType: 'json',
-    }
-  }
-
   const buildRoadmapPayload = (
     roadmap: RoadmapPayload,
     start: string,
@@ -401,7 +303,7 @@ function CreateProject() {
       return
     }
     try {
-      const parsed = sourceType === 'json' ? parseJsonRoadmap(value) : parseMarkdownRoadmap(value)
+      const parsed = parseRoadmapInput(value, sourceType, 'Roadmap')
       setRoadmapParsed(parsed)
     } catch {
       setRoadmapParsed(null)
@@ -661,13 +563,13 @@ function CreateProject() {
                     <label className="grid-span">
                       Status
                       <select value={status} onChange={(event) => setStatus(event.target.value)}>
-                        <option value="briefing">Briefing</option>
-                        <option value="scheduled">Scheduled</option>
-                        <option value="shoot">Shoot</option>
-                        <option value="edit">Edit</option>
-                        <option value="review">Review</option>
-                        <option value="delivery">Delivery</option>
-                        <option value="archive">Archive</option>
+                        <option value="briefing">Backlog</option>
+                        <option value="scheduled">Planned</option>
+                        <option value="shoot">In progress</option>
+                        <option value="edit">Execution</option>
+                        <option value="review">In review</option>
+                        <option value="delivery">Completed</option>
+                        <option value="archive">Archived</option>
                       </select>
                     </label>
                     <div className="grid grid-span">

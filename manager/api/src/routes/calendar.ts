@@ -20,6 +20,8 @@ const buildIcs = (events: Array<{ uid: string; summary: string; start: Date; end
     'PRODID:-//Exposeu//Manager//EN',
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
+    'X-PUBLISHED-TTL:PT30M',
+    'REFRESH-INTERVAL;VALUE=DURATION:PT30M',
   ]
   for (const event of events) {
     lines.push(
@@ -71,7 +73,7 @@ router.get('/project/:id', requireAuth, async (req, res) => {
 
     const steps = includeSteps
       ? await query(
-          'SELECT id, project_id, name, due_date FROM project_steps WHERE project_id = $1',
+          "SELECT id, project_id, name, due_date, status FROM project_steps WHERE project_id = $1 AND due_date IS NOT NULL AND COALESCE(status, 'pending') <> 'done'",
           [projectId],
         )
       : { rows: [] }
@@ -139,7 +141,7 @@ router.get('/:token', async (req, res) => {
     const projectIds = projects.rows.map((project) => project.id)
     const steps = includeSteps && projectIds.length
       ? await query(
-          'SELECT id, project_id, name, due_date FROM project_steps WHERE project_id = ANY($1)',
+          "SELECT id, project_id, name, due_date, status FROM project_steps WHERE project_id = ANY($1) AND due_date IS NOT NULL AND COALESCE(status, 'pending') <> 'done'",
           [projectIds],
         )
       : { rows: [] }

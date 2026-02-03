@@ -41,6 +41,27 @@ const formatDate = (value: string | null) => {
   }).format(date)
 }
 
+const statusLabel = (value: string | null | undefined) => {
+  switch (value) {
+    case 'briefing':
+      return 'Backlog'
+    case 'scheduled':
+      return 'Planned'
+    case 'shoot':
+      return 'In progress'
+    case 'edit':
+      return 'Execution'
+    case 'review':
+      return 'In review'
+    case 'delivery':
+      return 'Completed'
+    case 'archive':
+      return 'Archived'
+    default:
+      return value || '—'
+  }
+}
+
 const formatDateMonthDay = (value: string | null) => {
   if (!value) return '—'
   const date = new Date(value)
@@ -318,13 +339,13 @@ function Dashboard() {
     })
   const statusColumns = useMemo(
     () => [
-      { id: 'briefing', label: 'Briefing' },
-      { id: 'scheduled', label: 'Scheduled' },
-      { id: 'shoot', label: 'Shoot' },
-      { id: 'edit', label: 'Edit' },
-      { id: 'review', label: 'Review' },
-      { id: 'delivery', label: 'Delivery' },
-      { id: 'archive', label: 'Archive' },
+      { id: 'briefing', label: 'Backlog' },
+      { id: 'scheduled', label: 'Planned' },
+      { id: 'shoot', label: 'In progress' },
+      { id: 'edit', label: 'Execution' },
+      { id: 'review', label: 'In review' },
+      { id: 'delivery', label: 'Completed' },
+      { id: 'archive', label: 'Archived' },
     ],
     [],
   )
@@ -1063,7 +1084,7 @@ function Dashboard() {
                                 onPointerMove={(event) => handlePointerMove(project.id, event)}
                                 onPointerUp={(event) => handlePointerUp(project.id, event, project.start, project.end)}
                               />
-                              <div className="timeline-chip__title">{project.service_type ?? project.status ?? 'Project'}</div>
+                              <div className="timeline-chip__title">{project.service_type ?? statusLabel(project.status) ?? 'Project'}</div>
                               <div className="timeline-chip__client">{project.client_name ?? 'No client'}</div>
                               <div className="timeline-chip__meta">
                                 {formatDate(shiftedStart.toISOString())} – {formatDate(shiftedEnd.toISOString())}
@@ -1357,7 +1378,7 @@ function Dashboard() {
                   </span>
                   <span data-label="Client">{project.client_name ?? '—'}</span>
                   <span data-label="Service">{project.service_type ?? '—'}</span>
-                  <span data-label="Status">{project.status ?? '—'}</span>
+                  <span data-label="Status">{statusLabel(project.status)}</span>
                   <span data-label="Due">{formatDateMonthDay(project.due_date)}</span>
                   <span data-label="Tags">{project.tags && project.tags.length > 0 ? project.tags.join(', ') : '—'}</span>
                 </Link>

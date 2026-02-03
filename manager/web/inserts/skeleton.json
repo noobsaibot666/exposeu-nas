@@ -1,0 +1,43 @@
+{
+  "title": "Roadmap Title",
+  "objective": "One clear objective sentence.",
+  "duration": "8 weeks",
+  "rules": [
+    "Rule 1",
+    "Rule 2"
+  ],
+  "phases": [
+    {
+      "title": "Phase 1 title",
+      "goal": "Phase goal",
+      "startDay": 1,
+      "endDay": 7,
+      "steps": [
+        "Step 1",
+        "Step 2",
+        "Step 3"
+      ],
+      "checkpoints": [
+        "Checkpoint 1",
+        "Checkpoint 2"
+      ]
+    },
+    {
+      "title": "Phase 2 title",
+      "goal": "Phase goal",
+      "startDay": 8,
+      "endDay": 14,
+      "steps": [
+        "Step 1",
+        "Step 2"
+      ],
+      "checkpoints": [
+        "Checkpoint 1"
+      ]
+    }
+  ],
+  "metrics": [
+    "Metric 1",
+    "Metric 2"
+  ]
+}

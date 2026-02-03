@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { apiRequest, apiUpload } from '../components/api'
 import { useAuth } from '../components/useAuth'
+import { parseRoadmapInput, type ImportedRoadmap } from '../utils/roadmapParser'
 import '../styles/forms.css'
 import './ProjectDetail.css'
 
@@ -210,6 +211,10 @@ export default function ProjectDetail() {
   const [workflowLoading, setWorkflowLoading] = useState(false)
   const [workflowError, setWorkflowError] = useState('')
   const [replaceStatus, setReplaceStatus] = useState('')
+  const [roadmapMessage, setRoadmapMessage] = useState('')
+  const [roadmapImportType, setRoadmapImportType] = useState<'markdown' | 'json'>('markdown')
+  const [roadmapImportName, setRoadmapImportName] = useState('')
+  const [roadmapImportText, setRoadmapImportText] = useState('')
 
   const loadProject = useCallback(() => {
     if (!token || !id) return
@@ -423,6 +428,103 @@ export default function ProjectDetail() {
       token,
     )
     setShareToken(response.token)
+  }
+
+  const handleDeleteRoadmap = async () => {
+    if (!token || !roadmapId) return
+    const confirmed = window.confirm('Delete this roadmap? This cannot be undone.')
+    if (!confirmed) return
+    try {
+      await apiRequest(`/roadmaps/${roadmapId}`, { method: 'DELETE' }, token)
+      setRoadmapId(null)
+      setRoadmapMessage('Roadmap deleted.')
+    } catch {
+      setRoadmapMessage('Unable to delete roadmap.')
+    }
+  }
+
+  const importRoadmapContent = async (content: string, sourceType: 'markdown' | 'json') => {
+    if (!token || !id || !project) return
+    setRoadmapMessage('')
+    let parsed: ImportedRoadmap
+    try {
+      parsed = parseRoadmapInput(content, sourceType, `${project.title} roadmap`)
+    } catch {
+      setRoadmapMessage('Unable to parse roadmap file.')
+      return
+    }
+
+    if (parsed.phases.length === 0) {
+      setRoadmapMessage('No phases/steps found in file.')
+      return
+    }
+
+    const payload = {
+      title: parsed.title || `${project.title} roadmap`,
+      autoSchedule: false,
+      phases: parsed.phases.map((phase, index) => ({
+        title: phase.title,
+        goal: phase.goal || null,
+        position: index + 1,
+        startDay: phase.startDay ?? null,
+        endDay: phase.endDay ?? null,
+        steps: phase.steps.map((step, stepIndex) => ({
+          title: step,
+          position: stepIndex + 1,
+          dueDate: null,
+          status: 'pending',
+          notes: null,
+        })),
+        checkpoints: phase.checkpoints.map((checkpoint, checkpointIndex) => ({
+          title: checkpoint,
+          position: checkpointIndex + 1,
+        })),
+      })),
+      metrics: parsed.metrics.map((metric, index) => ({ title: metric, position: index + 1 })),
+      rules: parsed.rules.map((rule, index) => ({ title: rule, position: index + 1 })),
+    }
+
+    try {
+      if (roadmapId) {
+        await apiRequest(`/roadmaps/${roadmapId}`, { method: 'PUT', body: JSON.stringify(payload) }, token)
+      } else {
+        const created = await apiRequest<{ roadmap?: { id: number } }>(
+          '/roadmaps',
+          {
+            method: 'POST',
+            body: JSON.stringify({
+              projectId: Number(id),
+              sourceType,
+              ...payload,
+            }),
+          },
+          token,
+        )
+        setRoadmapId(created.roadmap?.id ?? roadmapId)
+      }
+      setRoadmapMessage(roadmapId ? 'Roadmap replaced from file.' : 'Roadmap imported.')
+      loadProject()
+    } catch {
+      setRoadmapMessage('Unable to import roadmap file.')
+    }
+  }
+
+  const handleImportRoadmapFile = async (file: File) => {
+    const extension = file.name.split('.').pop()?.toLowerCase()
+    const sourceType = extension === 'json' ? 'json' : roadmapImportType
+    setRoadmapImportType(sourceType)
+    setRoadmapImportName(file.name)
+    const content = await file.text()
+    await importRoadmapContent(content, sourceType)
+  }
+
+  const handleImportRoadmapText = async () => {
+    if (!roadmapImportText.trim()) {
+      setRoadmapMessage('Paste roadmap content first.')
+      return
+    }
+    setRoadmapImportName('Pasted text')
+    await importRoadmapContent(roadmapImportText, roadmapImportType)
   }
 
   const handleProjectUpdate = async () => {
@@ -884,13 +986,13 @@ export default function ProjectDetail() {
               <label>Status</label>
               <div className="detail__status">
                 <select value={status} onChange={(event) => setStatus(event.target.value)}>
-                  <option value="briefing">Briefing</option>
-                  <option value="scheduled">Scheduled</option>
-                  <option value="shoot">Shoot</option>
-                  <option value="edit">Edit</option>
-                  <option value="review">Review</option>
-                  <option value="delivery">Delivery</option>
-                  <option value="archive">Archive</option>
+                  <option value="briefing">Backlog</option>
+                  <option value="scheduled">Planned</option>
+                  <option value="shoot">In progress</option>
+                  <option value="edit">Execution</option>
+                  <option value="review">In review</option>
+                  <option value="delivery">Completed</option>
+                  <option value="archive">Archived</option>
                 </select>
                 <button type="button" onClick={handleProjectUpdate}>Update</button>
               </div>
@@ -929,7 +1031,7 @@ export default function ProjectDetail() {
                 <div>
                   <p className="eyebrow">Sequence</p>
                   <h3>Workflow</h3>
-                  <p className="panel__subtitle">Define the steps, dates, and progress for delivery.</p>
+                  <p className="panel__subtitle">Define steps, dates, and progress for execution.</p>
                 </div>
               </div>
             </div>
@@ -1117,10 +1219,10 @@ export default function ProjectDetail() {
 
         <div className="detail-column">
           <div className="detail-group">
-            <p className="detail-group__title">Overview</p>
+            <p className="detail-group__title"><span className="detail-group__index">1</span> Overview</p>
             <section className="panel panel--compact">
-            <div className="panel__header">
-              <div className="panel__title">
+              <div className="panel__header">
+                <div className="panel__title">
                 <span className="panel__icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none">
                     <path d="M4 6h16M4 12h10M4 18h7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -1132,12 +1234,69 @@ export default function ProjectDetail() {
                 </div>
               </div>
               {roadmapId && (
-                <Link to={`/roadmaps/${roadmapId}`} className="ghost-link">
-                  Open
-                </Link>
+                <div className="panel__actions">
+                  <Link to={`/roadmaps/${roadmapId}`} className="ghost-link">
+                    View status
+                  </Link>
+                  <button type="button" className="ghost-link" onClick={handleDeleteRoadmap}>
+                    Delete
+                  </button>
+                </div>
               )}
             </div>
             {!roadmapId && <p className="muted">No roadmap attached.</p>}
+            <div className="roadmap-inline-import">
+              <div className="roadmap-inline-import__toolbar">
+                <select
+                  value={roadmapImportType}
+                  onChange={(event) => setRoadmapImportType(event.target.value === 'json' ? 'json' : 'markdown')}
+                  aria-label="Roadmap import type"
+                >
+                  <option value="markdown">Markdown</option>
+                  <option value="json">JSON</option>
+                </select>
+                <label
+                  className="ghost-link roadmap-inline-import__browse"
+                  onDragOver={(event) => event.preventDefault()}
+                  onDrop={(event) => {
+                    event.preventDefault()
+                    const file = event.dataTransfer.files?.[0]
+                    if (file) void handleImportRoadmapFile(file)
+                  }}
+                >
+                  <input
+                    type="file"
+                    accept=".md,.markdown,.json"
+                    onChange={(event) => {
+                      const file = event.target.files?.[0]
+                      if (file) void handleImportRoadmapFile(file)
+                    }}
+                  />
+                  {roadmapId ? 'Replace from file' : 'Import file'}
+                </label>
+              </div>
+              {roadmapImportName && <em className="roadmap-inline-import__file">{roadmapImportName}</em>}
+              <label className="roadmap-inline-import__paste">
+                <textarea
+                  className="roadmap-inline-import__text"
+                  value={roadmapImportText}
+                  onChange={(event) => setRoadmapImportText(event.target.value)}
+                  placeholder={roadmapImportType === 'json' ? '{ ... }' : '# Roadmap ...'}
+                  rows={4}
+                />
+              </label>
+              <div className="roadmap-inline-import__actions">
+                <button type="button" className="ghost-link" onClick={() => void handleImportRoadmapText()}>
+                  {roadmapId ? 'Replace from text' : 'Import text'}
+                </button>
+                {roadmapId && (
+                  <Link to={`/roadmaps/${roadmapId}`} className="ghost-link">
+                    View roadmap
+                  </Link>
+                )}
+              </div>
+              {roadmapMessage && <p className="muted">{roadmapMessage}</p>}
+            </div>
           </section>
           <section className="panel panel--compact">
             <div className="panel__header">
@@ -1192,7 +1351,7 @@ export default function ProjectDetail() {
           </section>
           </div>
           <div className="detail-group">
-            <p className="detail-group__title">Controls</p>
+            <p className="detail-group__title"><span className="detail-group__index">2</span> Controls</p>
             <section className="panel panel--compact budget-panel">
             <div className="panel__header">
               <div className="panel__title">
@@ -1378,7 +1537,7 @@ export default function ProjectDetail() {
           </section>
           </div>
           <div className="detail-group">
-            <p className="detail-group__title">Archive</p>
+            <p className="detail-group__title"><span className="detail-group__index">3</span> Archive</p>
             <section className="panel">
             <div className="panel__header">
               <div className="panel__title">
