@@ -437,7 +437,9 @@ export default function ProjectDetail() {
     try {
       await apiRequest(`/roadmaps/${roadmapId}`, { method: 'DELETE' }, token)
       setRoadmapId(null)
-      setRoadmapMessage('Roadmap deleted.')
+      setRoadmapImportName('')
+      setRoadmapImportText('')
+      setRoadmapMessage('Roadmap deleted. You can import a new one.')
     } catch {
       setRoadmapMessage('Unable to delete roadmap.')
     }
@@ -469,11 +471,12 @@ export default function ProjectDetail() {
         startDay: phase.startDay ?? null,
         endDay: phase.endDay ?? null,
         steps: phase.steps.map((step, stepIndex) => ({
-          title: step,
+          title: step.title,
           position: stepIndex + 1,
-          dueDate: null,
+          dueDate: step.dueDate ?? null,
           status: 'pending',
           notes: null,
+          payload: step.content ?? null,
         })),
         checkpoints: phase.checkpoints.map((checkpoint, checkpointIndex) => ({
           title: checkpoint,

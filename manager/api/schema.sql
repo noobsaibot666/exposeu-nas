@@ -166,8 +166,12 @@ CREATE TABLE IF NOT EXISTS roadmap_steps (
   position INTEGER NOT NULL,
   due_date DATE,
   status TEXT DEFAULT 'pending',
-  notes TEXT
+  notes TEXT,
+  payload JSONB DEFAULT '{}'::jsonb
 );
+
+ALTER TABLE roadmap_steps
+ADD COLUMN IF NOT EXISTS payload JSONB DEFAULT '{}'::jsonb;
 
 CREATE TABLE IF NOT EXISTS roadmap_checkpoints (
   id SERIAL PRIMARY KEY,

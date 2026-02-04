@@ -12,7 +12,15 @@ type RoadmapPhaseInput = {
   position: number
   startDay?: number | null
   endDay?: number | null
-  steps?: Array<{ title: string; position: number; dueDate?: string | null; status?: string; notes?: string | null }>
+  steps?: Array<{
+    title: string
+    position: number
+    dueDate?: string | null
+    status?: string
+    notes?: string | null
+    payload?: Record<string, unknown> | null
+    content?: Record<string, unknown> | null
+  }>
   checkpoints?: Array<{ title: string; position: number }>
 }
 
@@ -147,8 +155,16 @@ router.post('/', async (req, res) => {
       if (phase.steps?.length) {
         for (const step of phase.steps) {
           await query(
-            'INSERT INTO roadmap_steps (roadmap_phase_id, title, position, due_date, status, notes) VALUES ($1,$2,$3,$4,$5,$6)',
-            [phaseId, step.title, step.position, step.dueDate ?? null, step.status || 'pending', step.notes ?? null],
+            'INSERT INTO roadmap_steps (roadmap_phase_id, title, position, due_date, status, notes, payload) VALUES ($1,$2,$3,$4,$5,$6,$7)',
+            [
+              phaseId,
+              step.title,
+              step.position,
+              step.dueDate ?? null,
+              step.status || 'pending',
+              step.notes ?? null,
+              step.payload ?? step.content ?? {},
+            ],
           )
         }
       }
@@ -233,8 +249,16 @@ router.put('/:id', async (req, res) => {
       if (phase.steps?.length) {
         for (const step of phase.steps) {
           await query(
-            'INSERT INTO roadmap_steps (roadmap_phase_id, title, position, due_date, status, notes) VALUES ($1,$2,$3,$4,$5,$6)',
-            [phaseId, step.title, step.position, step.dueDate ?? null, step.status || 'pending', step.notes ?? null],
+            'INSERT INTO roadmap_steps (roadmap_phase_id, title, position, due_date, status, notes, payload) VALUES ($1,$2,$3,$4,$5,$6,$7)',
+            [
+              phaseId,
+              step.title,
+              step.position,
+              step.dueDate ?? null,
+              step.status || 'pending',
+              step.notes ?? null,
+              step.payload ?? step.content ?? {},
+            ],
           )
         }
       }

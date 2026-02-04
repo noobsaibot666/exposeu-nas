@@ -34,3 +34,5 @@ Checkpoint:
 ## RULES
 - Rule 1
 - Rule 2
+
+> Note: for structured content fields (copy, hashtags, imageReference, script, brief, cta), use `skeleton.json`.

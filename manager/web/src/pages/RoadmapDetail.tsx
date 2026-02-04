@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Layout from '../components/Layout'
 import { apiRequest } from '../components/api'
@@ -32,6 +32,16 @@ type RoadmapStep = {
   due_date?: string | null
   status?: string
   notes?: string | null
+  payload?: {
+    channel?: string
+    copy?: string
+    hashtags?: string[]
+    imageReference?: string
+    script?: string
+    brief?: string
+    cta?: string
+    [key: string]: unknown
+  } | null
 }
 
 type RoadmapCheckpoint = {
@@ -127,6 +137,7 @@ const buildRoadmapPayload = (
       dueDate: step.due_date ?? null,
       status: step.status ?? 'pending',
       notes: step.notes ?? null,
+      payload: step.payload ?? null,
     })),
     checkpoints: phase.checkpoints.map((checkpoint, checkpointIndex) => ({
       title: checkpoint.title,
@@ -139,6 +150,7 @@ const buildRoadmapPayload = (
 
 function RoadmapDetail() {
   const { id } = useParams()
+  const navigate = useNavigate()
   const { token } = useAuth()
   const [roadmap, setRoadmap] = useState<Roadmap | null>(null)
   const [phases, setPhases] = useState<RoadmapPhase[]>([])
@@ -276,8 +288,12 @@ function RoadmapDetail() {
     if (!token || !id) return
     const confirmed = window.confirm('Delete this roadmap? This cannot be undone.')
     if (!confirmed) return
-    await apiRequest(`/roadmaps/${id}`, { method: 'DELETE' }, token)
-    window.location.href = '/roadmaps'
+    try {
+      await apiRequest(`/roadmaps/${id}`, { method: 'DELETE' }, token)
+      navigate('/roadmaps', { replace: true })
+    } catch {
+      setStatus('Unable to delete roadmap.')
+    }
   }
 
   const addPhase = () => {
@@ -330,6 +346,50 @@ function RoadmapDetail() {
           : phase,
       ),
     )
+  }
+
+  const updateStepPayloadField = (
+    phaseIndex: number,
+    stepIndex: number,
+    field: 'channel' | 'copy' | 'hashtags' | 'imageReference' | 'script' | 'brief' | 'cta',
+    value: string,
+  ) => {
+    setPhases((prev) =>
+      prev.map((phase, idx) =>
+        idx === phaseIndex
+          ? {
+              ...phase,
+              steps: phase.steps.map((step, sIdx) => {
+                if (sIdx !== stepIndex) return step
+                const current = step.payload ?? {}
+                return {
+                  ...step,
+                  payload: {
+                    ...current,
+                    [field]:
+                      field === 'hashtags'
+                        ? value
+                            .split(',')
+                            .map((tag) => tag.trim())
+                            .filter((tag) => tag.length > 0)
+                        : value,
+                  },
+                }
+              }),
+            }
+          : phase,
+      ),
+    )
+  }
+
+  const copyToClipboard = async (value: string) => {
+    if (!value.trim()) return
+    try {
+      await navigator.clipboard.writeText(value)
+      setStatus('Copied.')
+    } catch {
+      setStatus('Copy failed.')
+    }
   }
 
   const removeStep = (phaseIndex: number, stepIndex: number) => {
@@ -385,6 +445,7 @@ function RoadmapDetail() {
 
   const metricInput = useMemo(() => metrics.map((item) => item.title).join('\n'), [metrics])
   const ruleInput = useMemo(() => rules.map((item) => item.title).join('\n'), [rules])
+  const saveHint = isAutoSaving ? 'Saving...' : status || '\u00A0'
   const roadmapSnapshot = useMemo(() => {
     if (!roadmap) return null
     const stepRecords = phases.flatMap((phase) =>
@@ -394,6 +455,7 @@ function RoadmapDetail() {
         dueDate: step.due_date ?? null,
         status: step.status ?? 'pending',
         notes: step.notes ?? null,
+        content: step.payload ?? null,
         overdue: isOverdueStep(step.due_date, step.status),
       })),
     )
@@ -422,6 +484,7 @@ function RoadmapDetail() {
           dueDate: step.due_date ?? null,
           overdue: isOverdueStep(step.due_date, step.status),
           notes: step.notes ?? null,
+          content: step.payload ?? null,
         })),
         checkpoints: phase.checkpoints.map((checkpoint) => checkpoint.title),
       })),
@@ -552,21 +615,22 @@ function RoadmapDetail() {
               />
               Auto-schedule dates
             </label>
-            <button type="button" className="roadmap-btn roadmap-btn--primary" onClick={handleSave}>
-              Save changes
-            </button>
-            <div className="roadmap-export-actions">
-              <button type="button" className="roadmap-btn roadmap-btn--subtle" onClick={handleExportMarkdown}>
-                Export MD
-              </button>
-              <button type="button" className="roadmap-btn roadmap-btn--subtle" onClick={handleExportJson}>
-                Export JSON
-              </button>
-            </div>
-            {isAutoSaving && <span className="muted">Saving...</span>}
-            {status && <span className="muted">{status}</span>}
+            <span className="roadmap-save-status">{saveHint}</span>
           </div>
         </header>
+        <div className="roadmap-detail__controls">
+          <button type="button" className="roadmap-btn roadmap-btn--primary" onClick={handleSave}>
+            Save changes
+          </button>
+          <div className="roadmap-export-actions">
+            <button type="button" className="roadmap-btn roadmap-btn--subtle" onClick={handleExportMarkdown}>
+              Export MD
+            </button>
+            <button type="button" className="roadmap-btn roadmap-btn--subtle" onClick={handleExportJson}>
+              Export JSON
+            </button>
+          </div>
+        </div>
 
         <div className="roadmap-phase-grid">
           {phases.map((phase, index) => (
@@ -668,13 +732,128 @@ function RoadmapDetail() {
                               Delete
                             </button>
                           </div>
-                          <textarea
-                            value={step.notes ?? ''}
-                            onChange={(event) => updateStep(index, stepIndex, { notes: event.target.value })}
-                            placeholder="Add notes for this step..."
-                            rows={2}
-                          />
+                        <textarea
+                          value={step.notes ?? ''}
+                          onChange={(event) => updateStep(index, stepIndex, { notes: event.target.value })}
+                          placeholder="Add notes for this step..."
+                          rows={2}
+                        />
+                        <div className="roadmap-step__content-block">
+                          <div className="roadmap-step__content-row">
+                            <label>
+                              Channel
+                              <input
+                                value={step.payload?.channel ?? ''}
+                                onChange={(event) =>
+                                  updateStepPayloadField(index, stepIndex, 'channel', event.target.value)
+                                }
+                                placeholder="instagram_feed"
+                              />
+                            </label>
+                            <label>
+                              CTA
+                              <input
+                                value={step.payload?.cta ?? ''}
+                                onChange={(event) =>
+                                  updateStepPayloadField(index, stepIndex, 'cta', event.target.value)
+                                }
+                                placeholder="View profile"
+                              />
+                            </label>
+                          </div>
+                          <label>
+                            Copy
+                            <textarea
+                              value={step.payload?.copy ?? ''}
+                              onChange={(event) =>
+                                updateStepPayloadField(index, stepIndex, 'copy', event.target.value)
+                              }
+                              rows={3}
+                              placeholder="Post/ad copy..."
+                            />
+                          </label>
+                          <div className="roadmap-step__content-row">
+                            <label>
+                              Hashtags (comma separated)
+                              <input
+                                value={(step.payload?.hashtags ?? []).join(', ')}
+                                onChange={(event) =>
+                                  updateStepPayloadField(index, stepIndex, 'hashtags', event.target.value)
+                                }
+                                placeholder="#berlinart, #performance"
+                              />
+                            </label>
+                            <label>
+                              Image reference
+                              <input
+                                value={step.payload?.imageReference ?? ''}
+                                onChange={(event) =>
+                                  updateStepPayloadField(index, stepIndex, 'imageReference', event.target.value)
+                                }
+                                placeholder="Hero still / Scene reference"
+                              />
+                            </label>
+                          </div>
+                          <label>
+                            Script
+                            <textarea
+                              value={step.payload?.script ?? ''}
+                              onChange={(event) =>
+                                updateStepPayloadField(index, stepIndex, 'script', event.target.value)
+                              }
+                              rows={2}
+                              placeholder="Short script / spoken line..."
+                            />
+                          </label>
+                          <label>
+                            Brief
+                            <textarea
+                              value={step.payload?.brief ?? ''}
+                              onChange={(event) =>
+                                updateStepPayloadField(index, stepIndex, 'brief', event.target.value)
+                              }
+                              rows={2}
+                              placeholder="Execution brief..."
+                            />
+                          </label>
+                          <div className="roadmap-step__copy-actions">
+                            <button
+                              type="button"
+                              className="roadmap-btn roadmap-btn--tiny roadmap-btn--subtle"
+                              onClick={() => void copyToClipboard(step.payload?.copy ?? '')}
+                            >
+                              Copy text
+                            </button>
+                            <button
+                              type="button"
+                              className="roadmap-btn roadmap-btn--tiny roadmap-btn--subtle"
+                              onClick={() =>
+                                void copyToClipboard((step.payload?.hashtags ?? []).map((tag) => tag.trim()).filter(Boolean).join(' '))
+                              }
+                            >
+                              Copy hashtags
+                            </button>
+                            <button
+                              type="button"
+                              className="roadmap-btn roadmap-btn--tiny roadmap-btn--subtle"
+                              onClick={() => {
+                                const brief = [
+                                  step.payload?.channel ? `Channel: ${step.payload.channel}` : '',
+                                  step.payload?.imageReference ? `Image: ${step.payload.imageReference}` : '',
+                                  step.payload?.cta ? `CTA: ${step.payload.cta}` : '',
+                                  step.payload?.brief ? `Brief: ${step.payload.brief}` : '',
+                                  step.payload?.script ? `Script: ${step.payload.script}` : '',
+                                ]
+                                  .filter(Boolean)
+                                  .join('\n')
+                                return void copyToClipboard(brief)
+                              }}
+                            >
+                              Copy brief
+                            </button>
+                          </div>
                         </div>
+                      </div>
                         <div
                           className="roadmap-step__ring"
                           style={{ '--ring-color': deadline.color, '--ring-progress': deadline.progress } as CSSProperties}

@@ -5,8 +5,25 @@ export type ImportedRoadmapPhase = {
   goal?: string
   startDay?: number | null
   endDay?: number | null
-  steps: string[]
+  startDate?: string | null
+  endDate?: string | null
+  steps: ImportedRoadmapStep[]
   checkpoints: string[]
+}
+
+export type ImportedRoadmapStep = {
+  title: string
+  dueDate?: string | null
+  content?: {
+    channel?: string
+    copy?: string
+    hashtags?: string[]
+    imageReference?: string
+    script?: string
+    brief?: string
+    cta?: string
+    [key: string]: unknown
+  }
 }
 
 export type ImportedRoadmap = {
@@ -26,6 +43,36 @@ const asStringArray = (value: unknown): string[] =>
         .map((item) => (typeof item === 'string' ? normalizeLine(item) : ''))
         .filter((item) => item.length > 0)
     : []
+
+const normalizeDateValue = (value: string | null | undefined): string | null => {
+  if (!value) return null
+  const input = value.trim()
+  if (!input) return null
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(input)) {
+    return Number.isNaN(new Date(`${input}T00:00:00`).getTime()) ? null : input
+  }
+
+  const dayFirst = input.match(/^(\d{1,2})[./-](\d{1,2})[./-](\d{2}|\d{4})$/)
+  if (dayFirst) {
+    const day = Number(dayFirst[1])
+    const month = Number(dayFirst[2])
+    const yearRaw = Number(dayFirst[3])
+    const year = dayFirst[3].length === 2 ? 2000 + yearRaw : yearRaw
+    const iso = `${String(year).padStart(4, '0')}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+    return Number.isNaN(new Date(`${iso}T00:00:00`).getTime()) ? null : iso
+  }
+
+  return null
+}
+
+const extractDateFromText = (value: string): string | null => {
+  const isoMatch = value.match(/\b(\d{4}-\d{2}-\d{2})\b/)
+  if (isoMatch) return normalizeDateValue(isoMatch[1])
+  const dayFirstMatch = value.match(/\b(\d{1,2}[./-]\d{1,2}[./-](?:\d{2}|\d{4}))\b/)
+  if (dayFirstMatch) return normalizeDateValue(dayFirstMatch[1])
+  return null
+}
 const collectStepArraysFromRecord = (
   record: Record<string, unknown>,
   excludedKeys: string[] = [],
@@ -52,6 +99,67 @@ const tokenText = (tokens: Tokens.Generic[] | undefined): string => {
 const listItemText = (item: Tokens.ListItem): string => {
   if (Array.isArray(item.tokens) && item.tokens.length > 0) return tokenText(item.tokens as Tokens.Generic[])
   return normalizeLine(item.text || '')
+}
+
+const parseStepFromUnknown = (step: unknown, fallbackIndex: number): ImportedRoadmapStep => {
+  if (typeof step === 'string') {
+    const title = normalizeLine(step) || `Step ${fallbackIndex + 1}`
+    return { title, dueDate: extractDateFromText(title) }
+  }
+  if (!isRecord(step)) return { title: `Step ${fallbackIndex + 1}` }
+
+  const content = isRecord(step.content) ? step.content : null
+  const directHashtags = Array.isArray(step.hashtags)
+    ? step.hashtags.filter((tag): tag is string => typeof tag === 'string').map((tag) => normalizeLine(tag))
+    : undefined
+  const normalizedContent = {
+    channel:
+      (content && typeof content.channel === 'string' && normalizeLine(content.channel)) ||
+      (typeof step.channel === 'string' ? normalizeLine(step.channel) : undefined),
+    copy:
+      (content && typeof content.copy === 'string' && content.copy.trim()) ||
+      (typeof step.copy === 'string' ? step.copy.trim() : undefined),
+    hashtags:
+      (content && Array.isArray(content.hashtags)
+        ? content.hashtags
+            .filter((tag): tag is string => typeof tag === 'string')
+            .map((tag) => normalizeLine(tag))
+        : undefined) ?? directHashtags,
+    imageReference:
+      (content && typeof content.imageReference === 'string' && content.imageReference.trim()) ||
+      (typeof step.imageReference === 'string' ? step.imageReference.trim() : undefined),
+    script:
+      (content && typeof content.script === 'string' && content.script.trim()) ||
+      (typeof step.script === 'string' ? step.script.trim() : undefined),
+    brief:
+      (content && typeof content.brief === 'string' && content.brief.trim()) ||
+      (typeof step.brief === 'string' ? step.brief.trim() : undefined),
+    cta:
+      (content && typeof content.cta === 'string' && content.cta.trim()) ||
+      (typeof step.cta === 'string' ? step.cta.trim() : undefined),
+  }
+  const hasStructuredContent = Object.values(normalizedContent).some((value) =>
+    Array.isArray(value) ? value.length > 0 : Boolean(value),
+  )
+
+  const title =
+    (typeof step.title === 'string' && normalizeLine(step.title)) ||
+    (typeof step.name === 'string' && normalizeLine(step.name)) ||
+    `Step ${fallbackIndex + 1}`
+  const dueDate =
+    normalizeDateValue(typeof step.dueDate === 'string' ? step.dueDate : null) ||
+    normalizeDateValue(typeof step.due_date === 'string' ? step.due_date : null) ||
+    extractDateFromText(title)
+
+  return {
+    title,
+    ...(dueDate ? { dueDate } : {}),
+    ...(hasStructuredContent
+      ? {
+          content: normalizedContent,
+        }
+      : {}),
+  }
 }
 
 export const parseRoadmapInput = (
@@ -90,12 +198,14 @@ export const parseRoadmapInput = (
               : typeof phase.end_day === 'number'
                 ? phase.end_day
                 : null,
+          startDate:
+            normalizeDateValue(typeof phase.startDate === 'string' ? phase.startDate : null) ||
+            normalizeDateValue(typeof phase.start_date === 'string' ? phase.start_date : null),
+          endDate:
+            normalizeDateValue(typeof phase.endDate === 'string' ? phase.endDate : null) ||
+            normalizeDateValue(typeof phase.end_date === 'string' ? phase.end_date : null),
           steps: Array.isArray(phase.steps)
-            ? phase.steps.map((step, stepIndex) => {
-                if (typeof step === 'string') return normalizeLine(step)
-                if (isRecord(step) && typeof step.title === 'string') return normalizeLine(step.title)
-                return `Step ${stepIndex + 1}`
-              })
+            ? phase.steps.map((step, stepIndex) => parseStepFromUnknown(step, stepIndex))
             : [],
           checkpoints: Array.isArray(phase.checkpoints)
             ? phase.checkpoints
@@ -130,7 +240,7 @@ export const parseRoadmapInput = (
             goal: typeof day.goal === 'string' ? normalizeLine(day.goal) : '',
             startDay: dayNumber,
             endDay: dayNumber,
-            steps,
+            steps: steps.map((step, stepIndex) => parseStepFromUnknown(step, stepIndex)),
             checkpoints,
           }
         })
@@ -144,11 +254,7 @@ export const parseRoadmapInput = (
           goal: typeof parsed.goal === 'string' ? normalizeLine(parsed.goal) : '',
           startDay: null,
           endDay: null,
-          steps: parsedSteps.map((step, index) => {
-            if (typeof step === 'string') return normalizeLine(step)
-            if (isRecord(step) && typeof step.title === 'string') return normalizeLine(step.title)
-            return `Step ${index + 1}`
-          }),
+          steps: parsedSteps.map((step, index) => parseStepFromUnknown(step, index)),
           checkpoints: asStringArray(parsed.checkpoints),
         },
       ]
@@ -168,7 +274,9 @@ export const parseRoadmapInput = (
             goal: monthGoal,
             startDay: null,
             endDay: null,
-            steps,
+            startDate: null,
+            endDate: null,
+            steps: steps.map((step, stepIndex) => parseStepFromUnknown(step, stepIndex)),
             checkpoints: [],
           })
           return
@@ -199,7 +307,9 @@ export const parseRoadmapInput = (
               goal,
               startDay: null,
               endDay: null,
-              steps,
+              startDate: null,
+              endDate: null,
+              steps: steps.map((step, stepIndex) => parseStepFromUnknown(step, stepIndex)),
               checkpoints,
             })
           })
@@ -256,6 +366,8 @@ export const parseRoadmapInput = (
       goal: '',
       startDay: startDay ?? null,
       endDay: endDay ?? null,
+      startDate: null,
+      endDate: null,
       steps: [],
       checkpoints: [],
     }
@@ -285,6 +397,13 @@ export const parseRoadmapInput = (
             .replace(/\(.*\)/, '')
             .trim()
           addPhase(cleanTitle || heading, startDay, endDay)
+          const datesInHeading = heading.match(
+            /(\d{4}-\d{2}-\d{2}|\d{1,2}[./-]\d{1,2}[./-](?:\d{2}|\d{4})).*?(\d{4}-\d{2}-\d{2}|\d{1,2}[./-]\d{1,2}[./-](?:\d{2}|\d{4}))/,
+          )
+          if (currentPhase && datesInHeading) {
+            currentPhase.startDate = normalizeDateValue(datesInHeading[1])
+            currentPhase.endDate = normalizeDateValue(datesInHeading[2])
+          }
         }
       }
       continue
@@ -302,12 +421,20 @@ export const parseRoadmapInput = (
         if (currentPhase) currentPhase.goal = text.replace(/^goal\s*:/i, '').trim()
         continue
       }
+      if (/^start\s*date\s*:/i.test(text)) {
+        if (currentPhase) currentPhase.startDate = normalizeDateValue(text.replace(/^start\s*date\s*:/i, '').trim())
+        continue
+      }
+      if (/^end\s*date\s*:/i.test(text)) {
+        if (currentPhase) currentPhase.endDate = normalizeDateValue(text.replace(/^end\s*date\s*:/i, '').trim())
+        continue
+      }
       if (section === 'metrics') {
         metrics.push(text)
       } else if (section === 'rules') {
         rules.push(text)
       } else if (currentPhase) {
-        currentPhase.steps.push(text)
+        currentPhase.steps.push(parseStepFromUnknown(text, currentPhase.steps.length))
       } else {
         fallbackSteps.push(text)
       }
@@ -321,7 +448,7 @@ export const parseRoadmapInput = (
         if (section === 'metrics') metrics.push(text)
         else if (section === 'rules') rules.push(text)
         else if (currentPhase && section === 'checkpoints') currentPhase.checkpoints.push(text)
-        else if (currentPhase) currentPhase.steps.push(text)
+        else if (currentPhase) currentPhase.steps.push(parseStepFromUnknown(text, currentPhase.steps.length))
         else fallbackSteps.push(text)
       }
       continue
@@ -334,7 +461,9 @@ export const parseRoadmapInput = (
       goal: '',
       startDay: null,
       endDay: null,
-      steps: fallbackSteps,
+      startDate: null,
+      endDate: null,
+      steps: fallbackSteps.map((step, index) => parseStepFromUnknown(step, index)),
       checkpoints: [],
     })
   }

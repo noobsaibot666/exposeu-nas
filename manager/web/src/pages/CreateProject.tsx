@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import { apiRequest } from '../components/api'
 import { useAuth } from '../components/useAuth'
-import { parseRoadmapInput } from '../utils/roadmapParser'
+import { parseRoadmapInput, type ImportedRoadmapStep } from '../utils/roadmapParser'
 import '../styles/forms.css'
 
 type WorkflowTemplate = {
@@ -40,7 +40,9 @@ type RoadmapPhase = {
   goal?: string
   startDay?: number | null
   endDay?: number | null
-  steps: string[]
+  startDate?: string | null
+  endDate?: string | null
+  steps: ImportedRoadmapStep[]
   checkpoints: string[]
 }
 
@@ -188,6 +190,7 @@ function CreateProject() {
                     position: stepIndex + 1,
                     dueDate: step.dueDate,
                     status: 'pending',
+                    payload: step.payload ?? null,
                   })),
                   checkpoints: phase.checkpoints.map((checkpoint, checkpointIndex) => ({
                     title: checkpoint,
@@ -262,7 +265,9 @@ function CreateProject() {
       goal?: string
       startDay?: number | null
       endDay?: number | null
-      steps: Array<{ title: string; dueDate?: string | null }>
+      startDate?: string | null
+      endDate?: string | null
+      steps: Array<{ title: string; dueDate?: string | null; payload?: Record<string, unknown> | null }>
       checkpoints: string[]
     }>
     metrics: string[]
@@ -273,11 +278,41 @@ function CreateProject() {
       title: roadmap.title,
       sourceType: roadmap.sourceType,
       phases: roadmap.phases.map((phase) => {
-        const steps = phase.steps.map((step, index) => ({ title: step, dueDate: null }))
-        if (autoSchedule && startDate && phase.startDay !== null && phase.endDay !== null && steps.length > 0) {
-          const span = Math.max(phase.endDay - phase.startDay, 0)
+        const steps = phase.steps.map((step) => ({
+          title: step.title,
+          dueDate: step.dueDate ?? null,
+          payload: step.content ?? null,
+        }))
+        let scheduleStart = phase.startDay
+        let scheduleEnd = phase.endDay
+        if (
+          autoSchedule &&
+          startDate &&
+          (scheduleStart === null || scheduleStart === undefined || scheduleEnd === null || scheduleEnd === undefined) &&
+          phase.startDate &&
+          phase.endDate
+        ) {
+          const baseUtc = Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate())
+          const phaseStart = new Date(`${phase.startDate}T00:00:00`)
+          const phaseEnd = new Date(`${phase.endDate}T00:00:00`)
+          if (!Number.isNaN(phaseStart.getTime()) && !Number.isNaN(phaseEnd.getTime())) {
+            scheduleStart = Math.round((phaseStart.getTime() - baseUtc) / 86400000)
+            scheduleEnd = Math.round((phaseEnd.getTime() - baseUtc) / 86400000)
+          }
+        }
+        if (
+          autoSchedule &&
+          startDate &&
+          scheduleStart !== null &&
+          scheduleStart !== undefined &&
+          scheduleEnd !== null &&
+          scheduleEnd !== undefined &&
+          steps.length > 0
+        ) {
+          const span = Math.max(scheduleEnd - scheduleStart, 0)
           steps.forEach((step, index) => {
-            const offset = steps.length === 1 ? phase.endDay : phase.startDay + Math.round((span * index) / (steps.length - 1))
+            const offset =
+              steps.length === 1 ? scheduleEnd : scheduleStart + Math.round((span * index) / (steps.length - 1))
             const due = new Date(startDate.getTime() + offset * 86400000)
             step.dueDate = due.toISOString().slice(0, 10)
           })
@@ -287,6 +322,8 @@ function CreateProject() {
           goal: phase.goal,
           startDay: phase.startDay,
           endDay: phase.endDay,
+          startDate: phase.startDate ?? null,
+          endDate: phase.endDate ?? null,
           steps,
           checkpoints: phase.checkpoints,
         }
