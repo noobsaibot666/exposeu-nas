@@ -60,7 +60,7 @@ const videos: VideoItem[] = [
     location: 'Berlin',
     thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/01/thumb_0.jpg'),
     videoSrc: 'https://youtu.be/00OZBQL4W3Q',
-    tag: 'Preview',
+    tag: 'Performance',
     cta: 'Watch',
   },
   {
@@ -77,14 +77,16 @@ const videos: VideoItem[] = [
   },
   {
     id: 'v4',
-    title: 'Studio Sessions',
+    title: 'Concert Session Garçons du désert',
     description: 'Intimate look at the artist’s process in-studio.',
-    year: '2025',
-    location: 'Lisbon',
+    year: '2024',
+    location: 'Berlin',
     thumb: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
-    videoSrc: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
-    tag: 'Studio',
-    cta: 'Play',
+    slideshowImages: [
+      resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
+      ],
+    tag: 'Concert',
+    cta: 'Watch',
   },
 ]
 
