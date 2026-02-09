@@ -193,3 +193,30 @@ CREATE TABLE IF NOT EXISTS roadmap_rules (
   title TEXT NOT NULL,
   position INTEGER NOT NULL
 );
+
+-- Compatibility updates for older databases.
+ALTER TABLE projects
+ADD COLUMN IF NOT EXISTS owner_user_id INTEGER REFERENCES users(id) ON DELETE SET NULL;
+
+ALTER TABLE budgets
+ADD COLUMN IF NOT EXISTS owner_user_id INTEGER REFERENCES users(id) ON DELETE SET NULL;
+
+ALTER TABLE budgets
+ADD COLUMN IF NOT EXISTS total_budget NUMERIC(12, 2) DEFAULT 0;
+
+ALTER TABLE budgets
+ADD COLUMN IF NOT EXISTS profit_percent NUMERIC(5, 2) DEFAULT 0;
+
+ALTER TABLE budgets
+ADD COLUMN IF NOT EXISTS vat_percent NUMERIC(5, 2) DEFAULT 0;
+
+ALTER TABLE budgets
+ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP DEFAULT NOW();
+
+-- Backfill ownership for legacy rows.
+UPDATE budgets AS b
+SET owner_user_id = p.owner_user_id
+FROM projects AS p
+WHERE b.project_id = p.id
+  AND b.owner_user_id IS NULL
+  AND p.owner_user_id IS NOT NULL;

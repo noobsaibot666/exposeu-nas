@@ -22,12 +22,6 @@ type WorkflowStep = {
   default_cost?: number | string | null
 }
 
-type ProjectStep = {
-  id: number
-  name: string
-  position: number
-}
-
 type BuilderStep = {
   id: number
   name: string
@@ -59,6 +53,20 @@ const parseTags = (value: string) =>
     .split(',')
     .map((tag) => tag.trim())
     .filter((tag) => tag.length > 0)
+
+const parseBudgetNumber = (value: string) => {
+  const raw = value.trim()
+  if (!raw) return 0
+  const compact = raw.replace(/\s+/g, '')
+  const cleaned = compact.replace(/[^\d.,-]/g, '')
+  if (!cleaned || cleaned === '-' || cleaned === '.' || cleaned === ',') return 0
+  const lastComma = cleaned.lastIndexOf(',')
+  const lastDot = cleaned.lastIndexOf('.')
+  const normalized =
+    lastComma > lastDot ? cleaned.replace(/\./g, '').replace(',', '.') : cleaned.replace(/,/g, '')
+  const parsed = Number(normalized)
+  return Number.isNaN(parsed) ? 0 : parsed
+}
 
 function CreateProject() {
   const navigate = useNavigate()
@@ -215,7 +223,6 @@ function CreateProject() {
       }
       if (budgetEnabled) {
         try {
-          const projectDetail = await apiRequest<{ steps: ProjectStep[] }>(`/projects/${project.id}`, {}, token)
           const costByPosition = new Map<number, string>()
           selectedSteps.forEach((step) => {
             costByPosition.set(step.position, stepCosts[step.id] ?? '')
@@ -226,16 +233,16 @@ function CreateProject() {
               method: 'POST',
               body: JSON.stringify({
                 projectId: project.id,
-                totalBudget,
-                productionBudget,
-                profitBudget,
-                profitPercent,
-                vatAmount,
-                vatPercent,
+                totalBudget: parseBudgetNumber(totalBudget),
+                productionBudget: parseBudgetNumber(productionBudget),
+                profitBudget: parseBudgetNumber(profitBudget),
+                profitPercent: parseBudgetNumber(profitPercent),
+                vatAmount: parseBudgetNumber(vatAmount),
+                vatPercent: parseBudgetNumber(vatPercent),
                 notes: budgetNotes.trim() || null,
-                steps: projectDetail.steps.map((step) => ({
-                  projectStepId: step.id,
-                  stepName: step.name,
+                steps: selectedSteps.map((step) => ({
+                  projectStepId: null,
+                  stepName: (stepNameOverrides[step.id] ?? step.name).trim() || step.name,
                   stepPosition: step.position,
                   costAmount: costByPosition.get(step.position) ?? '',
                 })),
@@ -443,15 +450,15 @@ function CreateProject() {
   }, [workflowTemplateId])
 
   useEffect(() => {
-    const total = Number(totalBudget) || 0
-    const profitPct = Number(profitPercent) || 0
-    const vatPct = Number(vatPercent) || 0
+    const total = parseBudgetNumber(totalBudget)
+    const profitPct = parseBudgetNumber(profitPercent)
+    const vatPct = parseBudgetNumber(vatPercent)
     const profit = total * (profitPct / 100)
     const vat = total * (vatPct / 100)
     const production = Math.max(0, total - profit - vat)
-    setVatAmount(vat ? vat.toFixed(2) : '')
-    setProductionBudget(production ? production.toFixed(2) : '')
-    setProfitBudget(profit ? profit.toFixed(2) : '')
+    setVatAmount(vat.toFixed(2))
+    setProductionBudget(production.toFixed(2))
+    setProfitBudget(profit.toFixed(2))
   }, [profitPercent, totalBudget, vatPercent])
 
   useEffect(() => {
@@ -491,13 +498,16 @@ function CreateProject() {
   }, [selectedSteps])
 
   const productionRemaining = useMemo(() => {
-    const production = Number(productionBudget) || 0
-    const allocated = selectedSteps.reduce((total, step) => total + (Number(stepCosts[step.id]) || 0), 0)
+    const production = parseBudgetNumber(productionBudget)
+    const allocated = selectedSteps.reduce(
+      (total, step) => total + parseBudgetNumber(stepCosts[step.id] ?? ''),
+      0,
+    )
     return production - allocated
   }, [productionBudget, selectedSteps, stepCosts])
 
   const productionRemainingTone = useMemo(() => {
-    const production = Number(productionBudget) || 0
+    const production = parseBudgetNumber(productionBudget)
     if (production <= 0) return 'neutral'
     const remaining = productionRemaining
     if (remaining <= 0) return 'danger'

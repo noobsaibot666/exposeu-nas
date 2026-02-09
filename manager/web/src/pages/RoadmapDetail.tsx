@@ -223,30 +223,6 @@ function RoadmapDetail() {
     window.addEventListener('blur', handleUp)
   }
 
-  const handleSave = async () => {
-    if (!token || !id || !roadmap) return
-    setStatus('')
-    if (autoSaveTimerRef.current) {
-      window.clearTimeout(autoSaveTimerRef.current)
-      autoSaveTimerRef.current = null
-    }
-    const payload = buildRoadmapPayload(roadmap, phases, metrics, rules)
-    try {
-      await apiRequest(
-        `/roadmaps/${id}`,
-        {
-          method: 'PUT',
-          body: JSON.stringify(payload),
-        },
-        token,
-      )
-      lastSavedSignatureRef.current = JSON.stringify(payload)
-      setStatus('Saved.')
-    } catch {
-      setStatus('Unable to save changes.')
-    }
-  }
-
   useEffect(() => {
     if (!token || !id || !roadmap) return
     const payload = buildRoadmapPayload(roadmap, phases, metrics, rules)
@@ -619,9 +595,6 @@ function RoadmapDetail() {
           </div>
         </header>
         <div className="roadmap-detail__controls">
-          <button type="button" className="roadmap-btn roadmap-btn--primary" onClick={handleSave}>
-            Save changes
-          </button>
           <div className="roadmap-export-actions">
             <button type="button" className="roadmap-btn roadmap-btn--subtle" onClick={handleExportMarkdown}>
               Export MD

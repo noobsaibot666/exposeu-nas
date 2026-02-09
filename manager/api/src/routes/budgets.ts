@@ -14,7 +14,24 @@ const router = Router()
 
 const toNumber = (value: unknown) => {
   if (value === null || value === undefined || value === '') return null
-  const parsed = Number(value)
+  if (typeof value === 'number') {
+    return Number.isNaN(value) ? null : value
+  }
+  if (typeof value !== 'string') return null
+  const raw = value.trim()
+  if (!raw) return null
+  const compact = raw.replace(/\s+/g, '')
+  const cleaned = compact.replace(/[^\d.,-]/g, '')
+  if (!cleaned || cleaned === '-' || cleaned === '.' || cleaned === ',') return null
+  const lastComma = cleaned.lastIndexOf(',')
+  const lastDot = cleaned.lastIndexOf('.')
+  let normalized = cleaned
+  if (lastComma > lastDot) {
+    normalized = cleaned.replace(/\./g, '').replace(',', '.')
+  } else {
+    normalized = cleaned.replace(/,/g, '')
+  }
+  const parsed = Number(normalized)
   if (Number.isNaN(parsed)) return null
   return parsed
 }
@@ -148,16 +165,12 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ error: 'Project id required.' })
   }
 
-  const total = toNumber(totalBudget)
-  const production = toNumber(productionBudget)
-  const profit = toNumber(profitBudget)
-  const profitPercentValue = toNumber(profitPercent) ?? 0
+  const total = toNumber(totalBudget) ?? 0
   const vat = toNumber(vatAmount) ?? 0
+  const profit = toNumber(profitBudget) ?? 0
+  const production = toNumber(productionBudget) ?? Math.max(0, total - profit - vat)
+  const profitPercentValue = toNumber(profitPercent) ?? 0
   const vatPercentValue = toNumber(vatPercent) ?? 0
-
-  if (total === null || production === null || profit === null) {
-    return res.status(400).json({ error: 'Total, production, and profit budgets are required.' })
-  }
 
   const projectResult = await query<{ title: string; owner_user_id: number | null }>(
     'SELECT title, owner_user_id FROM projects WHERE id = $1',

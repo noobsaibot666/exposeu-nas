@@ -24,6 +24,12 @@ type Project = {
   steps?: Array<{ id: number; name: string; due_date: string | null; status?: string }>
 }
 
+type RoadmapListItem = {
+  id: number
+  project_id: number
+  project_color: string | null
+}
+
 type ViewMode = 'timeline' | 'list' | 'board' | 'calendar'
 type CalendarMode = 'month' | 'week'
 
@@ -135,6 +141,7 @@ function Dashboard() {
   const navigate = useNavigate()
   const { token, user } = useAuth()
   const [projects, setProjects] = useState<Project[]>([])
+  const [roadmaps, setRoadmaps] = useState<RoadmapListItem[]>([])
   const [error, setError] = useState('')
   const [view, setView] = useState<ViewMode>(() => {
     if (typeof window === 'undefined') return 'timeline'
@@ -228,6 +235,15 @@ function Dashboard() {
     apiRequest<Project[]>('/projects', {}, token)
       .then(setProjects)
       .catch(() => setError('Unable to load projects.'))
+  }, [token])
+
+  useEffect(() => {
+    if (!token) return
+    apiRequest<RoadmapListItem[]>('/roadmaps', {}, token)
+      .then(setRoadmaps)
+      .catch(() => {
+        // Keep dashboard usable even if roadmap stats fail to load.
+      })
   }, [token])
 
   useEffect(() => {
@@ -689,6 +705,18 @@ function Dashboard() {
   }, [activeProjects])
 
   const maxCalendarItems = isCoarsePointer ? 2 : 3
+  const roadmapColors = useMemo(() => {
+    const colors = new Set<string>()
+    roadmaps.forEach((roadmap) => {
+      if (roadmap.project_color) {
+        colors.add(roadmap.project_color)
+        return
+      }
+      const project = projects.find((item) => item.id === roadmap.project_id)
+      if (project) colors.add(getProjectColor(project, 'fallback'))
+    })
+    return Array.from(colors).slice(0, 6)
+  }, [projects, roadmaps])
 
   return (
     <Layout title="Projects overview" headerClassName="layout__header--hero" hideDashboardLink>
@@ -706,14 +734,14 @@ function Dashboard() {
             <Link to="/budgets" className="button button--ghost">
               Budget control
             </Link>
-            <Link to="/roadmaps" className="button button--ghost">
-              Roadmaps
-            </Link>
             {user?.is_admin && (
               <Link to="/admin/users" className="button button--ghost">
                 User access
               </Link>
             )}
+            <Link to="/stats/shared" className="button button--ghost">
+              Shared links
+            </Link>
             <Link to="/archive" className="button button--ghost">
               Archive
             </Link>
@@ -769,16 +797,22 @@ function Dashboard() {
             <p className="stat-card__meta">Needs attention</p>
           </MotionLink>
           <MotionLink
-            to="/stats/shared"
-            className="stat-card stat-card--accent"
+            to="/roadmaps"
+            className="stat-card stat-card--roadmap"
             variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}
             transition={{ duration: 0.28, ease: 'easeOut' }}
           >
-            <p className="stat-card__label">Shared links</p>
-            <div className="stat-card__value">
-              {projects.filter((project) => (project.share_links ?? []).length > 0).length}
+            <p className="stat-card__label">Roadmaps</p>
+            <div className="stat-card__value">{roadmaps.length}</div>
+            <div className="stat-card__colors" aria-label="Roadmap project colors">
+              {roadmapColors.length > 0 ? (
+                roadmapColors.map((color) => (
+                  <span key={color} className="stat-card__color-dot" style={{ backgroundColor: color }} />
+                ))
+              ) : (
+                <span className="stat-card__meta">No roadmap projects yet</span>
+              )}
             </div>
-            <p className="stat-card__meta">Active shares</p>
           </MotionLink>
         </motion.div>
         <div className="dashboard__timeline">

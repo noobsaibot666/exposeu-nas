@@ -15,7 +15,8 @@ type VideoItem = {
   year: string
   location: string
   thumb: string
-  videoSrc: string
+  videoSrc?: string
+  slideshowImages?: string[]
   tag?: string
   cta?: string
 }
@@ -32,19 +33,28 @@ type OfferItem = {
 
 const videos: VideoItem[] = [
   {
-    id: 'v3',
-    title: 'Performance Cut',
-    description: 'Cinematic capture of live movement and light.',
+    id: 'v5',
+    title: 'Boogarins Band',
+    description: 'A still-driven visual story built from live session captures.',
     year: '2025',
-    location: 'London',
-    thumb: resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_004.png'),
-    videoSrc: 'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
-    tag: 'Live',
-    cta: 'Play',
+    location: 'Brazil',
+    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/band/Hero.jpg'),
+    slideshowImages: [
+      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_001.jpg'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_002.jpg'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_003.jpg'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_004.jpg'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_005.jpg'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_006.jpg'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_007.jpg'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_008.jpg'),
+    ],
+    tag: 'Concert',
+    cta: 'View',
   },
   {
     id: 'v1',
-    title: 'Lick the walls to understand echoes',
+    title: 'Lick the walls to understand echoes - HOLON',
     description: 'Audio-reactive installation with immersive sound and visuals.',
     year: '2025',
     location: 'Berlin',
@@ -138,6 +148,8 @@ const offers: OfferItem[] = [
 function Portfolio() {
   const navigate = useNavigate()
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null)
+  const [slideIndex, setSlideIndex] = useState(0)
+  const [slideDirection, setSlideDirection] = useState(1)
   const [isDragging, setIsDragging] = useState(false)
   const gridRef = useRef<HTMLDivElement | null>(null)
   const rootRef = useRef<HTMLElement | null>(null)
@@ -271,6 +283,39 @@ function Portfolio() {
     }, rootRef)
 
     return () => ctx.revert()
+  }, [activeVideo])
+
+  useEffect(() => {
+    if (!activeVideo) return
+    setSlideIndex(0)
+    setSlideDirection(1)
+  }, [activeVideo])
+
+  useEffect(() => {
+    if (!activeVideo) return
+
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setActiveVideo(null)
+        return
+      }
+
+      if (!activeVideo.slideshowImages || activeVideo.slideshowImages.length === 0) return
+      const total = activeVideo.slideshowImages.length
+
+      if (event.key === 'ArrowLeft') {
+        setSlideDirection(-1)
+        setSlideIndex((prev) => (prev - 1 + total) % total)
+      }
+
+      if (event.key === 'ArrowRight') {
+        setSlideDirection(1)
+        setSlideIndex((prev) => (prev + 1) % total)
+      }
+    }
+
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
   }, [activeVideo])
 
   const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
@@ -488,8 +533,13 @@ function Portfolio() {
       </section>
 
       {activeVideo && (
-        <div className="portfolio__overlay" role="dialog" aria-modal="true">
-          <div className="portfolio__modal">
+        <div
+          className="portfolio__overlay"
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setActiveVideo(null)}
+        >
+          <div className="portfolio__modal" onClick={(event) => event.stopPropagation()}>
             <button
               type="button"
               className="portfolio__close"
@@ -513,6 +563,62 @@ function Portfolio() {
             </button>
             <div className="portfolio__player">
               {(() => {
+                if (activeVideo.slideshowImages && activeVideo.slideshowImages.length > 0) {
+                  const total = activeVideo.slideshowImages.length
+                  const current = activeVideo.slideshowImages[slideIndex] ?? activeVideo.slideshowImages[0]
+                  return (
+                    <div className="portfolio__slideshow">
+                      <div className="portfolio__slideshow-frame">
+                        {total > 1 && (
+                          <>
+                            <button
+                              type="button"
+                              className="portfolio__slideshow-arrow portfolio__slideshow-arrow--left"
+                              aria-label="Previous slide"
+                              onClick={() => {
+                                setSlideDirection(-1)
+                                setSlideIndex((slideIndex - 1 + total) % total)
+                              }}
+                            >
+                              <span aria-hidden>‹</span>
+                            </button>
+                            <button
+                              type="button"
+                              className="portfolio__slideshow-arrow portfolio__slideshow-arrow--right"
+                              aria-label="Next slide"
+                              onClick={() => {
+                                setSlideDirection(1)
+                                setSlideIndex((slideIndex + 1) % total)
+                              }}
+                            >
+                              <span aria-hidden>›</span>
+                            </button>
+                          </>
+                        )}
+                        <img
+                          key={`${activeVideo.id}-slide-${slideIndex}`}
+                          className={`portfolio__slideshow-image ${
+                            slideDirection === -1 ? 'portfolio__slideshow-image--prev' : 'portfolio__slideshow-image--next'
+                          }`}
+                          src={current}
+                          alt={`${activeVideo.title} slide ${slideIndex + 1}`}
+                        />
+                      </div>
+                      {total > 1 && (
+                        <div className="portfolio__slideshow-dots" aria-hidden>
+                          {activeVideo.slideshowImages.map((_, index) => (
+                            <span
+                              key={`slide-${activeVideo.id}-${index}`}
+                              className={`portfolio__slideshow-dot ${index === slideIndex ? 'is-active' : ''}`}
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )
+                }
+
+                if (!activeVideo.videoSrc) return null
                 const embedSrc = getEmbedSrc(activeVideo.videoSrc)
                 if (embedSrc) {
                   return (

@@ -10,6 +10,7 @@ type RoadmapListItem = {
   id: number
   project_id: number
   project_title: string
+  project_color: string | null
   title: string
   auto_schedule: boolean
   created_at: string
@@ -46,16 +47,24 @@ function Roadmaps() {
             transition={{ duration: 0.28, ease: 'easeOut' }}
           >
             <Link to={`/roadmaps/${roadmap.id}`} className="roadmap-card">
-            <div className="roadmap-card__header">
-              <span className="roadmap-card__eyebrow">Project</span>
-              <h3>{roadmap.project_title}</h3>
-            </div>
-            <div className="roadmap-card__body">
-              <p className="roadmap-card__title">{roadmap.title}</p>
-              <span className="roadmap-card__meta">
-                {roadmap.auto_schedule ? 'Auto scheduled' : 'Manual schedule'}
-              </span>
-            </div>
+              <div className="roadmap-card__header">
+                <span className="roadmap-card__eyebrow">Attached project</span>
+                <div className="roadmap-card__project-row">
+                  <span
+                    className="roadmap-card__project-dot"
+                    style={{ backgroundColor: roadmap.project_color || '#8e95a3' }}
+                    aria-hidden="true"
+                  />
+                  <p className="roadmap-card__project">{roadmap.project_title}</p>
+                </div>
+              </div>
+              <div className="roadmap-card__body">
+                <span className="roadmap-card__roadmap-label">Roadmap</span>
+                <p className="roadmap-card__title">{roadmap.title}</p>
+                <span className="roadmap-card__meta">
+                  {roadmap.auto_schedule ? 'Auto-scheduled timeline' : 'Manual timeline'}
+                </span>
+              </div>
             </Link>
           </motion.div>
         ))}

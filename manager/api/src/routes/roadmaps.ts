@@ -76,7 +76,7 @@ router.get('/', async (req, res) => {
 
   const rows = projectId
     ? await query(
-        `SELECT roadmaps.*, projects.title as project_title
+        `SELECT roadmaps.*, projects.title as project_title, projects.project_color
          FROM roadmaps
          JOIN projects ON projects.id = roadmaps.project_id
          WHERE roadmaps.project_id = $1 AND ($2::boolean OR projects.owner_user_id = $3)
@@ -84,7 +84,7 @@ router.get('/', async (req, res) => {
         [projectId, admin, user.id],
       )
     : await query(
-        `SELECT roadmaps.*, projects.title as project_title
+        `SELECT roadmaps.*, projects.title as project_title, projects.project_color
          FROM roadmaps
          JOIN projects ON projects.id = roadmaps.project_id
          WHERE ($1::boolean OR projects.owner_user_id = $2)

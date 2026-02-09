@@ -139,6 +139,25 @@
   border-color: rgba(139, 92, 255, 0.5);
 }
 
+.stat-card--roadmap {
+  background: linear-gradient(135deg, rgba(121, 214, 169, 0.28), rgba(121, 214, 169, 0.06));
+  border-color: rgba(121, 214, 169, 0.42);
+}
+
+.stat-card__colors {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 18px;
+}
+
+.stat-card__color-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+}
+
 .dashboard__timeline {
   padding: 18px;
   border-radius: var(--radius-lg);
@@ -756,9 +775,9 @@
   position: sticky;
   right: 0;
   z-index: 2;
-  background: var(--surface-base);
-  border-radius: 10px;
-  padding: 4px;
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
   contain: paint;
   backface-visibility: hidden;
   transform: translateZ(0);
