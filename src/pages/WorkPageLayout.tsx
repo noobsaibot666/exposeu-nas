@@ -259,13 +259,12 @@ function WorkPageLayout({
       <div className="content work-nav">
         <TopNav
           leftLinks={[
-            { label: 'Studio', href: '/#hero' },
-            { label: 'Services', href: '/#cases' },
-            { label: 'Start Now', href: '/#services' },
+            { label: 'Home', href: '/' },
+            { label: 'Services', href: '/#services' },
           ]}
           rightLinks={[
             { label: 'About', href: '/about' },
-            { label: 'Contact', href: '/contact' },
+            { label: 'Check availability', href: '/contact' },
           ]}
           className="top-nav--page"
           activeLabel="Services"
@@ -365,7 +364,7 @@ function WorkPageLayout({
             <h3>{ctaText}</h3>
           </div>
           <a className="work-cta__link" href={ctaHref}>
-            Contact us
+            Check availability
           </a>
         </div>
       </section>

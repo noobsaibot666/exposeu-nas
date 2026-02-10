@@ -165,18 +165,17 @@ function PricingRequest() {
       <div className="home__nav pricing-request__nav">
         <TopNav
           leftLinks={[
-            { label: 'Studio', onClick: () => navigate('/#hero') },
-            { label: 'Services', onClick: () => navigate('/#cases') },
-            { label: 'Start Now', onClick: () => navigate('/#services') },
+            { label: 'Home', onClick: () => navigate('/') },
+            { label: 'Services', href: '/#services' },
           ]}
           rightLinks={[
             { label: 'About', onClick: () => navigate('/about') },
-            { label: 'Contact', onClick: () => navigate('/contact') },
+            { label: 'Check availability', onClick: () => navigate('/contact') },
           ]}
           onBrandClick={() => navigate('/')}
           brandLabel="expose.u"
           className="top-nav--page"
-          activeLabel="Start Now"
+          activeLabel="Services"
         />
       </div>
 

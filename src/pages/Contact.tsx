@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import './Contact.css'
 import { useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
@@ -12,23 +12,18 @@ function Contact() {
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const goToHomeSection = useCallback((hash?: string) => {
-    navigate(hash ? `/${hash}` : '/')
-  }, [navigate])
-
   const navLinks = useMemo(
     () => ({
       left: [
-        { label: 'Studio', onClick: () => goToHomeSection('#hero') },
-        { label: 'Services', onClick: () => goToHomeSection('#cases') },
-        { label: 'Start Now', onClick: () => goToHomeSection('#services') },
+        { label: 'Home', onClick: () => navigate('/') },
+        { label: 'Services', href: '/#services' },
       ],
       right: [
         { label: 'About', onClick: () => navigate('/about') },
-        { label: 'Contact', onClick: () => navigate('/contact') },
+        { label: 'Check availability', onClick: () => navigate('/contact') },
       ],
     }),
-    [goToHomeSection, navigate],
+    [navigate],
   )
 
   const resolveContactEndpoint = () => {
@@ -134,7 +129,7 @@ function Contact() {
         <TopNav
           leftLinks={navLinks.left}
           rightLinks={navLinks.right}
-          onBrandClick={() => goToHomeSection('#hero')}
+          onBrandClick={() => navigate('/')}
           brandLabel="expose.u"
           className="top-nav--page"
           activeLabel="Contact"

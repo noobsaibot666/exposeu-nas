@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties, PointerEvent, WheelEvent } from 'react'
 import './Portfolio.css'
 import { resolveImagePath } from '../utils/resolveImagePath'
@@ -96,7 +96,7 @@ const offers: OfferItem[] = [
     title: 'Exhibition',
     blurb: 'Full visual direction for galleries, openings, and installs with immersive screens, loops, and atmosphere.',
     link: '/documentation',
-    cta: 'Contact us',
+    cta: 'Check availability',
     accent: '#ffffffff',
     background: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
   },
@@ -105,7 +105,7 @@ const offers: OfferItem[] = [
     title: 'Artist Session',
     blurb: 'Studio and portrait sessions that capture process and story with polished deliverables for press and socials.',
     link: '/artist-sessions',
-    cta: 'Contact us',
+    cta: 'Check availability',
     accent: '#c4b5fd',
     background: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
   },
@@ -114,7 +114,7 @@ const offers: OfferItem[] = [
     title: 'Performance',
     blurb: 'Live performance capture with cinematic documentation, multi-angle, crisp audio, and quick turnarounds.',
     link: '/performance',
-    cta: 'Contact us',
+    cta: 'Check availability',
     accent: '#fca5a5',
     background: resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_004.png'),
   },
@@ -123,7 +123,7 @@ const offers: OfferItem[] = [
     title: 'Atmospheric',
     blurb: 'Mood-first films and stills that set the tone for your release, event, or install.',
     link: '/atmospheric',
-    cta: 'Contact us',
+    cta: 'Check availability',
     accent: '#9bd1ff',
     background: resolveImagePath('/src/assets/images/services/6_atmospheric_film/6_AF_018.png'),
   },
@@ -132,7 +132,7 @@ const offers: OfferItem[] = [
     title: 'Gallery Stories',
     blurb: 'Curator walkthroughs and features that make your space and artists shine online.',
     link: '/gallery-stories',
-    cta: 'Contact us',
+    cta: 'Check availability',
     accent: '#fbcfe8',
     background: resolveImagePath('/src/assets/images/services/2_gallery_work/2_GW_012.png'),
   },
@@ -141,7 +141,7 @@ const offers: OfferItem[] = [
     title: 'Fashion Show',
     blurb: 'Editorial runway capture with clean angles, sharp detail, and fast delivery.',
     link: '/fashion-show',
-    cta: 'Contact us',
+    cta: 'Check availability',
     accent: '#c7d2fe',
     background: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
   },
@@ -157,23 +157,19 @@ function Portfolio() {
   const gridRef = useRef<HTMLDivElement | null>(null)
   const rootRef = useRef<HTMLElement | null>(null)
   const dragState = useRef({ active: false, startX: 0, scrollLeft: 0, moved: false, pointerId: 0 })
-  const goToHomeSection = useCallback((hash?: string) => {
-    navigate(hash ? `/${hash}` : '/')
-  }, [navigate])
 
   const navLinks = useMemo(
     () => ({
       left: [
-        { label: 'Studio', onClick: () => goToHomeSection('#hero') },
-        { label: 'Services', onClick: () => goToHomeSection('#cases') },
-        { label: 'Start Now', onClick: () => goToHomeSection('#services') },
+        { label: 'Home', onClick: () => navigate('/') },
+        { label: 'Services', href: '/#services' },
       ],
       right: [
         { label: 'About', onClick: () => navigate('/about') },
-        { label: 'Contact', onClick: () => navigate('/contact') },
+        { label: 'Check availability', onClick: () => navigate('/contact') },
       ],
     }),
-    [goToHomeSection, navigate],
+    [navigate],
   )
 
   useEffect(() => {
@@ -427,7 +423,7 @@ function Portfolio() {
           className="top-nav--page"
           leftLinks={navLinks.left}
           rightLinks={navLinks.right}
-          onBrandClick={() => goToHomeSection('#hero')}
+          onBrandClick={() => navigate('/')}
           brandLabel="expose.u"
         />
       </div>

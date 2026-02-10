@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { Link } from 'react-router-dom'
 import { useThemeContext } from '../ThemeContext'
 import './TopNav.css'
 
@@ -113,6 +114,14 @@ function TopNav({
         >
           {item.label}
         </button>
+      )
+    }
+
+    if (item.href && item.href.startsWith('/')) {
+      return (
+        <Link className={linkClassName} to={item.href} onClick={closeMenu} aria-current={ariaCurrent}>
+          {item.label}
+        </Link>
       )
     }
 

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
@@ -8,23 +8,18 @@ function Impressum() {
   const navigate = useNavigate()
   const rootRef = useRef<HTMLElement | null>(null)
 
-  const goToHomeSection = useCallback((hash?: string) => {
-    navigate(hash ? `/${hash}` : '/')
-  }, [navigate])
-
   const navLinks = useMemo(
     () => ({
       left: [
-        { label: 'Studio', onClick: () => goToHomeSection('#hero') },
-        { label: 'Services', onClick: () => goToHomeSection('#cases') },
-        { label: 'Start Now', onClick: () => goToHomeSection('#services') },
+        { label: 'Home', onClick: () => navigate('/') },
+        { label: 'Services', href: '/#services' },
       ],
       right: [
         { label: 'About', onClick: () => navigate('/about') },
-        { label: 'Contact', onClick: () => navigate('/contact') },
+        { label: 'Check availability', onClick: () => navigate('/contact') },
       ],
     }),
-    [goToHomeSection, navigate],
+    [navigate],
   )
 
   return (
@@ -33,7 +28,7 @@ function Impressum() {
         <TopNav
           leftLinks={navLinks.left}
           rightLinks={navLinks.right}
-          onBrandClick={() => goToHomeSection('#hero')}
+          onBrandClick={() => navigate('/')}
           brandLabel="expose.u"
           className="top-nav--page"
         />

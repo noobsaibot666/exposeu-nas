@@ -8,7 +8,7 @@ function CallSession() {
         <div className="content call-session__nav">
           <nav className="call-session__links call-session__links--left">
             <a href="/">Home</a>
-            <a href="/#cases">Cases</a>
+            <a href="/#services">Services</a>
             <a href="/#claim">Claim</a>
             <a href="/#offer">Offer</a>
           </nav>
@@ -17,7 +17,7 @@ function CallSession() {
           </a>
           <nav className="call-session__links call-session__links--right">
             <a href="/about">About</a>
-            <a href="/contact">Contact</a>
+            <a href="/contact">Check availability</a>
           </nav>
         </div>
 

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import TopNav from '../components/TopNav'
@@ -112,7 +112,8 @@ const proofAvatars = [
 
 function Home() {
   const navigate = useNavigate()
-  const [activeSection, setActiveSection] = useState('Studio')
+  const [activeSection, setActiveSection] = useState('Home')
+  const location = useLocation()
   const [mobileLayout, setMobileLayout] = useState({
     card: 160,
     outer: 160,
@@ -146,13 +147,12 @@ function Home() {
   const navLinks = useMemo(
     () => ({
       left: [
-        { label: 'Studio', onClick: () => handleScroll('#hero') },
-        { label: 'Services', onClick: () => handleScroll('#cases') },
-        { label: 'Start Now', onClick: () => handleScroll('#services') },
+        { label: 'Home', onClick: () => handleScroll('#hero') },
+        { label: 'Services', href: '/#services' },
       ],
       right: [
         { label: 'About', onClick: () => navigate('/about') },
-        { label: 'Contact', onClick: () => navigate('/contact') },
+        { label: 'Check availability', onClick: () => navigate('/contact') },
       ],
     }),
     [navigate],
@@ -291,10 +291,19 @@ function Home() {
   }, [])
 
   useEffect(() => {
+    if (!location.hash) return
+    const target = document.querySelector(location.hash)
+    if (!target) return
+    requestAnimationFrame(() => {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+  }, [location.hash])
+
+  useEffect(() => {
     const sections = [
-      { id: 'hero', label: 'Studio' },
+      { id: 'hero', label: 'Home' },
       { id: 'cases', label: 'Services' },
-      { id: 'services', label: 'Start Now' },
+      { id: 'services', label: 'Services' },
     ]
 
     const nodes = sections
@@ -360,7 +369,7 @@ function Home() {
             className="top-nav--page"
             leftLinks={navLinks.left}
             rightLinks={navLinks.right}
-            onBrandClick={() => handleScroll('#hero')}
+            onBrandClick={() => navigate('/')}
             brandLabel="expose.u"
             activeLabel={activeSection}
           />
@@ -446,7 +455,7 @@ function Home() {
           </p>
           <div className="home__actions">
             <button type="button" onClick={() => navigate('/contact')}>
-              Contact us
+              Check availability
             </button>
           <button type="button" onClick={() => handleScroll('#services')}>
             View packages
@@ -515,10 +524,10 @@ function Home() {
         </p>
         <div className="home__proof-actions">
           <button type="button" onClick={() => navigate('/contact')}>
-            Tell us about your project
+            Check availability
           </button>
           <button type="button" className="home__proof-secondary" onClick={() => navigate('/contact')}>
-            Request availability
+            Check availability
           </button>
         </div>
       </section>

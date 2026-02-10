@@ -19,7 +19,7 @@ function Footer() {
           <p className="footer__brand">expose.u</p>
           <p className="footer__tagline">Cinematic photo and video for Berlin&rsquo;s galleries, artists, and live events.</p>
           <p className="footer__cta">
-            Ready to book visual documentation? <a href="/contact">Contact us</a>.
+            Ready to book visual documentation? <a href="/contact">Check availability</a>.
           </p>
         </div>
         <div className="footer__links">
@@ -34,7 +34,7 @@ function Footer() {
           </div>
           <div className="footer__group">
             <p className="footer__label">Next steps</p>
-            <a href="/contact">Contact us</a>
+            <a href="/contact">Check availability</a>
             <a href="/call-session">Book a call</a>
             <a href="/portfolio">View portfolio</a>
           </div>
