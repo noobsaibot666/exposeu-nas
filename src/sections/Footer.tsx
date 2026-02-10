@@ -18,6 +18,9 @@ function Footer() {
         <div className="footer__intro">
           <p className="footer__brand">expose.u</p>
           <p className="footer__tagline">Cinematic photo and video for Berlin&rsquo;s galleries, artists, and live events.</p>
+          <p className="footer__trust">
+            Selected collaborators: galleries, artists, cultural venues, and independent producers in Berlin.
+          </p>
           <p className="footer__cta">
             Ready to book visual documentation? <a href="/contact">Check availability</a>.
           </p>

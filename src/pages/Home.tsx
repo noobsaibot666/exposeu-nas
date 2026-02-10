@@ -531,6 +531,25 @@ function Home() {
           </button>
         </div>
       </section>
+      <section className="home__section home__process" id="process">
+        <div className="home__process-header">
+          <h2>Process</h2>
+        </div>
+        <div className="home__process-grid">
+          <article className="home__process-step">
+            <h3>Consult</h3>
+            <p>We align on intent, timing, and deliverables. You&rsquo;ll know what&rsquo;s happening before we shoot.</p>
+          </article>
+          <article className="home__process-step">
+            <h3>Capture</h3>
+            <p>We work quietly on site, following your run-of-show and the space&rsquo;s rhythm.</p>
+          </article>
+          <article className="home__process-step">
+            <h3>Deliver</h3>
+            <p>You receive press-ready selects and organized finals, ready to publish and archive.</p>
+          </article>
+        </div>
+      </section>
       {/* Footer */}
       <Footer />
     </main>

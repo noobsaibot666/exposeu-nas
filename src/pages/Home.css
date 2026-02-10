@@ -571,6 +571,47 @@
   background: var(--button-outline-hover);
 }
 
+.home__process {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.home__process-header h2 {
+  margin: 0;
+  font-size: clamp(2rem, 3.6vw, 2.8rem);
+  font-weight: 600;
+}
+
+.home__process-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.home__process-step {
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 20px 22px;
+  background: var(--surface-card);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.home__process-step h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.home__process-step p {
+  margin: 0;
+  color: var(--text-tertiary);
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
 .home__service-card {
   border: 1px solid var(--border-soft);
   border-radius: 14px;
@@ -685,6 +726,10 @@
 @media (max-width: 900px) {
   .home__cases-row {
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .home__process-grid {
+    grid-template-columns: 1fr;
   }
 
   .home__pricing-grid {
