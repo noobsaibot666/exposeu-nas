@@ -88,8 +88,9 @@ function Contact() {
 
       form.reset()
       navigate('/contact-success')
-    } catch (err: any) {
-      setSubmitError(err?.message || 'Something went wrong. Please email us directly.')
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Something went wrong. Please email us directly.'
+      setSubmitError(message)
     } finally {
       setIsSubmitting(false)
     }

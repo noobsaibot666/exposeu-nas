@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties, PointerEvent, WheelEvent } from 'react'
 import './Portfolio.css'
 import { resolveImagePath } from '../utils/resolveImagePath'
@@ -313,11 +313,11 @@ function Portfolio() {
     return () => ctx.revert()
   }, [activeVideo])
 
-  useEffect(() => {
-    if (!activeVideo) return
+  const openVideo = useCallback((video: VideoItem) => {
     setSlideIndex(0)
     setSlideDirection(1)
-  }, [activeVideo])
+    setActiveVideo(video)
+  }, [])
 
   useEffect(() => {
     if (!activeVideo) return
@@ -466,7 +466,7 @@ function Portfolio() {
                         dragState.current.moved = false
                         return
                       }
-                      setActiveVideo(video)
+                      openVideo(video)
                     }}
                   >
                     <div
