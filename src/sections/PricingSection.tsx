@@ -34,8 +34,8 @@ function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
             const classes = ['home__pricing-card']
             if (tier.badge) classes.push('is-popular')
             if (isMonthly) classes.push('home__pricing-card--monthly')
-            const showUpTo = !serviceSlug && tier.price.toLowerCase() !== 'custom'
-            const priceLabel = showUpTo ? `Up to ${tier.price}` : tier.price
+            const isCustom = tier.price.toLowerCase() === 'custom'
+            const priceLabel = isCustom ? tier.price : `Packages starting from ${tier.price}`
 
             return (
               <article key={tier.name} className={classes.join(' ')}>
@@ -48,6 +48,9 @@ function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
                   <span>{priceLabel}</span>
                 <small>{tier.cadence === 'Per event' ? '/project' : tier.cadence === 'Retainer' ? '' : '/mo'}</small>
               </div>
+              <p className="home__pricing-helper">
+                Final scope depends on duration, location, and delivery needs. We confirm everything transparently before production.
+              </p>
               <p className="home__pricing-copy">{tier.description}</p>
               <ul>
                 {tier.features.map((feature: string) => (

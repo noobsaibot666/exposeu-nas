@@ -425,6 +425,12 @@
   margin: 0;
 }
 
+.home__pricing-helper {
+  color: var(--text-tertiary);
+  margin: 6px 0 0;
+  font-size: 0.95rem;
+}
+
 .home__pricing-card ul {
   list-style: none;
   padding: 0;
