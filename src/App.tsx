@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
 import About from './pages/About'
 import Atmospheric from './pages/Atmospheric'
@@ -29,13 +29,14 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/contact-success" element={<ContactSuccess />} />
           <Route
-            path="/exhibitions"
+            path="/documentation"
             element={
               <>
                 <Exhibitions />
               </>
             }
           />
+          <Route path="/exhibitions" element={<Navigate to="/documentation" replace />} />
           <Route
             path="/atmospheric"
             element={

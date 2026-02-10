@@ -14,7 +14,7 @@ const projects = [
     year: '2024',
     image: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
     copy: 'Press-ready stills and recap films for openings, installs, and curator walkthroughs.',
-    link: '/exhibitions',
+    link: '/documentation',
   },
   {
     title: 'Gallery stories',

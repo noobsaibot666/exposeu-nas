@@ -25,7 +25,7 @@ function Footer() {
         <div className="footer__links">
           <div className="footer__group">
             <p className="footer__label">Documentation types</p>
-            <a href="/exhibitions">Exhibitions</a>
+            <a href="/documentation">Exhibitions</a>
             <a href="/gallery-stories">Gallery stories</a>
             <a href="/artist-sessions">Artist sessions</a>
             <a href="/performance">Performances</a>

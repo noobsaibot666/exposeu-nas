@@ -1,5 +1,12 @@
 cd /mnt/Leviathan/www/exposeu
 
+Local dev (no host npm)
+sudo docker run --rm -it \
+  -v "$PWD:/app" -w /app \
+  -p 5173:5173 \
+  node:20-alpine sh -lc "npm ci && npm run dev -- --host 0.0.0.0 --port 5173"
+Open: http://<truenas-ip>:5173
+
 
 
 
@@ -105,3 +112,5 @@ Must include:
   cd /mnt/Leviathan/www/exposeu
 sudo docker compose -f docker-compose.traefik.yml up -d exposeu-nginx exposeu-contact
 
+# Deployment notes
+- 2026-02-10: Added canonical service redirects + /documentation route (Phase 1 technical integrity). Verified 301s and route checks on production.

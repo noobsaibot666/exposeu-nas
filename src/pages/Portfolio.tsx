@@ -95,7 +95,7 @@ const offers: OfferItem[] = [
     id: 'offer-exhibition',
     title: 'Exhibition',
     blurb: 'Full visual direction for galleries, openings, and installs with immersive screens, loops, and atmosphere.',
-    link: '/exhibitions',
+    link: '/documentation',
     cta: 'Contact us',
     accent: '#ffffffff',
     background: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
@@ -153,6 +153,7 @@ function Portfolio() {
   const [slideIndex, setSlideIndex] = useState(0)
   const [slideDirection, setSlideDirection] = useState(1)
   const [isDragging, setIsDragging] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const gridRef = useRef<HTMLDivElement | null>(null)
   const rootRef = useRef<HTMLElement | null>(null)
   const dragState = useRef({ active: false, startX: 0, scrollLeft: 0, moved: false, pointerId: 0 })
@@ -177,6 +178,25 @@ function Portfolio() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' })
+  }, [])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const media = window.matchMedia('(max-width: 600px)')
+    const update = () => setIsMobile(media.matches)
+    update()
+    if (media.addEventListener) {
+      media.addEventListener('change', update)
+    } else {
+      media.addListener(update)
+    }
+    return () => {
+      if (media.removeEventListener) {
+        media.removeEventListener('change', update)
+      } else {
+        media.removeListener(update)
+      }
+    }
   }, [])
 
   useEffect(() => {
@@ -392,6 +412,14 @@ function Portfolio() {
     return null
   }
 
+  const displayVideos = useMemo(() => {
+    if (!isMobile) return videos
+    const filtered = videos.filter((video) => video.id !== 'v4')
+    const boogarins = filtered.find((video) => video.id === 'v5')
+    const rest = filtered.filter((video) => video.id !== 'v5')
+    return boogarins ? [...rest, boogarins] : rest
+  }, [isMobile])
+
   return (
     <main className="portfolio" ref={rootRef}>
       <div className="portfolio__nav">
@@ -422,7 +450,7 @@ function Portfolio() {
               onPointerUp={stopDragging}
               onPointerLeave={stopDragging}
             >
-              {videos.map((video) => (
+              {displayVideos.map((video) => (
                   <button
                     key={video.id}
                     type="button"
