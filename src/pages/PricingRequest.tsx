@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import TopNav from '../components/TopNav'
 import { resolveImagePath } from '../utils/resolveImagePath'
+import { serviceMeta, type ServiceSlug } from '../data/serviceMeta'
 import './PricingRequest.css'
 
 const planDetails = {
@@ -19,34 +20,34 @@ const planDetails = {
   },
 }
 
-const serviceDetails = {
-  exhibitions: {
-    label: 'Exhibitions',
+const serviceDetails: Record<ServiceSlug, { label: string; image: string; intro: string }> = {
+  documentation: {
+    label: serviceMeta.documentation.label,
     image: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
     intro: 'Curation-forward coverage designed for press kits, collector previews, and gallery archives.',
   },
   'gallery-stories': {
-    label: 'Gallery Stories',
+    label: serviceMeta['gallery-stories'].label,
     image: resolveImagePath('/src/assets/images/services/2_gallery_work/2_GW_012.png'),
     intro: 'Narrative-led coverage with interviews and b-roll that keeps the curator voice intact.',
   },
   'artist-sessions': {
-    label: 'Artist Sessions',
+    label: serviceMeta['artist-sessions'].label,
     image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
     intro: 'Portraits and BTS that capture process, personality, and the release story.',
   },
   performance: {
-    label: 'Performance',
+    label: serviceMeta.performance.label,
     image: resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_004.png'),
     intro: 'Live show coverage with sharp timing and fast turnarounds for socials and press.',
   },
   'fashion-show': {
-    label: 'Fashion Show',
+    label: serviceMeta['fashion-show'].label,
     image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
     intro: 'Runway coverage built for look-by-look documentation, press pushes, and same-day selects.',
   },
   atmospheric: {
-    label: 'Atmospheric Films',
+    label: serviceMeta.atmospheric.label,
     image: resolveImagePath('/src/assets/images/services/6_atmospheric_film/6_AF_018.png'),
     intro: 'Mood-first storytelling with slow pacing, rich tones, and immersive art direction.',
   },
@@ -63,7 +64,7 @@ function PricingRequest() {
 
   const planInfo = plan && plan in planDetails ? planDetails[plan as keyof typeof planDetails] : null
   const serviceInfo =
-    serviceParam && serviceParam in serviceDetails ? serviceDetails[serviceParam as keyof typeof serviceDetails] : null
+    serviceParam && serviceParam in serviceDetails ? serviceDetails[serviceParam as ServiceSlug] : null
 
   const headline = useMemo(() => {
     if (serviceInfo && planInfo) return `${planInfo.name} coverage for ${serviceInfo.label}.`
@@ -170,7 +171,7 @@ function PricingRequest() {
           ]}
           rightLinks={[
             { label: 'About', onClick: () => navigate('/about') },
-            { label: 'Check availability', onClick: () => navigate('/contact') },
+            { label: 'Contact', onClick: () => navigate('/contact') },
           ]}
           onBrandClick={() => navigate('/')}
           brandLabel="expose.u"

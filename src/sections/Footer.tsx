@@ -1,5 +1,6 @@
 import './Footer.css'
 import { resolveImagePath } from '../utils/resolveImagePath'
+import { serviceList } from '../data/serviceMeta'
 
 function Footer() {
   const scrollToTop = () => {
@@ -28,12 +29,11 @@ function Footer() {
         <div className="footer__links">
           <div className="footer__group">
             <p className="footer__label">Documentation types</p>
-            <a href="/documentation">Exhibitions</a>
-            <a href="/gallery-stories">Gallery stories</a>
-            <a href="/artist-sessions">Artist sessions</a>
-            <a href="/performance">Performances</a>
-            <a href="/fashion-show">Fashion shows</a>
-            <a href="/atmospheric">Atmospheric films</a>
+            {serviceList.map((service) => (
+              <a key={service.slug} href={service.href}>
+                {service.label}
+              </a>
+            ))}
           </div>
           <div className="footer__group">
             <p className="footer__label">Next steps</p>

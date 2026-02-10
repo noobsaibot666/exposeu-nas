@@ -13,7 +13,7 @@ function ContactSuccess() {
           ]}
           rightLinks={[
             { label: 'About', href: '/about' },
-            { label: 'Check availability', href: '/contact' },
+            { label: 'Contact', href: '/contact' },
           ]}
           className="top-nav--page"
           activeLabel="Contact"

@@ -7,6 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useNavigate } from 'react-router-dom'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
+import { serviceMeta } from '../data/serviceMeta'
 
 type VideoItem = {
   id: string
@@ -103,54 +104,54 @@ const videos: VideoItem[] = [
 const offers: OfferItem[] = [
   {
     id: 'offer-exhibition',
-    title: 'Exhibition',
+    title: serviceMeta.documentation.label,
     blurb: 'Full visual direction for galleries, openings, and installs with immersive screens, loops, and atmosphere.',
-    link: '/documentation',
+    link: serviceMeta.documentation.href,
     cta: 'Check availability',
     accent: '#ffffffff',
     background: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
   },
   {
     id: 'offer-session',
-    title: 'Artist Session',
+    title: serviceMeta['artist-sessions'].label,
     blurb: 'Studio and portrait sessions that capture process and story with polished deliverables for press and socials.',
-    link: '/artist-sessions',
+    link: serviceMeta['artist-sessions'].href,
     cta: 'Check availability',
     accent: '#c4b5fd',
     background: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
   },
   {
     id: 'offer-performance',
-    title: 'Performance',
+    title: serviceMeta.performance.label,
     blurb: 'Live performance capture with cinematic documentation, multi-angle, crisp audio, and quick turnarounds.',
-    link: '/performance',
+    link: serviceMeta.performance.href,
     cta: 'Check availability',
     accent: '#fca5a5',
     background: resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_004.png'),
   },
   {
     id: 'offer-atmospheric',
-    title: 'Atmospheric',
+    title: serviceMeta.atmospheric.label,
     blurb: 'Mood-first films and stills that set the tone for your release, event, or install.',
-    link: '/atmospheric',
+    link: serviceMeta.atmospheric.href,
     cta: 'Check availability',
     accent: '#9bd1ff',
     background: resolveImagePath('/src/assets/images/services/6_atmospheric_film/6_AF_018.png'),
   },
   {
     id: 'offer-gallery',
-    title: 'Gallery Stories',
+    title: serviceMeta['gallery-stories'].label,
     blurb: 'Curator walkthroughs and features that make your space and artists shine online.',
-    link: '/gallery-stories',
+    link: serviceMeta['gallery-stories'].href,
     cta: 'Check availability',
     accent: '#fbcfe8',
     background: resolveImagePath('/src/assets/images/services/2_gallery_work/2_GW_012.png'),
   },
   {
     id: 'offer-fashion',
-    title: 'Fashion Show',
+    title: serviceMeta['fashion-show'].label,
     blurb: 'Editorial runway capture with clean angles, sharp detail, and fast delivery.',
-    link: '/fashion-show',
+    link: serviceMeta['fashion-show'].href,
     cta: 'Check availability',
     accent: '#c7d2fe',
     background: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
@@ -176,7 +177,7 @@ function Portfolio() {
       ],
       right: [
         { label: 'About', onClick: () => navigate('/about') },
-        { label: 'Check availability', onClick: () => navigate('/contact') },
+        { label: 'Contact', onClick: () => navigate('/contact') },
       ],
     }),
     [navigate],

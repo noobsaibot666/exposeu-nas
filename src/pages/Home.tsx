@@ -6,55 +6,56 @@ import TopNav from '../components/TopNav'
 import './Home.css'
 import Footer from '../sections/Footer'
 import { resolveImagePath } from '../utils/resolveImagePath'
+import { serviceMeta } from '../data/serviceMeta'
 
 const projects = [
   {
-    title: 'Exhibition documentation',
+    title: serviceMeta.documentation.label,
     location: 'Paris galleries',
     year: '2024',
     image: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
     copy: 'Press-ready stills and recap films for openings, installs, and curator walkthroughs.',
-    link: '/documentation',
+    link: serviceMeta.documentation.href,
   },
   {
-    title: 'Gallery stories',
+    title: serviceMeta['gallery-stories'].label,
     location: 'Berlin openings',
     year: '2023',
     image: resolveImagePath('/src/assets/images/services/2_gallery_work/2_GW_012.png'),
     copy: 'Curator interviews, collector previews, and narrative cuts that give context to the work.',
-    link: '/gallery-stories',
+    link: serviceMeta['gallery-stories'].href,
   },
   {
-    title: 'Artist sessions',
+    title: serviceMeta['artist-sessions'].label,
     location: 'Berlin ateliers',
     year: '2024',
     image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
     copy: 'Portraits, process, and BTS for releases, press kits, and artist profiles.',
-    link: '/artist-sessions',
+    link: serviceMeta['artist-sessions'].href,
   },
   {
-    title: 'Performance documentation',
+    title: serviceMeta.performance.label,
     location: 'Berlin nights',
     year: '2024',
     image: resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_004.png'),
     copy: 'Live sets captured fast with reels, selects, and clean audio-aware edits.',
-    link: '/performance',
+    link: serviceMeta.performance.href,
   },
   {
-    title: 'Fashion show',
+    title: serviceMeta['fashion-show'].label,
     location: 'Milan runway',
     year: '2023',
     image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
     copy: 'Runway and backstage documentation with editorial framing and fast delivery.',
-    link: '/fashion-show',
+    link: serviceMeta['fashion-show'].href,
   },
   {
-    title: 'Atmospheric films',
+    title: serviceMeta.atmospheric.label,
     location: 'Lisbon residencies',
     year: '2024',
     image: resolveImagePath('/src/assets/images/services/6_atmospheric_film/6_AF_018.png'),
     copy: 'Mood-driven shorts and lookbooks for concept launches and immersive installs.',
-    link: '/atmospheric',
+    link: serviceMeta.atmospheric.href,
   },
 ]
 
@@ -64,31 +65,31 @@ const heroGallery = [
   {
     id: 'thumb-1',
     image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/1_ED_038.png'),
-    label: 'Exhibitions',
+    label: serviceMeta.documentation.label,
     rotation: -3,
   },
   {
     id: 'thumb-2',
     image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_016.png'),
-    label: 'Artist sessions',
+    label: serviceMeta['artist-sessions'].label,
     rotation: 2,
   },
   {
     id: 'thumb-3',
     image: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_028.png'),
-    label: 'Documentations',
+    label: serviceMeta.documentation.label,
     rotation: -1,
   },
   {
     id: 'thumb-4',
     image: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_010.png'),
-    label: 'Performances',
+    label: serviceMeta.performance.label,
     rotation: 4,
   },
   {
     id: 'thumb-5',
     image: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_017.png'),
-    label: 'Fashion shows',
+    label: serviceMeta['fashion-show'].label,
     rotation: -4,
   },
 ]
@@ -152,7 +153,7 @@ function Home() {
       ],
       right: [
         { label: 'About', onClick: () => navigate('/about') },
-        { label: 'Check availability', onClick: () => navigate('/contact') },
+        { label: 'Contact', onClick: () => navigate('/contact') },
       ],
     }),
     [navigate],

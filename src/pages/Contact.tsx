@@ -5,6 +5,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
+import { serviceMeta } from '../data/serviceMeta'
 
 function Contact() {
   const navigate = useNavigate()
@@ -22,7 +23,7 @@ function Contact() {
       ],
       right: [
         { label: 'About', onClick: () => navigate('/about') },
-        { label: 'Check availability', onClick: () => navigate('/contact') },
+        { label: 'Contact', onClick: () => navigate('/contact') },
       ],
     }),
     [navigate],
@@ -105,12 +106,12 @@ function Contact() {
     if (messageRef.current.value.trim()) return
 
     const serviceLabels: Record<string, string> = {
-      documentation: 'Documentation',
-      'gallery-stories': 'Gallery Stories',
-      'artist-sessions': 'Artist Sessions',
-      performance: 'Performance',
-      'fashion-show': 'Fashion Show',
-      atmospheric: 'Atmospheric Films',
+      documentation: serviceMeta.documentation.label,
+      'gallery-stories': serviceMeta['gallery-stories'].label,
+      'artist-sessions': serviceMeta['artist-sessions'].label,
+      performance: serviceMeta.performance.label,
+      'fashion-show': serviceMeta['fashion-show'].label,
+      atmospheric: serviceMeta.atmospheric.label,
     }
 
     const hasService = Boolean(serviceLabels[serviceParam])

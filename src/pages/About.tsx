@@ -19,7 +19,7 @@ function About() {
       ],
       right: [
         { label: 'About', onClick: () => navigate('/about') },
-        { label: 'Check availability', onClick: () => navigate('/contact') },
+        { label: 'Contact', onClick: () => navigate('/contact') },
       ],
     }),
     [navigate],
