@@ -17,45 +17,45 @@ function Exhibitions() {
       detail="Installation documentation, guest atmosphere, and press-ready selects delivered fast and organized for teams and media."
       cards={heroCards}
       /* Primary gallery */
-      galleryTitle="Why galleries book us"
-      galleryCopy="We plan angles with your curator, work quietly, and deliver assets that look as intentional online as on the walls."
+      galleryTitle="Why it matters"
+      galleryCopy="Exhibitions are spatial works. Documentation should preserve sequence, scale, and curatorial intent without distortion."
       gallery={[
         {
+          title: 'Spatial reading',
+          subtitle: 'Wide frames that hold sightlines, spacing, and viewer flow.',
+        },
+        {
           title: 'Curator-aligned angles',
-          subtitle: 'Shot list built with the curator to preserve sightlines and intent.',
+          subtitle: 'Shot list aligned to intent and installation logic.',
         },
         {
-          title: 'Guest atmosphere',
-          subtitle: 'Candid reactions and crowd flow that show the room’s energy.',
+          title: 'Install and opening coverage',
+          subtitle: 'Quiet install stills plus opening-night atmosphere.',
         },
         {
-          title: 'Press-ready delivery',
-          subtitle: 'Stills and cuts labeled and organized for press, socials, and partners.',
-        },
-        {
-          title: 'Brand-matched edits',
-          subtitle: 'Minimalist, bold, or intimate pacing to match your tone.',
+          title: 'Archive-ready delivery',
+          subtitle: 'Consistent naming for press, collectors, and records.',
         },
       ]}
       /* What you get */
       extraGalleryTitle="What you get"
-      extraGalleryCopy="We handle capture and delivery end to end so you can focus on artists, guests, and partners."
+      extraGalleryCopy="A complete capture of installation and opening, delivered as usable stills and motion."
       extraGallery={[
         {
-          title: 'Shotlist and schedule',
-          subtitle: 'We map works, key moments, and timing before the opening.',
+          title: 'Pre-visit plan',
+          subtitle: 'We map works, light, and camera positions in advance.',
         },
         {
-          title: 'Deliverables mapped',
-          subtitle: 'Press stills, reels, and recap cuts with clear usage notes.',
+          title: 'Stills set',
+          subtitle: 'Hi-res details, wide rooms, and hero works.',
         },
         {
-          title: 'Flexible crew',
-          subtitle: 'Solo, dual, or multi-cam depending on the space and run-of-show.',
+          title: 'Motion recap',
+          subtitle: 'Short social cuts plus a longer archive edit.',
         },
         {
-          title: 'Fast turnaround',
-          subtitle: 'Selects in 24 to 48 hours, finals on an agreed timeline.',
+          title: 'Delivery structure',
+          subtitle: 'Folders and captions aligned to your comms needs.',
         },
       ]}
       /* How we work */

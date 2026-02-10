@@ -17,22 +17,22 @@ function Atmospheric() {
       detail="For teaser films, lookbooks, and art pieces that need a lush, textural feel."
       cards={heroCards}
       /* Primary gallery */
-      galleryTitle="Why it works"
-      galleryCopy="We design motion and stills that feel handcrafted with rich blacks, intentional grain, and pacing that lets the scene bloom."
+      galleryTitle="Why it matters"
+      galleryCopy="Atmospheric work relies on pacing and restraint. The images need space to breathe and a sound logic that supports the mood."
       gallery={[
-        { title: 'Mood boards to frames', subtitle: 'We translate your references into lighting setups and camera moves.' },
-        { title: 'Texture and tone', subtitle: 'Rich blacks, intentional grain, and tactile color.' },
-        { title: 'Pacing for feeling', subtitle: 'Slow camera, long takes, and breathing room.' },
-        { title: 'Sound and motion', subtitle: 'Ambient soundbeds and subtle movement that feels immersive.' },
+        { title: 'Intentional pacing', subtitle: 'Long takes and quiet movement that let scenes unfold.' },
+        { title: 'Cinematic restraint', subtitle: 'Composition and light that avoid excess and hold tone.' },
+        { title: 'Mood continuity', subtitle: 'Consistent color and texture across frames.' },
+        { title: 'Sound logic', subtitle: 'Ambient beds and sequence choices that deepen mood.' },
       ]}
       /* What you get */
       extraGalleryTitle="What you get"
-      extraGalleryCopy="Atmospheric packages tuned for teasers, lookbooks, and art films ready to drop across channels."
+      extraGalleryCopy="A focused set of visuals built for teasers, lookbooks, and art films."
       extraGallery={[
-        { title: 'Deliverables set', subtitle: 'Vertical reels, widescreen cuts, and still pulls in one delivery.' },
-        { title: 'Look and grade', subtitle: 'Custom LUTs and grading that match your palette.' },
-        { title: 'Music beds', subtitle: 'Licensed tracks or bespoke soundbeds to hold the tone.' },
-        { title: 'Usage clarity', subtitle: 'Organized folders with usage notes for partners and press.' },
+        { title: 'Mood film', subtitle: 'A concise cut built to hold attention and tone.' },
+        { title: 'Still pulls', subtitle: 'Frames extracted for web, press, and socials.' },
+        { title: 'Grade package', subtitle: 'LUTs and finals that match your palette.' },
+        { title: 'Sound bed', subtitle: 'Licensed or bespoke sound to support the edit.' },
       ]}
       /* How we work */
       extraGallerySecondaryTitle="How we shoot"

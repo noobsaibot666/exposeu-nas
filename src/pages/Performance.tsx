@@ -17,22 +17,22 @@ function Performance() {
       detail="From soundcheck to encore, you get artist focus, crowd energy, and usable assets fast."
       cards={heroCards}
       /* Primary gallery */
-      galleryTitle="Why producers book us"
-      galleryCopy="We balance crowd energy and artist focus, then deliver edits you can share, sell, and archive quickly."
+      galleryTitle="Why it matters"
+      galleryCopy="Live work is time-sensitive. Coverage has to be precise, low-intrusion, and faithful to the atmosphere."
       gallery={[
-        { title: 'Energy and detail', subtitle: 'Crowd and artist documentation without losing the vibe.' },
-        { title: 'Clean sightlines', subtitle: 'Angles planned so every key moment is usable.' },
-        { title: 'Audio-aware shooting', subtitle: 'Footage paced to the beat with clean sound pulls.' },
-        { title: 'Shareable fast', subtitle: 'Selects and reels ready while the show is still hot.' },
+        { title: 'Low intrusion', subtitle: 'Lean footprint that respects performers and audience.' },
+        { title: 'Timing discipline', subtitle: 'Cues and moments captured without missing beats.' },
+        { title: 'Movement clarity', subtitle: 'Angles that hold motion without blur or chaos.' },
+        { title: 'Atmosphere preserved', subtitle: 'Crowd energy captured without overt staging.' },
       ]}
       /* What you get */
       extraGalleryTitle="What you get"
-      extraGalleryCopy="Performance packages that give you hype reels and archival quality documentation."
+      extraGalleryCopy="Coverage designed for immediate release and long-term archive."
       extraGallery={[
-        { title: 'Multi-format delivery', subtitle: 'Vertical reels, wides, and stills in one drop.' },
-        { title: 'Hero edits', subtitle: 'Short and long cuts tailored for socials and partners.' },
-        { title: 'Backstage and crowd', subtitle: 'Texture shots beyond the stage.' },
-        { title: 'Usage notes', subtitle: 'Organized files with naming and clearance guidance.' },
+        { title: 'Multi-format delivery', subtitle: 'Vertical reels, wides, and stills together.' },
+        { title: 'Live cuts', subtitle: 'Short and extended edits for socials and partners.' },
+        { title: 'Backstage texture', subtitle: 'Selects that complete the story beyond the stage.' },
+        { title: 'Organized handoff', subtitle: 'Clear naming and structure for fast publishing.' },
       ]}
       /* How we work */
       extraGallerySecondaryTitle="How we run shows"

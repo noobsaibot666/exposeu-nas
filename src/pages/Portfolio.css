@@ -275,9 +275,8 @@
   font-size: 1.35rem;
   color: var(--text-strong);
   line-height: 1.2;
-  min-height: calc(1.2em * 2);
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -287,11 +286,27 @@
   color: var(--text-secondary);
   font-size: 1rem;
   line-height: 1.4;
-  min-height: calc(1.4em * 2);
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.portfolio__context {
+  margin: 0;
+  color: var(--text-tertiary);
+  font-size: 0.82rem;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.portfolio__context-label {
+  margin-right: 6px;
+  font-weight: 700;
+  color: var(--text-muted-strong);
 }
 
 .portfolio__footer-row {
@@ -328,6 +343,13 @@
   color: #fff;
 }
 
+.portfolio__card .portfolio__context {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.portfolio__card .portfolio__context-label {
+  color: rgba(255, 255, 255, 0.6);
+}
 .portfolio__card .portfolio__description {
   color: rgba(255, 255, 255, 0.82);
 }

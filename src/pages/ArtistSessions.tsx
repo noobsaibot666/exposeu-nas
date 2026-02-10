@@ -17,45 +17,45 @@ function ArtistSessions() {
       detail="You’ll get portraits, process, and studio moments that make your work feel personal."
       cards={heroCards}
       /* Primary gallery */
-      galleryTitle="Why artists work with us"
-      galleryCopy="We align on tone, styling, and pacing so you leave with assets for press, socials, and partner decks."
+      galleryTitle="Why it matters"
+      galleryCopy="Artist sessions shape identity. The assets should work across releases, press kits, and web without feeling staged."
       gallery={[
         {
-          title: 'Personality first',
-          subtitle: 'Portraits aligned to your aesthetic with lighting, styling, and pacing.',
+          title: 'Identity assets',
+          subtitle: 'Portraits aligned to your aesthetic and release cycle.',
         },
         {
-          title: 'Process captured',
-          subtitle: 'Hands, tools, and in-between moments that show how the work is made.',
+          title: 'Process context',
+          subtitle: 'Hands, tools, and studio moments that show how work is made.',
         },
         {
-          title: 'One session, full set',
-          subtitle: 'BTS, live moments, and clean portraits in one shoot.',
+          title: 'Release versatility',
+          subtitle: 'Assets sized for web, socials, press, and partner decks.',
         },
         {
-          title: 'Press-ready delivery',
-          subtitle: 'Edits and stills organized for media and partners.',
+          title: 'Press-ready clarity',
+          subtitle: 'Clean edits and structured delivery for fast use.',
         },
       ]}
       /* What you get */
       extraGalleryTitle="What you get"
-      extraGalleryCopy="A streamlined shoot that delivers portraits, process, and launch-ready assets without slowing you down."
+      extraGalleryCopy="A streamlined shoot that delivers portraits, process, and launch-ready assets."
       extraGallery={[
         {
           title: 'Shotlist and mood',
-          subtitle: 'We align on looks, props, and beats before we roll.',
+          subtitle: 'Looks, props, and beats aligned before the session.',
         },
         {
-          title: 'Mixed formats',
-          subtitle: 'Portraits, vertical reels, and wide stills delivered together.',
+          title: 'Portrait set',
+          subtitle: 'Clean hero portraits in multiple framings.',
         },
         {
-          title: 'Usage clarity',
-          subtitle: 'Clear file names and usage notes so you can publish fast.',
+          title: 'Process coverage',
+          subtitle: 'BTS and studio details that add context.',
         },
         {
-          title: 'Quick selects',
-          subtitle: 'Fast turnaround on selects to tease the release.',
+          title: 'Delivery structure',
+          subtitle: 'Organized folders and naming for immediate use.',
         },
       ]}
       /* How we work */

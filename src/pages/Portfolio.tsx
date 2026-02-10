@@ -12,6 +12,8 @@ type VideoItem = {
   id: string
   title: string
   description: string
+  context: string
+  outcome: string
   year: string
   location: string
   thumb: string
@@ -36,6 +38,8 @@ const videos: VideoItem[] = [
     id: 'v5',
     title: 'Boogarins Band',
     description: 'A still-driven visual story built from live session captures.',
+    context: 'documented live session for touring band',
+    outcome: 'delivered release stills + short clips',
     year: '2025',
     location: 'Brazil',
     thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/band/Hero.jpg'),
@@ -54,8 +58,10 @@ const videos: VideoItem[] = [
   },
   {
     id: 'v1',
-    title: 'Lick the walls to understand echoes - HOLON',
+    title: 'Lick the walls to understand echoes',
     description: 'Audio-reactive installation with immersive sound and visuals.',
+    context: 'captured sound-based installation',
+    outcome: 'delivered press stills + archive set',
     year: '2025',
     location: 'Berlin',
     thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/01/thumb_0.jpg'),
@@ -65,8 +71,10 @@ const videos: VideoItem[] = [
   },
   {
     id: 'v2',
-    title: 'Abigail Toll - IDOL - Silent Green Berlin',
+    title: 'Abigail Toll - IDOL - Silent Green',
     description: 'Music performance captured at Silent Green, Berlin.',
+    context: 'covered venue performance night',
+    outcome: 'delivered recap film + promo stills',
     year: '2025',
     location: 'Berlin',
     thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/02/thumb_0.jpg'),
@@ -79,6 +87,8 @@ const videos: VideoItem[] = [
     id: 'v4',
     title: 'Concert Session Garçons du désert',
     description: 'Intimate look at the artist’s process in-studio.',
+    context: 'shot in-studio session for release',
+    outcome: 'delivered portraits + BTS selects',
     year: '2024',
     location: 'Berlin',
     thumb: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
@@ -487,6 +497,14 @@ function Portfolio() {
                         <span className="portfolio__chip">{video.year}</span>
                         <p className="portfolio__title">{video.title}</p>
                         <p className="portfolio__description">{video.description}</p>
+                        <p className="portfolio__context">
+                          <span className="portfolio__context-label">Context</span>
+                          {video.context}
+                        </p>
+                        <p className="portfolio__context">
+                          <span className="portfolio__context-label">Outcome</span>
+                          {video.outcome}
+                        </p>
                         <div className="portfolio__footer-row">
                           <span className="portfolio__location">{video.location}</span>
                           <span className="portfolio__cta-chip">

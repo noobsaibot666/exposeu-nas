@@ -17,22 +17,22 @@ function GalleryStories() {
       detail="Built for socials, press kits, and collector previews with clear deliverables and fast turnaround."
       cards={heroCards}
       /* Primary gallery */
-      galleryTitle="Why gallery teams choose us"
-      galleryCopy="We structure the story, guide interviews, and deliver a package ready for patrons, press, and partners."
+      galleryTitle="Why it matters"
+      galleryCopy="Gallery stories give context to a program. The structure needs to serve collectors, press, and public audiences."
       gallery={[
-        { title: 'Story architecture', subtitle: 'We map curator intent, artist voice, and visitor experience into a clear narrative.' },
-        { title: 'Interviews that land', subtitle: 'Guided prompts so speakers sound natural and concise.' },
-        { title: 'Space and detail', subtitle: 'Wide establishing frames and close details that show the work clearly.' },
-        { title: 'Multi-use cuts', subtitle: 'Versions sized for socials, web, and media kits.' },
+        { title: 'Narrative spine', subtitle: 'Clear sequencing that connects works, artists, and program intent.' },
+        { title: 'Press framing', subtitle: 'Quotes and visuals that translate cleanly for media use.' },
+        { title: 'Interview clarity', subtitle: 'Guided prompts with clean audio and concise delivery.' },
+        { title: 'Program continuity', subtitle: 'Assets that support recurring drops and seasonal cycles.' },
       ]}
       /* What you get */
       extraGalleryTitle="What you get"
-      extraGalleryCopy="A complete story package with interviews, b-roll, and stills ready to share."
+      extraGalleryCopy="A story package built for publishing across web, socials, and press kits."
       extraGallery={[
-        { title: 'Interview cuts', subtitle: 'Clean audio, captions, and multiple lengths per platform.' },
-        { title: 'B-roll library', subtitle: 'Organized clips of the space, works, and interactions.' },
-        { title: 'Press stills', subtitle: 'Hi-res frames for catalogues and media drops.' },
-        { title: 'Usage clarity', subtitle: 'Folder structure and naming for fast publishing.' },
+        { title: 'Interview edits', subtitle: 'Short and long cuts with clean audio and captions.' },
+        { title: 'B-roll library', subtitle: 'Space, works, and audience moments grouped by theme.' },
+        { title: 'Press stills', subtitle: 'Hi-res frames ready for catalogues and releases.' },
+        { title: 'Structured delivery', subtitle: 'Naming, folders, and timestamps for quick handoff.' },
       ]}
       /* How we work */
       extraGallerySecondaryTitle="How we produce"

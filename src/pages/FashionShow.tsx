@@ -17,22 +17,22 @@ function FashionShow() {
       detail="For designers, producers, and PR teams who need fast editorial assets."
       cards={heroCards}
       /* Primary gallery */
-      galleryTitle="Why fashion teams book us"
-      galleryCopy="We sync with your show flow, capture every look cleanly, and deliver hero shots and social cuts fast."
+      galleryTitle="Why it matters"
+      galleryCopy="Fashion coverage is time-sensitive. Each look needs clarity, and PR needs assets fast without losing runway discipline."
       gallery={[
-        { title: 'Runway clarity', subtitle: 'Clean documentation of each look for designers and PR.' },
-        { title: 'Backstage energy', subtitle: 'Candid prep, fittings, and final moments.' },
-        { title: 'Fabric and motion', subtitle: 'Angles and shutter choices that show texture and flow.' },
-        { title: 'Press-ready delivery', subtitle: 'Hero images and reels ready for media and socials.' },
+        { title: 'Look-by-look precision', subtitle: 'Each look documented cleanly for PR and press.' },
+        { title: 'Backstage discipline', subtitle: 'Focused coverage of prep without interrupting flow.' },
+        { title: 'Runway consistency', subtitle: 'Angles that hold silhouette, fabric, and movement.' },
+        { title: 'Press turnaround', subtitle: 'Assets delivered fast for same-day distribution.' },
       ]}
       /* What you get */
       extraGalleryTitle="What you get"
-      extraGalleryCopy="Editorial documentation and fast delivery so your collection hits every channel on time."
+      extraGalleryCopy="Editorial coverage ready for press, socials, and brand archives."
       extraGallery={[
-        { title: 'Lookbook pulls', subtitle: 'Isolated frames of each look for press kits.' },
-        { title: 'Vertical and horizontal', subtitle: 'Reels, wides, and detail stills for every platform.' },
-        { title: 'Designer features', subtitle: 'Selects spotlighting craft and signature elements.' },
-        { title: 'Usage notes', subtitle: 'Organized folders with naming and delivery checklists.' },
+        { title: 'Runway set', subtitle: 'Isolated frames of each look for press kits.' },
+        { title: 'Backstage set', subtitle: 'Prep, fittings, and final checks in clean sequences.' },
+        { title: 'Same-day selects', subtitle: 'Priority frames delivered while the show is current.' },
+        { title: 'Structured delivery', subtitle: 'Folders, naming, and usage notes for PR teams.' },
       ]}
       /* How we work */
       extraGallerySecondaryTitle="How we cover shows"
