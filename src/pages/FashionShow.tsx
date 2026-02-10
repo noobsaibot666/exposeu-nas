@@ -18,21 +18,21 @@ function FashionShow() {
       cards={heroCards}
       /* Primary gallery */
       galleryTitle="Why it matters"
-      galleryCopy="Fashion coverage is time-sensitive. Each look needs clarity, and PR needs assets fast without losing runway discipline."
+      galleryCopy="Runway coverage must be exact, fast, and consistent."
       gallery={[
-        { title: 'Look-by-look precision', subtitle: 'Each look documented cleanly for PR and press.' },
-        { title: 'Backstage discipline', subtitle: 'Focused coverage of prep without interrupting flow.' },
-        { title: 'Runway consistency', subtitle: 'Angles that hold silhouette, fabric, and movement.' },
-        { title: 'Press turnaround', subtitle: 'Assets delivered fast for same-day distribution.' },
+        { title: 'Look accuracy', subtitle: 'Each look captured cleanly.' },
+        { title: 'Fabric motion', subtitle: 'Movement and texture remain sharp.' },
+        { title: 'Runway discipline', subtitle: 'Angles stay consistent by look.' },
+        { title: 'PR speed', subtitle: 'Selects ready for same-day use.' },
       ]}
       /* What you get */
       extraGalleryTitle="What you get"
-      extraGalleryCopy="Editorial coverage ready for press, socials, and brand archives."
+      extraGalleryCopy="Editorial delivery built for press, socials, and archive."
       extraGallery={[
-        { title: 'Runway set', subtitle: 'Isolated frames of each look for press kits.' },
-        { title: 'Backstage set', subtitle: 'Prep, fittings, and final checks in clean sequences.' },
-        { title: 'Same-day selects', subtitle: 'Priority frames delivered while the show is current.' },
-        { title: 'Structured delivery', subtitle: 'Folders, naming, and usage notes for PR teams.' },
+        { title: 'Runway set', subtitle: 'Look-by-look frames for PR.' },
+        { title: 'Backstage', subtitle: 'Prep and fittings without disruption.' },
+        { title: 'Same-day selects', subtitle: 'Priority frames within hours.' },
+        { title: 'Delivery', subtitle: 'Named folders and usage notes.' },
       ]}
       /* How we work */
       extraGallerySecondaryTitle="How we cover shows"

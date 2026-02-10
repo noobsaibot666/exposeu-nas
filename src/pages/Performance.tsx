@@ -18,21 +18,21 @@ function Performance() {
       cards={heroCards}
       /* Primary gallery */
       galleryTitle="Why it matters"
-      galleryCopy="Live work is time-sensitive. Coverage has to be precise, low-intrusion, and faithful to the atmosphere."
+      galleryCopy="Live work is fragile. Coverage must be precise and unobtrusive."
       gallery={[
-        { title: 'Low intrusion', subtitle: 'Lean footprint that respects performers and audience.' },
-        { title: 'Timing discipline', subtitle: 'Cues and moments captured without missing beats.' },
-        { title: 'Movement clarity', subtitle: 'Angles that hold motion without blur or chaos.' },
-        { title: 'Atmosphere preserved', subtitle: 'Crowd energy captured without overt staging.' },
+        { title: 'Low profile', subtitle: 'Small crew that stays out of sight.' },
+        { title: 'Timing', subtitle: 'Key moments captured without delays.' },
+        { title: 'Atmosphere', subtitle: 'Crowd energy preserved, not staged.' },
+        { title: 'Hero moments', subtitle: 'Clean frames for posters and press.' },
       ]}
       /* What you get */
       extraGalleryTitle="What you get"
-      extraGalleryCopy="Coverage designed for immediate release and long-term archive."
+      extraGalleryCopy="Assets ready for immediate release and archive."
       extraGallery={[
-        { title: 'Multi-format delivery', subtitle: 'Vertical reels, wides, and stills together.' },
-        { title: 'Live cuts', subtitle: 'Short and extended edits for socials and partners.' },
-        { title: 'Backstage texture', subtitle: 'Selects that complete the story beyond the stage.' },
-        { title: 'Organized handoff', subtitle: 'Clear naming and structure for fast publishing.' },
+        { title: 'Multi-format', subtitle: 'Vertical, wides, and stills together.' },
+        { title: 'Live edit', subtitle: 'Short recap plus extended cut.' },
+        { title: 'Backstage', subtitle: 'Selects that add context.' },
+        { title: 'Handoff', subtitle: 'Clear naming for quick publishing.' },
       ]}
       /* How we work */
       extraGallerySecondaryTitle="How we run shows"

@@ -18,44 +18,44 @@ function Exhibitions() {
       cards={heroCards}
       /* Primary gallery */
       galleryTitle="Why it matters"
-      galleryCopy="Exhibitions are spatial works. Documentation should preserve sequence, scale, and curatorial intent without distortion."
+      galleryCopy="Exhibitions live in space. Coverage must preserve sequence, scale, and intent."
       gallery={[
         {
-          title: 'Spatial reading',
-          subtitle: 'Wide frames that hold sightlines, spacing, and viewer flow.',
+          title: 'Sequence',
+          subtitle: 'Rooms read in order, with clear sightlines.',
         },
         {
-          title: 'Curator-aligned angles',
-          subtitle: 'Shot list aligned to intent and installation logic.',
+          title: 'Scale',
+          subtitle: 'Works shown at true size and spacing.',
         },
         {
-          title: 'Install and opening coverage',
-          subtitle: 'Quiet install stills plus opening-night atmosphere.',
+          title: 'Curatorial intent',
+          subtitle: 'Angles reflect placement, light, and design.',
         },
         {
-          title: 'Archive-ready delivery',
-          subtitle: 'Consistent naming for press, collectors, and records.',
+          title: 'Archive use',
+          subtitle: 'Sets ready for press, catalog, and record.',
         },
       ]}
       /* What you get */
       extraGalleryTitle="What you get"
-      extraGalleryCopy="A complete capture of installation and opening, delivered as usable stills and motion."
+      extraGalleryCopy="Installation and opening captured as a complete visual set."
       extraGallery={[
         {
-          title: 'Pre-visit plan',
-          subtitle: 'We map works, light, and camera positions in advance.',
+          title: 'Pre-walk',
+          subtitle: 'Key works, light, and angles mapped in advance.',
         },
         {
           title: 'Stills set',
-          subtitle: 'Hi-res details, wide rooms, and hero works.',
+          subtitle: 'Wide rooms, details, and hero works.',
         },
         {
-          title: 'Motion recap',
-          subtitle: 'Short social cuts plus a longer archive edit.',
+          title: 'Opening coverage',
+          subtitle: 'Guest atmosphere without staging.',
         },
         {
-          title: 'Delivery structure',
-          subtitle: 'Folders and captions aligned to your comms needs.',
+          title: 'Delivery',
+          subtitle: 'Named folders ready for press and archive.',
         },
       ]}
       /* How we work */

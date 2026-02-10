@@ -18,21 +18,21 @@ function GalleryStories() {
       cards={heroCards}
       /* Primary gallery */
       galleryTitle="Why it matters"
-      galleryCopy="Gallery stories give context to a program. The structure needs to serve collectors, press, and public audiences."
+      galleryCopy="Gallery stories turn a program into a clear narrative for press and collectors."
       gallery={[
-        { title: 'Narrative spine', subtitle: 'Clear sequencing that connects works, artists, and program intent.' },
-        { title: 'Press framing', subtitle: 'Quotes and visuals that translate cleanly for media use.' },
-        { title: 'Interview clarity', subtitle: 'Guided prompts with clean audio and concise delivery.' },
-        { title: 'Program continuity', subtitle: 'Assets that support recurring drops and seasonal cycles.' },
+        { title: 'Narrative', subtitle: 'Story beats connect works, artists, and program.' },
+        { title: 'Context', subtitle: 'Curator voice anchors the release.' },
+        { title: 'Translation', subtitle: 'Assets formatted for media and social.' },
+        { title: 'Continuity', subtitle: 'Reusable structure for series and seasons.' },
       ]}
       /* What you get */
       extraGalleryTitle="What you get"
-      extraGalleryCopy="A story package built for publishing across web, socials, and press kits."
+      extraGalleryCopy="A publish-ready story package built for web and press."
       extraGallery={[
-        { title: 'Interview edits', subtitle: 'Short and long cuts with clean audio and captions.' },
-        { title: 'B-roll library', subtitle: 'Space, works, and audience moments grouped by theme.' },
-        { title: 'Press stills', subtitle: 'Hi-res frames ready for catalogues and releases.' },
-        { title: 'Structured delivery', subtitle: 'Naming, folders, and timestamps for quick handoff.' },
+        { title: 'Interview cuts', subtitle: 'Short and long edits with clean audio.' },
+        { title: 'B-roll set', subtitle: 'Space, works, and audience moments grouped.' },
+        { title: 'Press stills', subtitle: 'Hi-res frames for releases and catalogues.' },
+        { title: 'Delivery', subtitle: 'Structured folders and timestamps.' },
       ]}
       /* How we work */
       extraGallerySecondaryTitle="How we produce"

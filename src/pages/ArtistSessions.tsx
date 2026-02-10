@@ -18,44 +18,44 @@ function ArtistSessions() {
       cards={heroCards}
       /* Primary gallery */
       galleryTitle="Why it matters"
-      galleryCopy="Artist sessions shape identity. The assets should work across releases, press kits, and web without feeling staged."
+      galleryCopy="Artist sessions define identity and release visuals without staging."
       gallery={[
         {
-          title: 'Identity assets',
-          subtitle: 'Portraits aligned to your aesthetic and release cycle.',
+          title: 'Portrait truth',
+          subtitle: 'Images that feel honest and current.',
         },
         {
-          title: 'Process context',
-          subtitle: 'Hands, tools, and studio moments that show how work is made.',
+          title: 'Process',
+          subtitle: 'Hands, tools, and studio context.',
         },
         {
-          title: 'Release versatility',
-          subtitle: 'Assets sized for web, socials, press, and partner decks.',
+          title: 'Release kit',
+          subtitle: 'Formats for web, press, and socials.',
         },
         {
-          title: 'Press-ready clarity',
-          subtitle: 'Clean edits and structured delivery for fast use.',
+          title: 'Consistency',
+          subtitle: 'Cohesive set for ongoing use.',
         },
       ]}
       /* What you get */
       extraGalleryTitle="What you get"
-      extraGalleryCopy="A streamlined shoot that delivers portraits, process, and launch-ready assets."
+      extraGalleryCopy="Portraits and process delivered as a clean launch kit."
       extraGallery={[
         {
-          title: 'Shotlist and mood',
-          subtitle: 'Looks, props, and beats aligned before the session.',
+          title: 'Prep',
+          subtitle: 'Mood and looks aligned ahead of shoot.',
         },
         {
           title: 'Portrait set',
-          subtitle: 'Clean hero portraits in multiple framings.',
+          subtitle: 'Multiple framings for selection.',
         },
         {
-          title: 'Process coverage',
-          subtitle: 'BTS and studio details that add context.',
+          title: 'Studio set',
+          subtitle: 'Details and BTS with context.',
         },
         {
-          title: 'Delivery structure',
-          subtitle: 'Organized folders and naming for immediate use.',
+          title: 'Delivery',
+          subtitle: 'Organized folders ready to publish.',
         },
       ]}
       /* How we work */

@@ -18,21 +18,21 @@ function Atmospheric() {
       cards={heroCards}
       /* Primary gallery */
       galleryTitle="Why it matters"
-      galleryCopy="Atmospheric work relies on pacing and restraint. The images need space to breathe and a sound logic that supports the mood."
+      galleryCopy="Atmospheric films rely on restraint, pacing, and continuity."
       gallery={[
-        { title: 'Intentional pacing', subtitle: 'Long takes and quiet movement that let scenes unfold.' },
-        { title: 'Cinematic restraint', subtitle: 'Composition and light that avoid excess and hold tone.' },
-        { title: 'Mood continuity', subtitle: 'Consistent color and texture across frames.' },
-        { title: 'Sound logic', subtitle: 'Ambient beds and sequence choices that deepen mood.' },
+        { title: 'Pacing', subtitle: 'Slow movement that lets scenes breathe.' },
+        { title: 'Restraint', subtitle: 'Composed frames without excess.' },
+        { title: 'Continuity', subtitle: 'Mood and color stay consistent.' },
+        { title: 'Sound logic', subtitle: 'Ambient beds support the sequence.' },
       ]}
       /* What you get */
       extraGalleryTitle="What you get"
-      extraGalleryCopy="A focused set of visuals built for teasers, lookbooks, and art films."
+      extraGalleryCopy="Deliverables built for teasers, loops, and release."
       extraGallery={[
-        { title: 'Mood film', subtitle: 'A concise cut built to hold attention and tone.' },
-        { title: 'Still pulls', subtitle: 'Frames extracted for web, press, and socials.' },
-        { title: 'Grade package', subtitle: 'LUTs and finals that match your palette.' },
-        { title: 'Sound bed', subtitle: 'Licensed or bespoke sound to support the edit.' },
+        { title: 'Mood cut', subtitle: 'Concise film that holds tone.' },
+        { title: 'Loopable selects', subtitle: 'Short pieces for installation or web.' },
+        { title: 'Still pulls', subtitle: 'Frames for press and social.' },
+        { title: 'Grade pack', subtitle: 'Finals matched to your palette.' },
       ]}
       /* How we work */
       extraGallerySecondaryTitle="How we shoot"
