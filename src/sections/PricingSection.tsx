@@ -16,7 +16,12 @@ function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
   const tiers = pricingTiers.map((tier) => ({ ...tier, ...(serviceOverrides[tier.slug] ?? {}) }))
 
   const handleSelectPlan = (slug: string) => {
-    const url = serviceSlug ? `/pricing-request/${slug}?service=${serviceSlug}` : `/pricing-request/${slug}`
+    const params = new URLSearchParams()
+    params.set('package', slug)
+    if (serviceSlug) {
+      params.set('service', serviceSlug)
+    }
+    const url = `/contact?${params.toString()}`
     navigate(url)
   }
 

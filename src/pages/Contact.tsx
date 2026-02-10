@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import './Contact.css'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import TopNav from '../components/TopNav'
@@ -11,6 +11,8 @@ function Contact() {
   const rootRef = useRef<HTMLElement | null>(null)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const messageRef = useRef<HTMLTextAreaElement | null>(null)
+  const location = useLocation()
 
   const navLinks = useMemo(
     () => ({
@@ -94,6 +96,43 @@ function Contact() {
   }
 
   useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const serviceParam = params.get('service')?.trim() ?? ''
+    const packageParam = params.get('package')?.trim() ?? ''
+
+    if (!messageRef.current) return
+    if (messageRef.current.value.trim()) return
+
+    const serviceLabels: Record<string, string> = {
+      documentation: 'Documentation',
+      'gallery-stories': 'Gallery Stories',
+      'artist-sessions': 'Artist Sessions',
+      performance: 'Performance',
+      'fashion-show': 'Fashion Show',
+      atmospheric: 'Atmospheric Films',
+    }
+
+    const hasService = Boolean(serviceLabels[serviceParam])
+    const packageLabels: Record<string, string> = {
+      'single-event': 'Single event',
+      'monthly-coverage': 'Monthly coverage',
+      'retainer-studio': 'Retainer',
+    }
+
+    const hasPackage = Boolean(packageLabels[packageParam])
+
+    if (!hasService && !hasPackage) return
+
+    const serviceLabel = hasService ? serviceLabels[serviceParam] : ''
+    const packageLabel = hasPackage ? packageLabels[packageParam] : ''
+    const detail = serviceLabel ? serviceLabel : 'a project'
+    const packageSuffix = packageLabel ? ` (${packageLabel})` : ''
+
+    messageRef.current.value =
+      `Hi - I'm reaching out about ${detail}${packageSuffix}. Dates: ___. Location: ___. Deliverables: ___.`
+  }, [location.search])
+
+  useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
 
     gsap.registerPlugin(ScrollTrigger)
@@ -141,7 +180,10 @@ function Contact() {
           <p className="contact__eyebrow">Contact</p>
           <h1>Let&apos;s plan your project.</h1>
           <p className="contact__lede">
-            We reply within 24 hours. Share your dates, location, and goals, and we&apos;ll propose the right package.
+            We usually reply within 24 hours. No automated replies. No sales pressure.
+          </p>
+          <p className="contact__lede">
+            Reaching out about a specific service or package? Mention it below and we’ll respond accordingly.
           </p>
         </div>
 
@@ -195,6 +237,7 @@ function Contact() {
                 placeholder="Tell us about your exhibition, performance, or event. Include date, venue, and goals."
                 rows={4}
                 required
+                ref={messageRef}
               />
             </div>
 
