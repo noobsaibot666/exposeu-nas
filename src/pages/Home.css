@@ -844,6 +844,15 @@
     width: 100%;
     padding-inline: var(--content-gutter);
   }
+
+  .home__actions button,
+  .home__proof-actions button,
+  .home__pricing-card button,
+  .home__service-card button,
+  .home__case-meta button {
+    min-height: 44px;
+    padding: 12px 20px;
+  }
 }
 
 @media (max-width: 540px) {
