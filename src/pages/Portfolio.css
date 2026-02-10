@@ -8,6 +8,7 @@
   width: min(1180px, 100%);
   margin: 0 auto 24px;
   padding: 0 var(--content-gutter);
+  will-change: transform, opacity;
 }
 
 .portfolio__links {
@@ -57,6 +58,7 @@
 .portfolio__hero-inner {
   display: grid;
   gap: 10px;
+  will-change: transform, opacity;
 }
 
 .portfolio__hero h1 {
@@ -76,6 +78,7 @@
 .portfolio__gallery {
   padding-top: 32px;
   padding-bottom: 72px;
+  will-change: transform, opacity;
 }
 
 .portfolio__gallery .content {
@@ -363,6 +366,7 @@
   place-items: center;
   padding: 28px;
   z-index: 1000;
+  will-change: opacity;
 }
 
 .portfolio__modal {
@@ -373,6 +377,7 @@
   border-radius: 0;
   padding: 0;
   box-shadow: none;
+  will-change: transform, opacity;
 }
 
 .portfolio__close {
@@ -401,6 +406,7 @@
 .portfolio__player {
   display: grid;
   gap: 10px;
+  will-change: transform, opacity;
 }
 
 .portfolio__slideshow {
@@ -547,6 +553,12 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .portfolio__slideshow-image {
+    animation: none;
+  }
+}
+
 .portfolio__player video {
   width: 100%;
   max-height: 75vh;
@@ -652,6 +664,7 @@
   background-position: center;
   box-shadow: none;
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, filter 180ms ease;
+  will-change: transform, opacity;
 }
 
 .portfolio__offer-card:hover {

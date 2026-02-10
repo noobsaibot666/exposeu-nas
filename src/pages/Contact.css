@@ -137,6 +137,12 @@
   font-weight: 600;
 }
 
+.contact__heading > *,
+.contact__info,
+.contact__form {
+  will-change: transform, opacity;
+}
+
 .contact__submit {
   background: var(--button-ghost-bg);
   color: var(--text-strong);

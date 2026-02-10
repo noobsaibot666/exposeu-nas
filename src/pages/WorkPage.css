@@ -93,6 +93,7 @@
   background: var(--surface-base);
   margin-left: var(--card-overlap, 0);
   z-index: var(--card-z, 1);
+  will-change: transform, opacity;
 }
 
 .work-hero__card-media {
@@ -130,6 +131,7 @@
   align-items: center;
   padding: clamp(56px, 8vh, 96px) 0;
   background: var(--bg-base);
+  will-change: transform, opacity;
 }
 
 .work-gallery__split {
@@ -204,6 +206,7 @@
   border: none;
   background: transparent;
   transition: transform 200ms ease;
+  will-change: transform, opacity;
 }
 
 .work-gallery__sequence-item:hover {
@@ -248,6 +251,7 @@
   overflow: hidden;
   box-shadow: var(--shadow-soft);
   background: var(--surface-base);
+  will-change: transform, opacity;
 }
 
 .work-gallery__image {
@@ -279,6 +283,10 @@
   justify-content: flex-start;
   align-items: center;
   gap: 12px;
+}
+
+.work-cta__content > * {
+  will-change: transform, opacity;
 }
 
 .work-cta__eyebrow {
