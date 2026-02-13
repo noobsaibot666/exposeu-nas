@@ -1,5 +1,0 @@
-.env
-node_modules
-uploads
-/api/dist
-/web/dist

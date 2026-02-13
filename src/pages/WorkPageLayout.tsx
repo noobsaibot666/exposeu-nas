@@ -256,11 +256,11 @@ function WorkPageLayout({
 
   return (
     <main className="work-page" ref={rootRef}>
-      <div className="content work-nav">
+      <div className="home__nav work-nav">
         <TopNav
           leftLinks={[
             { label: 'Home', href: '/' },
-            { label: 'Services', href: '/#services' },
+            { label: 'Services', href: '/#cases' },
           ]}
           rightLinks={[
             { label: 'About', href: '/about' },

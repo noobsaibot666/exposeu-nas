@@ -9,7 +9,7 @@ function PricingRequestSuccess() {
         <TopNav
           leftLinks={[
             { label: 'Home', href: '/' },
-            { label: 'Services', href: '/#services' },
+            { label: 'Services', href: '/#cases' },
           ]}
           rightLinks={[
             { label: 'About', href: '/about' },

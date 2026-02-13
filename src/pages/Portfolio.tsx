@@ -36,28 +36,6 @@ type OfferItem = {
 
 const videos: VideoItem[] = [
   {
-    id: 'v5',
-    title: 'Boogarins Band',
-    description: 'A still-driven visual story built from live session captures.',
-    context: 'documented live session for touring band',
-    outcome: 'delivered release stills + short clips',
-    year: '2025',
-    location: 'Brazil',
-    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/band/Hero.jpg'),
-    slideshowImages: [
-      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_001.jpg'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_002.jpg'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_003.jpg'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_004.jpg'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_005.jpg'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_006.jpg'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_007.jpg'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_008.jpg'),
-    ],
-    tag: 'Concert',
-    cta: 'View',
-  },
-  {
     id: 'v1',
     title: 'Lick the walls to understand echoes',
     description: 'Audio-reactive installation with immersive sound and visuals.',
@@ -85,19 +63,26 @@ const videos: VideoItem[] = [
     cta: 'Watch',
   },
   {
-    id: 'v4',
-    title: 'Concert Session Garçons du désert',
-    description: 'Intimate look at the artist’s process in-studio.',
-    context: 'shot in-studio session for release',
-    outcome: 'delivered portraits + BTS selects',
-    year: '2024',
-    location: 'Berlin',
-    thumb: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
+    id: 'v5',
+    title: 'Boogarins Band',
+    description: 'A still-driven visual story built from live session captures.',
+    context: 'documented live session for touring band',
+    outcome: 'delivered release stills + short clips',
+    year: '2025',
+    location: 'Brazil',
+    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/band/Hero.jpg'),
     slideshowImages: [
-      resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
-      ],
+      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_001.jpg'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_002.jpg'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_003.jpg'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_004.jpg'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_005.jpg'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_006.jpg'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_007.jpg'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_008.jpg'),
+    ],
     tag: 'Concert',
-    cta: 'Watch',
+    cta: 'View',
   },
 ]
 
@@ -127,7 +112,7 @@ const offers: OfferItem[] = [
     link: serviceMeta.performance.href,
     cta: 'Check availability',
     accent: '#fca5a5',
-    background: resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_004.png'),
+    background: resolveImagePath('/src/assets/images/website/performances/thumb_3_086.jpg'),
   },
   {
     id: 'offer-atmospheric',
@@ -136,7 +121,7 @@ const offers: OfferItem[] = [
     link: serviceMeta.atmospheric.href,
     cta: 'Check availability',
     accent: '#9bd1ff',
-    background: resolveImagePath('/src/assets/images/services/6_atmospheric_film/6_AF_018.png'),
+    background: resolveImagePath('/src/assets/images/website/atmospheric/thumb_3_025.jpg'),
   },
   {
     id: 'offer-gallery',
@@ -145,7 +130,7 @@ const offers: OfferItem[] = [
     link: serviceMeta['gallery-stories'].href,
     cta: 'Check availability',
     accent: '#fbcfe8',
-    background: resolveImagePath('/src/assets/images/services/2_gallery_work/2_GW_012.png'),
+    background: resolveImagePath('/src/assets/images/website/galleries/thumb_3_005.jpg'),
   },
   {
     id: 'offer-fashion',
@@ -173,7 +158,7 @@ function Portfolio() {
     () => ({
       left: [
         { label: 'Home', onClick: () => navigate('/') },
-        { label: 'Services', href: '/#services' },
+        { label: 'Services', href: '/#cases' },
       ],
       right: [
         { label: 'About', onClick: () => navigate('/about') },
@@ -533,7 +518,11 @@ function Portfolio() {
         <div className="content portfolio__offers-inner">
           <div className="portfolio__offers-copy">
             <p className="portfolio__eyebrow">Collaboration</p>
-            <h2>Now that you’ve seen the work, choose how we can team up.</h2>
+            <h2>
+              Now that you’ve seen the work,
+              <br />
+              choose how we can team up.
+            </h2>
             <p className="portfolio__lead">
               Pick the format that fits your stage, from exhibitions and artist sessions to full performance capture.
             </p>

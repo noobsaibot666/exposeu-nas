@@ -96,10 +96,11 @@
 
 .portfolio__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 320px));
   gap: 28px;
   width: 100%;
   align-items: stretch;
+  justify-content: center;
   overflow: visible;
   padding: 0;
   transition: transform 220ms ease, box-shadow 220ms ease, filter 220ms ease;
@@ -155,7 +156,7 @@
 
 .portfolio__thumb {
   width: 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 4 / 5.4;
   border-radius: inherit;
   background-size: cover;
   background-position: center;

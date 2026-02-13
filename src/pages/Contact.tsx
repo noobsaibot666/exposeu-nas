@@ -19,7 +19,7 @@ function Contact() {
     () => ({
       left: [
         { label: 'Home', onClick: () => navigate('/') },
-        { label: 'Services', href: '/#services' },
+        { label: 'Services', href: '/#cases' },
       ],
       right: [
         { label: 'About', onClick: () => navigate('/about') },

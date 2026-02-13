@@ -5,20 +5,7 @@
 }
 
 .work-nav {
-  padding: 20px 0 12px;
-}
-
-.work-nav .top-nav__bar {
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-.work-nav .top-nav__link {
-  font-size: 0.9rem;
-}
-
-.work-nav .top-nav__brand {
-  font-size: 1.4rem;
+  margin-bottom: 24px;
 }
 
 .work-hero {
@@ -338,14 +325,6 @@
 }
 
 @media (max-width: 900px) {
-  .work-nav {
-    padding: 16px 0 8px;
-  }
-
-  .work-nav .top-nav__brand {
-    font-size: 1.2rem;
-  }
-
   .work-hero__grid {
     gap: 24px;
   }

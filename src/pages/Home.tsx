@@ -11,7 +11,7 @@ import { serviceMeta } from '../data/serviceMeta'
 const projects = [
   {
     title: serviceMeta.documentation.label,
-    location: 'Paris galleries',
+    location: 'Berlin galleries',
     year: '2024',
     image: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
     copy: 'Press-ready stills and recap films for openings, installs, and curator walkthroughs.',
@@ -21,7 +21,7 @@ const projects = [
     title: serviceMeta['gallery-stories'].label,
     location: 'Berlin openings',
     year: '2023',
-    image: resolveImagePath('/src/assets/images/services/2_gallery_work/2_GW_012.png'),
+    image: resolveImagePath('/src/assets/images/website/galleries/thumb_3_005.jpg'),
     copy: 'Curator interviews, collector previews, and narrative cuts that give context to the work.',
     link: serviceMeta['gallery-stories'].href,
   },
@@ -37,13 +37,13 @@ const projects = [
     title: serviceMeta.performance.label,
     location: 'Berlin nights',
     year: '2024',
-    image: resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_004.png'),
+    image: resolveImagePath('/src/assets/images/website/performances/thumb_3_086.jpg'),
     copy: 'Live sets captured fast with reels, selects, and clean audio-aware edits.',
     link: serviceMeta.performance.href,
   },
   {
     title: serviceMeta['fashion-show'].label,
-    location: 'Milan runway',
+    location: 'Berlin runway',
     year: '2023',
     image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
     copy: 'Runway and backstage documentation with editorial framing and fast delivery.',
@@ -51,9 +51,9 @@ const projects = [
   },
   {
     title: serviceMeta.atmospheric.label,
-    location: 'Lisbon residencies',
+    location: 'Berlin residencies',
     year: '2024',
-    image: resolveImagePath('/src/assets/images/services/6_atmospheric_film/6_AF_018.png'),
+    image: resolveImagePath('/src/assets/images/website/atmospheric/thumb_3_025.jpg'),
     copy: 'Mood-driven shorts and lookbooks for concept launches and immersive installs.',
     link: serviceMeta.atmospheric.href,
   },
@@ -63,34 +63,34 @@ const projectRows = [projects.slice(0, 3), projects.slice(3, 6)]
 
 const heroGallery = [
   {
+    id: 'thumb-5',
+    image: resolveImagePath('/src/assets/images/website/fashion/thumb_3_081.jpg'),
+    label: serviceMeta['fashion-show'].label,
+    rotation: -4,
+  },
+  {
     id: 'thumb-1',
-    image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/1_ED_038.png'),
+    image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/1_ED_055.png'),
     label: serviceMeta.documentation.label,
     rotation: -3,
   },
   {
     id: 'thumb-2',
-    image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_016.png'),
+    image: resolveImagePath('/src/assets/images/website/performances/thumb_3_033.jpg'),
     label: serviceMeta['artist-sessions'].label,
     rotation: 2,
   },
   {
-    id: 'thumb-3',
-    image: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_028.png'),
-    label: serviceMeta.documentation.label,
-    rotation: -1,
-  },
-  {
     id: 'thumb-4',
-    image: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_010.png'),
+    image: resolveImagePath('/src/assets/images/website/performances/thumb_3_027.jpg'),
     label: serviceMeta.performance.label,
     rotation: 4,
   },
   {
-    id: 'thumb-5',
-    image: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_017.png'),
-    label: serviceMeta['fashion-show'].label,
-    rotation: -4,
+    id: 'thumb-3',
+    image: resolveImagePath('/src/assets/images/website/exhibitions/thumb_3_031.jpg'),
+    label: serviceMeta['atmospheric'].label,
+    rotation: -1,
   },
 ]
 
@@ -105,10 +105,10 @@ const heroServices = projects.map((project, index) => ({
 const mobileHeroStack = heroServices.slice(0, 5)
 
 const proofAvatars = [
-  resolveImagePath('/src/assets/images/services/1_exhibition_doc/_thumb/1_1/1_ED_005t.png'),
-  resolveImagePath('/src/assets/images/services/2_gallery_work/_thumb/1_1/2_GW_009t.png'),
-  resolveImagePath('/src/assets/images/services/3_artist_sessions/_thumb/1_1/3_AS_022t.png'),
-  resolveImagePath('/src/assets/images/services/4_performance_doc/_thumb/1_1/4_PD_001t.png'),
+  resolveImagePath('/src/assets/images/website/artists/thumb_3_052.jpg'),
+  resolveImagePath('/src/assets/images/website/artists/thumb_3_060.jpg'),
+  resolveImagePath('/src/assets/images/website/fashion/thumb_3_057.jpg'),
+  resolveImagePath('/src/assets/images/website/performances/thumb_3_086.jpg'),
 ]
 
 function Home() {
@@ -149,7 +149,7 @@ function Home() {
     () => ({
       left: [
         { label: 'Home', onClick: () => handleScroll('#hero') },
-        { label: 'Services', href: '/#services' },
+        { label: 'Services', href: '/#cases' },
       ],
       right: [
         { label: 'About', onClick: () => navigate('/about') },
@@ -178,34 +178,91 @@ function Home() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const ctx = gsap.context(() => {
+      const INTRO_KEY = 'exposeu_home_intro_v1'
+      let shouldPlayIntro = false
+      if (typeof window !== 'undefined') {
+        try {
+          shouldPlayIntro = !window.sessionStorage.getItem(INTRO_KEY)
+        } catch {
+          // If storage is unavailable (rare), avoid intro animations so we never hide content.
+          shouldPlayIntro = false
+        }
+      }
+
+      const mm = gsap.matchMedia()
+
       if (galleryRef.current) {
         tiltX.current = gsap.quickTo(galleryRef.current, '--hero-tilt-x', { duration: 0.45, ease: 'power3.out' })
         tiltY.current = gsap.quickTo(galleryRef.current, '--hero-tilt-y', { duration: 0.45, ease: 'power3.out' })
       }
 
-      const heroTimeline = gsap.timeline({ defaults: { ease: 'power3.out' } })
-      const mm = gsap.matchMedia()
+      if (shouldPlayIntro) {
+        const heroTimeline = gsap.timeline({ defaults: { ease: 'power3.out' } })
 
-      heroTimeline
-        .from('.home__nav', { opacity: 0, y: -12, duration: 0.5 })
-        .from('.home__hero-title', { opacity: 0, y: 28, duration: 0.7 }, '-=0.2')
-        .from('.home__hero-gallery', { opacity: 0, duration: 0.7 }, '-=0.35')
-        .from('.home__hero-subhead', { opacity: 0, y: 16, duration: 0.6 }, '-=0.35')
-        .from('.home__actions button', { opacity: 0, y: 12, duration: 0.5, stagger: 0.12 }, '-=0.3')
+        const navBar = document.querySelector<HTMLElement>('.home__nav .top-nav__bar')
 
-      const heroThumbs = gsap.utils.toArray<HTMLElement>('.home__hero-gallery--desktop .home__hero-thumb')
-      gsap.from(heroThumbs, {
-        opacity: 0,
-        y: 18,
-        duration: 0.8,
-        ease: 'power3.out',
-        stagger: { each: 0.12, from: 'center' },
-        delay: 0.15,
-        force3D: true,
-        clearProps: 'transform',
-      })
+        heroTimeline
+          // Don't transform `.home__nav` because it contains a `position: fixed` bar.
+          // A transformed ancestor can cause fixed children to "jump" when the transform clears.
+          .from(navBar ?? '.home__nav', {
+            opacity: 0,
+            y: -12,
+            duration: 0.5,
+            overwrite: 'auto',
+            immediateRender: false,
+            onStart: () => {
+              if (navBar) navBar.style.transition = 'none'
+            },
+            onComplete: () => {
+              if (navBar) navBar.style.transition = ''
+            },
+            clearProps: 'transform',
+          })
+          .from('.home__hero-title', { opacity: 0, y: 28, duration: 0.7, immediateRender: false }, '-=0.2')
+          .from('.home__hero-subhead', { opacity: 0, y: 16, duration: 0.6, immediateRender: false }, '-=0.35')
+          .from(
+            '.home__actions button',
+            { opacity: 0, y: 12, duration: 0.5, stagger: 0.12, immediateRender: false },
+            '-=0.3',
+          )
 
-      mm.add('(max-width: 640px)', () => undefined)
+        const heroThumbs = gsap.utils.toArray<HTMLElement>('.home__hero-gallery--desktop .home__hero-thumb')
+        gsap.from(heroThumbs, {
+          opacity: 0,
+          y: 34,
+          duration: 0.9,
+          ease: 'power2.out',
+          stagger: { each: 0.09, from: 'center' },
+          overwrite: 'auto',
+          immediateRender: false,
+          onStart: () => {
+            heroThumbs.forEach((el) => {
+              el.style.transition = 'none'
+            })
+          },
+          onComplete: () => {
+            heroThumbs.forEach((el) => {
+              el.style.transition = ''
+            })
+          },
+          clearProps: 'transform',
+        })
+
+        heroTimeline.eventCallback('onComplete', () => {
+          window.sessionStorage.setItem(INTRO_KEY, '1')
+        })
+
+        mm.add('(max-width: 640px)', () => undefined)
+      } else {
+        // Ensure there is no "flash" of intro styles when navigating back to Home.
+        gsap.set(['.home__hero-title', '.home__hero-subhead', '.home__actions button'], {
+          opacity: 1,
+          y: 0,
+          clearProps: 'transform',
+        })
+        gsap.set('.home__nav .top-nav__bar', { opacity: 1, y: 0, clearProps: 'transform' })
+        gsap.set('.home__hero-gallery--desktop .home__hero-thumb', { opacity: 1, y: 0, clearProps: 'transform' })
+      }
 
       const cards = gsap.utils.toArray<HTMLElement>('.home__case-card')
 
@@ -218,7 +275,7 @@ function Home() {
           ease: 'power2.out',
           scrollTrigger: {
             trigger: card,
-            start: 'top 90%',
+            start: 'top 92%',
           },
         })
       })
@@ -233,23 +290,42 @@ function Home() {
           ease: 'power2.out',
           scrollTrigger: {
             trigger: card,
-            start: 'top 85%',
+            start: 'top 90%',
           },
         })
       })
 
-      const proofItems = gsap.utils.toArray<HTMLElement>('.home__proof > *')
-      gsap.from(proofItems, {
-        opacity: 0,
-        y: 24,
-        duration: 0.7,
-        stagger: 0.1,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.home__proof',
-          start: 'top 80%',
-        },
+      const proofSections = gsap.utils.toArray<HTMLElement>('.home__proof')
+      proofSections.forEach((section) => {
+        const items = Array.from(section.children) as HTMLElement[]
+        gsap.from(items, {
+          opacity: 0,
+          y: 24,
+          duration: 0.7,
+          stagger: 0.1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 90%',
+          },
+        })
       })
+
+      const processSection = document.querySelector<HTMLElement>('.home__process')
+      if (processSection) {
+        const processItems = gsap.utils.toArray<HTMLElement>('.home__process-header > *, .home__process-step')
+        gsap.from(processItems, {
+          opacity: 0,
+          y: 18,
+          duration: 0.7,
+          stagger: 0.1,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: processSection,
+            start: 'top 90%',
+          },
+        })
+      }
 
       const listeners: Array<() => void> = []
 
@@ -363,20 +439,26 @@ function Home() {
       {/* Background layers */}
       <div className="home__background" aria-hidden />
       <div className="home__floaters" aria-hidden />
+
+      <div className="home__nav">
+        <TopNav
+          className="top-nav--page"
+          leftLinks={navLinks.left}
+          rightLinks={navLinks.right}
+          onBrandClick={() => navigate('/')}
+          brandLabel="expose.u"
+          activeLabel={activeSection}
+        />
+      </div>
+
       {/* Hero */}
       <header className="home__section home__hero" id="hero">
-        <div className="home__nav">
-          <TopNav
-            className="top-nav--page"
-            leftLinks={navLinks.left}
-            rightLinks={navLinks.right}
-            onBrandClick={() => navigate('/')}
-            brandLabel="expose.u"
-            activeLabel={activeSection}
-          />
-      </div>
         <div className="home__hero-body">
-          <h1 className="home__hero-title">Photo and video for Berlin&rsquo;s galleries, artists, and live events.</h1>
+          <h1 className="home__hero-title">
+            <span className="home__hero-title-line">Photo and video for Berlin&rsquo;s galleries,</span>
+            <br />
+            artists, and live events.
+          </h1>
           <div
             className="home__hero-gallery home__hero-gallery--desktop"
             ref={galleryRef}
@@ -473,7 +555,7 @@ function Home() {
           ))}
           <span>Make us part of your creative hub</span>
         </div>
-        <h2>A team fluent in galleries, artists, and live sets, keeping your visual language intact.</h2>
+        <h2>We are a team fluent in galleries, artists, and live sets, keeping your visual language intact.</h2>
         <p className="home__proof-copy">
           Press-ready stills and films that preserve the atmosphere and help collectors, press, and socials connect
           with the work.
@@ -491,7 +573,12 @@ function Home() {
           {projectRows.map((row, rowIndex) => (
             <div className="home__cases-row" key={`case-row-${rowIndex}`}>
               {row.map((project) => (
-                <article key={project.title} className="home__case-card">
+                <button
+                  key={project.title}
+                  type="button"
+                  className="home__case-card"
+                  onClick={() => navigate(project.link)}
+                >
                   <div className="home__case-media">
                     <img src={project.image} alt={project.title} />
                   </div>
@@ -502,11 +589,9 @@ function Home() {
                     </div>
                     <h3>{project.title}</h3>
                     <p className="home__case-copy">{project.copy}</p>
-                    <button type="button" onClick={() => navigate(project.link)}>
-                      See documentation details
-                    </button>
+                    <span className="home__case-cta">See documentation details</span>
                   </div>
-                </article>
+                </button>
               ))}
             </div>
           ))}
@@ -534,7 +619,7 @@ function Home() {
       </section>
       <section className="home__section home__process" id="process">
         <div className="home__process-header">
-          <h2>Process</h2>
+          <h2>Our Process</h2>
         </div>
         <div className="home__process-grid">
           <article className="home__process-step">

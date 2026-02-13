@@ -40,7 +40,8 @@ function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
             if (tier.badge) classes.push('is-popular')
             if (isMonthly) classes.push('home__pricing-card--monthly')
             const isCustom = tier.price.toLowerCase() === 'custom'
-            const priceLabel = isCustom ? tier.price : `Packages starting from ${tier.price}`
+            if (isCustom) classes.push('home__pricing-card--custom')
+            const suffix = tier.cadence === 'Per event' ? '/project' : tier.cadence === 'Retainer' ? '' : '/mo'
 
             return (
               <article key={tier.name} className={classes.join(' ')}>
@@ -50,8 +51,17 @@ function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
                 <p>{tier.cadence}</p>
               </div>
                 <div className="home__pricing-value">
-                  <span>{priceLabel}</span>
-                <small>{tier.cadence === 'Per event' ? '/project' : tier.cadence === 'Retainer' ? '' : '/mo'}</small>
+                  {isCustom ? (
+                    <span>{tier.price}</span>
+                  ) : (
+                    <span>
+                      Packages starting from{' '}
+                      <span className="home__pricing-amount">
+                        {tier.price}
+                        {suffix ? <small>{suffix}</small> : null}
+                      </span>
+                    </span>
+                  )}
               </div>
               <p className="home__pricing-helper">
                 Final scope depends on duration, location, and delivery needs. We confirm everything transparently before production.
