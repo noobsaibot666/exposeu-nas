@@ -72,14 +72,16 @@ function WorkPageLayout({
 
       gsap.from(cards, {
         opacity: 0,
-        x: -80,
-        scale: 0.94,
-        stagger: 0.08,
-        duration: 0.9,
-        ease: 'power2.in',
+        x: -36,
+        y: 10,
+        scale: 0.96,
+        stagger: 0.06,
+        duration: 0.78,
+        ease: 'power3.out',
+        force3D: true,
         scrollTrigger: {
           trigger: stackRef.current,
-          start: 'top 80%',
+          start: 'top 78%',
         },
       })
 
@@ -132,12 +134,14 @@ function WorkPageLayout({
         if (media) {
           gsap.from(media, {
             opacity: 0,
-            scale: 1.08,
-            duration: 1,
+            scale: 1.04,
+            y: 16,
+            duration: 0.82,
             ease: 'power3.out',
+            force3D: true,
             scrollTrigger: {
               trigger: section,
-              start: 'top 80%',
+              start: 'top 75%',
             },
           })
 
@@ -153,22 +157,7 @@ function WorkPageLayout({
           })
         }
 
-        if (media) {
-          gsap.fromTo(
-            media,
-            { clipPath: 'inset(12% 0% 12% 0%)', skewY: 1.5 },
-            {
-              clipPath: 'inset(0% 0% 0% 0%)',
-              skewY: 0,
-              duration: 0.9,
-              ease: 'power3.out',
-              scrollTrigger: {
-                trigger: section,
-                start: 'top 78%',
-              },
-            },
-          )
-        }
+        // Keep reveal subtle and stable in Chrome by avoiding clip-path/skew tweens.
       })
 
       gsap.from('.work-cta__content > *', {

@@ -961,7 +961,7 @@
 [data-theme='light'] .home__background {
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.6)),
     url('/src/assets/images/services/7_Hero/7_HERO_030.png') center/cover no-repeat;
-  opacity: 0.10;
+  opacity: 0.12;
   filter: blur(2px);
 }
 
@@ -969,13 +969,4 @@
 [data-theme='light'] .home__hero-subhead,
 [data-theme='light'] .home__hero-body p {
   color: var(--text-strong);
-}
-
-[data-theme='light'] .home {
-  background: #ffffff;
-}
-
-[data-theme='light'] .home__background {
-  opacity: 0.15;
-  filter: blur(2px);
 }

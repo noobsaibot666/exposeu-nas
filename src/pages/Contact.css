@@ -180,6 +180,11 @@
   border: 1px solid var(--border-soft);
 }
 
+/* Keep contact page footer text-only to avoid blue media block */
+.contact .footer {
+  background: transparent;
+}
+
 @media (max-width: 768px) {
   .contact__submit {
     min-height: 44px;

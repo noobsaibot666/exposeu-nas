@@ -13,38 +13,38 @@ function Atmospheric() {
     <WorkPageLayout
       /* Hero */
       title="Atmospheric"
-      heroCopy="Tone-rich visuals built to set a mood with tight framing and patient movement."
-      detail="For teaser films, lookbooks, and art pieces that need a lush, textural feel."
+      heroCopy="Project documentation for immersive builds, installations, and spatial experiences."
+      detail="For studios, agencies, and production teams that need clear visuals for websites, pitch decks, and presentations."
       cards={heroCards}
       /* Primary gallery */
       galleryTitle="Why it matters"
-      galleryCopy="Atmospheric films rely on restraint, pacing, and continuity."
+      galleryCopy="Your work is physical and time-based. Documentation must explain both clearly."
       gallery={[
-        { title: 'Pacing', subtitle: 'Slow movement that lets scenes breathe.' },
-        { title: 'Restraint', subtitle: 'Composed frames without excess.' },
-        { title: 'Continuity', subtitle: 'Mood and color stay consistent.' },
-        { title: 'Sound logic', subtitle: 'Ambient beds support the sequence.' },
+        { title: 'Spatial reading', subtitle: 'Camera movement explains scale and flow.' },
+        { title: 'Interaction clarity', subtitle: 'Key user moments are documented cleanly.' },
+        { title: 'Context capture', subtitle: 'Environment, audience, and intent are visible.' },
+        { title: 'Narrative order', subtitle: 'Footage follows a clear project sequence.' },
       ]}
       /* What you get */
       extraGalleryTitle="What you get"
-      extraGalleryCopy="Deliverables built for teasers, loops, and release."
+      extraGalleryCopy="Deliverables prepared for client communication and case-study use."
       extraGallery={[
-        { title: 'Mood cut', subtitle: 'Concise film that holds tone.' },
-        { title: 'Loopable selects', subtitle: 'Short pieces for installation or web.' },
-        { title: 'Still pulls', subtitle: 'Frames for press and social.' },
-        { title: 'Grade pack', subtitle: 'Finals matched to your palette.' },
+        { title: 'Project film', subtitle: 'Short edit for website and presentations.' },
+        { title: 'Still set', subtitle: 'Curated frames for decks and press pages.' },
+        { title: 'Clip selects', subtitle: 'Modular cuts for social and proposal reuse.' },
+        { title: 'Structured finals', subtitle: 'Organized files for teams and handoff.' },
       ]}
       /* How we work */
       extraGallerySecondaryTitle="How we shoot"
-      extraGallerySecondaryCopy="Lean crew, thoughtful prelight, and a calm set so the mood stays intact."
+      extraGallerySecondaryCopy="Low-friction production with planning aligned to your build schedule."
       extraGallerySecondary={[
-        { title: 'Prelight and tests', subtitle: 'We dial light and color before talent arrives.' },
-        { title: 'Small footprint', subtitle: 'Minimal gear to keep the set quiet and nimble.' },
-        { title: 'On-set direction', subtitle: 'Clear cues to keep movement slow and intentional.' },
-        { title: 'Swift handoff', subtitle: 'Selects and cuts fast so you can release while the buzz is fresh.' },
+        { title: 'Pre-shoot sync', subtitle: 'We map objectives, usage, and key moments.' },
+        { title: 'On-site coverage', subtitle: 'We document setup, interaction, and final state.' },
+        { title: 'Editorial pass', subtitle: 'We shape footage for external and internal use.' },
+        { title: 'Delivery handoff', subtitle: 'Finals arrive ready for web, decks, and archives.' },
       ]}
       /* CTA */
-      ctaText="Book an atmospheric shoot. Share your mood, date, and goals."
+      ctaText="Need project documentation? Share scope, timeline, and delivery needs."
       ctaHref="/contact"
       /* Pricing overrides */
       serviceSlug="atmospheric"

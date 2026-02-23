@@ -5,7 +5,7 @@ sudo docker run --rm -it \
   -v "$PWD:/app" -w /app \
   -p 5173:5173 \
   node:20-alpine sh -lc "npm ci && npm run dev -- --host 0.0.0.0 --port 5173"
-Open: http://<truenas-ip>:5173
+Open: http://192.168.178.146:5173
 
 
 

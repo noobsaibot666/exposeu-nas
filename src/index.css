@@ -4,10 +4,10 @@
   --weight-medium: 500;
   --weight-bold: 700;
   --weight-black: 800;
-  --page-bg: #05070b;
-  --bg-base: #05070b;
-  --surface-base: #0a0d16;
-  --surface-muted: #121526;
+  --page-bg: #050507;
+  --bg-base: #050507;
+  --surface-base: #090a0c;
+  --surface-muted: #111216;
   --surface-card: rgba(8, 8, 8, 0.7);
   --surface-card-strong: rgba(15, 15, 15, 0.95);
   --surface-overlay: rgba(255, 255, 255, 0.05);
@@ -64,7 +64,6 @@ body {
   margin: 0;
   color: var(--text-strong);
   background: var(--page-bg);
-  animation: page-fade-in 320ms ease;
   padding-bottom: env(safe-area-inset-bottom);
 }
 
@@ -224,15 +223,4 @@ p {
   font-weight: 800;
   font-style: normal;
   font-display: swap;
-}
-
-@keyframes page-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }

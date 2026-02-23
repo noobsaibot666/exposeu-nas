@@ -1,7 +1,31 @@
 .work-page {
+  position: relative;
+  isolation: isolate;
   background: var(--bg-base);
   color: var(--text-strong);
   min-height: 100svh;
+}
+
+.work-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: var(--bg-base);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.work-page .section,
+.work-hero,
+.work-gallery,
+.work-cta,
+.work-page .home__pricing {
+  background: transparent;
+  background-image: none !important;
+}
+
+.work-page .section {
+  padding-block: clamp(42px, 6vh, 72px);
 }
 
 .work-nav {
@@ -76,11 +100,12 @@
   overflow: hidden;
   border: 1px solid var(--border-soft);
   box-shadow: none;
-  transform: translateY(var(--card-translate, 0)) scale(var(--card-scale, 1));
   background: var(--surface-base);
   margin-left: var(--card-overlap, 0);
   z-index: var(--card-z, 1);
   will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateY(var(--card-translate, 0)) scale(var(--card-scale, 1)) translateZ(0);
 }
 
 .work-hero__card-media {
@@ -116,9 +141,8 @@
   min-height: 100svh;
   display: flex;
   align-items: center;
-  padding: clamp(56px, 8vh, 96px) 0;
+  padding: clamp(42px, 6vh, 72px) 0;
   background: var(--bg-base);
-  will-change: transform, opacity;
 }
 
 .work-gallery__split {
@@ -194,6 +218,7 @@
   background: transparent;
   transition: transform 200ms ease;
   will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 .work-gallery__sequence-item:hover {
@@ -236,9 +261,10 @@
   min-height: clamp(320px, 60vh, 720px);
   border-radius: 26px;
   overflow: hidden;
-  box-shadow: var(--shadow-soft);
+  box-shadow: none;
   background: var(--surface-base);
   will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 .work-gallery__image {
@@ -246,8 +272,10 @@
   inset: -8% 0;
   background-size: cover;
   background-position: center;
-  filter: saturate(1.05);
-  will-change: transform;
+  filter: none;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .work-gallery--flipped .work-gallery__text {

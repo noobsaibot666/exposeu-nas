@@ -13,7 +13,7 @@
 
 .footer__to-top {
   border: 1px solid var(--border-soft);
-  background: var(--surface-base);
+  background: transparent;
   color: var(--text-strong);
   width: 46px;
   height: 46px;
@@ -27,13 +27,14 @@
 .footer__to-top:hover {
   transform: translateY(-2px);
   border-color: var(--link-color);
-  background: var(--bg-base);
+  background: transparent;
 }
 
 .footer__media {
   width: min(1280px, 96vw);
   height: min(50vh, 560px);
   min-height: 260px;
+  background: transparent;
   border-radius: 22px;
   overflow: hidden;
   box-shadow: none;
