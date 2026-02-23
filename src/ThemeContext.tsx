@@ -12,9 +12,7 @@ type ThemeContextValue = {
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeMode>(() => {
-    return (document.documentElement.dataset.theme as ThemeMode) || 'dark'
-  })
+  const [theme, setThemeState] = useState<ThemeMode>('dark')
 
   const toggleTheme = useCallback(() => {
     const next = theme === 'dark' ? 'light' : 'dark'

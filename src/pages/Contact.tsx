@@ -6,12 +6,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
 import { serviceMeta } from '../data/serviceMeta'
+import { trackEvent } from '../utils/analytics'
 
 function Contact() {
   const navigate = useNavigate()
   const rootRef = useRef<HTMLElement | null>(null)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [hasTrackedStart, setHasTrackedStart] = useState(false)
   const messageRef = useRef<HTMLTextAreaElement | null>(null)
   const location = useLocation()
 
@@ -88,13 +90,21 @@ function Contact() {
       }
 
       form.reset()
+      trackEvent('contact_submit_success', 'conversion', 'contact_form')
       navigate('/contact-success')
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Something went wrong. Please email us directly.'
       setSubmitError(message)
+      trackEvent('contact_submit_error', 'conversion', message)
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  const handleFormFocus = () => {
+    if (hasTrackedStart) return
+    setHasTrackedStart(true)
+    trackEvent('contact_form_start', 'conversion', 'contact_form')
   }
 
   useEffect(() => {
@@ -215,7 +225,7 @@ function Contact() {
             </div>
           </div>
 
-          <form className="contact__form" onSubmit={handleSubmit}>
+          <form className="contact__form" onSubmit={handleSubmit} onFocus={handleFormFocus}>
             <div className="contact__field">
               <label htmlFor="firstName">Name</label>
               <input id="firstName" name="firstName" type="text" placeholder="First name" />

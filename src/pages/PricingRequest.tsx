@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import TopNav from '../components/TopNav'
 import { resolveImagePath } from '../utils/resolveImagePath'
+import { trackEvent } from '../utils/analytics'
 import { serviceMeta, type ServiceSlug } from '../data/serviceMeta'
 import './PricingRequest.css'
 
@@ -145,6 +146,7 @@ function PricingRequest() {
       }
     }
 
+    trackEvent('form_submission', 'pricing', planInfo?.name ?? plan ?? 'unknown')
     setStatus('success')
     event.currentTarget.reset()
     navigate('/pricing-request/success')

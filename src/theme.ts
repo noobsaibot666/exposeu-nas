@@ -12,14 +12,5 @@ export const setTheme = (mode: ThemeMode) => {
 }
 
 export const initTheme = () => {
-  const stored = (() => {
-    try {
-      return localStorage.getItem(THEME_KEY) as ThemeMode | null
-    } catch {
-      return null
-    }
-  })()
-  const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches
-  const mode: ThemeMode = stored ?? (prefersLight ? 'light' : 'dark')
-  setTheme(mode)
+  setTheme('dark')
 }
