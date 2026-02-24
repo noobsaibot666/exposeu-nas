@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react'
 import type { CSSProperties } from 'react'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import TopNav from '../components/TopNav'
 import PricingSection from '../sections/PricingSection'
 import './WorkPage.css'
@@ -53,10 +52,9 @@ function WorkPageLayout({
   const stackRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-    window.scrollTo({ top: 0, behavior: 'auto' })
+
 
     const ctx = gsap.context(() => {
       const heroItems = gsap.utils.toArray<HTMLElement>('.work-hero__copy > *')
@@ -244,7 +242,7 @@ function WorkPageLayout({
   )
 
   return (
-    <main className="work-page" ref={rootRef}>
+    <main className="work-page" ref={rootRef} id="main">
       <div className="home__nav work-nav">
         <TopNav
           leftLinks={[

@@ -1,3 +1,43 @@
+@font-face {
+  font-family: 'Satoshi';
+  src: url('./assets/fonts/Satoshi-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('./assets/fonts/Satoshi-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('./assets/fonts/Satoshi-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('./assets/fonts/Satoshi-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('./assets/fonts/Satoshi-Black.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --font-sans: 'Satoshi', 'Helvetica Neue', Arial, system-ui, -apple-system, sans-serif;
   --weight-regular: 400;
@@ -43,6 +83,10 @@
   --content-max: 1180px;
   --content-gutter: clamp(18px, 5vw, 28px);
   --section-padding-block: clamp(56px, 8vw, 92px);
+  --error-color: #f87171;
+  --transition-fast: 150ms;
+  --transition-medium: 200ms;
+  --transition-slow: 300ms;
   font-family: var(--font-sans);
   line-height: 1.6;
   font-weight: var(--weight-regular);
@@ -72,6 +116,7 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -85,7 +130,8 @@ html {
 #root,
 html,
 body {
-  background-color: var(--bg-base); /* fallback to prevent white flash before main styles load */
+  background-color: var(--bg-base);
+  /* fallback to prevent white flash before main styles load */
 }
 
 #root {
@@ -166,7 +212,7 @@ p {
 
 .btn-primary {
   background: linear-gradient(120deg, var(--accent-color), var(--accent-strong));
-  color: #fff;
+  color: var(--contrast-bg);
   box-shadow: none;
 }
 
@@ -184,43 +230,4 @@ p {
 .btn-ghost:hover {
   transform: translateY(-1px);
   border-color: var(--accent-color);
-}
-@font-face {
-  font-family: 'Satoshi';
-  src: url('./assets/fonts/Satoshi-Light.woff') format('woff');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Satoshi';
-  src: url('./assets/fonts/Satoshi-Regular.woff') format('woff');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Satoshi';
-  src: url('./assets/fonts/Satoshi-Medium.woff') format('woff');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Satoshi';
-  src: url('./assets/fonts/Satoshi-Bold.woff') format('woff');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Satoshi';
-  src: url('./assets/fonts/Satoshi-Black.woff') format('woff');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
 }

@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './About.css'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
@@ -26,7 +25,6 @@ function About() {
   )
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const ctx = gsap.context(() => {
@@ -61,7 +59,7 @@ function About() {
   }, [])
 
   return (
-    <main className="about" ref={rootRef}>
+    <main className="about" ref={rootRef} id="main">
       <div className="home__nav about__nav">
         <TopNav
           leftLinks={navLinks.left}

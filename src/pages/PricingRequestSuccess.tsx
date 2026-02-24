@@ -4,7 +4,7 @@ import './PricingRequest.css'
 
 function PricingRequestSuccess() {
   return (
-    <main className="pricing-request pricing-request--success">
+    <main className="pricing-request pricing-request--success" id="main">
       <div className="home__nav pricing-request__nav">
         <TopNav
           leftLinks={[

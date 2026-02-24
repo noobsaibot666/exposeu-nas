@@ -23,7 +23,7 @@ function Impressum() {
   )
 
   return (
-    <main className="impressum" ref={rootRef}>
+    <main className="impressum" ref={rootRef} id="main">
       <div className="home__nav impressum__nav">
         <TopNav
           leftLinks={navLinks.left}

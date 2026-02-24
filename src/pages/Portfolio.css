@@ -189,7 +189,7 @@
   border-radius: 0;
   border: none;
   background: transparent;
-  color: #fff;
+  color: var(--text-strong);
   backdrop-filter: none;
   transform: translateY(-18px);
   transition: transform 200ms ease, color 200ms ease;
@@ -197,7 +197,7 @@
 
 .portfolio__card:hover .portfolio__play-icon {
   transform: translateY(-18px) scale(1.08);
-  color: #fff;
+  color: var(--text-strong);
 }
 
 .portfolio__thumb::after {
@@ -228,7 +228,7 @@
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.22);
   border: 1px solid rgba(255, 255, 255, 0.6);
-  color: #fff;
+  color: var(--text-strong);
   font-size: 0.85rem;
   font-weight: 700;
 }
@@ -273,7 +273,7 @@
   padding: 6px 10px;
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.6);
-  color: #fff;
+  color: var(--text-strong);
   font-size: 0.8rem;
   width: fit-content;
 }
@@ -286,6 +286,7 @@
   line-height: 1.2;
   display: -webkit-box;
   -webkit-line-clamp: 1;
+  line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -297,6 +298,7 @@
   line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 1;
+  line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -308,6 +310,7 @@
   line-height: 1.2;
   display: -webkit-box;
   -webkit-line-clamp: 1;
+  line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -349,7 +352,7 @@
 .portfolio__card .portfolio__cta-chip,
 .portfolio__card .portfolio__chip,
 .portfolio__card .portfolio__pill {
-  color: #fff;
+  color: var(--text-strong);
 }
 
 .portfolio__card .portfolio__context {
@@ -359,6 +362,7 @@
 .portfolio__card .portfolio__context-label {
   color: rgba(255, 255, 255, 0.6);
 }
+
 .portfolio__card .portfolio__description {
   color: rgba(255, 255, 255, 0.82);
 }
@@ -372,7 +376,7 @@
   place-items: center;
   padding: 28px;
   z-index: 1000;
-  will-change: opacity;
+
 }
 
 .portfolio__modal {
@@ -383,7 +387,7 @@
   border-radius: 0;
   padding: 0;
   box-shadow: none;
-  will-change: transform, opacity;
+
 }
 
 .portfolio__close {
@@ -412,7 +416,7 @@
 .portfolio__player {
   display: grid;
   gap: 10px;
-  will-change: transform, opacity;
+
 }
 
 .portfolio__slideshow {
@@ -425,7 +429,7 @@
   height: auto;
   max-height: 75vh;
   border-radius: 10px;
-  background: #000;
+  background: var(--bg-base);
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -469,6 +473,7 @@
     opacity: 0;
     transform: translateX(28px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -480,6 +485,7 @@
     opacity: 0;
     transform: translateX(-28px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -516,7 +522,7 @@
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.35);
   background: rgba(0, 0, 0, 0.45);
-  color: #fff;
+  color: var(--text-strong);
   display: grid;
   place-items: center;
   cursor: pointer;
@@ -570,7 +576,7 @@
   max-height: 75vh;
   border-radius: 10px;
   border: none;
-  background: #000;
+  background: var(--bg-base);
   box-shadow: none;
 }
 
@@ -580,7 +586,7 @@
   aspect-ratio: 16 / 9;
   border-radius: 10px;
   border: none;
-  background: #000;
+  background: var(--bg-base);
   box-shadow: none;
 }
 
@@ -609,7 +615,7 @@
 .portfolio__player-meta .portfolio__eyebrow,
 .portfolio__player-meta .portfolio__title,
 .portfolio__player-meta .portfolio__description {
-  color: #fff;
+  color: var(--text-strong);
 }
 
 .portfolio__player-meta .portfolio__description {
@@ -670,7 +676,7 @@
   background-position: center;
   box-shadow: none;
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, filter 180ms ease;
-  will-change: transform, opacity;
+
 }
 
 .portfolio__offer-card:hover {
@@ -707,7 +713,7 @@
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.22);
   border: 1px solid rgba(255, 255, 255, 0.6);
-  color: #fff;
+  color: var(--text-strong);
   font-weight: 700;
 }
 
@@ -715,7 +721,7 @@
   padding: 6px 10px;
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.22);
-  color: #fff;
+  color: var(--text-strong);
   font-weight: 700;
   border: 1px solid rgba(255, 255, 255, 0.6);
 }
@@ -756,7 +762,7 @@
 .portfolio__offer-card .portfolio__offer-pill,
 .portfolio__offer-card .portfolio__offer-badge,
 .portfolio__offer-card .portfolio__offer-cta {
-  color: #fff;
+  color: var(--text-strong);
 }
 
 .portfolio__offer-card .portfolio__offer-blurb {

@@ -7,3 +7,45 @@
   isolation: isolate;
   overflow-x: clip;
 }
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 9999;
+  padding: 12px 20px;
+  background: var(--surface-base);
+  color: var(--text-strong);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: top 150ms ease;
+}
+
+.skip-link:focus {
+  top: 16px;
+}
+
+/* Page micro-transition */
+.page__content {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 200ms ease-out, transform 200ms ease-out;
+}
+
+.page__content.is-entering {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page__content {
+    transition: none;
+  }
+
+  .page__content.is-entering {
+    opacity: 1;
+    transform: none;
+  }
+}

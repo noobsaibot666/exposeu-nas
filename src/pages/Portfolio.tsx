@@ -3,7 +3,6 @@ import type { CSSProperties, PointerEvent, WheelEvent } from 'react'
 import './Portfolio.css'
 import { resolveImagePath } from '../utils/resolveImagePath'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useNavigate } from 'react-router-dom'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
@@ -152,6 +151,7 @@ function Portfolio() {
   const [isMobile, setIsMobile] = useState(false)
   const gridRef = useRef<HTMLDivElement | null>(null)
   const rootRef = useRef<HTMLElement | null>(null)
+  const openerRef = useRef<HTMLElement | null>(null)
   const dragState = useRef({ active: false, startX: 0, scrollLeft: 0, moved: false, pointerId: 0 })
 
   const navLinks = useMemo(
@@ -168,9 +168,8 @@ function Portfolio() {
     [navigate],
   )
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'auto' })
-  }, [])
+
+
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -192,7 +191,6 @@ function Portfolio() {
   }, [])
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const ctx = gsap.context(() => {
@@ -299,7 +297,24 @@ function Portfolio() {
     return () => ctx.revert()
   }, [activeVideo])
 
+  useEffect(() => {
+    if (!activeVideo) return
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    // Auto-focus close button
+    requestAnimationFrame(() => {
+      const closeBtn = document.querySelector<HTMLElement>('.portfolio__close')
+      closeBtn?.focus()
+    })
+    return () => {
+      document.body.style.overflow = previousOverflow
+      // Restore focus to the element that opened the modal
+      requestAnimationFrame(() => openerRef.current?.focus())
+    }
+  }, [activeVideo])
+
   const openVideo = useCallback((video: VideoItem) => {
+    openerRef.current = document.activeElement as HTMLElement
     setSlideIndex(0)
     setSlideDirection(1)
     setActiveVideo(video)
@@ -330,6 +345,31 @@ function Portfolio() {
 
     window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
+  }, [activeVideo])
+
+  // Focus trap: cycle Tab within the modal overlay
+  useEffect(() => {
+    if (!activeVideo) return
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return
+      const overlay = document.querySelector<HTMLElement>('.portfolio__overlay')
+      if (!overlay) return
+      const focusable = overlay.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      )
+      if (!focusable.length) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+    document.addEventListener('keydown', handleTab)
+    return () => document.removeEventListener('keydown', handleTab)
   }, [activeVideo])
 
   const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
@@ -413,7 +453,7 @@ function Portfolio() {
   }, [isMobile])
 
   return (
-    <main className="portfolio" ref={rootRef}>
+    <main className="portfolio" ref={rootRef} id="main">
       <div className="portfolio__nav">
         <TopNav
           className="top-nav--page"
@@ -443,24 +483,24 @@ function Portfolio() {
               onPointerLeave={stopDragging}
             >
               {displayVideos.map((video) => (
-                  <button
-                    key={video.id}
-                    type="button"
-                    className="portfolio__card"
-                    onClick={() => {
-                      if (dragState.current.moved) {
-                        dragState.current.moved = false
-                        return
-                      }
-                      openVideo(video)
-                    }}
+                <button
+                  key={video.id}
+                  type="button"
+                  className="portfolio__card"
+                  onClick={() => {
+                    if (dragState.current.moved) {
+                      dragState.current.moved = false
+                      return
+                    }
+                    openVideo(video)
+                  }}
+                >
+                  <div
+                    className="portfolio__thumb"
+                    style={{ backgroundImage: `url(${video.thumb})` }}
+                    aria-hidden="true"
                   >
-                    <div
-                      className="portfolio__thumb"
-                      style={{ backgroundImage: `url(${video.thumb})` }}
-                    aria-hidden
-                  >
-                    <span className="portfolio__play" aria-hidden>
+                    <span className="portfolio__play" aria-hidden="true">
                       <span className="portfolio__play-icon">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <polygon points="9 18 19 12 9 6 9 18" />
@@ -470,45 +510,45 @@ function Portfolio() {
                     <div className="portfolio__topline">
                       <span className="portfolio__pill">{video.tag ?? 'Feature'}</span>
                       <span className="portfolio__icon">
-                          <svg width="12" height="12" viewBox="0 0 22 22" fill="none">
+                        <svg width="12" height="12" viewBox="0 0 22 22" fill="none">
+                          <path
+                            d="M20 18.6842C20 19.4109 19.4109 20 18.6842 20C17.9575 20 17.3684 19.4109 17.3684 18.6842V4.49219L2.24609 19.6145C1.73225 20.1284 0.899333 20.1284 0.385485 19.6145C-0.128363 19.1007 -0.128362 18.2678 0.385485 17.7539L15.5078 2.63158H1.31579C0.589099 2.63158 0 2.04248 0 1.31579C0 0.589099 0.589099 0 1.31579 0H20V18.6842Z"
+                            fill="white"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                    <div className="portfolio__thumb-overlay" />
+                    <div className="portfolio__bottom">
+                      <span className="portfolio__chip">{video.year}</span>
+                      <p className="portfolio__title">{video.title}</p>
+                      <p className="portfolio__description">{video.description}</p>
+                      <p className="portfolio__context">
+                        <span className="portfolio__context-label">Context</span>
+                        {video.context}
+                      </p>
+                      <p className="portfolio__context">
+                        <span className="portfolio__context-label">Outcome</span>
+                        {video.outcome}
+                      </p>
+                      <div className="portfolio__footer-row">
+                        <span className="portfolio__location">{video.location}</span>
+                        <span className="portfolio__cta-chip">
+                          {video.cta ?? 'Play'}
+                          <svg width="8" height="14" viewBox="0 0 3 7" fill="none">
                             <path
-                              d="M20 18.6842C20 19.4109 19.4109 20 18.6842 20C17.9575 20 17.3684 19.4109 17.3684 18.6842V4.49219L2.24609 19.6145C1.73225 20.1284 0.899333 20.1284 0.385485 19.6145C-0.128363 19.1007 -0.128362 18.2678 0.385485 17.7539L15.5078 2.63158H1.31579C0.589099 2.63158 0 2.04248 0 1.31579C0 0.589099 0.589099 0 1.31579 0H20V18.6842Z"
-                              fill="white"
+                              d="M1 6L2.50024 4.1247C2.79242 3.75948 2.79242 3.24052 2.50024 2.87531L1 1"
+                              stroke="white"
+                              strokeWidth="0.5"
+                              strokeLinecap="round"
                             />
                           </svg>
                         </span>
                       </div>
-                      <div className="portfolio__thumb-overlay" />
-                      <div className="portfolio__bottom">
-                        <span className="portfolio__chip">{video.year}</span>
-                        <p className="portfolio__title">{video.title}</p>
-                        <p className="portfolio__description">{video.description}</p>
-                        <p className="portfolio__context">
-                          <span className="portfolio__context-label">Context</span>
-                          {video.context}
-                        </p>
-                        <p className="portfolio__context">
-                          <span className="portfolio__context-label">Outcome</span>
-                          {video.outcome}
-                        </p>
-                        <div className="portfolio__footer-row">
-                          <span className="portfolio__location">{video.location}</span>
-                          <span className="portfolio__cta-chip">
-                            {video.cta ?? 'Play'}
-                            <svg width="8" height="14" viewBox="0 0 3 7" fill="none">
-                              <path
-                                d="M1 6L2.50024 4.1247C2.79242 3.75948 2.79242 3.24052 2.50024 2.87531L1 1"
-                                stroke="white"
-                                strokeWidth="0.5"
-                                strokeLinecap="round"
-                              />
-                            </svg>
-                          </span>
-                        </div>
-                      </div>
                     </div>
-                  </button>
-                ))}
+                  </div>
+                </button>
+              ))}
             </div>
           </div>
         </div>
@@ -571,6 +611,7 @@ function Portfolio() {
           className="portfolio__overlay"
           role="dialog"
           aria-modal="true"
+          aria-labelledby="portfolio-modal-title"
           onClick={() => setActiveVideo(null)}
         >
           <div className="portfolio__modal" onClick={(event) => event.stopPropagation()}>
@@ -614,7 +655,7 @@ function Portfolio() {
                                 setSlideIndex((slideIndex - 1 + total) % total)
                               }}
                             >
-                              <span aria-hidden>‹</span>
+                              <span aria-hidden="true">‹</span>
                             </button>
                             <button
                               type="button"
@@ -625,21 +666,20 @@ function Portfolio() {
                                 setSlideIndex((slideIndex + 1) % total)
                               }}
                             >
-                              <span aria-hidden>›</span>
+                              <span aria-hidden="true">›</span>
                             </button>
                           </>
                         )}
                         <img
                           key={`${activeVideo.id}-slide-${slideIndex}`}
-                          className={`portfolio__slideshow-image ${
-                            slideDirection === -1 ? 'portfolio__slideshow-image--prev' : 'portfolio__slideshow-image--next'
-                          }`}
+                          className={`portfolio__slideshow-image ${slideDirection === -1 ? 'portfolio__slideshow-image--prev' : 'portfolio__slideshow-image--next'
+                            }`}
                           src={current}
                           alt={`${activeVideo.title} slide ${slideIndex + 1}`}
                         />
                       </div>
                       {total > 1 && (
-                        <div className="portfolio__slideshow-dots" aria-hidden>
+                        <div className="portfolio__slideshow-dots" aria-hidden="true">
                           {activeVideo.slideshowImages.map((_, index) => (
                             <span
                               key={`slide-${activeVideo.id}-${index}`}
@@ -683,7 +723,7 @@ function Portfolio() {
                   <span className="portfolio__dot">•</span>
                   <span>{activeVideo.location}</span>
                 </div>
-                <p className="portfolio__title">{activeVideo.title}</p>
+                <p className="portfolio__title" id="portfolio-modal-title">{activeVideo.title}</p>
                 <p className="portfolio__description">{activeVideo.description}</p>
               </div>
             </div>

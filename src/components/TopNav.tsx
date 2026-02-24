@@ -34,6 +34,7 @@ function TopNav({
 
   const lastScrollY = useRef(0)
   const ticking = useRef(false)
+  const toggleRef = useRef<HTMLButtonElement>(null)
 
   const navLinks = useMemo(() => [...leftLinks, ...rightLinks], [leftLinks, rightLinks])
 
@@ -43,6 +44,11 @@ function TopNav({
     if (!open) return undefined
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
+    // Auto-focus close button in drawer
+    requestAnimationFrame(() => {
+      const closeBtn = document.querySelector<HTMLElement>('.top-nav__close')
+      closeBtn?.focus()
+    })
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') closeMenu()
     }
@@ -55,6 +61,8 @@ function TopNav({
 
     return () => {
       document.body.style.overflow = previousOverflow
+      // Restore focus to toggle button
+      requestAnimationFrame(() => toggleRef.current?.focus())
       document.removeEventListener('keydown', handleKey)
       mql.removeEventListener('change', handleBreakpoint)
     }
@@ -208,12 +216,13 @@ function TopNav({
           <button
             type="button"
             className="top-nav__toggle"
+            ref={toggleRef}
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? 'Close menu' : 'Open menu'}
             onClick={() => setOpen((prev) => !prev)}
           >
-            <div className="top-nav__toggle-lines" aria-hidden />
+            <div className="top-nav__toggle-lines" aria-hidden="true" />
           </button>
         </div>
       </div>

@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import TopNav from '../components/TopNav'
 import './Home.css'
 import Footer from '../sections/Footer'
@@ -173,22 +172,10 @@ function Home() {
     tiltY.current?.(0)
   }
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
+  useLayoutEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const ctx = gsap.context(() => {
-      const INTRO_KEY = 'exposeu_home_intro_v1'
-      let shouldPlayIntro = false
-      if (typeof window !== 'undefined') {
-        try {
-          shouldPlayIntro = !window.sessionStorage.getItem(INTRO_KEY)
-        } catch {
-          // If storage is unavailable (rare), avoid intro animations so we never hide content.
-          shouldPlayIntro = false
-        }
-      }
-
       const mm = gsap.matchMedia()
 
       if (galleryRef.current) {
@@ -196,73 +183,78 @@ function Home() {
         tiltY.current = gsap.quickTo(galleryRef.current, '--hero-tilt-y', { duration: 0.45, ease: 'power3.out' })
       }
 
-      if (shouldPlayIntro) {
-        const heroTimeline = gsap.timeline({ defaults: { ease: 'power3.out' } })
+      const heroTimeline = gsap.timeline({ defaults: { ease: 'power3.out' } })
 
-        const navBar = document.querySelector<HTMLElement>('.home__nav .top-nav__bar')
+      const navBar = document.querySelector<HTMLElement>('.home__nav .top-nav__bar')
+      const navTarget = navBar ?? '.home__nav'
 
-        heroTimeline
-          // Don't transform `.home__nav` because it contains a `position: fixed` bar.
-          // A transformed ancestor can cause fixed children to "jump" when the transform clears.
-          .from(navBar ?? '.home__nav', {
-            opacity: 0,
-            y: -12,
-            duration: 0.5,
-            overwrite: 'auto',
-            immediateRender: false,
-            onStart: () => {
-              if (navBar) navBar.style.transition = 'none'
-            },
-            onComplete: () => {
-              if (navBar) navBar.style.transition = ''
-            },
-            clearProps: 'transform',
-          })
-          .from('.home__hero-title', { opacity: 0, y: 28, duration: 0.7, immediateRender: false }, '-=0.2')
-          .from('.home__hero-subhead', { opacity: 0, y: 16, duration: 0.6, immediateRender: false }, '-=0.35')
-          .from(
-            '.home__actions button',
-            { opacity: 0, y: 12, duration: 0.5, stagger: 0.12, immediateRender: false },
-            '-=0.3',
-          )
+      // Set initial hidden states immediately to prevent blink
+      gsap.set(navTarget, { opacity: 0, y: -12 })
+      gsap.set('.home__hero-title', { opacity: 0, y: 28 })
+      gsap.set('.home__hero-subhead', { opacity: 0, y: 16 })
+      gsap.set('.home__actions button', { opacity: 0, y: 12 })
 
-        const heroThumbs = gsap.utils.toArray<HTMLElement>('.home__hero-gallery--desktop .home__hero-thumb')
-        gsap.from(heroThumbs, {
-          opacity: 0,
-          y: 34,
-          duration: 0.9,
-          ease: 'power2.out',
-          stagger: { each: 0.09, from: 'center' },
-          overwrite: 'auto',
-          immediateRender: false,
-          onStart: () => {
-            heroThumbs.forEach((el) => {
-              el.style.transition = 'none'
-            })
-          },
-          onComplete: () => {
-            heroThumbs.forEach((el) => {
-              el.style.transition = ''
-            })
-          },
-          clearProps: 'transform',
-        })
-
-        heroTimeline.eventCallback('onComplete', () => {
-          window.sessionStorage.setItem(INTRO_KEY, '1')
-        })
-
-        mm.add('(max-width: 640px)', () => undefined)
-      } else {
-        // Ensure there is no "flash" of intro styles when navigating back to Home.
-        gsap.set(['.home__hero-title', '.home__hero-subhead', '.home__actions button'], {
+      heroTimeline
+        .to(navTarget, {
           opacity: 1,
           y: 0,
+          duration: 0.5,
+          overwrite: 'auto',
+          onStart: () => {
+            if (navBar) navBar.style.transition = 'none'
+          },
+          onComplete: () => {
+            if (navBar) navBar.style.transition = ''
+          },
           clearProps: 'transform',
         })
-        gsap.set('.home__nav .top-nav__bar', { opacity: 1, y: 0, clearProps: 'transform' })
-        gsap.set('.home__hero-gallery--desktop .home__hero-thumb', { opacity: 1, y: 0, clearProps: 'transform' })
-      }
+        .to('.home__hero-title', { opacity: 1, y: 0, duration: 0.7, clearProps: 'transform' }, '-=0.2')
+        .to('.home__hero-subhead', { opacity: 1, y: 0, duration: 0.6, clearProps: 'transform' }, '-=0.35')
+        .to(
+          '.home__actions button',
+          { opacity: 1, y: 0, duration: 0.5, stagger: 0.12, clearProps: 'transform' },
+          '-=0.3',
+        )
+
+      const heroThumbs = gsap.utils.toArray<HTMLElement>('.home__hero-gallery--desktop .home__hero-thumb')
+      // Two-phase reveal: thumb images slide up first, then captions fade in
+      // Using set→to instead of from to avoid Chrome flash and Safari timing issues
+      const yOffsets = [58, 66, 50, 70, 62]
+      heroThumbs.forEach((el, i) => {
+        el.style.transition = 'none'
+        const image = el.querySelector<HTMLElement>('.home__hero-thumb-image')
+        const caption = el.querySelector<HTMLElement>('figcaption')
+        const target = image ?? el
+
+        // Set initial hidden state immediately (no flash)
+        gsap.set(target, { opacity: 0, y: yOffsets[i % yOffsets.length], scale: 0.92 })
+        if (caption) gsap.set(caption, { opacity: 0, y: 8 })
+
+        // Phase 1: thumb image slides up
+        gsap.to(target, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1.0 + i * 0.04,
+          ease: 'power3.out',
+          delay: 0.14 * Math.abs(i - Math.floor(heroThumbs.length / 2)),
+          clearProps: 'transform',
+          onComplete: () => {
+            el.style.transition = ''
+            // Phase 2: caption fades in after image settles
+            if (caption) {
+              gsap.to(caption, {
+                opacity: 1,
+                y: 0,
+                duration: 0.4,
+                ease: 'power2.out',
+                clearProps: 'transform',
+              })
+            }
+          },
+        })
+      })
+
 
       const cards = gsap.utils.toArray<HTMLElement>('.home__case-card')
 
@@ -435,10 +427,10 @@ function Home() {
 
 
   return (
-    <main className="home" ref={rootRef}>
+    <main className="home" ref={rootRef} id="main">
       {/* Background layers */}
-      <div className="home__background" aria-hidden />
-      <div className="home__floaters" aria-hidden />
+      <div className="home__background" aria-hidden="true" />
+      <div className="home__floaters" aria-hidden="true" />
 
       <div className="home__nav">
         <TopNav
@@ -471,13 +463,13 @@ function Home() {
                 className="home__hero-thumb"
                 data-rotation={thumb.rotation}
                 style={{ '--thumb-rotation': `${thumb.rotation}deg` } as CSSProperties}
-                role="link"
+                role="button"
                 tabIndex={0}
                 onClick={handleHeroCardClick}
                 onKeyDown={handleHeroCardKeyDown}
               >
                 <div className="home__hero-thumb-image">
-                  <img src={thumb.image} alt={thumb.label} loading="lazy" />
+                  <img src={thumb.image} alt={thumb.label} />
                 </div>
                 <figcaption>
                   <strong>{thumb.label}</strong>
@@ -487,7 +479,7 @@ function Home() {
           </div>
           <div
             className="home__hero-gallery home__hero-gallery--mobile"
-            aria-hidden
+            aria-hidden="true"
             ref={mobileHeroRef}
             style={{ '--mobile-card': `${mobileLayout.card}px` } as CSSProperties}
           >
@@ -517,13 +509,13 @@ function Home() {
                   className="home__hero-thumb"
                   data-rotation={thumb.rotation}
                   style={style}
-                  role="link"
+                  role="button"
                   tabIndex={0}
                   onClick={handleHeroCardClick}
                   onKeyDown={handleHeroCardKeyDown}
                 >
                   <div className="home__hero-thumb-image">
-                    <img src={thumb.image} alt={thumb.label} loading="lazy" />
+                    <img src={thumb.image} alt={thumb.label} />
                   </div>
                   <figcaption>
                     <strong>{thumb.label}</strong>
@@ -540,9 +532,9 @@ function Home() {
             <button type="button" onClick={() => navigate('/contact')}>
               Check availability
             </button>
-          <button type="button" onClick={() => handleScroll('#services')}>
-            View packages
-          </button>
+            <button type="button" onClick={() => handleScroll('#services')}>
+              View packages
+            </button>
           </div>
         </div>
       </header>
@@ -551,7 +543,7 @@ function Home() {
       <section className="home__section home__proof">
         <div className="home__proof-avatars">
           {proofAvatars.map((avatar, idx) => (
-            <img key={avatar} src={avatar} alt="Client avatar" style={{ zIndex: proofAvatars.length - idx }} />
+            <img key={avatar} src={avatar} alt="Client avatar" loading="lazy" decoding="async" style={{ zIndex: proofAvatars.length - idx }} />
           ))}
           <span>Make us part of your creative hub</span>
         </div>
@@ -580,7 +572,7 @@ function Home() {
                   onClick={() => navigate(project.link)}
                 >
                   <div className="home__case-media">
-                    <img src={project.image} alt={project.title} />
+                    <img src={project.image} alt={project.title} loading="lazy" decoding="async" />
                   </div>
                   <div className="home__case-meta">
                     <div>
@@ -597,7 +589,7 @@ function Home() {
           ))}
         </div>
         <p className="home__section-note">
-          Not sure which coverage fits you best? <a href="/contact">Get in contact with us</a> and we will guide you.
+          Not sure which coverage fits you best? <Link to="/contact">Get in contact with us</Link> and we will guide you.
         </p>
       </section>
 
@@ -612,8 +604,8 @@ function Home() {
           <button type="button" onClick={() => navigate('/contact')}>
             Check availability
           </button>
-          <button type="button" className="home__proof-secondary" onClick={() => navigate('/contact')}>
-            Check availability
+          <button type="button" className="home__proof-secondary" onClick={() => navigate('/portfolio')}>
+            View portfolio
           </button>
         </div>
       </section>

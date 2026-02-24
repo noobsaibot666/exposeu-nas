@@ -19,7 +19,7 @@
   align-items: start;
   margin-bottom: 48px;
   max-width: 1200px;
-  will-change: transform, opacity;
+
 }
 
 .about__label {
@@ -64,7 +64,7 @@
   grid-template-columns: 100px 1fr;
   gap: 18px;
   align-items: start;
-  will-change: transform, opacity;
+
 }
 
 .about__body {
@@ -84,7 +84,7 @@
   border: none;
   height: 100%;
   min-height: 520px;
-  will-change: transform, opacity;
+
 }
 
 .about__portrait img {
@@ -156,10 +156,6 @@
 }
 
 @media (max-width: 720px) {
-  .about {
-    min-height: 100svh;
-  }
-
   .about__profile {
     grid-template-columns: 1fr;
   }

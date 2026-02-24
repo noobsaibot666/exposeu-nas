@@ -3,7 +3,7 @@ import './WorkPage.css'
 
 function NotFound() {
   return (
-    <main className="work-page">
+    <main className="work-page" id="main">
       <section className="section work-cta">
         <div className="content work-cta__content">
           <div>

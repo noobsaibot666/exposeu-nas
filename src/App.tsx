@@ -17,11 +17,32 @@ import Home from './pages/Home'
 import PricingRequest from './pages/PricingRequest'
 import PricingRequestSuccess from './pages/PricingRequestSuccess'
 import { ThemeProvider } from './ThemeContext'
-import { useEffect } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import { trackEvent, trackPageView } from './utils/analytics'
 function App() {
   const location = useLocation()
+  const contentRef = useRef<HTMLDivElement>(null)
+  const isFirstRender = useRef(true)
+
+  // Centralized scroll reset + micro-transition on route change
+  useLayoutEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+    const el = contentRef.current
+    if (!el) return
+    // Apply entering class before paint
+    el.classList.add('is-entering')
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior })
+    // Remove after one frame to trigger the CSS transition
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        el.classList.remove('is-entering')
+      })
+    })
+  }, [location.pathname])
 
   useEffect(() => {
     const path = location.pathname + location.search
@@ -96,67 +117,70 @@ function App() {
   return (
     <ThemeProvider>
       <div className="page">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/call-session" element={<CallSession />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/contact-success" element={<ContactSuccess />} />
-          <Route
-            path="/documentation"
-            element={
-              <>
-                <Exhibitions />
-              </>
-            }
-          />
-          <Route path="/exhibitions" element={<Navigate to="/documentation" replace />} />
-          <Route
-            path="/atmospheric"
-            element={
-              <>
-                <Atmospheric />
-              </>
-            }
-          />
-          <Route
-            path="/performance"
-            element={
-              <>
-                <Performance />
-              </>
-            }
-          />
-          <Route
-            path="/gallery-stories"
-            element={
-              <>
-                <GalleryStories />
-              </>
-            }
-          />
-          <Route path="/impressum" element={<Impressum />} />
-          <Route
-            path="/artist-sessions"
-            element={
-              <>
-                <ArtistSessions />
-              </>
-            }
-          />
-          <Route
-            path="/fashion-show"
-            element={
-              <>
-                <FashionShow />
-              </>
-            }
-          />
-          <Route path="/portfolio" element={<Portfolio />} />
-          <Route path="/pricing-request/:plan" element={<PricingRequest />} />
-          <Route path="/pricing-request/success" element={<PricingRequestSuccess />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <a className="skip-link" href="#main">Skip to content</a>
+        <div className="page__content" ref={contentRef}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/call-session" element={<CallSession />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/contact-success" element={<ContactSuccess />} />
+            <Route
+              path="/documentation"
+              element={
+                <>
+                  <Exhibitions />
+                </>
+              }
+            />
+            <Route path="/exhibitions" element={<Navigate to="/documentation" replace />} />
+            <Route
+              path="/atmospheric"
+              element={
+                <>
+                  <Atmospheric />
+                </>
+              }
+            />
+            <Route
+              path="/performance"
+              element={
+                <>
+                  <Performance />
+                </>
+              }
+            />
+            <Route
+              path="/gallery-stories"
+              element={
+                <>
+                  <GalleryStories />
+                </>
+              }
+            />
+            <Route path="/impressum" element={<Impressum />} />
+            <Route
+              path="/artist-sessions"
+              element={
+                <>
+                  <ArtistSessions />
+                </>
+              }
+            />
+            <Route
+              path="/fashion-show"
+              element={
+                <>
+                  <FashionShow />
+                </>
+              }
+            />
+            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/pricing-request/:plan" element={<PricingRequest />} />
+            <Route path="/pricing-request/success" element={<PricingRequestSuccess />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
       </div>
     </ThemeProvider>
   )

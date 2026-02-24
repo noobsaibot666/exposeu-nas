@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import './Contact.css'
 import { useLocation, useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
 import { serviceMeta } from '../data/serviceMeta'
@@ -145,9 +144,8 @@ function Contact() {
   }, [location.search])
 
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
 
-    gsap.registerPlugin(ScrollTrigger)
+
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const ctx = gsap.context(() => {
@@ -175,7 +173,7 @@ function Contact() {
   }, [])
 
   return (
-    <main className="contact" ref={rootRef}>
+    <main className="contact" ref={rootRef} id="main">
       <div className="home__nav contact__nav">
         <TopNav
           leftLinks={navLinks.left}
@@ -227,7 +225,7 @@ function Contact() {
 
           <form className="contact__form" onSubmit={handleSubmit} onFocus={handleFormFocus}>
             <div className="contact__field">
-              <label htmlFor="firstName">Name</label>
+              <label htmlFor="firstName">First Name</label>
               <input id="firstName" name="firstName" type="text" placeholder="First name" />
             </div>
 
@@ -237,12 +235,12 @@ function Contact() {
             </div>
 
             <div className="contact__field contact__field--full">
-              <label htmlFor="email">Email</label>
+              <label htmlFor="email">Email <span aria-hidden="true">*</span></label>
               <input id="email" name="email" type="email" placeholder="you@example.com" required />
             </div>
 
             <div className="contact__field contact__field--full">
-              <label htmlFor="message">Message</label>
+              <label htmlFor="message">Message <span aria-hidden="true">*</span></label>
               <textarea
                 id="message"
                 name="message"
@@ -253,7 +251,9 @@ function Contact() {
               />
             </div>
 
-            {submitError ? <p className="contact__error">{submitError}</p> : null}
+            <p className="contact__error" role="alert" aria-live="assertive">
+              {submitError ?? ''}
+            </p>
 
             <button className="contact__submit" type="submit" disabled={isSubmitting}>
               {isSubmitting ? 'Sending...' : 'Submit'}

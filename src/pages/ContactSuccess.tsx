@@ -4,7 +4,7 @@ import TopNav from '../components/TopNav'
 
 function ContactSuccess() {
   return (
-    <main className="contact contact--success">
+    <main className="contact contact--success" id="main">
       <div className="content contact__nav">
         <TopNav
           leftLinks={[

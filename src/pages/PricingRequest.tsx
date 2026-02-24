@@ -164,7 +164,7 @@ function PricingRequest() {
   const fieldClass = (name: string) => (fieldErrors[name] ? 'pricing-request__field is-error' : 'pricing-request__field')
 
   return (
-    <main className="pricing-request">
+    <main className="pricing-request" id="main">
       <div className="home__nav pricing-request__nav">
         <TopNav
           leftLinks={[
