@@ -8,15 +8,15 @@ import './PricingRequest.css'
 
 const planDetails = {
   'single-event': {
-    name: 'Single Event',
+    name: 'One-time',
     intro: 'One focused shoot built around your timeline, key moments, and delivery needs.',
   },
   'monthly-coverage': {
-    name: 'Monthly Coverage',
+    name: 'Monthly',
     intro: 'Recurring documentation with consistent crew, look, and delivery cadence.',
   },
   'retainer-studio': {
-    name: 'Retainer Studio',
+    name: 'Studio retainer',
     intro: 'Ongoing support for multi-event programming, launches, and seasonal campaigns.',
   },
 }

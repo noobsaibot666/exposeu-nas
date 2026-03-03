@@ -3,6 +3,7 @@ export type PricingTier = {
   cadence: string
   price: string
   description: string
+  chooseThisIf: string
   features: string[]
   cta: string
   link: string
@@ -12,33 +13,36 @@ export type PricingTier = {
 
 export const pricingTiers: PricingTier[] = [
   {
-    name: 'Single Event',
-    cadence: 'Per event',
+    name: 'One-time',
+    cadence: 'One-time project',
     price: '€2.9K',
-    description: 'One-off documentation for exhibitions, openings, or pop-up performances.',
+    description: 'Built for one date, one site, and one clear delivery plan.',
+    chooseThisIf: 'you need press-ready assets for one project or event.',
     features: ['Editorial photo and video team', '48h highlight cut', 'Private proofing gallery'],
-    cta: 'Book Single Event',
+    cta: 'Get a proposal',
     link: '/contact',
     slug: 'single-event',
   },
   {
-    name: 'Monthly Coverage',
-    cadence: '4 productions / month',
+    name: 'Monthly',
+    cadence: 'Monthly retainer',
     price: '€6.5K',
-    description: 'For galleries and producers running multiple shows each month.',
+    description: 'For recurring shoots that need one team, one rhythm, and fast handoff.',
+    chooseThisIf: 'you need repeat coverage across multiple dates each month.',
     features: ['Priority crew and gear', 'Lookbook and reels delivered weekly', 'Creative direction support'],
-    cta: 'Start Monthly Coverage',
+    cta: 'Get a proposal',
     link: '/contact',
     slug: 'monthly-coverage',
     badge: 'Popular',
   },
   {
-    name: 'Retainer Studio',
-    cadence: 'Retainer',
+    name: 'Studio retainer',
+    cadence: 'Ongoing support',
     price: 'Custom',
-    description: 'Embedded support for institutions and brands planning seasonal programming.',
+    description: 'Best for teams running seasonal programs, launches, or multi-site output.',
+    chooseThisIf: 'you need flexible support across campaigns, venues, or seasons.',
     features: ['Dedicated producer in Berlin', 'Archive and licensing support', 'Seasonal campaign strategy'],
-    cta: 'Talk to us',
+    cta: 'Get a proposal',
     link: '/contact',
     slug: 'retainer-studio',
   },

@@ -22,6 +22,8 @@ type WorkPageLayoutProps = {
   ctaText: string
   ctaHref: string
   serviceSlug?: string
+  ctaDetail?: string
+  ctaLabel?: string
   extraGalleryTitle?: string
   extraGalleryCopy?: string
   extraGallery?: WorkCard[]
@@ -41,6 +43,8 @@ function WorkPageLayout({
   ctaText,
   ctaHref,
   serviceSlug,
+  ctaDetail,
+  ctaLabel,
   extraGalleryTitle,
   extraGalleryCopy,
   extraGallery,
@@ -203,6 +207,8 @@ function WorkPageLayout({
     cards[2]?.image ?? cards[0]?.image,
   ]
 
+  const finalCtaHref = serviceSlug ? `/contact?service=${serviceSlug}` : ctaHref
+
   const renderSection = (
     label: string,
     heading: string,
@@ -306,7 +312,7 @@ function WorkPageLayout({
       </section>
 
       {renderSection(
-        'Why it matters',
+        'What you get',
         galleryTitle,
         galleryCopy,
         gallery,
@@ -318,7 +324,7 @@ function WorkPageLayout({
       {extraGallery &&
         extraGallery.length > 0 &&
         renderSection(
-          'More to expect',
+          'Best for',
           extraGalleryTitle ?? '',
           extraGalleryCopy ?? '',
           extraGallery,
@@ -330,7 +336,7 @@ function WorkPageLayout({
       {extraGallerySecondary &&
         extraGallerySecondary.length > 0 &&
         renderSection(
-          'How we deliver',
+          'How this differs',
           extraGallerySecondaryTitle ?? '',
           extraGallerySecondaryCopy ?? '',
           extraGallerySecondary,
@@ -340,7 +346,7 @@ function WorkPageLayout({
         )}
 
       <PricingSection
-        headline={`${title} packages for galleries, artists, and producers.`}
+        headline={`${title} pricing for one-time and recurring work.`}
         serviceSlug={serviceSlug}
       />
 
@@ -349,9 +355,10 @@ function WorkPageLayout({
           <div>
             <p className="work-cta__eyebrow">Ready to collaborate?</p>
             <h3>{ctaText}</h3>
+            {ctaDetail ? <p>{ctaDetail}</p> : null}
           </div>
-          <a className="work-cta__link" href={ctaHref}>
-            Check availability
+          <a className="work-cta__link" href={finalCtaHref}>
+            {ctaLabel ?? 'Request availability'}
           </a>
         </div>
       </section>

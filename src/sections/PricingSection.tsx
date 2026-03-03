@@ -11,7 +11,7 @@ type PricingSectionProps = {
 
 function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
   const navigate = useNavigate()
-  const headlineText = headline ?? 'Straightforward packages for Berlin creators.'
+  const headlineText = headline ?? 'Straightforward pricing for one-time and recurring work.'
   const serviceOverrides = (pricingByService as PricingOverridesByService)[serviceSlug ?? ''] ?? {}
   const tiers = pricingTiers.map((tier) => ({ ...tier, ...(serviceOverrides[tier.slug] ?? {}) }))
 
@@ -32,16 +32,17 @@ function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
           <p>Pricing</p>
           <h2>{headlineText}</h2>
         </div>
+        <p>Most clients book this as a one-time project. Monthly options are for recurring work.</p>
       </div>
       <div className="home__pricing-grid">
         {tiers.map((tier) => {
-            const isMonthly = tier.name === 'Monthly'
+            const isMonthly = tier.slug === 'monthly-coverage'
             const classes = ['home__pricing-card']
             if (tier.badge) classes.push('is-popular')
             if (isMonthly) classes.push('home__pricing-card--monthly')
             const isCustom = tier.price.toLowerCase() === 'custom'
             if (isCustom) classes.push('home__pricing-card--custom')
-            const suffix = tier.cadence === 'Per event' ? '/project' : tier.cadence === 'Retainer' ? '' : '/mo'
+            const suffix = tier.slug === 'single-event' ? '/project' : tier.slug === 'monthly-coverage' ? '/mo' : ''
 
             return (
               <article key={tier.name} className={classes.join(' ')}>
@@ -55,7 +56,7 @@ function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
                     <span>{tier.price}</span>
                   ) : (
                     <span>
-                      Packages starting from{' '}
+                      From{' '}
                       <span className="home__pricing-amount">
                         {tier.price}
                         {suffix ? <small>{suffix}</small> : null}
@@ -64,7 +65,7 @@ function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
                   )}
               </div>
               <p className="home__pricing-helper">
-                Final scope depends on duration, location, and delivery needs. We confirm everything transparently before production.
+                Choose this if: {tier.chooseThisIf}
               </p>
               <p className="home__pricing-copy">{tier.description}</p>
               <ul>
@@ -83,8 +84,7 @@ function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
         })}
       </div>
       <p className="home__pricing-footnote">
-        Start with a single event or scale into monthly documentation. Educational and artist-led initiatives receive preferred
-        rates.
+        Clear scope, clear pricing, simple proposal. Educational and artist-led initiatives receive preferred rates.
       </p>
     </section>
   )

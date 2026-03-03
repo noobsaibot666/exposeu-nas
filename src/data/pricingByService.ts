@@ -9,11 +9,11 @@ export const pricingByService = {
   exhibitions: {
     'single-event': {
       price: '€1.1K',
-      description: 'Exhibition and opening documentation with curator-aligned framing and press-ready selects.',
+      description: 'One exhibition or opening captured for press, archive, and partner use.',
     },
     'monthly-coverage': {
       price: '€3.5K',
-      description: 'Ongoing exhibition coverage with consistent tone and priority delivery.',
+      description: 'Recurring exhibition coverage with one visual standard and faster turnaround.',
     },
     'retainer-studio': {
       price: 'Custom',
@@ -23,11 +23,11 @@ export const pricingByService = {
   'gallery-stories': {
     'single-event': {
       price: '€1.1K',
-      description: 'Interview-led gallery documentation with stills and motion for collectors and press.',
+      description: 'One social-first story package with stills, motion, and interview cuts.',
     },
     'monthly-coverage': {
       price: '€3.1K',
-      description: 'Recurring gallery storytelling aligned with exhibition cycles.',
+      description: 'Recurring story coverage aligned to openings, releases, and program cycles.',
     },
     'retainer-studio': {
       price: 'Custom',
@@ -36,12 +36,12 @@ export const pricingByService = {
 
   'artist-sessions': {
     'single-event': {
-      price: '€ 599',
-      description: 'Editorial portraits and process documentation for releases and press kits.',
+      price: '€599',
+      description: 'One portrait and process session for releases, profiles, and press kits.',
     },
     'monthly-coverage': {
       price: '€2.1K',
-      description: 'Ongoing artist documentation across studio work, releases, and exhibitions.',
+      description: 'Recurring artist coverage across studio work, launches, and exhibition dates.',
     },
     'retainer-studio': {
       price: 'Custom',
@@ -51,11 +51,11 @@ export const pricingByService = {
   performance: {
     'single-event': {
       price: '€1.5K',
-      description: 'Live performance coverage with fast selects and atmosphere-aware edits.',
+      description: 'One live capture with fast selects, reels, and clean hero moments.',
     },
     'monthly-coverage': {
       price: '€3.9K',
-      description: 'Multi-performance documentation with consistent visual language.',
+      description: 'Repeat performance coverage with one crew and one delivery rhythm.',
     },
     'retainer-studio': {
       price: 'Custom',
@@ -65,11 +65,11 @@ export const pricingByService = {
   'fashion-show': {
     'single-event': {
       price: '€1.5K',
-      description: 'Runway and backstage documentation with look-by-look clarity and hero frames.',
+      description: 'One show captured for runway, backstage, PR, and sponsor use.',
     },
     'monthly-coverage': {
       price: '€5.9K',
-      description: 'Seasonal fashion documentation with editorial consistency.',
+      description: 'Seasonal fashion coverage with consistent runway, backstage, and campaign output.',
     },
     'retainer-studio': {
       price: 'Custom',
@@ -79,11 +79,11 @@ export const pricingByService = {
   atmospheric: {
     'single-event': {
       price: '€1.1K',
-      description: 'Concept-driven atmospheric films with intentional pacing and cinematic tone.',
+      description: 'One spatial film package for launches, decks, websites, and case studies.',
     },
     'monthly-coverage': {
       price: '€3.5K',
-      description: 'Ongoing atmospheric storytelling for programs or seasonal narratives.',
+      description: 'Recurring spatial storytelling for programs, launches, and seasonal updates.',
     },
     'retainer-studio': {
       price: 'Custom',
