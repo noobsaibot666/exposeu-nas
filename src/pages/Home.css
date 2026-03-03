@@ -379,50 +379,70 @@
 }
 
 .home__pricing-card--monthly {
-  background: var(--contrast-bg);
-  border-color: var(--border-highlight);
-  color: var(--contrast-text);
-  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(180deg, rgba(22, 22, 22, 0.96), rgba(8, 8, 8, 0.94));
+  border-color: rgba(255, 255, 255, 0.18);
+  color: rgba(245, 245, 244, 0.96);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.3);
   position: relative;
 }
 
 .home__pricing-card--monthly::before {
   content: '';
   position: absolute;
-  inset: -18px;
-  background: linear-gradient(120deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.75));
+  inset: -10px;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
   border-radius: 32px;
   z-index: -1;
-  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
 }
 
 .home__pricing-card--monthly .home__pricing-badge {
-  background: var(--contrast-text);
-  border-color: var(--contrast-text);
-  color: var(--contrast-bg);
+  background: rgba(245, 245, 244, 0.12);
+  border-color: rgba(245, 245, 244, 0.2);
+  color: rgba(245, 245, 244, 0.96);
 }
 
 .home__pricing-card--monthly .home__pricing-meta h3,
 .home__pricing-card--monthly .home__pricing-meta p,
 .home__pricing-card--monthly .home__pricing-value span,
 .home__pricing-card--monthly .home__pricing-copy {
-  color: var(--contrast-text);
+  color: rgba(245, 245, 244, 0.96);
 }
 
 .home__pricing-card--monthly .home__pricing-value small {
-  color: var(--contrast-muted);
+  color: rgba(245, 245, 244, 0.72);
+}
+
+.home__pricing-card--monthly .home__pricing-helper,
+.home__pricing-card--monthly .home__pricing-meta p {
+  color: rgba(245, 245, 244, 0.78);
 }
 
 .home__pricing-card--monthly ul {
-  color: var(--contrast-text);
+  color: rgba(245, 245, 244, 0.92);
 }
 
 .home__pricing-card--monthly li {
-  color: var(--contrast-text);
+  color: rgba(245, 245, 244, 0.92);
+}
+
+.home__pricing-card--monthly .home__pricing-meta h3 {
+  font-weight: 700;
+}
+
+.home__pricing-card--monthly .home__pricing-helper {
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.home__pricing-card--monthly .home__pricing-copy,
+.home__pricing-card--monthly li {
+  font-size: 1.02rem;
+  line-height: 1.5;
 }
 
 .home__pricing-card--monthly li span {
-  color: var(--contrast-text);
+  color: #4df2a3;
 }
 
 
@@ -538,16 +558,16 @@
 
 .home__pricing-card--monthly button,
 .home__pricing-card.is-popular.home__pricing-card--monthly button {
-  background: var(--contrast-text);
-  color: var(--contrast-bg);
-  border-color: var(--contrast-text);
+  background: rgba(245, 245, 244, 0.96);
+  color: #050505;
+  border-color: rgba(245, 245, 244, 0.96);
 }
 
 .home__pricing-card--monthly button:hover,
 .home__pricing-card.is-popular.home__pricing-card--monthly button:hover {
-  background: transparent;
-  color: var(--contrast-text);
-  border-color: var(--border-contrast);
+  background: rgba(245, 245, 244, 0.12);
+  color: rgba(245, 245, 244, 0.96);
+  border-color: rgba(245, 245, 244, 0.4);
 }
 
 .home__proof {

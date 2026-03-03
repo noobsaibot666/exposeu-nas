@@ -115,6 +115,12 @@ app.post('/contact', async (req, res) => {
       lastName,
       name, // fallback if frontend sends "name"
       email,
+      service,
+      serviceLabel,
+      package: packageSlug,
+      packageLabel,
+      sourceUrl,
+      referrer,
       message,
     } = req.body || {}
 
@@ -144,14 +150,25 @@ app.post('/contact', async (req, res) => {
 
     const transporter = createTransporter(config)
 
-    const subject =
-      senderName && senderName !== 'N/A'
-        ? `Contact form: ${senderName}`
-        : 'Contact form submission'
+    const subjectService = serviceLabel || service || ''
+    const subjectPackage = packageLabel || packageSlug || ''
+    const subjectParts = [subjectService, subjectPackage].filter(Boolean)
+    const subject = subjectParts.length
+      ? `Expose.u Lead - ${subjectParts.join(' - ')}`
+      : 'Expose.u Lead - Website Contact'
+
+    const leadSummary = [
+      'Lead Summary',
+      ...(serviceLabel || service ? [`Service: ${serviceLabel || 'Unknown'}${service ? ` (${service})` : ''}`] : []),
+      ...(packageLabel || packageSlug ? [`Package: ${packageLabel || 'Unknown'}${packageSlug ? ` (${packageSlug})` : ''}`] : []),
+      ...(sourceUrl ? [`Source: ${sourceUrl}`] : referrer ? [`Source: ${referrer}`] : []),
+    ]
 
     const text = [
       `Name: ${senderName}`,
       `Email: ${email}`,
+      '',
+      ...leadSummary,
       '',
       message,
     ].join('\n')

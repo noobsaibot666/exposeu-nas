@@ -6,7 +6,7 @@ import type { PricingTier } from './pricingTiers'
 export type PricingOverridesByService = Record<string, Partial<Record<PricingTier['slug'], Partial<PricingTier>>>>
 
 export const pricingByService = {
-  exhibitions: {
+  documentation: {
     'single-event': {
       price: '€1.1K',
       description: 'One exhibition or opening captured for press, archive, and partner use.',

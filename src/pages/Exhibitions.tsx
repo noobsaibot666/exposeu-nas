@@ -39,7 +39,7 @@ function Exhibitions() {
       ctaText="Request availability for your exhibition dates."
       ctaHref="/contact"
       ctaDetail="Clear deliverables. Berlin-based. Simple proposal."
-      serviceSlug="exhibitions"
+      serviceSlug="documentation"
     />
   )
 }

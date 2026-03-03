@@ -55,12 +55,39 @@ function Contact() {
     try {
       const form = event.currentTarget
       const formData = new FormData(form)
+      const params = new URLSearchParams(location.search)
+      const serviceParam = params.get('service')?.trim() ?? ''
+      const packageParam = params.get('package')?.trim() ?? ''
+      const serviceLabels: Record<string, string> = {
+        documentation: serviceMeta.documentation.label,
+        'gallery-stories': serviceMeta['gallery-stories'].label,
+        'artist-sessions': serviceMeta['artist-sessions'].label,
+        performance: serviceMeta.performance.label,
+        'fashion-show': serviceMeta['fashion-show'].label,
+        atmospheric: serviceMeta.atmospheric.label,
+      }
+      const packageLabels: Record<string, string> = {
+        'single-event': 'One-time',
+        'monthly-coverage': 'Monthly',
+        'retainer-studio': 'Studio retainer',
+      }
+      const hasService = Boolean(serviceLabels[serviceParam])
+      const hasPackage = Boolean(packageLabels[packageParam])
+      const message = String(formData.get('message') || '').trim()
+      const serviceLabel = hasService ? serviceLabels[serviceParam] : ''
+      const packageLabel = hasPackage ? packageLabels[packageParam] : ''
 
       const payload = {
         firstName: String(formData.get('firstName') || '').trim(),
         lastName: String(formData.get('lastName') || '').trim(),
         email: String(formData.get('email') || '').trim(),
-        message: String(formData.get('message') || '').trim(),
+        service: hasService ? serviceParam : '',
+        serviceLabel,
+        package: hasPackage ? packageParam : '',
+        packageLabel,
+        sourceUrl: typeof window !== 'undefined' ? window.location.href : '',
+        referrer: typeof document !== 'undefined' ? document.referrer : '',
+        message,
       }
 
       if (!payload.email || !payload.message) {
@@ -125,9 +152,9 @@ function Contact() {
 
     const hasService = Boolean(serviceLabels[serviceParam])
     const packageLabels: Record<string, string> = {
-      'single-event': 'Single event',
-      'monthly-coverage': 'Monthly coverage',
-      'retainer-studio': 'Retainer',
+      'single-event': 'One-time',
+      'monthly-coverage': 'Monthly',
+      'retainer-studio': 'Studio retainer',
     }
 
     const hasPackage = Boolean(packageLabels[packageParam])
