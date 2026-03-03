@@ -5,17 +5,20 @@
 - Analytics method: `gtag` / GA4 via `index.html`
 - `window.dataLayer` is present as part of the same GA setup
 - No GTM container detected
-- No consent banner or existing consent manager detected in the repo
+- No third-party consent manager detected in the repo
 
 ## Consent Gating
 
 - Tracking only fires when analytics is installed and consent is explicitly granted.
+- A minimal analytics consent banner is mounted globally in the app shell.
+- Consent storage key: `localStorage.__analyticsConsent`
 - Consent is accepted from:
   - `window.__analyticsConsent === true`
-  - `localStorage.__analyticsConsent === "true"` on localhost / development only
+  - `localStorage.__analyticsConsent === "true"`
   - known localStorage keys such as `analytics_consent`
   - known cookie keys such as `analytics_consent`
-- If consent is not present, analytics calls no-op safely.
+- If `localStorage.__analyticsConsent === "false"`, analytics remains blocked.
+- If consent is not present, analytics calls no-op safely and the banner is shown.
 
 ## QA / Debug
 
@@ -34,6 +37,10 @@
   - navigate page by page and confirm each event appears once with the expected params
   - verify blocked state by deleting `__analyticsConsent` and reloading
 - Suggested QA checklist:
+  - clear `localStorage.__analyticsConsent`, reload, and confirm the banner appears
+  - click `Reject`, reload, and confirm the banner stays hidden and events do not fire
+  - click `Accept`, reload, and confirm the banner stays hidden and events fire
+  - confirm the stored choice persists across reloads
   - `/`: confirm `home_view`, scroll thresholds, hero/footer CTA clicks, and service card clicks
   - `/home-redesign`: confirm `home_redesign_view`, scroll thresholds, hero/footer CTA clicks, and service card clicks
   - one service page such as `/documentation`: confirm `service_view`, `service_scroll_50`, `service_scroll_75`, `service_pricing_view`, `service_tier_click`, and `service_cta_click`
@@ -149,8 +156,15 @@
 - `src/utils/analytics.ts`
   - central tracking utility
   - consent gating
+  - stored consent initialization
   - scroll-depth hook
   - element-view hook
+
+- `src/components/AnalyticsConsentBanner.tsx`
+  - global accept / reject consent UI
+
+- `src/components/AnalyticsConsentBanner.module.css`
+  - scoped consent banner styles
 
 - `src/pages/Home.tsx`
   - home view
@@ -203,3 +217,4 @@
 
 - Build and browser QA were not completed in this shell because Docker and interactive sudo access are unavailable.
 - No consent UI exists yet; production tracking still waits for an external consent flag to be set.
+- Users can change consent later by clearing `localStorage.__analyticsConsent` until a dedicated preferences control is added.

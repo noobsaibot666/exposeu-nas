@@ -30,7 +30,7 @@ const CONSENT_COOKIE_KEYS = [
   'cookie-consent-analytics',
 ]
 
-const DEV_CONSENT_OVERRIDE_KEY = '__analyticsConsent'
+export const ANALYTICS_CONSENT_KEY = '__analyticsConsent'
 const DEBUG_STORAGE_KEY = '__analyticsDebug'
 
 const isTruthyConsentValue = (value: string | null | undefined) => {
@@ -47,13 +47,24 @@ const getCookie = (name: string) => {
   return match ? decodeURIComponent(match.split('=').slice(1).join('=')) : null
 }
 
+const getStoredConsentPreference = () => {
+  if (typeof window === 'undefined') return null
+
+  try {
+    const value = window.localStorage.getItem(ANALYTICS_CONSENT_KEY)
+    if (value === 'true' || value === 'false') return value
+  } catch {
+    // ignore storage access issues
+  }
+
+  return null
+}
+
 const isLocalDevelopmentHost = () => {
   if (typeof window === 'undefined') return false
   const { hostname } = window.location
   return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1'
 }
-
-const canUseDevConsentOverride = () => import.meta.env.DEV || isLocalDevelopmentHost()
 
 const isDebugEnabled = () => {
   if (typeof window === 'undefined') return false
@@ -65,16 +76,41 @@ const isDebugEnabled = () => {
   }
 }
 
+export const initializeAnalyticsConsent = () => {
+  if (typeof window === 'undefined') return null
+
+  const storedPreference = getStoredConsentPreference()
+
+  if (storedPreference === 'true') {
+    window.__analyticsConsent = true
+    return true
+  }
+
+  if (storedPreference === 'false') {
+    window.__analyticsConsent = false
+    return false
+  }
+
+  if (window.__analyticsConsent === true) return true
+  if (window.__analyticsConsent === false) return false
+  return null
+}
+
 export const hasAnalyticsInstalled = () =>
   typeof window !== 'undefined' && Boolean(GA_ID) && (typeof window.gtag === 'function' || Array.isArray(window.dataLayer))
 
 export const hasAnalyticsConsent = () => {
   if (typeof window === 'undefined') return false
-  if (window.__analyticsConsent === true) return true
+  const explicitPreference = initializeAnalyticsConsent()
+  if (explicitPreference === true) return true
+  if (explicitPreference === false) return false
 
-  if (canUseDevConsentOverride()) {
+  if (window.__analyticsConsent === true) return true
+  if (window.__analyticsConsent === false) return false
+
+  if (import.meta.env.DEV || isLocalDevelopmentHost()) {
     try {
-      if (isTruthyConsentValue(window.localStorage.getItem(DEV_CONSENT_OVERRIDE_KEY))) {
+      if (isTruthyConsentValue(window.localStorage.getItem(ANALYTICS_CONSENT_KEY))) {
         return true
       }
     } catch {

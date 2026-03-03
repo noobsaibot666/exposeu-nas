@@ -20,6 +20,7 @@ import PricingRequestSuccess from './pages/PricingRequestSuccess'
 import { ThemeProvider } from './ThemeContext'
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
+import AnalyticsConsentBanner from './components/AnalyticsConsentBanner'
 import { trackEvent, trackPageView } from './utils/analytics'
 function App() {
   const location = useLocation()
@@ -119,6 +120,7 @@ function App() {
     <ThemeProvider>
       <div className="page">
         <a className="skip-link" href="#main">Skip to content</a>
+        <AnalyticsConsentBanner />
         <div className="page__content" ref={contentRef}>
           <Routes>
             <Route path="/" element={<Home />} />
