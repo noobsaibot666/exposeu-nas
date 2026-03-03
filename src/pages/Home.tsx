@@ -6,9 +6,11 @@ import './Home.css'
 import Footer from '../sections/Footer'
 import { resolveImagePath } from '../utils/resolveImagePath'
 import { serviceMeta } from '../data/serviceMeta'
+import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
 
 const projects = [
   {
+    slug: serviceMeta.documentation.slug,
     title: serviceMeta.documentation.label,
     location: 'Berlin galleries',
     year: '2024',
@@ -17,6 +19,7 @@ const projects = [
     link: serviceMeta.documentation.href,
   },
   {
+    slug: serviceMeta['gallery-stories'].slug,
     title: serviceMeta['gallery-stories'].label,
     location: 'Berlin openings',
     year: '2023',
@@ -25,6 +28,7 @@ const projects = [
     link: serviceMeta['gallery-stories'].href,
   },
   {
+    slug: serviceMeta['artist-sessions'].slug,
     title: serviceMeta['artist-sessions'].label,
     location: 'Berlin ateliers',
     year: '2024',
@@ -33,6 +37,7 @@ const projects = [
     link: serviceMeta['artist-sessions'].href,
   },
   {
+    slug: serviceMeta.performance.slug,
     title: serviceMeta.performance.label,
     location: 'Berlin nights',
     year: '2024',
@@ -41,6 +46,7 @@ const projects = [
     link: serviceMeta.performance.href,
   },
   {
+    slug: serviceMeta['fashion-show'].slug,
     title: serviceMeta['fashion-show'].label,
     location: 'Berlin runway',
     year: '2023',
@@ -49,6 +55,7 @@ const projects = [
     link: serviceMeta['fashion-show'].href,
   },
   {
+    slug: serviceMeta.atmospheric.slug,
     title: serviceMeta.atmospheric.label,
     location: 'Berlin residencies',
     year: '2024',
@@ -128,6 +135,9 @@ function Home() {
   const tiltX = useRef<((value: number) => void) | null>(null)
   const tiltY = useRef<((value: number) => void) | null>(null)
 
+  useTrackViewEvent('home_view')
+  useScrollDepthTracking('home', [25, 50, 75, 90])
+
   const handleScroll = (id: string) => {
     const target = document.querySelector(id)
     target?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -170,6 +180,13 @@ function Home() {
   const resetTilt = () => {
     tiltX.current?.(0)
     tiltY.current?.(0)
+  }
+
+  const trackHomeCta = (ctaLabel: string, ctaLocation: string) => {
+    trackEvent('home_cta_click', {
+      cta_label: ctaLabel,
+      cta_location: ctaLocation,
+    })
   }
 
   useLayoutEffect(() => {
@@ -529,10 +546,22 @@ function Home() {
             keep your tone intact.
           </p>
           <div className="home__actions">
-            <button type="button" onClick={() => navigate('/contact')}>
+            <button
+              type="button"
+              onClick={() => {
+                trackHomeCta('Check availability', 'hero_primary')
+                navigate('/contact')
+              }}
+            >
               Check availability
             </button>
-            <button type="button" onClick={() => handleScroll('#services')}>
+            <button
+              type="button"
+              onClick={() => {
+                trackHomeCta('View packages', 'hero_secondary')
+                handleScroll('#services')
+              }}
+            >
               View packages
             </button>
           </div>
@@ -569,7 +598,13 @@ function Home() {
                   key={project.title}
                   type="button"
                   className="home__case-card"
-                  onClick={() => navigate(project.link)}
+                  onClick={() => {
+                    trackEvent('home_service_card_click', {
+                      service_slug: project.slug,
+                      card_position: rowIndex * 3 + row.indexOf(project) + 1,
+                    })
+                    navigate(project.link)
+                  }}
                 >
                   <div className="home__case-media">
                     <img src={project.image} alt={project.title} loading="lazy" decoding="async" />
@@ -601,10 +636,23 @@ function Home() {
           you&rsquo;re preparing an opening, release, or live event in Berlin, we&rsquo;d be glad to hear about it.
         </p>
         <div className="home__proof-actions">
-          <button type="button" onClick={() => navigate('/contact')}>
+          <button
+            type="button"
+            onClick={() => {
+              trackHomeCta('Check availability', 'footer_primary')
+              navigate('/contact')
+            }}
+          >
             Check availability
           </button>
-          <button type="button" className="home__proof-secondary" onClick={() => navigate('/portfolio')}>
+          <button
+            type="button"
+            className="home__proof-secondary"
+            onClick={() => {
+              trackHomeCta('View portfolio', 'footer_secondary')
+              navigate('/portfolio')
+            }}
+          >
             View portfolio
           </button>
         </div>

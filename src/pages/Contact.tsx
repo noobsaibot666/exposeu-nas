@@ -14,7 +14,36 @@ function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [hasTrackedStart, setHasTrackedStart] = useState(false)
   const messageRef = useRef<HTMLTextAreaElement | null>(null)
+  const hasStartedRef = useRef(false)
+  const hasSubmittedRef = useRef(false)
+  const hasAbandonFiredRef = useRef(false)
   const location = useLocation()
+
+  const queryContext = useMemo(() => {
+    const params = new URLSearchParams(location.search)
+    const serviceParam = params.get('service')?.trim() ?? ''
+    const packageParam = params.get('package')?.trim() ?? ''
+    const serviceLabels: Record<string, string> = {
+      documentation: serviceMeta.documentation.label,
+      'gallery-stories': serviceMeta['gallery-stories'].label,
+      'artist-sessions': serviceMeta['artist-sessions'].label,
+      performance: serviceMeta.performance.label,
+      'fashion-show': serviceMeta['fashion-show'].label,
+      atmospheric: serviceMeta.atmospheric.label,
+    }
+    const packageLabels: Record<string, string> = {
+      'single-event': 'One-time',
+      'monthly-coverage': 'Monthly',
+      'retainer-studio': 'Studio retainer',
+    }
+
+    return {
+      serviceParam,
+      packageParam,
+      serviceLabel: serviceLabels[serviceParam] ?? '',
+      packageLabel: packageLabels[packageParam] ?? '',
+    }
+  }, [location.search])
 
   const navLinks = useMemo(
     () => ({
@@ -55,35 +84,19 @@ function Contact() {
     try {
       const form = event.currentTarget
       const formData = new FormData(form)
-      const params = new URLSearchParams(location.search)
-      const serviceParam = params.get('service')?.trim() ?? ''
-      const packageParam = params.get('package')?.trim() ?? ''
-      const serviceLabels: Record<string, string> = {
-        documentation: serviceMeta.documentation.label,
-        'gallery-stories': serviceMeta['gallery-stories'].label,
-        'artist-sessions': serviceMeta['artist-sessions'].label,
-        performance: serviceMeta.performance.label,
-        'fashion-show': serviceMeta['fashion-show'].label,
-        atmospheric: serviceMeta.atmospheric.label,
-      }
-      const packageLabels: Record<string, string> = {
-        'single-event': 'One-time',
-        'monthly-coverage': 'Monthly',
-        'retainer-studio': 'Studio retainer',
-      }
-      const hasService = Boolean(serviceLabels[serviceParam])
-      const hasPackage = Boolean(packageLabels[packageParam])
+      const hasService = Boolean(queryContext.serviceLabel)
+      const hasPackage = Boolean(queryContext.packageLabel)
       const message = String(formData.get('message') || '').trim()
-      const serviceLabel = hasService ? serviceLabels[serviceParam] : ''
-      const packageLabel = hasPackage ? packageLabels[packageParam] : ''
+      const serviceLabel = hasService ? queryContext.serviceLabel : ''
+      const packageLabel = hasPackage ? queryContext.packageLabel : ''
 
       const payload = {
         firstName: String(formData.get('firstName') || '').trim(),
         lastName: String(formData.get('lastName') || '').trim(),
         email: String(formData.get('email') || '').trim(),
-        service: hasService ? serviceParam : '',
+        service: hasService ? queryContext.serviceParam : '',
         serviceLabel,
-        package: hasPackage ? packageParam : '',
+        package: hasPackage ? queryContext.packageParam : '',
         packageLabel,
         sourceUrl: typeof window !== 'undefined' ? window.location.href : '',
         referrer: typeof document !== 'undefined' ? document.referrer : '',
@@ -91,6 +104,13 @@ function Contact() {
       }
 
       if (!payload.email || !payload.message) {
+        trackEvent('contact_form_submit_error', {
+          error_type: 'validation',
+          service: payload.service || undefined,
+          serviceLabel: payload.serviceLabel || undefined,
+          package: payload.package || undefined,
+          packageLabel: payload.packageLabel || undefined,
+        })
         setSubmitError('Please add your email and a message.')
         setIsSubmitting(false)
         return
@@ -116,12 +136,24 @@ function Contact() {
       }
 
       form.reset()
-      trackEvent('contact_submit_success', 'conversion', 'contact_form')
+      hasSubmittedRef.current = true
+      trackEvent('contact_form_submit_success', {
+        service: payload.service || undefined,
+        serviceLabel: payload.serviceLabel || undefined,
+        package: payload.package || undefined,
+        packageLabel: payload.packageLabel || undefined,
+      })
       navigate('/contact-success')
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Something went wrong. Please email us directly.'
       setSubmitError(message)
-      trackEvent('contact_submit_error', 'conversion', message)
+      trackEvent('contact_form_submit_error', {
+        error_type: err instanceof Error ? err.name || 'api_error' : 'unknown_error',
+        service: queryContext.serviceParam || undefined,
+        serviceLabel: queryContext.serviceLabel || undefined,
+        package: queryContext.packageParam || undefined,
+        packageLabel: queryContext.packageLabel || undefined,
+      })
     } finally {
       setIsSubmitting(false)
     }
@@ -129,46 +161,73 @@ function Contact() {
 
   const handleFormFocus = () => {
     if (hasTrackedStart) return
+    hasStartedRef.current = true
     setHasTrackedStart(true)
-    trackEvent('contact_form_start', 'conversion', 'contact_form')
+    trackEvent('contact_form_start', {
+      service: queryContext.serviceParam || undefined,
+      serviceLabel: queryContext.serviceLabel || undefined,
+      package: queryContext.packageParam || undefined,
+      packageLabel: queryContext.packageLabel || undefined,
+    })
   }
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search)
-    const serviceParam = params.get('service')?.trim() ?? ''
-    const packageParam = params.get('package')?.trim() ?? ''
-
     if (!messageRef.current) return
     if (messageRef.current.value.trim()) return
-
-    const serviceLabels: Record<string, string> = {
-      documentation: serviceMeta.documentation.label,
-      'gallery-stories': serviceMeta['gallery-stories'].label,
-      'artist-sessions': serviceMeta['artist-sessions'].label,
-      performance: serviceMeta.performance.label,
-      'fashion-show': serviceMeta['fashion-show'].label,
-      atmospheric: serviceMeta.atmospheric.label,
-    }
-
-    const hasService = Boolean(serviceLabels[serviceParam])
-    const packageLabels: Record<string, string> = {
-      'single-event': 'One-time',
-      'monthly-coverage': 'Monthly',
-      'retainer-studio': 'Studio retainer',
-    }
-
-    const hasPackage = Boolean(packageLabels[packageParam])
+    const hasService = Boolean(queryContext.serviceLabel)
+    const hasPackage = Boolean(queryContext.packageLabel)
 
     if (!hasService && !hasPackage) return
 
-    const serviceLabel = hasService ? serviceLabels[serviceParam] : ''
-    const packageLabel = hasPackage ? packageLabels[packageParam] : ''
-    const detail = serviceLabel ? serviceLabel : 'a project'
-    const packageSuffix = packageLabel ? ` (${packageLabel})` : ''
+    const detail = hasService ? queryContext.serviceLabel : 'a project'
+    const packageSuffix = hasPackage ? ` (${queryContext.packageLabel})` : ''
 
     messageRef.current.value =
       `Hi - I'm reaching out about ${detail}${packageSuffix}. Dates: ___. Location: ___. Deliverables: ___.`
-  }, [location.search])
+  }, [queryContext])
+
+  useEffect(() => {
+    trackEvent('contact_view', {
+      service: queryContext.serviceParam || undefined,
+      serviceLabel: queryContext.serviceLabel || undefined,
+      package: queryContext.packageParam || undefined,
+      packageLabel: queryContext.packageLabel || undefined,
+    })
+  }, [queryContext])
+
+  useEffect(() => {
+    const abandonParams = {
+      service: queryContext.serviceParam || undefined,
+      serviceLabel: queryContext.serviceLabel || undefined,
+      package: queryContext.packageParam || undefined,
+      packageLabel: queryContext.packageLabel || undefined,
+    }
+
+    const maybeTrackAbandon = () => {
+      if (!hasStartedRef.current || hasSubmittedRef.current || hasAbandonFiredRef.current) return
+
+      hasAbandonFiredRef.current = true
+      trackEvent('contact_form_abandon', abandonParams)
+    }
+
+    const handleBeforeUnload = () => {
+      maybeTrackAbandon()
+    }
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        maybeTrackAbandon()
+      }
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+    }
+  }, [queryContext])
 
   useEffect(() => {
 

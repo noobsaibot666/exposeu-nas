@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import TopNav from '../components/TopNav'
 import { resolveImagePath } from '../utils/resolveImagePath'
@@ -62,6 +62,7 @@ function PricingRequest() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
+  const hasTrackedPlanSelect = useRef(false)
 
   const planInfo = plan && plan in planDetails ? planDetails[plan as keyof typeof planDetails] : null
   const serviceInfo =
@@ -83,9 +84,36 @@ function PricingRequest() {
 
   const heroImage = serviceInfo?.image ?? resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_004.png')
 
+  useEffect(() => {
+    trackEvent('pricing_request_view', {
+      tier_id: plan ?? undefined,
+      tier_label: planInfo?.name,
+      service: serviceParam || undefined,
+      serviceLabel: serviceInfo?.label,
+    })
+  }, [plan, planInfo?.name, serviceInfo?.label, serviceParam])
+
+  useEffect(() => {
+    if (!planInfo || hasTrackedPlanSelect.current) return
+    hasTrackedPlanSelect.current = true
+    trackEvent('pricing_request_plan_select', {
+      tier_id: plan ?? undefined,
+      tier_label: planInfo.name,
+      service: serviceParam || undefined,
+      serviceLabel: serviceInfo?.label,
+    })
+  }, [plan, planInfo, serviceInfo?.label, serviceParam])
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setErrorMessage('')
+    trackEvent('pricing_request_cta_click', {
+      cta_label: 'Send request',
+      tier_id: plan ?? undefined,
+      tier_label: planInfo?.name,
+      service: serviceParam || undefined,
+      serviceLabel: serviceInfo?.label,
+    })
 
     const formData = new FormData(event.currentTarget)
     const payload = Object.fromEntries(formData.entries())

@@ -1,7 +1,9 @@
+import { useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../pages/Home.css'
 import { pricingTiers } from '../data/pricingTiers'
 import { pricingByService, type PricingOverridesByService } from '../data/pricingByService'
+import { trackEvent, useElementViewTracking } from '../utils/analytics'
 
 type PricingSectionProps = {
   id?: string
@@ -11,11 +13,22 @@ type PricingSectionProps = {
 
 function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
   const navigate = useNavigate()
+  const sectionRef = useRef<HTMLElement | null>(null)
   const headlineText = headline ?? 'Straightforward pricing for one-time and recurring work.'
   const serviceOverrides = (pricingByService as PricingOverridesByService)[serviceSlug ?? ''] ?? {}
   const tiers = pricingTiers.map((tier) => ({ ...tier, ...(serviceOverrides[tier.slug] ?? {}) }))
 
-  const handleSelectPlan = (slug: string) => {
+  useElementViewTracking(sectionRef, 'service_pricing_view', {
+    service_slug: serviceSlug,
+  })
+
+  const handleSelectPlan = (slug: string, tierLabel: string) => {
+    trackEvent('service_tier_click', {
+      service_slug: serviceSlug,
+      tier_id: slug,
+      tier_label: tierLabel,
+    })
+
     const params = new URLSearchParams()
     params.set('package', slug)
     if (serviceSlug) {
@@ -26,7 +39,7 @@ function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
   }
 
   return (
-    <section className="home__section home__pricing" id={id}>
+    <section className="home__section home__pricing" id={id} ref={sectionRef}>
       <div className="home__pricing-header">
         <div>
           <p>Pricing</p>
@@ -76,7 +89,7 @@ function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
                   </li>
                 ))}
               </ul>
-              <button type="button" onClick={() => handleSelectPlan(tier.slug)}>
+              <button type="button" onClick={() => handleSelectPlan(tier.slug, tier.name)}>
                 {tier.cta}
               </button>
             </article>

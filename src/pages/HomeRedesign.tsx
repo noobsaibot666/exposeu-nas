@@ -7,9 +7,11 @@ import styles from './HomeRedesign.module.css'
 import Footer from '../sections/Footer'
 import { resolveImagePath } from '../utils/resolveImagePath'
 import { serviceMeta } from '../data/serviceMeta'
+import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
 
 const projects = [
   {
+    slug: serviceMeta.documentation.slug,
     title: 'Exhibitions',
     location: 'Galleries',
     year: '2024',
@@ -18,6 +20,7 @@ const projects = [
     link: serviceMeta.documentation.href,
   },
   {
+    slug: serviceMeta['gallery-stories'].slug,
     title: 'Social Story Coverage',
     location: 'Openings',
     year: '2023',
@@ -26,6 +29,7 @@ const projects = [
     link: serviceMeta['gallery-stories'].href,
   },
   {
+    slug: serviceMeta['artist-sessions'].slug,
     title: 'Artist Sessions',
     location: 'Venues & Studios',
     year: '2024',
@@ -34,6 +38,7 @@ const projects = [
     link: serviceMeta['artist-sessions'].href,
   },
   {
+    slug: serviceMeta.performance.slug,
     title: 'Performance',
     location: 'Live Programs',
     year: '2024',
@@ -42,6 +47,7 @@ const projects = [
     link: serviceMeta.performance.href,
   },
   {
+    slug: serviceMeta['fashion-show'].slug,
     title: 'Fashion Shows',
     location: 'Runway',
     year: '2023',
@@ -50,6 +56,7 @@ const projects = [
     link: serviceMeta['fashion-show'].href,
   },
   {
+    slug: serviceMeta.atmospheric.slug,
     title: 'Spatial Films',
     location: 'Spatial Projects',
     year: '2024',
@@ -129,6 +136,9 @@ function HomeRedesign() {
   const tiltX = useRef<((value: number) => void) | null>(null)
   const tiltY = useRef<((value: number) => void) | null>(null)
 
+  useTrackViewEvent('home_redesign_view')
+  useScrollDepthTracking('home_redesign', [25, 50, 75, 90])
+
   const handleScroll = (id: string) => {
     const target = document.querySelector(id)
     target?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -171,6 +181,13 @@ function HomeRedesign() {
   const resetTilt = () => {
     tiltX.current?.(0)
     tiltY.current?.(0)
+  }
+
+  const trackHomeRedesignCta = (ctaLabel: string, ctaLocation: string) => {
+    trackEvent('home_redesign_cta_click', {
+      cta_label: ctaLabel,
+      cta_location: ctaLocation,
+    })
   }
 
   useLayoutEffect(() => {
@@ -516,10 +533,22 @@ function HomeRedesign() {
             For Berlin-based institutions, studios, artists, and spatial teams needing press, archive, funding, and long-term assets.
           </p>
           <div className="home__actions">
-            <button type="button" onClick={() => navigate('/contact')}>
+            <button
+              type="button"
+              onClick={() => {
+                trackHomeRedesignCta('Request availability', 'hero_primary')
+                navigate('/contact')
+              }}
+            >
               Request availability
             </button>
-            <button type="button" onClick={() => handleScroll('#services')}>
+            <button
+              type="button"
+              onClick={() => {
+                trackHomeRedesignCta('View services', 'hero_secondary')
+                handleScroll('#services')
+              }}
+            >
               View services
             </button>
           </div>
@@ -553,7 +582,13 @@ function HomeRedesign() {
                   key={project.title}
                   type="button"
                   className="home__case-card"
-                  onClick={() => navigate(project.link)}
+                  onClick={() => {
+                    trackEvent('home_redesign_service_card_click', {
+                      service_slug: project.slug,
+                      card_position: rowIndex * 3 + row.indexOf(project) + 1,
+                    })
+                    navigate(project.link)
+                  }}
                 >
                   <div className="home__case-media">
                     <img src={project.image} alt={project.title} loading="lazy" decoding="async" />
@@ -583,10 +618,23 @@ function HomeRedesign() {
           Turn your project into press-ready assets with a clear plan and deliverables.
         </p>
         <div className="home__proof-actions">
-          <button type="button" onClick={() => navigate('/contact')}>
+          <button
+            type="button"
+            onClick={() => {
+              trackHomeRedesignCta('Request availability', 'footer_primary')
+              navigate('/contact')
+            }}
+          >
             Request availability
           </button>
-          <button type="button" className="home__proof-secondary" onClick={() => handleScroll('#cases')}>
+          <button
+            type="button"
+            className="home__proof-secondary"
+            onClick={() => {
+              trackHomeRedesignCta('View services', 'footer_secondary')
+              handleScroll('#cases')
+            }}
+          >
             View services
           </button>
         </div>

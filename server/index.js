@@ -129,6 +129,14 @@ app.post('/contact', async (req, res) => {
       name ||
       'N/A'
 
+    console.log('CONTACT LEAD META:', {
+      ts: new Date().toISOString(),
+      service: service || '',
+      package: packageSlug || '',
+      sourceUrl: sourceUrl || '',
+      referrer: referrer || '',
+    })
+
     if (!email || !message) {
       console.error('Missing required fields:', { senderName, email, message })
       return res.status(400).json({ ok: false, error: 'Missing required fields.' })

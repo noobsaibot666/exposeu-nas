@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react'
 import gsap from 'gsap'
 import TopNav from '../components/TopNav'
 import PricingSection from '../sections/PricingSection'
+import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
 import './WorkPage.css'
 
 export type WorkCard = {
@@ -54,6 +55,16 @@ function WorkPageLayout({
 }: WorkPageLayoutProps) {
   const rootRef = useRef<HTMLElement | null>(null)
   const stackRef = useRef<HTMLDivElement | null>(null)
+
+  useTrackViewEvent('service_view', {
+    service_slug: serviceSlug,
+    service_label: title,
+  })
+
+  useScrollDepthTracking('service', [50, 75], () => ({
+    service_slug: serviceSlug,
+    service_label: title,
+  }))
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -357,7 +368,17 @@ function WorkPageLayout({
             <h3>{ctaText}</h3>
             {ctaDetail ? <p>{ctaDetail}</p> : null}
           </div>
-          <a className="work-cta__link" href={finalCtaHref}>
+          <a
+            className="work-cta__link"
+            href={finalCtaHref}
+            onClick={() =>
+              trackEvent('service_cta_click', {
+                service_slug: serviceSlug,
+                service_label: title,
+                cta_label: ctaLabel ?? 'Request availability',
+                cta_location: 'service_footer',
+              })}
+          >
             {ctaLabel ?? 'Request availability'}
           </a>
         </div>
