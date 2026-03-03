@@ -14,6 +14,7 @@ import ArtistSessions from './pages/ArtistSessions'
 import Portfolio from './pages/Portfolio'
 import NotFound from './pages/NotFound'
 import Home from './pages/Home'
+import HomeRedesign from './pages/HomeRedesign'
 import PricingRequest from './pages/PricingRequest'
 import PricingRequestSuccess from './pages/PricingRequestSuccess'
 import { ThemeProvider } from './ThemeContext'
@@ -121,6 +122,7 @@ function App() {
         <div className="page__content" ref={contentRef}>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/home-redesign" element={<HomeRedesign />} />
             <Route path="/about" element={<About />} />
             <Route path="/call-session" element={<CallSession />} />
             <Route path="/contact" element={<Contact />} />
