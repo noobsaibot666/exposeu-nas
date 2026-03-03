@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import TopNav from '../components/TopNav'
 import './Home.css'
+import styles from './HomeRedesign.module.css'
 import Footer from '../sections/Footer'
 import { resolveImagePath } from '../utils/resolveImagePath'
 import { serviceMeta } from '../data/serviceMeta'
@@ -11,56 +12,56 @@ import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/
 const projects = [
   {
     slug: serviceMeta.documentation.slug,
-    title: serviceMeta.documentation.label,
-    location: 'Berlin galleries',
+    title: 'Exhibitions',
+    location: 'Galleries',
     year: '2024',
     image: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
-    copy: 'Press-ready stills and recap films for openings, installs, and curator walkthroughs.',
+    copy: 'Press-ready photo and film for galleries, curators, and archives.',
     link: serviceMeta.documentation.href,
   },
   {
     slug: serviceMeta['gallery-stories'].slug,
-    title: serviceMeta['gallery-stories'].label,
-    location: 'Berlin openings',
+    title: 'Social Story Coverage',
+    location: 'Openings',
     year: '2023',
     image: resolveImagePath('/src/assets/images/website/galleries/thumb_3_005.jpg'),
-    copy: 'Curator interviews, collector previews, and narrative cuts that give context to the work.',
+    copy: 'Narrative edits for galleries, collectors, and digital audiences.',
     link: serviceMeta['gallery-stories'].href,
   },
   {
     slug: serviceMeta['artist-sessions'].slug,
-    title: serviceMeta['artist-sessions'].label,
-    location: 'Berlin ateliers',
+    title: 'Artist Sessions',
+    location: 'Venues & Studios',
     year: '2024',
     image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
-    copy: 'Portraits, process, and BTS for releases, press kits, and artist profiles.',
+    copy: 'Portraits and process assets for artists, studios, and press kits.',
     link: serviceMeta['artist-sessions'].href,
   },
   {
     slug: serviceMeta.performance.slug,
-    title: serviceMeta.performance.label,
-    location: 'Berlin nights',
+    title: 'Performance',
+    location: 'Live Programs',
     year: '2024',
     image: resolveImagePath('/src/assets/images/website/performances/thumb_3_086.jpg'),
-    copy: 'Live sets captured fast with reels, selects, and clean audio-aware edits.',
+    copy: 'Fast selects and reels for venues, promoters, and funding reports.',
     link: serviceMeta.performance.href,
   },
   {
     slug: serviceMeta['fashion-show'].slug,
-    title: serviceMeta['fashion-show'].label,
-    location: 'Berlin runway',
+    title: 'Fashion Shows',
+    location: 'Runway',
     year: '2023',
     image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
-    copy: 'Runway and backstage documentation with editorial framing and fast delivery.',
+    copy: 'Runway and backstage assets for labels, press, and sponsors.',
     link: serviceMeta['fashion-show'].href,
   },
   {
     slug: serviceMeta.atmospheric.slug,
-    title: serviceMeta.atmospheric.label,
-    location: 'Berlin residencies',
+    title: 'Spatial Films',
+    location: 'Spatial Projects',
     year: '2024',
     image: resolveImagePath('/src/assets/images/website/atmospheric/thumb_3_025.jpg'),
-    copy: 'Mood-driven shorts and lookbooks for concept launches and immersive installs.',
+    copy: 'Short films for launches, websites, decks, and spatial teams.',
     link: serviceMeta.atmospheric.href,
   },
 ]
@@ -83,7 +84,7 @@ const heroGallery = [
   {
     id: 'thumb-2',
     image: resolveImagePath('/src/assets/images/website/performances/thumb_3_033.jpg'),
-    label: serviceMeta['artist-sessions'].label,
+    label: 'Social Story Coverage',
     rotation: 2,
   },
   {
@@ -95,7 +96,7 @@ const heroGallery = [
   {
     id: 'thumb-3',
     image: resolveImagePath('/src/assets/images/website/exhibitions/thumb_3_031.jpg'),
-    label: serviceMeta['atmospheric'].label,
+    label: serviceMeta.atmospheric.label,
     rotation: -1,
   },
 ]
@@ -205,7 +206,6 @@ function Home() {
       const navBar = document.querySelector<HTMLElement>('.home__nav .top-nav__bar')
       const navTarget = navBar ?? '.home__nav'
 
-      // Set initial hidden states immediately to prevent blink
       gsap.set(navTarget, { opacity: 0, y: -12 })
       gsap.set('.home__hero-title', { opacity: 0, y: 28 })
       gsap.set('.home__hero-subhead', { opacity: 0, y: 16 })
@@ -234,8 +234,6 @@ function Home() {
         )
 
       const heroThumbs = gsap.utils.toArray<HTMLElement>('.home__hero-gallery--desktop .home__hero-thumb')
-      // Two-phase reveal: thumb images slide up first, then captions fade in
-      // Using set→to instead of from to avoid Chrome flash and Safari timing issues
       const yOffsets = [58, 66, 50, 70, 62]
       heroThumbs.forEach((el, i) => {
         el.style.transition = 'none'
@@ -243,11 +241,9 @@ function Home() {
         const caption = el.querySelector<HTMLElement>('figcaption')
         const target = image ?? el
 
-        // Set initial hidden state immediately (no flash)
         gsap.set(target, { opacity: 0, y: yOffsets[i % yOffsets.length], scale: 0.92 })
         if (caption) gsap.set(caption, { opacity: 0, y: 8 })
 
-        // Phase 1: thumb image slides up
         gsap.to(target, {
           opacity: 1,
           y: 0,
@@ -258,7 +254,6 @@ function Home() {
           clearProps: 'transform',
           onComplete: () => {
             el.style.transition = ''
-            // Phase 2: caption fades in after image settles
             if (caption) {
               gsap.to(caption, {
                 opacity: 1,
@@ -271,7 +266,6 @@ function Home() {
           },
         })
       })
-
 
       const cards = gsap.utils.toArray<HTMLElement>('.home__case-card')
 
@@ -441,11 +435,8 @@ function Home() {
     return () => window.removeEventListener('resize', updateLayout)
   }, [])
 
-
-
   return (
     <main className="home" ref={rootRef} id="main">
-      {/* Background layers */}
       <div className="home__background" aria-hidden="true" />
       <div className="home__floaters" aria-hidden="true" />
 
@@ -460,13 +451,10 @@ function Home() {
         />
       </div>
 
-      {/* Hero */}
       <header className="home__section home__hero" id="hero">
         <div className="home__hero-body">
           <h1 className="home__hero-title">
-            <span className="home__hero-title-line">Photo and video for Berlin&rsquo;s galleries,</span>
-            <br />
-            artists, and live events.
+            Strategic photo and film for exhibitions, artists, and live work.
           </h1>
           <div
             className="home__hero-gallery home__hero-gallery--desktop"
@@ -542,33 +530,31 @@ function Home() {
             })}
           </div>
           <p className="home__hero-subhead">
-            Exhibitions, openings, and performances captured with art-first direction, fast delivery, and edits that
-            keep your tone intact.
+            For Berlin-based institutions, studios, artists, and spatial teams needing press, archive, funding, and long-term assets.
           </p>
           <div className="home__actions">
             <button
               type="button"
               onClick={() => {
-                trackHomeCta('Check availability', 'hero_primary')
+                trackHomeCta('Request availability', 'hero_primary')
                 navigate('/contact')
               }}
             >
-              Check availability
+              Request availability
             </button>
             <button
               type="button"
               onClick={() => {
-                trackHomeCta('View packages', 'hero_secondary')
+                trackHomeCta('View services', 'hero_secondary')
                 handleScroll('#services')
               }}
             >
-              View packages
+              View services
             </button>
           </div>
         </div>
       </header>
 
-      {/* Proof */}
       <section className="home__section home__proof">
         <div className="home__proof-avatars">
           {proofAvatars.map((avatar, idx) => (
@@ -576,18 +562,16 @@ function Home() {
           ))}
           <span>Make us part of your creative hub</span>
         </div>
-        <h2>We are a team fluent in galleries, artists, and live sets, keeping your visual language intact.</h2>
-        <p className="home__proof-copy">
-          Press-ready stills and films that preserve the atmosphere and help collectors, press, and socials connect
-          with the work.
+        <h2>Documentation is not coverage.</h2>
+        <p className={`home__proof-copy ${styles.homeRedesign__bodyCopy}`}>
+          We create assets teams can publish, archive, and reuse.
         </p>
       </section>
 
-      {/* Cases */}
       <section className="home__section home__cases" id="cases" ref={casesRef}>
         <div className="home__section-header">
           <p>Coverage types</p>
-          <h2>Pick the format that fits your show, release, or live event.</h2>
+          <h2>Choose the format for your show, release, or space.</h2>
           <p className="home__section-subcopy">I need content for my:</p>
         </div>
         <div className="home__cases-grid">
@@ -615,7 +599,7 @@ function Home() {
                       <span>{project.year}</span>
                     </div>
                     <h3>{project.title}</h3>
-                    <p className="home__case-copy">{project.copy}</p>
+                    <p className={`home__case-copy ${styles.homeRedesign__cardCopy}`}>{project.copy}</p>
                     <span className="home__case-cta">See documentation details</span>
                   </div>
                 </button>
@@ -624,36 +608,34 @@ function Home() {
           ))}
         </div>
         <p className="home__section-note">
-          Not sure which coverage fits you best? <Link to="/contact">Get in contact with us</Link> and we will guide you.
+          Need help choosing? <Link to="/contact">Contact us</Link>.
         </p>
       </section>
 
-      {/* CTA replaces pricing for A/B test, keep anchor for smooth scroll targets */}
       <section className="home__section home__proof" id="services">
         <h2>Start a project.</h2>
-        <p className="home__proof-copy">
-          We document exhibitions, performances, and artist-led work with care for tone, space, and intent. If
-          you&rsquo;re preparing an opening, release, or live event in Berlin, we&rsquo;d be glad to hear about it.
+        <p className={`home__proof-copy ${styles.homeRedesign__bodyCopy}`}>
+          Turn your project into press-ready assets with a clear plan and deliverables.
         </p>
         <div className="home__proof-actions">
           <button
             type="button"
             onClick={() => {
-              trackHomeCta('Check availability', 'footer_primary')
+              trackHomeCta('Request availability', 'footer_primary')
               navigate('/contact')
             }}
           >
-            Check availability
+            Request availability
           </button>
           <button
             type="button"
             className="home__proof-secondary"
             onClick={() => {
-              trackHomeCta('View portfolio', 'footer_secondary')
-              navigate('/portfolio')
+              trackHomeCta('View services', 'footer_secondary')
+              handleScroll('#cases')
             }}
           >
-            View portfolio
+            View services
           </button>
         </div>
       </section>
@@ -676,7 +658,6 @@ function Home() {
           </article>
         </div>
       </section>
-      {/* Footer */}
       <Footer />
     </main>
   )
