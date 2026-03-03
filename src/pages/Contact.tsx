@@ -11,6 +11,8 @@ function Contact() {
   const navigate = useNavigate()
   const rootRef = useRef<HTMLElement | null>(null)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [submitSuccessMessage, setSubmitSuccessMessage] = useState<string | null>(null)
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [hasTrackedStart, setHasTrackedStart] = useState(false)
   const messageRef = useRef<HTMLTextAreaElement | null>(null)
@@ -74,46 +76,82 @@ function Contact() {
     return `${base.replace(/\/+$/, '')}/api/contact`
   }
 
+  const clearFieldError = (name: string) => {
+    if (!fieldErrors[name]) return
+
+    setFieldErrors((prev) => {
+      const next = { ...prev }
+      delete next[name]
+      return next
+    })
+  }
+
+  const getFieldErrorId = (name: string) => `${name}-error`
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (isSubmitting) return
 
-    setIsSubmitting(true)
     setSubmitError(null)
+    setSubmitSuccessMessage(null)
 
     try {
       const form = event.currentTarget
       const formData = new FormData(form)
       const hasService = Boolean(queryContext.serviceLabel)
       const hasPackage = Boolean(queryContext.packageLabel)
+      const firstName = String(formData.get('firstName') || '').trim()
+      const lastName = String(formData.get('lastName') || '').trim()
+      const email = String(formData.get('email') || '').trim()
       const message = String(formData.get('message') || '').trim()
+      const companyWebsite = String(formData.get('companyWebsite') || '').trim()
       const serviceLabel = hasService ? queryContext.serviceLabel : ''
       const packageLabel = hasPackage ? queryContext.packageLabel : ''
+      const nextErrors: Record<string, string> = {}
+
+      if (!firstName && !lastName) {
+        nextErrors.firstName = 'Add your first or last name.'
+        nextErrors.lastName = 'Add your first or last name.'
+      }
+
+      if (!email) {
+        nextErrors.email = 'Enter your email address.'
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        nextErrors.email = 'Enter a valid email address.'
+      }
+
+      if (!message) {
+        nextErrors.message = 'Tell us about your project.'
+      }
+
+      if (Object.keys(nextErrors).length > 0) {
+        setFieldErrors(nextErrors)
+        trackEvent('contact_form_submit_error', {
+          error_type: 'validation',
+          service: hasService ? queryContext.serviceParam : undefined,
+          serviceLabel: serviceLabel || undefined,
+          package: hasPackage ? queryContext.packageParam : undefined,
+          packageLabel: packageLabel || undefined,
+        })
+        setSubmitError('Please correct the highlighted fields.')
+        return
+      }
+
+      setFieldErrors({})
+      setIsSubmitting(true)
 
       const payload = {
-        firstName: String(formData.get('firstName') || '').trim(),
-        lastName: String(formData.get('lastName') || '').trim(),
-        email: String(formData.get('email') || '').trim(),
+        firstName,
+        lastName,
+        email,
         service: hasService ? queryContext.serviceParam : '',
         serviceLabel,
         package: hasPackage ? queryContext.packageParam : '',
         packageLabel,
         sourceUrl: typeof window !== 'undefined' ? window.location.href : '',
         referrer: typeof document !== 'undefined' ? document.referrer : '',
+        companyWebsite,
         message,
-      }
-
-      if (!payload.email || !payload.message) {
-        trackEvent('contact_form_submit_error', {
-          error_type: 'validation',
-          service: payload.service || undefined,
-          serviceLabel: payload.serviceLabel || undefined,
-          package: payload.package || undefined,
-          packageLabel: payload.packageLabel || undefined,
-        })
-        setSubmitError('Please add your email and a message.')
-        setIsSubmitting(false)
-        return
       }
 
       const endpoint = resolveContactEndpoint()
@@ -125,10 +163,14 @@ function Contact() {
       })
 
       if (!response.ok) {
-        let serverMsg = 'Contact request failed'
+        let serverMsg = 'Something went wrong. Please try again or email us directly.'
         try {
           const data = await response.json()
-          if (data?.error) serverMsg = String(data.error)
+          if (typeof data?.error === 'string') {
+            serverMsg = data.error
+          } else if (data?.error?.message) {
+            serverMsg = String(data.error.message)
+          }
         } catch {
           // ignore parsing errors
         }
@@ -137,6 +179,8 @@ function Contact() {
 
       form.reset()
       hasSubmittedRef.current = true
+      setSubmitError(null)
+      setSubmitSuccessMessage('Thanks. Your request was sent successfully.')
       trackEvent('contact_form_submit_success', {
         service: payload.service || undefined,
         serviceLabel: payload.serviceLabel || undefined,
@@ -169,6 +213,11 @@ function Contact() {
       package: queryContext.packageParam || undefined,
       packageLabel: queryContext.packageLabel || undefined,
     })
+  }
+
+  const handleFieldInput = (name: string) => {
+    clearFieldError(name)
+    if (submitError) setSubmitError(null)
   }
 
   useEffect(() => {
@@ -309,20 +358,60 @@ function Contact() {
             </div>
           </div>
 
-          <form className="contact__form" onSubmit={handleSubmit} onFocus={handleFormFocus}>
+          <form className="contact__form" onSubmit={handleSubmit} onFocus={handleFormFocus} noValidate>
             <div className="contact__field">
               <label htmlFor="firstName">First Name</label>
-              <input id="firstName" name="firstName" type="text" placeholder="First name" />
+              <input
+                id="firstName"
+                name="firstName"
+                type="text"
+                placeholder="First name"
+                aria-invalid={fieldErrors.firstName ? 'true' : undefined}
+                aria-describedby={fieldErrors.firstName ? getFieldErrorId('firstName') : undefined}
+                onChange={() => handleFieldInput('firstName')}
+              />
+              {fieldErrors.firstName && (
+                <span className="contact__field-error" id={getFieldErrorId('firstName')} role="alert">
+                  {fieldErrors.firstName}
+                </span>
+              )}
             </div>
 
             <div className="contact__field">
               <label htmlFor="lastName">Last Name</label>
-              <input id="lastName" name="lastName" type="text" placeholder="Last name" />
+              <input
+                id="lastName"
+                name="lastName"
+                type="text"
+                placeholder="Last name"
+                aria-invalid={fieldErrors.lastName ? 'true' : undefined}
+                aria-describedby={fieldErrors.lastName ? getFieldErrorId('lastName') : undefined}
+                onChange={() => handleFieldInput('lastName')}
+              />
+              {fieldErrors.lastName && (
+                <span className="contact__field-error" id={getFieldErrorId('lastName')} role="alert">
+                  {fieldErrors.lastName}
+                </span>
+              )}
             </div>
 
             <div className="contact__field contact__field--full">
               <label htmlFor="email">Email <span aria-hidden="true">*</span></label>
-              <input id="email" name="email" type="email" placeholder="you@example.com" required />
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="you@example.com"
+                required
+                aria-invalid={fieldErrors.email ? 'true' : undefined}
+                aria-describedby={fieldErrors.email ? getFieldErrorId('email') : undefined}
+                onChange={() => handleFieldInput('email')}
+              />
+              {fieldErrors.email && (
+                <span className="contact__field-error" id={getFieldErrorId('email')} role="alert">
+                  {fieldErrors.email}
+                </span>
+              )}
             </div>
 
             <div className="contact__field contact__field--full">
@@ -334,15 +423,40 @@ function Contact() {
                 rows={4}
                 required
                 ref={messageRef}
+                aria-invalid={fieldErrors.message ? 'true' : undefined}
+                aria-describedby={fieldErrors.message ? getFieldErrorId('message') : undefined}
+                onChange={() => handleFieldInput('message')}
               />
+              {fieldErrors.message && (
+                <span className="contact__field-error" id={getFieldErrorId('message')} role="alert">
+                  {fieldErrors.message}
+                </span>
+              )}
+            </div>
+
+            <div
+              style={{
+                position: 'absolute',
+                left: '-9999px',
+                width: '1px',
+                height: '1px',
+                overflow: 'hidden',
+              }}
+              aria-hidden="true"
+            >
+              <label htmlFor="companyWebsite">Company website</label>
+              <input id="companyWebsite" name="companyWebsite" type="text" tabIndex={-1} autoComplete="off" />
             </div>
 
             <p className="contact__error" role="alert" aria-live="assertive">
               {submitError ?? ''}
             </p>
+            <p className="contact__success" role="status" aria-live="polite">
+              {submitSuccessMessage ?? ''}
+            </p>
 
             <button className="contact__submit" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Sending...' : 'Submit'}
+              {isSubmitting ? 'Sending...' : 'Request availability'}
             </button>
           </form>
         </div>

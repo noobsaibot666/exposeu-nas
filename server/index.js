@@ -5,6 +5,9 @@ import nodemailer from 'nodemailer'
 
 const app = express()
 const port = Number(process.env.CONTACT_API_PORT || 8787)
+const RATE_LIMIT_WINDOW_MS = 60_000
+const RATE_LIMIT_MAX_REQUESTS = 5
+const contactRequestStore = new Map()
 
 const buildSmtpConfig = () => {
   const host = process.env.SMTP_HOST
@@ -73,6 +76,45 @@ const serializeError = (error) => ({
   command: error?.command,
 })
 
+const trimValue = (value) => (typeof value === 'string' ? value.trim() : '')
+
+const sendApiError = (res, status, code, message) =>
+  res.status(status).json({
+    ok: false,
+    error: {
+      code,
+      message,
+    },
+  })
+
+const getClientIp = (req) => {
+  const forwarded = req.headers['x-forwarded-for']
+  if (typeof forwarded === 'string' && forwarded.trim()) {
+    return forwarded.split(',')[0].trim()
+  }
+
+  if (Array.isArray(forwarded) && forwarded[0]) {
+    return forwarded[0].trim()
+  }
+
+  return req.ip || req.socket?.remoteAddress || 'unknown'
+}
+
+const isRateLimited = (ip) => {
+  const now = Date.now()
+  const existingEntries = contactRequestStore.get(ip) || []
+  const recentEntries = existingEntries.filter((timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS)
+
+  if (recentEntries.length >= RATE_LIMIT_MAX_REQUESTS) {
+    contactRequestStore.set(ip, recentEntries)
+    return true
+  }
+
+  recentEntries.push(now)
+  contactRequestStore.set(ip, recentEntries)
+  return false
+}
+
 // Middleware
 app.use(cors())
 app.use(express.json({ limit: '1mb' }))
@@ -108,8 +150,6 @@ app.head('/contact', (_req, res) => res.status(200).end())
 // Contact endpoint
 app.post('/contact', async (req, res) => {
   try {
-    console.log('CONTACT BODY:', req.body)
-
     const {
       firstName,
       lastName,
@@ -121,25 +161,66 @@ app.post('/contact', async (req, res) => {
       packageLabel,
       sourceUrl,
       referrer,
+      companyWebsite,
       message,
     } = req.body || {}
 
+    const ip = getClientIp(req)
+    const trimmedFirstName = trimValue(firstName)
+    const trimmedLastName = trimValue(lastName)
+    const trimmedName = trimValue(name)
+    const trimmedEmail = trimValue(email)
+    const trimmedMessage = trimValue(message)
+    const trimmedService = trimValue(service)
+    const trimmedServiceLabel = trimValue(serviceLabel)
+    const trimmedPackage = trimValue(packageSlug)
+    const trimmedPackageLabel = trimValue(packageLabel)
+    const trimmedSourceUrl = trimValue(sourceUrl)
+    const trimmedReferrer = trimValue(referrer)
+    const trimmedCompanyWebsite = trimValue(companyWebsite)
+
     const senderName =
-      [firstName, lastName].filter(Boolean).join(' ').trim() ||
-      name ||
+      [trimmedFirstName, trimmedLastName].filter(Boolean).join(' ').trim() ||
+      trimmedName ||
       'N/A'
 
     console.log('CONTACT LEAD META:', {
       ts: new Date().toISOString(),
-      service: service || '',
-      package: packageSlug || '',
-      sourceUrl: sourceUrl || '',
-      referrer: referrer || '',
+      ip,
+      service: trimmedService,
+      package: trimmedPackage,
+      sourceUrl: trimmedSourceUrl,
+      referrer: trimmedReferrer,
     })
 
-    if (!email || !message) {
-      console.error('Missing required fields:', { senderName, email, message })
-      return res.status(400).json({ ok: false, error: 'Missing required fields.' })
+    if (trimmedCompanyWebsite) {
+      console.warn('CONTACT SPAM BLOCKED:', {
+        ts: new Date().toISOString(),
+        ip,
+        reason: 'honeypot_filled',
+      })
+      return res.json({ ok: true })
+    }
+
+    if (isRateLimited(ip)) {
+      console.warn('CONTACT RATE LIMITED:', {
+        ts: new Date().toISOString(),
+        ip,
+        service: trimmedService,
+        package: trimmedPackage,
+      })
+      return sendApiError(res, 429, 'RATE_LIMITED', 'Too many requests. Please wait a minute and try again.')
+    }
+
+    if (senderName === 'N/A' || !trimmedEmail || !trimmedMessage) {
+      console.error('CONTACT VALIDATION FAILED:', {
+        ts: new Date().toISOString(),
+        ip,
+        hasName: senderName !== 'N/A',
+        hasEmail: Boolean(trimmedEmail),
+        hasMessage: Boolean(trimmedMessage),
+      })
+      return sendApiError(res, 400, 'INVALID_PAYLOAD', 'Please provide your name, email, and message.')
     }
 
     const config = buildSmtpConfig()
@@ -153,13 +234,13 @@ app.post('/contact', async (req, res) => {
         CONTACT_TO: !!config.to,
         CONTACT_FROM: !!config.from,
       })
-      return res.status(500).json({ ok: false, error: 'Server email configuration missing.' })
+      return sendApiError(res, 500, 'EMAIL_CONFIG_MISSING', 'Server email configuration missing.')
     }
 
     const transporter = createTransporter(config)
 
-    const subjectService = serviceLabel || service || ''
-    const subjectPackage = packageLabel || packageSlug || ''
+    const subjectService = trimmedServiceLabel || trimmedService || ''
+    const subjectPackage = trimmedPackageLabel || trimmedPackage || ''
     const subjectParts = [subjectService, subjectPackage].filter(Boolean)
     const subject = subjectParts.length
       ? `Expose.u Lead - ${subjectParts.join(' - ')}`
@@ -167,24 +248,24 @@ app.post('/contact', async (req, res) => {
 
     const leadSummary = [
       'Lead Summary',
-      ...(serviceLabel || service ? [`Service: ${serviceLabel || 'Unknown'}${service ? ` (${service})` : ''}`] : []),
-      ...(packageLabel || packageSlug ? [`Package: ${packageLabel || 'Unknown'}${packageSlug ? ` (${packageSlug})` : ''}`] : []),
-      ...(sourceUrl ? [`Source: ${sourceUrl}`] : referrer ? [`Source: ${referrer}`] : []),
+      ...(trimmedServiceLabel || trimmedService ? [`Service: ${trimmedServiceLabel || 'Unknown'}${trimmedService ? ` (${trimmedService})` : ''}`] : []),
+      ...(trimmedPackageLabel || trimmedPackage ? [`Package: ${trimmedPackageLabel || 'Unknown'}${trimmedPackage ? ` (${trimmedPackage})` : ''}`] : []),
+      ...(trimmedSourceUrl ? [`Source: ${trimmedSourceUrl}`] : trimmedReferrer ? [`Source: ${trimmedReferrer}`] : []),
     ]
 
     const text = [
       `Name: ${senderName}`,
-      `Email: ${email}`,
+      `Email: ${trimmedEmail}`,
       '',
       ...leadSummary,
       '',
-      message,
+      trimmedMessage,
     ].join('\n')
 
     const mailOptions = {
       to: config.to,
       from: config.from,
-      replyTo: email,
+      replyTo: trimmedEmail,
       subject,
       text,
     }
@@ -209,11 +290,7 @@ app.post('/contact', async (req, res) => {
     return res.json({ ok: true })
   } catch (error) {
     console.error('Contact form error', serializeError(error))
-    return res.status(500).json({
-      ok: false,
-      error: 'Failed to send email.',
-      details: serializeError(error),
-    })
+    return sendApiError(res, 500, 'EMAIL_SEND_FAILED', 'Failed to send email.')
   }
 })
 

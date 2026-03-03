@@ -132,6 +132,17 @@
   outline-offset: 2px;
 }
 
+.contact__field input[aria-invalid='true'],
+.contact__field textarea[aria-invalid='true'] {
+  border-bottom-color: var(--error-color);
+}
+
+.contact__field-error {
+  color: var(--error-color);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
 .contact__field--full {
   grid-column: 1 / -1;
 }
@@ -140,6 +151,14 @@
   grid-column: 1 / -1;
   color: var(--error-color);
   font-weight: 600;
+  min-height: 1.4em;
+}
+
+.contact__success {
+  grid-column: 1 / -1;
+  color: var(--link-color);
+  font-weight: 600;
+  min-height: 1.4em;
 }
 
 .contact__submit {
