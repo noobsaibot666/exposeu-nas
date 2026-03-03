@@ -532,11 +532,17 @@
 .home__pricing-card button {
   margin-top: auto;
   border-radius: 999px;
-  padding: 12px 20px;
+  padding: 16px 26px;
   border: 1px solid var(--button-solid-border);
   background: var(--button-solid-bg);
   color: var(--button-solid-text);
   cursor: pointer;
+  min-height: 56px;
+  width: 100%;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  transition: transform 150ms ease, background-color 150ms ease, border-color 150ms ease, color 150ms ease;
 }
 
 .home__pricing-card.is-popular button {
@@ -554,6 +560,11 @@
 .home__pricing-card button:hover:not(.home__pricing-card.is-popular button) {
   background: var(--button-ghost-bg);
   color: var(--button-solid-text);
+}
+
+.home__pricing-card button:focus-visible {
+  outline: 2px solid rgba(245, 245, 244, 0.6);
+  outline-offset: 2px;
 }
 
 .home__pricing-card--monthly button,

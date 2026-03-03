@@ -4,6 +4,7 @@ import cors from 'cors'
 import nodemailer from 'nodemailer'
 
 const app = express()
+app.set('trust proxy', true)
 const port = Number(process.env.CONTACT_API_PORT || 8787)
 const RATE_LIMIT_WINDOW_MS = 60_000
 const RATE_LIMIT_MAX_REQUESTS = 5
@@ -88,6 +89,15 @@ const sendApiError = (res, status, code, message) =>
   })
 
 const getClientIp = (req) => {
+  const cfConnectingIp = req.headers['cf-connecting-ip']
+  if (typeof cfConnectingIp === 'string' && cfConnectingIp.trim()) {
+    return cfConnectingIp.trim()
+  }
+
+  if (Array.isArray(cfConnectingIp) && cfConnectingIp[0]) {
+    return cfConnectingIp[0].trim()
+  }
+
   const forwarded = req.headers['x-forwarded-for']
   if (typeof forwarded === 'string' && forwarded.trim()) {
     return forwarded.split(',')[0].trim()
@@ -97,7 +107,7 @@ const getClientIp = (req) => {
     return forwarded[0].trim()
   }
 
-  return req.ip || req.socket?.remoteAddress || 'unknown'
+  return req.ip || req.connection?.remoteAddress || req.socket?.remoteAddress || 'unknown'
 }
 
 const isRateLimited = (ip) => {
@@ -205,7 +215,8 @@ app.post('/contact', async (req, res) => {
     if (isRateLimited(ip)) {
       console.warn('CONTACT RATE LIMITED:', {
         ts: new Date().toISOString(),
-        ip,
+        derivedIp: ip,
+        hasForwardedFor: Boolean(req.headers['x-forwarded-for']),
         service: trimmedService,
         package: trimmedPackage,
       })

@@ -15,6 +15,7 @@ function Contact() {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [hasTrackedStart, setHasTrackedStart] = useState(false)
+  const [hasTouchedMessage, setHasTouchedMessage] = useState(false)
   const messageRef = useRef<HTMLTextAreaElement | null>(null)
   const hasStartedRef = useRef(false)
   const hasSubmittedRef = useRef(false)
@@ -61,6 +62,15 @@ function Contact() {
     [navigate],
   )
 
+  const starterMessage = useMemo(() => {
+    if (!queryContext.serviceLabel || !queryContext.packageLabel) return ''
+
+    return [
+      `Hello Expose.u — I'd like to inquire about ${queryContext.serviceLabel} (${queryContext.packageLabel}).`,
+      'Context: __. Dates: __. Location: __.',
+    ].join('\n')
+  }, [queryContext.packageLabel, queryContext.serviceLabel])
+
   const resolveContactEndpoint = () => {
     // Traefik routes the API at /api and strips /api before forwarding to the Node service.
     // So frontend must POST to /api/contact (same origin).
@@ -87,6 +97,16 @@ function Contact() {
   }
 
   const getFieldErrorId = (name: string) => `${name}-error`
+
+  const isDebugEnabled = () => {
+    if (typeof window === 'undefined') return false
+
+    try {
+      return window.localStorage.getItem('__analyticsDebug') === 'true'
+    } catch {
+      return false
+    }
+  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -150,11 +170,24 @@ function Contact() {
         packageLabel,
         sourceUrl: typeof window !== 'undefined' ? window.location.href : '',
         referrer: typeof document !== 'undefined' ? document.referrer : '',
-        companyWebsite,
         message,
       }
 
+      if (companyWebsite) {
+        Object.assign(payload, { companyWebsite })
+      }
+
       const endpoint = resolveContactEndpoint()
+
+      if (isDebugEnabled()) {
+        console.debug('[contact submit] request fired', {
+          endpoint,
+          payload: {
+            ...payload,
+            message: payload.message ? '[present]' : '[missing]',
+          },
+        })
+      }
 
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -162,23 +195,59 @@ function Contact() {
         body: JSON.stringify(payload),
       })
 
+      let responseData: unknown = null
+      try {
+        responseData = await response.json()
+      } catch {
+        responseData = null
+      }
+
+      if (isDebugEnabled()) {
+        console.debug('[contact submit] response', {
+          status: response.status,
+          ok: response.ok,
+          data: responseData,
+        })
+      }
+
       if (!response.ok) {
         let serverMsg = 'Something went wrong. Please try again or email us directly.'
-        try {
-          const data = await response.json()
-          if (typeof data?.error === 'string') {
+
+        if (typeof responseData === 'object' && responseData !== null) {
+          const data = responseData as { error?: string | { message?: string } }
+          if (typeof data.error === 'string') {
             serverMsg = data.error
-          } else if (data?.error?.message) {
+          } else if (data.error?.message) {
             serverMsg = String(data.error.message)
           }
-        } catch {
-          // ignore parsing errors
         }
+
+        throw new Error(serverMsg)
+      }
+
+      if (
+        typeof responseData !== 'object' ||
+        responseData === null ||
+        !('ok' in responseData) ||
+        responseData.ok !== true
+      ) {
+        const serverMsg =
+          typeof responseData === 'object' &&
+          responseData !== null &&
+          'error' in responseData &&
+          typeof responseData.error === 'object' &&
+          responseData.error !== null &&
+          'message' in responseData.error &&
+          typeof responseData.error.message === 'string'
+            ? responseData.error.message
+            : 'Something went wrong. Please try again or email us directly.'
+
         throw new Error(serverMsg)
       }
 
       form.reset()
       hasSubmittedRef.current = true
+      setHasTouchedMessage(false)
       setSubmitError(null)
       setSubmitSuccessMessage('Thanks. Your request was sent successfully.')
       trackEvent('contact_form_submit_success', {
@@ -220,20 +289,31 @@ function Contact() {
     if (submitError) setSubmitError(null)
   }
 
+  const handleMessageFocus = () => {
+    if (!messageRef.current) return
+
+    if (!hasTouchedMessage && starterMessage && messageRef.current.value === starterMessage) {
+      messageRef.current.value = ''
+    }
+
+    setHasTouchedMessage(true)
+    handleFieldInput('message')
+  }
+
+  const isStarterMessageVisible = Boolean(
+    starterMessage &&
+      !hasTouchedMessage &&
+      messageRef.current &&
+      messageRef.current.value === starterMessage,
+  )
+
   useEffect(() => {
     if (!messageRef.current) return
-    if (messageRef.current.value.trim()) return
-    const hasService = Boolean(queryContext.serviceLabel)
-    const hasPackage = Boolean(queryContext.packageLabel)
+    if (hasTouchedMessage) return
+    if (messageRef.current.value.trim() && messageRef.current.value !== starterMessage) return
 
-    if (!hasService && !hasPackage) return
-
-    const detail = hasService ? queryContext.serviceLabel : 'a project'
-    const packageSuffix = hasPackage ? ` (${queryContext.packageLabel})` : ''
-
-    messageRef.current.value =
-      `Hi - I'm reaching out about ${detail}${packageSuffix}. Dates: ___. Location: ___. Deliverables: ___.`
-  }, [queryContext])
+    messageRef.current.value = starterMessage
+  }, [hasTouchedMessage, starterMessage])
 
   useEffect(() => {
     trackEvent('contact_view', {
@@ -420,12 +500,17 @@ function Contact() {
                 id="message"
                 name="message"
                 placeholder="Tell us about your exhibition, performance, or event. Include date, venue, and goals."
-                rows={4}
+                rows={3}
                 required
                 ref={messageRef}
+                className={isStarterMessageVisible ? 'isStarterMessage' : undefined}
                 aria-invalid={fieldErrors.message ? 'true' : undefined}
                 aria-describedby={fieldErrors.message ? getFieldErrorId('message') : undefined}
-                onChange={() => handleFieldInput('message')}
+                onFocus={handleMessageFocus}
+                onChange={() => {
+                  setHasTouchedMessage(true)
+                  handleFieldInput('message')
+                }}
               />
               {fieldErrors.message && (
                 <span className="contact__field-error" id={getFieldErrorId('message')} role="alert">
