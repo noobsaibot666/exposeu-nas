@@ -11,42 +11,34 @@ const heroCards = [
 function FashionShow() {
   return (
     <WorkPageLayout
-      /* Hero */
       title="Fashion Show"
-      heroCopy="Runway photo and video with attitude, sharp angles, and fabric motion from backstage to finale."
-      detail="For designers, producers, and PR teams who need fast editorial assets."
+      heroCopy="Runway and backstage coverage for PR, sponsors, and same-day selects."
+      detail="Built for look-by-look clarity, backstage context, and fast editorial delivery."
       cards={heroCards}
-      /* Primary gallery */
-      galleryTitle="Why it matters"
-      galleryCopy="Runway coverage must be exact, fast, and consistent."
+      galleryTitle="Editorial assets for the full show day."
+      galleryCopy="Delivered for runway recap, PR outreach, and sponsor follow-up."
       gallery={[
-        { title: 'Look accuracy', subtitle: 'Each look captured cleanly.' },
-        { title: 'Fabric motion', subtitle: 'Movement and texture remain sharp.' },
-        { title: 'Runway discipline', subtitle: 'Angles stay consistent by look.' },
-        { title: 'PR speed', subtitle: 'Selects ready for same-day use.' },
+        { title: 'Runway frames', subtitle: 'Look-by-look stills with clean sightlines.' },
+        { title: 'Backstage selects', subtitle: 'Prep, fittings, and team moments.' },
+        { title: 'Priority edits', subtitle: 'Fast selects for press and sponsor use.' },
+        { title: 'Organized finals', subtitle: 'Folders sorted for PR, archive, and review.' },
       ]}
-      /* What you get */
-      extraGalleryTitle="What you get"
-      extraGalleryCopy="Editorial delivery built for press, socials, and archive."
+      extraGalleryTitle="Choose this when one show needs multiple outputs fast."
+      extraGalleryCopy="Best for designers, PR teams, producers, and sponsor-facing recap."
       extraGallery={[
-        { title: 'Runway set', subtitle: 'Look-by-look frames for PR.' },
-        { title: 'Backstage', subtitle: 'Prep and fittings without disruption.' },
-        { title: 'Same-day selects', subtitle: 'Priority frames within hours.' },
-        { title: 'Delivery', subtitle: 'Named folders and usage notes.' },
+        { title: 'Press pushes', subtitle: 'When same-day hero frames are non-negotiable.' },
+        { title: 'Show recaps', subtitle: 'When runway and backstage both matter.' },
+        { title: 'Brand archives', subtitle: 'When each look needs a clean long-term record.' },
       ]}
-      /* How we work */
-      extraGallerySecondaryTitle="How we cover shows"
-      extraGallerySecondaryCopy="We plan with production, lock sightlines, and stay agile so we never miss a look."
+      extraGallerySecondaryTitle="Fashion Show is runway-first. Performance is cue-first."
+      extraGallerySecondaryCopy="Choose this when look order, backstage access, and PR speed lead the brief."
       extraGallerySecondary={[
-        { title: 'Show flow sync', subtitle: 'Coordinate cues, walk order, and key beats with your team.' },
-        { title: 'Pit and roaming', subtitle: 'Primary angle and roaming documentation for varied perspectives.' },
-        { title: 'Low footprint', subtitle: 'Minimal rigging to keep aisles clear and timelines tight.' },
-        { title: 'Same-day selects', subtitle: 'Priority frames the day of; full delivery follows quickly.' },
+        { title: 'Choose Fashion Show', subtitle: 'For runway accuracy, backstage access, and look-by-look delivery.' },
+        { title: 'Choose Performance', subtitle: 'For stage action, audience energy, and live cue timing.' },
       ]}
-      /* CTA */
-      ctaText="Book fashion show documentation. Share your date, venue, and show timing."
+      ctaText="Request availability for your show dates."
       ctaHref="/contact"
-      /* Pricing overrides */
+      ctaDetail="Clear deliverables. Berlin-based. Simple proposal."
       serviceSlug="fashion-show"
     />
   )

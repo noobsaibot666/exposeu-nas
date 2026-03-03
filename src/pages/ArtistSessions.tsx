@@ -11,66 +11,34 @@ const heroCards = [
 function ArtistSessions() {
   return (
     <WorkPageLayout
-      /* Hero */
       title="Artist Sessions"
-      heroCopy="Portraits and BTS for artists that feel honest, stylized, and ready to publish across releases."
-      detail="You’ll get portraits, process, and studio moments that make your work feel personal."
+      heroCopy="Portrait and process coverage for artists, releases, and press kits."
+      detail="A focused session for portraits, studio details, and launch-ready selects."
       cards={heroCards}
-      /* Primary gallery */
-      galleryTitle="Why it matters"
-      galleryCopy="Artist sessions define identity and release visuals without staging."
+      galleryTitle="A clean asset set for launches, profiles, and ongoing use."
+      galleryCopy="Built to feel honest, current, and ready to publish."
       gallery={[
-        {
-          title: 'Portrait truth',
-          subtitle: 'Images that feel honest and current.',
-        },
-        {
-          title: 'Process',
-          subtitle: 'Hands, tools, and studio context.',
-        },
-        {
-          title: 'Release kit',
-          subtitle: 'Formats for web, press, and socials.',
-        },
-        {
-          title: 'Consistency',
-          subtitle: 'Cohesive set for ongoing use.',
-        },
+        { title: 'Portrait set', subtitle: 'Multiple framings for press, web, and releases.' },
+        { title: 'Process stills', subtitle: 'Hands, tools, studio, and making context.' },
+        { title: 'Short motion clips', subtitle: 'Optional BTS assets for posts and teasers.' },
+        { title: 'Organized delivery', subtitle: 'Finals grouped for fast publishing and reuse.' },
       ]}
-      /* What you get */
-      extraGalleryTitle="What you get"
-      extraGalleryCopy="Portraits and process delivered as a clean launch kit."
+      extraGalleryTitle="Choose this when the artist needs to be front and center."
+      extraGalleryCopy="Best for portraits, release campaigns, profiles, and studio communication."
       extraGallery={[
-        {
-          title: 'Prep',
-          subtitle: 'Mood and looks aligned ahead of shoot.',
-        },
-        {
-          title: 'Portrait set',
-          subtitle: 'Multiple framings for selection.',
-        },
-        {
-          title: 'Studio set',
-          subtitle: 'Details and BTS with context.',
-        },
-        {
-          title: 'Delivery',
-          subtitle: 'Organized folders ready to publish.',
-        },
+        { title: 'Album and release visuals', subtitle: 'When portraits lead the campaign.' },
+        { title: 'Artist profiles', subtitle: 'When personality and process both matter.' },
+        { title: 'Studio updates', subtitle: 'When you need ongoing assets without a full event shoot.' },
       ]}
-      /* How we work */
-      extraGallerySecondaryTitle="How we work"
-      extraGallerySecondaryCopy="Small crew, quick setup, and a calm set so you can stay in your flow."
+      extraGallerySecondaryTitle="Artist Sessions centers the person. Performance centers the live moment."
+      extraGallerySecondaryCopy="Choose this when portrait, process, and controlled pacing matter most."
       extraGallerySecondary={[
-        { title: 'One producer', subtitle: 'Single contact for scheduling and approvals.' },
-        { title: 'Lean footprint', subtitle: 'Minimal gear so your space stays clear.' },
-        { title: 'On-set direction', subtitle: 'Light coaching to keep you relaxed and consistent.' },
-        { title: 'Fast delivery', subtitle: 'Selects quickly; finals right after.' },
+        { title: 'Choose Artist Sessions', subtitle: 'For portrait-led releases, studio work, and profile assets.' },
+        { title: 'Choose Performance', subtitle: 'For live action, timing, crowd energy, and stage cues.' },
       ]}
-      /* CTA */
-      ctaText="Book an artist session. Share your date, location, and release goals."
+      ctaText="Request availability for your artist session."
       ctaHref="/contact"
-      /* Pricing overrides */
+      ctaDetail="Clear deliverables. Berlin-based. Simple proposal."
       serviceSlug="artist-sessions"
     />
   )

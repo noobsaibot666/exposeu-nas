@@ -11,42 +11,34 @@ const heroCards = [
 function Performance() {
   return (
     <WorkPageLayout
-      /* Hero */
       title="Performance"
-      heroCopy="Live performance photo and video with fast instincts and clean angles."
-      detail="From soundcheck to encore, you get artist focus, crowd energy, and usable assets fast."
+      heroCopy="Live performance photo and film with fast timing and clean coverage."
+      detail="Built for stage action, crowd energy, and fast post-show delivery."
       cards={heroCards}
-      /* Primary gallery */
-      galleryTitle="Why it matters"
-      galleryCopy="Live work is fragile. Coverage must be precise and unobtrusive."
+      galleryTitle="Fast-turnaround assets for live sets, programs, and venue teams."
+      galleryCopy="Captured with a low footprint and handed off for immediate use."
       gallery={[
-        { title: 'Low profile', subtitle: 'Small crew that stays out of sight.' },
-        { title: 'Timing', subtitle: 'Key moments captured without delays.' },
-        { title: 'Atmosphere', subtitle: 'Crowd energy preserved, not staged.' },
-        { title: 'Hero moments', subtitle: 'Clean frames for posters and press.' },
+        { title: 'Stage coverage', subtitle: 'Key cues, wide moments, and hero frames.' },
+        { title: 'Crowd context', subtitle: 'Audience energy captured without blocking the room.' },
+        { title: 'Recap assets', subtitle: 'Short edits and stills for next-day release.' },
+        { title: 'Clean handoff', subtitle: 'Files named for quick publishing and archive.' },
       ]}
-      /* What you get */
-      extraGalleryTitle="What you get"
-      extraGalleryCopy="Assets ready for immediate release and archive."
+      extraGalleryTitle="Choose this when timing and live action matter most."
+      extraGalleryCopy="Best for performances, club programs, and stage-based events."
       extraGallery={[
-        { title: 'Multi-format', subtitle: 'Vertical, wides, and stills together.' },
-        { title: 'Live edit', subtitle: 'Short recap plus extended cut.' },
-        { title: 'Backstage', subtitle: 'Selects that add context.' },
-        { title: 'Handoff', subtitle: 'Clear naming for quick publishing.' },
+        { title: 'Stage productions', subtitle: 'When cues, light shifts, and timing drive the brief.' },
+        { title: 'Venue marketing', subtitle: 'When recap assets need to land fast.' },
+        { title: 'Touring artists', subtitle: 'When one show must convert into multiple outputs.' },
       ]}
-      /* How we work */
-      extraGallerySecondaryTitle="How we run shows"
-      extraGallerySecondaryCopy="We sync with your run-of-show, keep gear lean, and hand off selects quickly."
+      extraGallerySecondaryTitle="Performance is live-first. Artist Sessions is portrait-first."
+      extraGallerySecondaryCopy="Choose this when motion, cues, and crowd atmosphere matter more than posed portraits."
       extraGallerySecondary={[
-        { title: 'Run-through prep', subtitle: 'Align on cues, blackouts, and lighting changes.' },
-        { title: 'Lean crew', subtitle: 'Minimal footprint to stay out of sight and on time.' },
-        { title: 'Audio coordination', subtitle: 'Board feeds or patch options when available.' },
-        { title: 'Rapid delivery', subtitle: 'Same-night or next-day selects; finals right after.' },
+        { title: 'Choose Performance', subtitle: 'For live moments, crowd energy, and recap delivery.' },
+        { title: 'Choose Artist Sessions', subtitle: 'For portraits, process, and controlled studio pacing.' },
       ]}
-      /* CTA */
-      ctaText="Book performance documentation. Share your date, venue, and run-of-show."
+      ctaText="Request availability for your performance dates."
       ctaHref="/contact"
-      /* Pricing overrides */
+      ctaDetail="Clear deliverables. Berlin-based. Simple proposal."
       serviceSlug="performance"
     />
   )

@@ -11,78 +11,34 @@ const heroCards = [
 function Exhibitions() {
   return (
     <WorkPageLayout
-      /* Hero */
       title="Exhibitions"
-      heroCopy="Exhibition photo and video that preserves your curation with controlled light and clean sightlines."
-      detail="Installation documentation, guest atmosphere, and press-ready selects delivered fast and organized for teams and media."
+      heroCopy="Exhibition photo and film for press, archive, and curatorial record."
+      detail="Clean spatial coverage that shows sequence, scale, and opening atmosphere."
       cards={heroCards}
-      /* Primary gallery */
-      galleryTitle="Why it matters"
-      galleryCopy="Exhibitions live in space. Coverage must preserve sequence, scale, and intent."
+      galleryTitle="Press-ready coverage for the full show."
+      galleryCopy="Delivered to read clearly across press, archive, and partner use."
       gallery={[
-        {
-          title: 'Sequence',
-          subtitle: 'Rooms read in order, with clear sightlines.',
-        },
-        {
-          title: 'Scale',
-          subtitle: 'Works shown at true size and spacing.',
-        },
-        {
-          title: 'Curatorial intent',
-          subtitle: 'Angles reflect placement, light, and design.',
-        },
-        {
-          title: 'Archive use',
-          subtitle: 'Sets ready for press, catalog, and record.',
-        },
+        { title: 'Installation stills', subtitle: 'Wide rooms, key works, and clean sightlines.' },
+        { title: 'Opening selects', subtitle: 'Guest atmosphere without staged moments.' },
+        { title: 'Detail frames', subtitle: 'Materials, labels, and installation decisions.' },
+        { title: 'Organized finals', subtitle: 'Named folders ready for press and archive.' },
       ]}
-      /* What you get */
-      extraGalleryTitle="What you get"
-      extraGalleryCopy="Installation and opening captured as a complete visual set."
+      extraGalleryTitle="Choose this when the whole exhibition needs to read clearly."
+      extraGalleryCopy="Best for teams that need the full spatial story, not just highlights."
       extraGallery={[
-        {
-          title: 'Pre-walk',
-          subtitle: 'Key works, light, and angles mapped in advance.',
-        },
-        {
-          title: 'Stills set',
-          subtitle: 'Wide rooms, details, and hero works.',
-        },
-        {
-          title: 'Opening coverage',
-          subtitle: 'Guest atmosphere without staging.',
-        },
-        {
-          title: 'Delivery',
-          subtitle: 'Named folders ready for press and archive.',
-        },
+        { title: 'Gallery exhibitions', subtitle: 'Shows where sequence and room flow matter.' },
+        { title: 'Institutional installs', subtitle: 'Programs that need archive and partner-ready sets.' },
+        { title: 'Opening nights', subtitle: 'Events needing both artwork and audience coverage.' },
       ]}
-      /* How we work */
-      extraGallerySecondaryTitle="How we work with you"
-      extraGallerySecondaryCopy="Clear communication, lean crews, and fast delivery so you can focus on the show."
+      extraGallerySecondaryTitle="Exhibitions explains the full space. Gallery Stories cuts it for social and press."
+      extraGallerySecondaryCopy="Use this when spatial clarity matters more than interview or social sequencing."
       extraGallerySecondary={[
-        {
-          title: 'One producer',
-          subtitle: 'Single contact for scheduling, approvals, and delivery.',
-        },
-        {
-          title: 'Crew scale',
-          subtitle: 'Add a second shooter or sound as needed.',
-        },
-        {
-          title: 'Venue coordination',
-          subtitle: 'We handle house rules, access, and gear approvals.',
-        },
-        {
-          title: 'Delivery cadence',
-          subtitle: 'Selects, reels, and masters aligned to your comms calendar.',
-        },
+        { title: 'Choose Exhibitions', subtitle: 'For rooms, works, and curatorial flow.' },
+        { title: 'Choose Gallery Stories', subtitle: 'For interviews, posts, and collector-facing edits.' },
       ]}
-      /* CTA */
-      ctaText="Book exhibition documentation. Share your date, venue, and goals."
+      ctaText="Request availability for your exhibition dates."
       ctaHref="/contact"
-      /* Pricing overrides */
+      ctaDetail="Clear deliverables. Berlin-based. Simple proposal."
       serviceSlug="exhibitions"
     />
   )

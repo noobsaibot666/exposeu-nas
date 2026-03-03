@@ -4,49 +4,41 @@ import WorkPageLayout from './WorkPageLayout'
 const heroCards = [
   { image: resolveImagePath('/src/assets/images/services/2_gallery_work/_thumb/9_16/2_GW_024.png'), title: 'Curator Voice' },
   { image: resolveImagePath('/src/assets/images/services/2_gallery_work/2_GW_013.png'), title: 'Install Details' },
-  { image: resolveImagePath('/src/assets/images/services/2_gallery_work/_thumb/9_16/7_HERO_015.png'), title: 'Space FLow' },
+  { image: resolveImagePath('/src/assets/images/services/2_gallery_work/_thumb/9_16/7_HERO_015.png'), title: 'Space Flow' },
   { image: resolveImagePath('/src/assets/images/services/2_gallery_work/2_GW_025.png'), title: 'Patron Moments' },
 ]
 
 function GalleryStories() {
   return (
     <WorkPageLayout
-      /* Hero */
       title="Gallery Stories"
-      heroCopy="Short films and photo essays that translate the space with curator intent and artist voice."
-      detail="Built for socials, press kits, and collector previews with clear deliverables and fast turnaround."
+      heroCopy="Social-first gallery coverage for openings, interviews, and program stories."
+      detail="Short edits and stills built for release posts, press, and collector updates."
       cards={heroCards}
-      /* Primary gallery */
-      galleryTitle="Why it matters"
-      galleryCopy="Gallery stories turn a program into a clear narrative for press and collectors."
+      galleryTitle="Publish-ready story assets for one program or release."
+      galleryCopy="Built to move fast across social, press, and collector communication."
       gallery={[
-        { title: 'Narrative', subtitle: 'Story beats connect works, artists, and program.' },
-        { title: 'Context', subtitle: 'Curator voice anchors the release.' },
-        { title: 'Translation', subtitle: 'Assets formatted for media and social.' },
-        { title: 'Continuity', subtitle: 'Reusable structure for series and seasons.' },
+        { title: 'Interview edits', subtitle: 'Short and long cuts with clean audio.' },
+        { title: 'Story stills', subtitle: 'Frames for posts, releases, and web use.' },
+        { title: 'B-roll selects', subtitle: 'Space, works, guests, and key moments.' },
+        { title: 'Structured delivery', subtitle: 'Folders and timestamps ready to publish.' },
       ]}
-      /* What you get */
-      extraGalleryTitle="What you get"
-      extraGalleryCopy="A publish-ready story package built for web and press."
+      extraGalleryTitle="Choose this when you need a clear story, not only room views."
+      extraGalleryCopy="Best for teams leading with voice, narrative, or social distribution."
       extraGallery={[
-        { title: 'Interview cuts', subtitle: 'Short and long edits with clean audio.' },
-        { title: 'B-roll set', subtitle: 'Space, works, and audience moments grouped.' },
-        { title: 'Press stills', subtitle: 'Hi-res frames for releases and catalogues.' },
-        { title: 'Delivery', subtitle: 'Structured folders and timestamps.' },
+        { title: 'Opening campaigns', subtitle: 'When the story needs to travel across channels.' },
+        { title: 'Collector updates', subtitle: 'When context matters as much as the work itself.' },
+        { title: 'Program series', subtitle: 'When each release needs the same clear format.' },
       ]}
-      /* How we work */
-      extraGallerySecondaryTitle="How we produce"
-      extraGallerySecondaryCopy="Tight schedules, lean crews, and pre-pro that keeps you focused on guests."
+      extraGallerySecondaryTitle="Gallery Stories is social-first. Exhibitions is space-first."
+      extraGallerySecondaryCopy="Choose this when interviews, narrative order, and post-ready edits lead the brief."
       extraGallerySecondary={[
-        { title: 'Pre-pro call', subtitle: 'Align on story beats, key works, and voices.' },
-        { title: 'Lean crew', subtitle: 'Small footprint to stay discreet during tours and events.' },
-        { title: 'Run-of-show sync', subtitle: 'We align with your agenda to capture key moments.' },
-        { title: 'Fast edits', subtitle: 'Selects in 48h; finals on an agreed schedule.' },
+        { title: 'Choose Gallery Stories', subtitle: 'For interviews, social edits, and release sequences.' },
+        { title: 'Choose Exhibitions', subtitle: 'For full-room coverage, installation clarity, and archive use.' },
       ]}
-      /* CTA */
-      ctaText="Book a gallery story. Share your date, venue, and goals."
+      ctaText="Request availability for your next gallery story."
       ctaHref="/contact"
-      /* Pricing overrides */
+      ctaDetail="Clear deliverables. Berlin-based. Simple proposal."
       serviceSlug="gallery-stories"
     />
   )
