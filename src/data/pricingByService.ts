@@ -8,11 +8,11 @@ export type PricingOverridesByService = Record<string, Partial<Record<PricingTie
 export const pricingByService = {
   documentation: {
     'single-event': {
-      price: '€1.1K',
+      price: '€600',
       description: 'One exhibition or opening captured for press, archive, and partner use.',
     },
     'monthly-coverage': {
-      price: '€3.5K',
+      price: '€2.1K',
       description: 'Recurring exhibition coverage with one visual standard and faster turnaround.',
     },
     'retainer-studio': {
@@ -22,11 +22,11 @@ export const pricingByService = {
 
   'gallery-stories': {
     'single-event': {
-      price: '€1.1K',
+      price: '€500',
       description: 'One social-first story package with stills, motion, and interview cuts.',
     },
     'monthly-coverage': {
-      price: '€3.1K',
+      price: '€1.8K',
       description: 'Recurring story coverage aligned to openings, releases, and program cycles.',
     },
     'retainer-studio': {
@@ -36,11 +36,11 @@ export const pricingByService = {
 
   'artist-sessions': {
     'single-event': {
-      price: '€599',
+      price: '€400',
       description: 'One portrait and process session for releases, profiles, and press kits.',
     },
     'monthly-coverage': {
-      price: '€2.1K',
+      price: '€1.8K',
       description: 'Recurring artist coverage across studio work, launches, and exhibition dates.',
     },
     'retainer-studio': {
@@ -50,11 +50,11 @@ export const pricingByService = {
 
   performance: {
     'single-event': {
-      price: '€1.5K',
+      price: '€900',
       description: 'One live capture with fast selects, reels, and clean hero moments.',
     },
     'monthly-coverage': {
-      price: '€3.9K',
+      price: '€2.9K',
       description: 'Repeat performance coverage with one crew and one delivery rhythm.',
     },
     'retainer-studio': {
@@ -78,11 +78,11 @@ export const pricingByService = {
 
   atmospheric: {
     'single-event': {
-      price: '€1.1K',
+      price: '€800',
       description: 'One spatial film package for launches, decks, websites, and case studies.',
     },
     'monthly-coverage': {
-      price: '€3.5K',
+      price: '€2.6K',
       description: 'Recurring spatial storytelling for programs, launches, and seasonal updates.',
     },
     'retainer-studio': {
