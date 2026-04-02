@@ -79,8 +79,15 @@ services:
       - "traefik.http.routers.exposeu.tls.certresolver=myresolver"
       - "traefik.http.routers.exposeu.service=exposeu-svc"
 
-      # HTTP -> HTTPS redirect    
-      - "traefik.http.routers.exposeu-http.service=exposeu-svc"      
+      # HTTP -> HTTPS redirect and ACME support
+      - "traefik.http.routers.exposeu-http.entrypoints=web"
+      - "traefik.http.routers.exposeu-http.rule=Host(`expose-u.com`)"
+      - "traefik.http.routers.exposeu-http.middlewares=https-redirect"
+      - "traefik.http.routers.exposeu-http.service=exposeu-svc"
+
+      - "traefik.http.routers.exposeu-www-http.entrypoints=web"
+      - "traefik.http.routers.exposeu-www-http.rule=Host(`www.expose-u.com`)"
+      - "traefik.http.routers.exposeu-www-http.middlewares=https-redirect"
       - "traefik.http.routers.exposeu-www-http.service=exposeu-svc"
 
   exposeu-contact:

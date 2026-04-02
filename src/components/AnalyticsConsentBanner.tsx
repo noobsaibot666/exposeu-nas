@@ -27,7 +27,7 @@ function AnalyticsConsentBanner() {
     <aside className={styles.consent__banner} aria-label="Analytics consent" role="dialog">
       <p className={styles.consent__title}>Analytics consent</p>
       <p className={styles.consent__copy}>
-        Allow anonymous analytics so we can measure page use and improve the site.
+        Help us improve Expose.u with anonymous usage insights. We do not collect personal data through analytics.
       </p>
       <div className={styles.consent__actions}>
         <button

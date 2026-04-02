@@ -20,6 +20,18 @@
 - If `localStorage.__analyticsConsent === "false"`, analytics remains blocked.
 - If consent is not present, analytics calls no-op safely and the banner is shown.
 
+## Consent Banner (Phase 5)
+
+- Component: `src/components/AnalyticsConsentBanner.tsx`
+- Styles: `src/components/AnalyticsConsentBanner.module.css`
+- Storage key: `localStorage.__analyticsConsent`
+- Behavior:
+  - no stored value: banner is shown
+  - `true`: sets `window.__analyticsConsent = true` and keeps the banner hidden
+  - `false`: sets `window.__analyticsConsent = false` and keeps the banner hidden
+  - `Accept`: enables analytics and persists consent
+  - `Reject`: keeps analytics disabled and persists the rejection
+
 ## QA / Debug
 
 - Enable dev consent on localhost or in development:
@@ -216,5 +228,4 @@
 ## Known Limitations
 
 - Build and browser QA were not completed in this shell because Docker and interactive sudo access are unavailable.
-- No consent UI exists yet; production tracking still waits for an external consent flag to be set.
 - Users can change consent later by clearing `localStorage.__analyticsConsent` until a dedicated preferences control is added.
