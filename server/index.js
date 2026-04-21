@@ -306,6 +306,15 @@ app.post('/contact', async (req, res) => {
 })
 
 app.get('/smtp-test', async (req, res) => {
+  const ip = getClientIp(req)
+  if (isRateLimited(ip)) {
+    console.warn('SMTP TEST RATE LIMITED:', {
+      ts: new Date().toISOString(),
+      ip,
+    })
+    return sendApiError(res, 429, 'RATE_LIMITED', 'Too many requests. Please wait a minute and try again.')
+  }
+
   const config = buildSmtpConfig()
   const token = String(req.query.token || '')
   const allowInDev = process.env.NODE_ENV === 'development'

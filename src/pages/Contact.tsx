@@ -300,9 +300,12 @@ function Contact() {
     handleFieldInput('message')
   }
 
+  const [starterMessageInjected, setStarterMessageInjected] = useState(false)
+
   const isStarterMessageVisible = Boolean(
     starterMessage &&
       !hasTouchedMessage &&
+      starterMessageInjected &&
       messageRef.current &&
       messageRef.current.value === starterMessage,
   )
@@ -313,6 +316,7 @@ function Contact() {
     if (messageRef.current.value.trim() && messageRef.current.value !== starterMessage) return
 
     messageRef.current.value = starterMessage
+    setStarterMessageInjected(true)
   }, [hasTouchedMessage, starterMessage])
 
   useEffect(() => {
