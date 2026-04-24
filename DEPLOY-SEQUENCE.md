@@ -5,13 +5,13 @@ Safe deploy routine for https://expose-u.com (frontend + contact API).
 > **MAIN DEPLOY COMMAND (Frontend + API)**
 > ```bash
 > # 1. Build & Restart
-> sudo docker run --rm -u 0 -v "$PWD:/app" -w /app node:20-alpine sh -lc "npm ci && npm run build"
-> sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-nginx exposeu-contact
->
+sudo docker run --rm -u 0 -v "$PWD:/app" -w /app node:20-alpine sh -lc "npm ci && npm run build"
+sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-nginx exposeu-contact
+
 > # 2. Verify
-> curl -kI https://localhost/ -H "Host: expose-u.com" | head -n 1
-> curl -k https://localhost/api/contact -H "Host: expose-u.com" -H "Content-Type: application/json" --data '{"email":"test@example.com","message":"smoke"}'
-> ```
+curl -kI https://localhost/ -H "Host: expose-u.com" | head -n 1
+curl -k https://localhost/api/contact -H "Host: expose-u.com" -H "Content-Type: application/json" --data '{"email":"test@example.com","message":"smoke"}'
+ ```
 
 Goal: update ExposeU ONLY, without touching Traefik, alan-design.com, or the Manager stack.
 
