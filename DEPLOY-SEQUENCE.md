@@ -1,158 +1,197 @@
-# DEPLOY-SEQUENCE (ExposeU root project only)
-Safe deploy routine for https://expose-u.com (frontend + contact API).
+# DEPLOY-SEQUENCE
 
-> [!IMPORTANT]
-> **MAIN DEPLOY COMMAND (Frontend + API)**
-> ```bash
-> # 1. Build & Restart
-sudo docker run --rm -u 0 -v "$PWD:/app" -w /app node:20-alpine sh -lc "npm ci && npm run build"
-sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-nginx exposeu-contact
+Lean runbook for the ExposeU root project only.
 
-> # 2. Verify
-curl -kI https://localhost/ -H "Host: expose-u.com" | head -n 1
-curl -k https://localhost/api/contact -H "Host: expose-u.com" -H "Content-Type: application/json" --data '{"email":"test@example.com","message":"smoke"}'
- ```
+Production site: `https://expose-u.com`
 
-Goal: update ExposeU ONLY, without touching Traefik, alan-design.com, or the Manager stack.
+## Paths
 
-## Golden rules (DO NOT BREAK OTHER SITES)
-- **Do NOT recreate Traefik** during ExposeU updates.
-  - No `docker compose ... up -d traefik`
-  - No `docker compose ... up -d --force-recreate` without specifying services
-- Only ever restart:
-  - `exposeu-nginx` (frontend)
-  - `exposeu-contact` (API)
-- Traefik must be running and must stay the single router for all sites.
+- SSH/server project path: `/mnt/Gaia/04_DEV/web/www/exposeu`
+- Local Finder path, not for SSH commands: `/Volumes/Gaia/04_DEV/web/www/exposeu`
+- Home page: `src/pages/HomeV2.tsx`
+- Compose file: `docker-compose.traefik.yml`
+- Frontend container: `exposeu-nginx`
+- Contact API container: `exposeu-contact`
+- TrueNAS LAN preview IP: `192.168.178.146`
 
----
+## SSH Pre-flight
 
-## 0) Pre-flight quick check (optional but recommended)
+Run this first if the shell/session is fresh.
+
 ```sh
-sudo docker ps --format "table {{.Names}}\t{{.Status}}" | egrep 'traefik|exposeu-nginx|exposeu-contact|website-nginx|exposeu-manager'
+cd /mnt/Gaia/04_DEV/web/www/exposeu
+test -f package-lock.json
+test -f docker-compose.traefik.yml
+test -f nginx/default.conf
+sudo docker version >/dev/null
+sudo docker compose version
+```
 
+## Local Preview
 
-1) Frontend-only change (Vite build → dist)
-cd /mnt/Leviathan/www/exposeu
+Use this over SSH before deploying. The TrueNAS host does not need host
+Node/npm installed; these commands run Node through Docker.
 
-# Build dist using a clean container (no host npm required)
+### 1) Start the Vite dev server
+
+On the TrueNAS SSH session:
+
+```sh
+cd /mnt/Gaia/04_DEV/web/www/exposeu
+sudo docker run --rm \
+  -p 192.168.178.146:5173:5173 \
+  -v "$PWD:/app" \
+  -w /app \
+  node:20-alpine \
+  sh -lc "npm ci && npm run dev -- --host 0.0.0.0"
+```
+
+Open this URL from your Mac:
+
+```text
+http://192.168.178.146:5173
+```
+
+If Vite prints `http://172.16.0.3:5173/`, ignore it. That is the Docker
+container IP, not the LAN preview URL. The correct browser URL stays
+`http://192.168.178.146:5173`.
+
+Stop the dev server with `Ctrl-C`. If npm prints `signal SIGINT` after stopping,
+that is expected and not a deploy error.
+
+### 2) Preview the production build locally
+
+On the TrueNAS SSH session:
+
+```sh
+cd /mnt/Gaia/04_DEV/web/www/exposeu
+sudo docker run --rm \
+  -p 192.168.178.146:4173:4173 \
+  -v "$PWD:/app" \
+  -w /app \
+  node:20-alpine \
+  sh -lc "npm ci && npm run build && npm run preview -- --host 0.0.0.0"
+```
+
+Open this URL from your Mac:
+
+```text
+http://192.168.178.146:4173
+```
+
+Stop the preview server with `Ctrl-C`. If npm prints `signal SIGINT` after
+stopping, that is expected.
+
+### 3) Optional local API check
+
+On the TrueNAS SSH session:
+
+```sh
+cd /mnt/Gaia/04_DEV/web/www/exposeu
+sudo docker run --rm \
+  -p 192.168.178.146:8787:8787 \
+  -v "$PWD:/app" \
+  -w /app \
+  node:20-alpine \
+  sh -lc "npm ci && npm run server"
+```
+
+In another SSH terminal:
+
+```sh
+curl -i http://192.168.178.146:8787/contact
+```
+
+Production contact form traffic goes through Traefik at `/api/contact`. The
+local API health check above confirms the Node service is running, but it does
+not reproduce the production Traefik route.
+
+## Deploy Sequence
+
+Run this on the TrueNAS/Linux host. Use the sequence that matches the files you
+changed.
+
+### Frontend-only change
+
+Use this for React/Vite changes, including `src/pages/HomeV2.tsx`.
+
+```sh
+cd /mnt/Gaia/04_DEV/web/www/exposeu
 sudo docker run --rm -u 0 -v "$PWD:/app" -w /app node:20-alpine sh -lc "npm ci && npm run build"
-
-# Restart ONLY ExposeU nginx
 sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-nginx
+```
 
+### API-only change
 
-2) Contact API-only change (server/index.js etc.)
-cd /mnt/Leviathan/www/exposeu
-
-# Restart ONLY the API container
+```sh
+cd /mnt/Gaia/04_DEV/web/www/exposeu
+sudo docker run --rm -u 0 -v "$PWD:/app" -w /app node:20-alpine sh -lc "npm ci"
 sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-contact
+```
 
-3) Frontend + API change (both)
-cd /mnt/Leviathan/www/exposeu
+### Frontend + API change
 
-# Build dist
+```sh
+cd /mnt/Gaia/04_DEV/web/www/exposeu
 sudo docker run --rm -u 0 -v "$PWD:/app" -w /app node:20-alpine sh -lc "npm ci && npm run build"
-
-# Restart ONLY ExposeU services (NOT traefik)
 sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-nginx exposeu-contact
+```
 
-4) Always run smoke tests (must pass)
+## Production Smoke Tests
 
-# Website should be served by nginx
+Run after every deploy.
+
+```sh
 curl -kI https://localhost/ -H "Host: expose-u.com" | head -n 12
 
-# API should respond via Traefik route (/api -> exposeu-contact, stripPrefix)
 curl -kI https://localhost/api/contact -H "Host: expose-u.com" | head -n 12
 
-curl -k https://localhost/api/contact -H "Host: expose-u.com" \
+curl -k https://localhost/api/contact \
+  -H "Host: expose-u.com" \
   -H "Content-Type: application/json" \
   --data '{"email":"test@example.com","message":"smoke"}'
+```
 
-  Expected:
-	•	/ => server: nginx
-	•	/api/contact => x-powered-by: Express and JSON { "ok": true } on POST
+Expected:
 
+- `/` is served by nginx.
+- `/api/contact` reaches Express through Traefik.
+- POST `/api/contact` returns JSON with `"ok": true`.
 
-  5) Recovery if ExposeU returns 404 (most common pitfall)
-  5.1 Verify containers are running
-  sudo docker ps --format "table {{.Names}}\t{{.Status}}" | egrep 'traefik|exposeu-nginx|exposeu-contact'
+## Guardrails
 
-5.2 Verify webnet has the right members
+- Do not recreate Traefik during ExposeU updates.
+- Do not run `docker compose ... up -d --force-recreate` without specifying services.
+- Only restart `exposeu-nginx` and/or `exposeu-contact`.
+- Leave `website-nginx`, `exposeu-manager`, and other stacks untouched.
+
+## Recovery
+
+If ExposeU returns 404, check the running containers:
+
+```sh
+sudo docker ps --format "table {{.Names}}\t{{.Status}}" | grep -E 'traefik|exposeu-nginx|exposeu-contact'
+```
+
+Check `webnet` membership:
+
+```sh
 sudo docker network inspect webnet --format '{{range $id,$c := .Containers}}{{println $c.Name}}{{end}}' | sort
+```
 
-Must include:
-	•	traefik
-	•	exposeu-nginx
-	•	exposeu-contact
+Required members:
 
+- `traefik`
+- `exposeu-nginx`
+- `exposeu-contact`
 
-  5.3 Safest fix: start ExposeU services (do NOT touch Traefik)
+Safest restart:
 
-  cd /mnt/Leviathan/www/exposeu
+```sh
+cd /mnt/Gaia/04_DEV/web/www/exposeu
 sudo docker compose -f docker-compose.traefik.yml up -d exposeu-nginx exposeu-contact
-
-# Deployment notes
-- 2026-02-10: Added canonical service redirects + /documentation route (Phase 1 technical integrity). Verified 301s and route checks on production.
-# Exposeu Manager Deployment Notes
-
-This document explains how to run the Manager stack and highlights the fix used to resolve the login issue on TrueNAS.
-
-## Services
-- `db`: Postgres
-- `api`: Node/Express API
-- `web`: React/Vite UI
-
-## Dev (local macOS)
-1) Copy env:
-```bash
-cp manager/.env.example manager/.env
-```
-2) Start stack:
-```bash
-docker compose -f manager/docker-compose.yml up -d --build
-```
-3) Apply schema:
-```bash
-psql postgresql://exposeu:exposeu@localhost:5432/exposeu_manager -f manager/api/schema.sql
-```
-4) Open:
-- Web UI: http://localhost:5175
-- API health: http://localhost:4001/health
-
-## TrueNAS (server)
-1) Ensure folders exist for persistent storage:
-```bash
-sudo mkdir -p /mnt/Leviathan/www/db/exposeu_manager_db
-sudo mkdir -p /mnt/Leviathan/www/db/exposeu_manager_uploads
-```
-2) Start stack:
-```bash
-cd /mnt/Leviathan/www/exposeu/manager
-sudo docker compose -f truenas-docker-compose.yml up -d --build
-```
-If accessing the UI from another device on the LAN, set:
-```bash
-VITE_MANAGER_API=http://<NAS_LAN_IP>:4001
-```
-3) Apply schema:
-```bash
-psql postgresql://exposeu_manager:0811@localhost:5433/exposeu_manager -f /mnt/Leviathan/www/exposeu/manager/api/schema.sql
-```
-4) Access:
-- Web UI: http://<NAS_LAN_IP>:5175
-- API health: http://<NAS_LAN_IP>:4001/health
-
-## Login issue workaround (TrueNAS)
-Symptom: UI login fails while API login works via curl. Root cause: frontend still calling `http://localhost:4001`.
-
-Fix: set the correct env var for the Vite UI (note the name).
-```bash
-sudo tee /mnt/Leviathan/www/exposeu/manager/web/.env.local >/dev/null <<'EOF'
-VITE_MANAGER_API=http://<NAS_LAN_IP>:4001
-EOF
 ```
 
-Then rebuild the web service:
-```bash
-sudo docker compose -f /mnt/Leviathan/www/exposeu/manager/truenas-docker-compose.yml up -d --build web
-```
+## Notes
+
+- 2026-04-29: Updated SSH commands to use Dockerized Node because TrueNAS does not provide host `npm`.
