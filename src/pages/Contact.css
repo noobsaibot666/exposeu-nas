@@ -115,7 +115,8 @@
 }
 
 .contact__field input,
-.contact__field textarea {
+.contact__field textarea,
+.contact__field select {
   border: none;
   border-bottom: 1px solid var(--border-soft);
   background: transparent;
@@ -138,19 +139,22 @@
 }
 
 .contact__field input:focus,
-.contact__field textarea:focus {
+.contact__field textarea:focus,
+.contact__field select:focus {
   border-bottom-color: var(--link-color);
   box-shadow: none;
 }
 
 .contact__field input:focus-visible,
-.contact__field textarea:focus-visible {
+.contact__field textarea:focus-visible,
+.contact__field select:focus-visible {
   outline: 2px solid rgba(245, 245, 244, 0.5);
   outline-offset: 2px;
 }
 
 .contact__field input[aria-invalid='true'],
-.contact__field textarea[aria-invalid='true'] {
+.contact__field textarea[aria-invalid='true'],
+.contact__field select[aria-invalid='true'] {
   border-bottom-color: var(--error-color);
 }
 
@@ -265,4 +269,32 @@
   .contact {
     min-height: 100svh;
   }
+}
+
+.contact__success--standalone {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  padding: 32px 0;
+}
+
+.contact__submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contact__spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: contact-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes contact-spin {
+  to { transform: rotate(360deg); }
 }

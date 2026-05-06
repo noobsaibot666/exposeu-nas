@@ -28,37 +28,29 @@ const projects = [
   {
     slug: serviceMeta['concerts-events'].slug,
     title: 'Concert & Live Event Documentation',
-    location: 'Live Programs',
-    year: '2024',
+    subtext: 'For venues, promoters, bands, and festival producers',
     image: resolveImagePath('/src/assets/images/website/performances/thumb_3_086.jpg'),
-    copy: 'Fast selects, recap films, and hero frames for concerts, venues, and live teams.',
     link: serviceMeta['concerts-events'].href,
   },
   {
     slug: serviceMeta['exhibition-gallery'].slug,
     title: 'Exhibition & Gallery Documentation',
-    location: 'Galleries',
-    year: '2024',
+    subtext: 'For galleries, curators, and cultural institutions',
     image: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
-    copy: 'Press-ready photo and film for galleries, curators, openings, and archives.',
     link: serviceMeta['exhibition-gallery'].href,
   },
   {
     slug: serviceMeta['artist-sessions'].slug,
     title: 'Artist Sessions & Portraits',
-    location: 'Venues & Studios',
-    year: '2024',
+    subtext: 'For musicians, visual artists, and photographers',
     image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
-    copy: 'Portraits and process assets for artists, studios, and press kits.',
     link: serviceMeta['artist-sessions'].href,
   },
   {
     slug: serviceMeta['brand-agency'].slug,
     title: 'Brand & Agency Events',
-    location: 'Launches',
-    year: '2023',
+    subtext: 'For creative agencies, brands, and production houses',
     image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
-    copy: 'Event, activation, runway, and backstage assets for brands, agencies, and sponsors.',
     link: serviceMeta['brand-agency'].href,
   },
 ]
@@ -631,31 +623,26 @@ function HomeV2() {
           {projectRows.map((row, rowIndex) => (
             <div className="home__cases-row" key={`case-row-${rowIndex}`}>
               {row.map((project) => (
-                <button
+                <Link
                   key={project.title}
-                  type="button"
+                  to={project.link}
                   className="home__case-card"
                   onClick={() => {
                     trackEvent('home_service_card_click', {
                       service_slug: project.slug,
-                      card_position: rowIndex * 3 + row.indexOf(project) + 1,
+                      card_position: rowIndex * 2 + row.indexOf(project) + 1,
                     })
-                    navigate(project.link)
                   }}
                 >
                   <div className="home__case-media">
                     <img src={project.image} alt={project.title} loading="lazy" decoding="async" />
                   </div>
                   <div className="home__case-meta">
-                    <div>
-                      <p>{project.location}</p>
-                      <span>{project.year}</span>
-                    </div>
                     <h3>{project.title}</h3>
-                    <p className={`home__case-copy ${styles.homeRedesign__cardCopy}`}>{project.copy}</p>
+                    <p className={`home__case-copy ${styles.homeRedesign__cardCopy}`}>{project.subtext}</p>
                     <span className="home__case-cta">See documentation details</span>
                   </div>
-                </button>
+                </Link>
               ))}
             </div>
           ))}

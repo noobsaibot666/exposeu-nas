@@ -161,10 +161,11 @@ app.head('/contact', (_req, res) => res.status(200).end())
 app.post('/contact', async (req, res) => {
   try {
     const {
+      name,
       firstName,
       lastName,
-      name, // fallback if frontend sends "name"
       email,
+      projectType,
       service,
       serviceLabel,
       package: packageSlug,
@@ -176,10 +177,11 @@ app.post('/contact', async (req, res) => {
     } = req.body || {}
 
     const ip = getClientIp(req)
+    const trimmedName = trimValue(name)
     const trimmedFirstName = trimValue(firstName)
     const trimmedLastName = trimValue(lastName)
-    const trimmedName = trimValue(name)
     const trimmedEmail = trimValue(email)
+    const trimmedProjectType = trimValue(projectType)
     const trimmedMessage = trimValue(message)
     const trimmedService = trimValue(service)
     const trimmedServiceLabel = trimValue(serviceLabel)
@@ -190,13 +192,14 @@ app.post('/contact', async (req, res) => {
     const trimmedCompanyWebsite = trimValue(companyWebsite)
 
     const senderName =
-      [trimmedFirstName, trimmedLastName].filter(Boolean).join(' ').trim() ||
       trimmedName ||
+      [trimmedFirstName, trimmedLastName].filter(Boolean).join(' ').trim() ||
       'N/A'
 
     console.log('CONTACT LEAD META:', {
       ts: new Date().toISOString(),
       ip,
+      projectType: trimmedProjectType,
       service: trimmedService,
       package: trimmedPackage,
       sourceUrl: trimmedSourceUrl,
@@ -223,15 +226,14 @@ app.post('/contact', async (req, res) => {
       return sendApiError(res, 429, 'RATE_LIMITED', 'Too many requests. Please wait a minute and try again.')
     }
 
-    if (senderName === 'N/A' || !trimmedEmail || !trimmedMessage) {
+    if (senderName === 'N/A' || !trimmedEmail) {
       console.error('CONTACT VALIDATION FAILED:', {
         ts: new Date().toISOString(),
         ip,
         hasName: senderName !== 'N/A',
         hasEmail: Boolean(trimmedEmail),
-        hasMessage: Boolean(trimmedMessage),
       })
-      return sendApiError(res, 400, 'INVALID_PAYLOAD', 'Please provide your name, email, and message.')
+      return sendApiError(res, 400, 'INVALID_PAYLOAD', 'Please provide your name and email.')
     }
 
     const config = buildSmtpConfig()
@@ -250,15 +252,14 @@ app.post('/contact', async (req, res) => {
 
     const transporter = createTransporter(config)
 
-    const subjectService = trimmedServiceLabel || trimmedService || ''
-    const subjectPackage = trimmedPackageLabel || trimmedPackage || ''
-    const subjectParts = [subjectService, subjectPackage].filter(Boolean)
-    const subject = subjectParts.length
-      ? `Expose.u Lead - ${subjectParts.join(' - ')}`
+    const subjectType = trimmedProjectType || trimmedServiceLabel || trimmedService || ''
+    const subject = subjectType
+      ? `Expose.u Lead - ${subjectType}`
       : 'Expose.u Lead - Website Contact'
 
     const leadSummary = [
       'Lead Summary',
+      ...(trimmedProjectType ? [`Project type: ${trimmedProjectType}`] : []),
       ...(trimmedServiceLabel || trimmedService ? [`Service: ${trimmedServiceLabel || 'Unknown'}${trimmedService ? ` (${trimmedService})` : ''}`] : []),
       ...(trimmedPackageLabel || trimmedPackage ? [`Package: ${trimmedPackageLabel || 'Unknown'}${trimmedPackage ? ` (${trimmedPackage})` : ''}`] : []),
       ...(trimmedSourceUrl ? [`Source: ${trimmedSourceUrl}`] : trimmedReferrer ? [`Source: ${trimmedReferrer}`] : []),
@@ -270,7 +271,7 @@ app.post('/contact', async (req, res) => {
       '',
       ...leadSummary,
       '',
-      trimmedMessage,
+      trimmedMessage || '(no message)',
     ].join('\n')
 
     const mailOptions = {
