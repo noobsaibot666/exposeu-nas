@@ -252,6 +252,8 @@
 @media (max-width: 768px) {
   .contact__submit {
     min-height: 44px;
+    width: 100%;
+    justify-content: center;
   }
 }
 

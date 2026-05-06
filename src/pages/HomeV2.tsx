@@ -248,7 +248,7 @@ function HomeV2() {
           cardStart + heroThumbs.length * 0.18 + 0.48,
         )
         .fromTo(
-          '.home__actions button',
+          '.home__hero-cta',
           { opacity: 0, y: 38, scale: 0.96 },
           { opacity: 1, y: 0, scale: 1, stagger: 0.14, duration: 0.9, ease: 'power3.inOut' },
           '>-0.12',
@@ -499,7 +499,7 @@ function HomeV2() {
       <header className="home__section home__hero" id="hero">
         <div className="home__hero-body">
           <h1 className="home__hero-title">
-            Strategic photo and film for exhibitions, artists, and live work.
+            Documentation for concerts, exhibitions, and creative events.
           </h1>
           <div
             className="home__hero-gallery home__hero-gallery--desktop"
@@ -575,27 +575,16 @@ function HomeV2() {
             })}
           </div>
           <p className="home__hero-subhead">
-            For Berlin-based institutions, studios, artists, and spatial teams needing press, archive, funding, and long-term assets.
+            Berlin-based photo and video studio. Press-ready delivery.
           </p>
           <div className="home__actions">
-            <button
-              type="button"
-              onClick={() => {
-                trackHomeCta('Request availability', 'hero_primary')
-                navigate('/contact')
-              }}
+            <Link
+              to="/contact"
+              className="home__hero-cta"
+              onClick={() => trackHomeCta('Tell us about your project', 'hero_primary')}
             >
-              Request availability
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                trackHomeCta('View services', 'hero_secondary')
-                handleScroll('#services')
-              }}
-            >
-              View services
-            </button>
+              Tell us about your project
+            </Link>
           </div>
         </div>
       </header>

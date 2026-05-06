@@ -123,10 +123,10 @@
 
 .home__hero-body h1 {
   font-family: var(--font-sans);
-  font-size: clamp(2.4rem, 5.2vw, 3.2rem);
+  font-size: clamp(1.5rem, 5vw, 3rem);
   font-weight: 600;
   margin-bottom: 8px;
-  line-height: 1.05;
+  line-height: 1.1;
   max-width: var(--content-max);
   text-wrap: balance;
 }
@@ -149,7 +149,7 @@
 
 .home__hero-subhead {
   font-weight: 300;
-  font-size: clamp(1.3rem, 4vw, 1.8rem);
+  font-size: clamp(1rem, 3.5vw, 1.8rem);
   margin-bottom: 12px;
   color: var(--text-soft);
   will-change: transform, opacity, filter;
@@ -206,6 +206,42 @@
 .home__actions button:active {
   transform: translateY(0) scale(0.98);
   transition-duration: 80ms;
+}
+
+.home__hero-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--button-solid-bg);
+  color: var(--button-solid-text);
+  border: 1px solid var(--button-solid-border);
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 150ms ease, opacity 150ms ease;
+  will-change: transform, opacity;
+  min-height: 48px;
+}
+
+.home__hero-cta:hover,
+.home__hero-cta:visited {
+  color: var(--button-solid-text);
+  text-decoration: none;
+  transform: translateY(-2px);
+  opacity: 0.92;
+}
+
+.home__hero-cta:active {
+  transform: translateY(0) scale(0.98);
+  transition-duration: 80ms;
+}
+
+.home__hero-cta:focus-visible {
+  outline: 2px solid rgba(245, 245, 244, 0.6);
+  outline-offset: 2px;
 }
 
 .home__hero-gallery {
@@ -970,61 +1006,6 @@
 }
 
 @media (max-width: 640px) {
-  .home__actions button {
-    width: 100%;
-  }
-
-  .home__hero-gallery--desktop {
-    display: none;
-  }
-
-  .home__hero-gallery--mobile {
-    display: grid;
-    grid-template-columns: 1fr;
-    place-items: center;
-    width: min(420px, 100%);
-    max-width: 420px;
-    height: clamp(260px, 58vw, 360px);
-    margin: 12px auto 8px;
-    position: relative;
-    transform-origin: center;
-    align-self: center;
-    overflow: visible;
-  }
-
-  .home__hero-gallery--mobile .home__hero-thumb {
-    position: absolute;
-    top: 46%;
-    left: 50%;
-    width: var(--mobile-card, clamp(168px, 44vw, 240px));
-    transform-origin: center;
-  }
-
-  .home__hero-thumb-image {
-    aspect-ratio: 1 / 1;
-  }
-
-  .home__hero-gallery--mobile .home__hero-thumb-image {
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
-  }
-
-  .home__hero-thumb img {
-    height: 100%;
-  }
-
-  .home__hero-thumb figcaption {
-    display: none;
-  }
-
-  .home__hero-gallery--mobile .home__hero-thumb {
-    pointer-events: auto;
-    cursor: pointer;
-  }
-
-  .home__hero-subhead {
-    font-size: 1.4rem;
-  }
-
   .home__proof-avatars {
     gap: 6px;
     flex-wrap: wrap;
@@ -1075,6 +1056,65 @@
     margin-bottom: 14px;
   }
 
+  /* Hero gallery — switch to fan/mobile layout, prevents overflow from 5 desktop thumbs */
+  .home__hero-gallery--desktop {
+    display: none;
+  }
+
+  .home__hero-gallery--mobile {
+    display: grid;
+    grid-template-columns: 1fr;
+    place-items: center;
+    width: min(420px, 100%);
+    max-width: 420px;
+    height: clamp(220px, 52vw, 320px);
+    margin: 12px auto 8px;
+    position: relative;
+    transform-origin: center;
+    align-self: center;
+    overflow: visible;
+  }
+
+  .home__hero-gallery--mobile .home__hero-thumb {
+    position: absolute;
+    top: 46%;
+    left: 50%;
+    width: var(--mobile-card, clamp(168px, 44vw, 240px));
+    transform-origin: center;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
+  .home__hero-thumb-image {
+    aspect-ratio: 1 / 1;
+  }
+
+  .home__hero-gallery--mobile .home__hero-thumb-image {
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+  }
+
+  .home__hero-thumb figcaption {
+    display: none;
+  }
+
+  /* Service cards — single column */
+  .home__cases-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* Allow card titles to wrap instead of ellipsis */
+  .home__case-meta h3 {
+    white-space: normal;
+    font-size: 1.15rem;
+  }
+
+  /* Full-width tap targets */
+  .home__actions button,
+  .home__hero-cta,
+  .home__proof-actions button {
+    width: 100%;
+  }
+
   .home__actions button,
   .home__proof-actions button,
   .home__pricing-card button,
@@ -1086,10 +1126,6 @@
 }
 
 @media (max-width: 540px) {
-  .home__cases-row {
-    grid-template-columns: 1fr;
-  }
-
   .home__case-meta {
     padding: 16px;
   }
