@@ -75,7 +75,7 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 30;
+  z-index: 3000;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -89,6 +89,12 @@
 
 .home--v2 .home__nav .top-nav__bar {
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.48), rgba(0, 0, 0, 0));
+}
+
+.home--v2 .home__nav .top-nav.is-hidden .top-nav__bar {
+  transform: none;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .home--v2 .home__nav .top-nav__link,

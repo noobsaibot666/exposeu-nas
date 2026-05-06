@@ -42,6 +42,7 @@ function TopNav({
 
   useEffect(() => {
     if (!open) return undefined
+    const toggleButton = toggleRef.current
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     // Auto-focus close button in drawer
@@ -62,7 +63,7 @@ function TopNav({
     return () => {
       document.body.style.overflow = previousOverflow
       // Restore focus to toggle button
-      requestAnimationFrame(() => toggleRef.current?.focus())
+      requestAnimationFrame(() => toggleButton?.focus())
       document.removeEventListener('keydown', handleKey)
       mql.removeEventListener('change', handleBreakpoint)
     }

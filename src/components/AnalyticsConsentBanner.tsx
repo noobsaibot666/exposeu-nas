@@ -1,14 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styles from './AnalyticsConsentBanner.module.css'
 import { ANALYTICS_CONSENT_KEY, initializeAnalyticsConsent } from '../utils/analytics'
 
 function AnalyticsConsentBanner() {
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    const consent = initializeAnalyticsConsent()
-    setIsVisible(consent === null)
-  }, [])
+  const [isVisible, setIsVisible] = useState(() => initializeAnalyticsConsent() === null)
 
   const handleChoice = (value: 'true' | 'false') => {
     try {

@@ -208,7 +208,10 @@ export function trackEvent(
 export const useTrackViewEvent = (eventName: string, params: AnalyticsParams = {}) => {
   const firedRef = useRef(false)
   const paramsRef = useRef(params)
-  paramsRef.current = params
+
+  useEffect(() => {
+    paramsRef.current = params
+  }, [params])
 
   useEffect(() => {
     if (firedRef.current) return
@@ -223,11 +226,18 @@ export const useScrollDepthTracking = (
   buildParams?: (threshold: number) => AnalyticsParams,
 ) => {
   const buildParamsRef = useRef(buildParams)
-  buildParamsRef.current = buildParams
   const thresholdsKey = thresholds.join(',')
 
   useEffect(() => {
+    buildParamsRef.current = buildParams
+  }, [buildParams])
+
+  useEffect(() => {
     const fired = new Set<number>()
+    const activeThresholds = thresholdsKey
+      .split(',')
+      .map((threshold) => Number(threshold))
+      .filter((threshold) => Number.isFinite(threshold))
 
     const onScroll = () => {
       const doc = document.documentElement
@@ -236,7 +246,7 @@ export const useScrollDepthTracking = (
 
       const progress = Math.round((window.scrollY / scrollable) * 100)
 
-      thresholds.forEach((threshold) => {
+      activeThresholds.forEach((threshold) => {
         if (progress >= threshold && !fired.has(threshold)) {
           fired.add(threshold)
           trackEvent(`${pageKey}_scroll_${threshold}`, buildParamsRef.current?.(threshold) ?? {})
@@ -264,8 +274,14 @@ export const useElementViewTracking = (
   const firedRef = useRef(false)
   const paramsRef = useRef(params)
   const optionsRef = useRef(options)
-  paramsRef.current = params
-  optionsRef.current = options
+
+  useEffect(() => {
+    paramsRef.current = params
+  }, [params])
+
+  useEffect(() => {
+    optionsRef.current = options
+  }, [options])
 
   useEffect(() => {
     const node = ref.current

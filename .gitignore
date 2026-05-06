@@ -2,6 +2,7 @@
 # Dependencies / Builds
 # ======================
 node_modules/
+.vite-cache/
 dist/
 dist-ssr/
 *.local
