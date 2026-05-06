@@ -1,10 +1,8 @@
 export type ServiceSlug =
-  | 'documentation'
-  | 'gallery-stories'
+  | 'concerts-events'
+  | 'exhibition-gallery'
   | 'artist-sessions'
-  | 'performance'
-  | 'fashion-show'
-  | 'atmospheric'
+  | 'brand-agency'
 
 export type ServiceMeta = {
   slug: ServiceSlug
@@ -13,43 +11,31 @@ export type ServiceMeta = {
 }
 
 export const serviceMeta: Record<ServiceSlug, ServiceMeta> = {
-  documentation: {
-    slug: 'documentation',
-    label: 'Exhibitions',
-    href: '/documentation',
+  'concerts-events': {
+    slug: 'concerts-events',
+    label: 'Concert & Live Event Documentation',
+    href: '/services/concerts-events',
   },
-  'gallery-stories': {
-    slug: 'gallery-stories',
-    label: 'Gallery Stories',
-    href: '/gallery-stories',
+  'exhibition-gallery': {
+    slug: 'exhibition-gallery',
+    label: 'Exhibition & Gallery Documentation',
+    href: '/services/exhibition-gallery',
   },
   'artist-sessions': {
     slug: 'artist-sessions',
-    label: 'Artist Sessions',
-    href: '/artist-sessions',
+    label: 'Artist Sessions & Portraits',
+    href: '/services/artist-sessions',
   },
-  performance: {
-    slug: 'performance',
-    label: 'Performance',
-    href: '/performance',
-  },
-  'fashion-show': {
-    slug: 'fashion-show',
-    label: 'Fashion Show',
-    href: '/fashion-show',
-  },
-  atmospheric: {
-    slug: 'atmospheric',
-    label: 'Atmospheric Films',
-    href: '/atmospheric',
+  'brand-agency': {
+    slug: 'brand-agency',
+    label: 'Brand & Agency Events',
+    href: '/services/brand-agency',
   },
 }
 
 export const serviceList: ServiceMeta[] = [
-  serviceMeta.documentation,
-  serviceMeta['gallery-stories'],
+  serviceMeta['concerts-events'],
+  serviceMeta['exhibition-gallery'],
   serviceMeta['artist-sessions'],
-  serviceMeta.performance,
-  serviceMeta['fashion-show'],
-  serviceMeta.atmospheric,
+  serviceMeta['brand-agency'],
 ]

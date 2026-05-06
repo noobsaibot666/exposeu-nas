@@ -1,10 +1,10 @@
 describe('Service Acquisition Path', () => {
-  it('navigates from home to exhibitions, submits the contact form, and returns home', () => {
+  it('navigates from home to exhibition and gallery documentation, submits the contact form, and returns home', () => {
     // 1. Visit home
     cy.visit('http://localhost:5174');
 
-    // 2. Navigate to Exhibitions page
-    cy.contains('Exhibitions').click();
+    // 2. Navigate to Exhibition & Gallery Documentation page
+    cy.contains('Exhibition & Gallery Documentation').click();
 
     // 3. Scroll to and click "Contact Us"
     cy.contains(/contact\s*us/i, { timeout: 10000 })
@@ -33,6 +33,6 @@ describe('Service Acquisition Path', () => {
       .click();
 
     // 7. Verify we're on the home page again
-    cy.contains('Exhibitions').should('be.visible');
+    cy.contains('Exhibition & Gallery Documentation').should('be.visible');
   });
 });

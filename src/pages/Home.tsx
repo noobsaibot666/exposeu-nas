@@ -11,26 +11,26 @@ import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/
 
 const projects = [
   {
-    slug: serviceMeta.documentation.slug,
-    title: 'Exhibitions',
+    slug: serviceMeta['concerts-events'].slug,
+    title: 'Concert & Live Event Documentation',
+    location: 'Live Programs',
+    year: '2024',
+    image: resolveImagePath('/src/assets/images/website/performances/thumb_3_086.jpg'),
+    copy: 'Fast selects, recap films, and hero frames for concerts, venues, and live teams.',
+    link: serviceMeta['concerts-events'].href,
+  },
+  {
+    slug: serviceMeta['exhibition-gallery'].slug,
+    title: 'Exhibition & Gallery Documentation',
     location: 'Galleries',
     year: '2024',
     image: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
-    copy: 'Press-ready photo and film for galleries, curators, and archives.',
-    link: serviceMeta.documentation.href,
-  },
-  {
-    slug: serviceMeta['gallery-stories'].slug,
-    title: 'Social Story Coverage',
-    location: 'Openings',
-    year: '2023',
-    image: resolveImagePath('/src/assets/images/website/galleries/thumb_3_005.jpg'),
-    copy: 'Narrative edits for galleries, collectors, and digital audiences.',
-    link: serviceMeta['gallery-stories'].href,
+    copy: 'Press-ready photo and film for galleries, curators, openings, and archives.',
+    link: serviceMeta['exhibition-gallery'].href,
   },
   {
     slug: serviceMeta['artist-sessions'].slug,
-    title: 'Artist Sessions',
+    title: 'Artist Sessions & Portraits',
     location: 'Venues & Studios',
     year: '2024',
     image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
@@ -38,65 +38,47 @@ const projects = [
     link: serviceMeta['artist-sessions'].href,
   },
   {
-    slug: serviceMeta.performance.slug,
-    title: 'Performance',
-    location: 'Live Programs',
-    year: '2024',
-    image: resolveImagePath('/src/assets/images/website/performances/thumb_3_086.jpg'),
-    copy: 'Fast selects and reels for venues, promoters, and funding reports.',
-    link: serviceMeta.performance.href,
-  },
-  {
-    slug: serviceMeta['fashion-show'].slug,
-    title: 'Fashion Shows',
-    location: 'Runway',
+    slug: serviceMeta['brand-agency'].slug,
+    title: 'Brand & Agency Events',
+    location: 'Launches',
     year: '2023',
     image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
-    copy: 'Runway and backstage assets for labels, press, and sponsors.',
-    link: serviceMeta['fashion-show'].href,
-  },
-  {
-    slug: serviceMeta.atmospheric.slug,
-    title: 'Spatial Films',
-    location: 'Spatial Projects',
-    year: '2024',
-    image: resolveImagePath('/src/assets/images/website/atmospheric/thumb_3_025.jpg'),
-    copy: 'Short films for launches, websites, decks, and spatial teams.',
-    link: serviceMeta.atmospheric.href,
+    copy: 'Event, activation, runway, and backstage assets for brands, agencies, and sponsors.',
+    link: serviceMeta['brand-agency'].href,
   },
 ]
 
-const projectRows = [projects.slice(0, 3), projects.slice(3, 6)]
+const projectRows = [projects.slice(0, 2), projects.slice(2, 4)]
 
 const heroGallery = [
   {
     id: 'thumb-5',
     image: resolveImagePath('/src/assets/images/website/fashion/thumb_3_081.jpg'),
-    label: serviceMeta['fashion-show'].label,
+    label: serviceMeta['brand-agency'].label,
     rotation: -4,
   },
   {
     id: 'thumb-1',
     image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/1_ED_055.png'),
-    label: serviceMeta.documentation.label,
+    label: serviceMeta['exhibition-gallery'].label,
     rotation: -3,
   },
   {
     id: 'thumb-2',
     image: resolveImagePath('/src/assets/images/website/performances/thumb_3_033.jpg'),
-    label: 'Social Story Coverage',
+    label: serviceMeta['concerts-events'].label,
     rotation: 2,
   },
   {
     id: 'thumb-4',
     image: resolveImagePath('/src/assets/images/website/performances/thumb_3_027.jpg'),
-    label: serviceMeta.performance.label,
+    label: serviceMeta['concerts-events'].label,
     rotation: 4,
   },
   {
     id: 'thumb-3',
     image: resolveImagePath('/src/assets/images/website/exhibitions/thumb_3_031.jpg'),
-    label: serviceMeta.atmospheric.label,
+    label: serviceMeta['exhibition-gallery'].label,
     rotation: -1,
   },
 ]

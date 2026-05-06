@@ -6,28 +6,28 @@ import type { PricingTier } from './pricingTiers'
 export type PricingOverridesByService = Record<string, Partial<Record<PricingTier['slug'], Partial<PricingTier>>>>
 
 export const pricingByService = {
-  documentation: {
+  'concerts-events': {
     'single-event': {
-      price: '€600',
-      description: 'One exhibition or opening captured for press, archive, and partner use.',
+      price: '€900',
+      description: 'One concert or live event captured with fast selects, reels, and clean hero moments.',
     },
     'monthly-coverage': {
-      price: '€2.1K',
-      description: 'Recurring exhibition coverage with one visual standard and faster turnaround.',
+      price: '€2.9K',
+      description: 'Repeat live event coverage with one crew and one delivery rhythm.',
     },
     'retainer-studio': {
       price: 'Custom',
     },
   },
 
-  'gallery-stories': {
+  'exhibition-gallery': {
     'single-event': {
-      price: '€500',
-      description: 'One social-first story package with stills, motion, and interview cuts.',
+      price: '€600',
+      description: 'One exhibition, opening, or gallery program captured for press, archive, and partner use.',
     },
     'monthly-coverage': {
-      price: '€1.8K',
-      description: 'Recurring story coverage aligned to openings, releases, and program cycles.',
+      price: '€2.1K',
+      description: 'Recurring gallery documentation with one visual standard and faster turnaround.',
     },
     'retainer-studio': {
       price: 'Custom',
@@ -48,42 +48,14 @@ export const pricingByService = {
     },
   },
 
-  performance: {
-    'single-event': {
-      price: '€900',
-      description: 'One live capture with fast selects, reels, and clean hero moments.',
-    },
-    'monthly-coverage': {
-      price: '€2.9K',
-      description: 'Repeat performance coverage with one crew and one delivery rhythm.',
-    },
-    'retainer-studio': {
-      price: 'Custom',
-    },
-  },
-
-  'fashion-show': {
+  'brand-agency': {
     'single-event': {
       price: '€1.5K',
-      description: 'One show captured for runway, backstage, PR, and sponsor use.',
+      description: 'One brand, agency, runway, or activation event captured for PR, campaign, and sponsor use.',
     },
     'monthly-coverage': {
       price: '€5.9K',
-      description: 'Seasonal fashion coverage with consistent runway, backstage, and campaign output.',
-    },
-    'retainer-studio': {
-      price: 'Custom',
-    },
-  },
-
-  atmospheric: {
-    'single-event': {
-      price: '€800',
-      description: 'One spatial film package for launches, decks, websites, and case studies.',
-    },
-    'monthly-coverage': {
-      price: '€2.6K',
-      description: 'Recurring spatial storytelling for programs, launches, and seasonal updates.',
+      description: 'Seasonal brand event coverage with consistent editorial and campaign output.',
     },
     'retainer-studio': {
       price: 'Custom',

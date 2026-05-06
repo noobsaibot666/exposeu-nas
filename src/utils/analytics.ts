@@ -1,6 +1,7 @@
 import { useEffect, useRef, type RefObject } from 'react'
 
 const GA_ID = import.meta.env.VITE_GA_MEASUREMENT_ID
+const PIXEL_ID = import.meta.env.VITE_META_PIXEL_ID
 
 type Primitive = string | number | boolean | undefined | null
 export type AnalyticsParams = Record<string, Primitive>
@@ -10,6 +11,8 @@ declare global {
     gtag?: (...args: unknown[]) => void
     dataLayer?: Array<Record<string, unknown> | unknown[]>
     clarity?: (eventName: string, eventValue?: string) => void
+    fbq?: (command: string, event: string, params?: Record<string, unknown>) => void
+    _fbq?: unknown
     __analyticsConsent?: boolean
   }
 }
@@ -131,6 +134,14 @@ export const hasAnalyticsConsent = () => {
 
 const shouldSendAnalytics = () => hasAnalyticsInstalled() && hasAnalyticsConsent()
 
+let pixelInitialized = false
+
+const ensurePixelInitialized = () => {
+  if (pixelInitialized || !PIXEL_ID || typeof window.fbq !== 'function') return
+  window.fbq('init', PIXEL_ID)
+  pixelInitialized = true
+}
+
 const getDefaultParams = (): AnalyticsParams => ({
   page_path: typeof window !== 'undefined' ? window.location.pathname + window.location.search : undefined,
   page_title: typeof document !== 'undefined' ? document.title : undefined,
@@ -166,15 +177,22 @@ const sendEvent = (name: string, params: AnalyticsParams = {}) => {
 }
 
 export const trackPageView = (path: string, params: AnalyticsParams = {}) => {
-  if (!shouldSendAnalytics() || typeof window.gtag !== 'function' || !GA_ID) return
+  if (!shouldSendAnalytics()) return
 
-  window.gtag('config', GA_ID, {
-    page_path: path,
-    page_title: typeof document !== 'undefined' ? document.title : undefined,
-    source_url: typeof window !== 'undefined' ? window.location.href : undefined,
-    referrer: typeof document !== 'undefined' ? document.referrer || undefined : undefined,
-    ...params,
-  })
+  if (typeof window.gtag === 'function' && GA_ID) {
+    window.gtag('config', GA_ID, {
+      page_path: path,
+      page_title: typeof document !== 'undefined' ? document.title : undefined,
+      source_url: typeof window !== 'undefined' ? window.location.href : undefined,
+      referrer: typeof document !== 'undefined' ? document.referrer || undefined : undefined,
+      ...params,
+    })
+  }
+
+  ensurePixelInitialized()
+  if (typeof window.fbq === 'function' && PIXEL_ID) {
+    window.fbq('track', 'PageView')
+  }
 }
 
 export function trackEvent(name: string, params?: AnalyticsParams): void

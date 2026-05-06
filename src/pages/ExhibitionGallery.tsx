@@ -8,12 +8,12 @@ const heroCards = [
   { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/1_ED_055.png'), title: 'Install Detail' },
 ]
 
-function Exhibitions() {
+function ExhibitionGallery() {
   return (
     <WorkPageLayout
-      title="Exhibitions"
-      heroCopy="Exhibition photo and film for press, archive, and curatorial record."
-      detail="Clean spatial coverage that shows sequence, scale, and opening atmosphere."
+      title="Exhibition & Gallery Documentation"
+      heroCopy="Exhibition and gallery photo and film for press, archive, and curatorial record."
+      detail="Clean spatial coverage that shows sequence, scale, artworks, and opening atmosphere."
       cards={heroCards}
       galleryTitle="Press-ready coverage for the full show."
       galleryCopy="Delivered to read clearly across press, archive, and partner use."
@@ -30,18 +30,18 @@ function Exhibitions() {
         { title: 'Institutional installs', subtitle: 'Programs that need archive and partner-ready sets.' },
         { title: 'Opening nights', subtitle: 'Events needing both artwork and audience coverage.' },
       ]}
-      extraGallerySecondaryTitle="Exhibitions explains the full space. Gallery Stories cuts it for social and press."
-      extraGallerySecondaryCopy="Use this when spatial clarity matters more than interview or social sequencing."
+      extraGallerySecondaryTitle="Exhibition & Gallery Documentation explains the full space and story."
+      extraGallerySecondaryCopy="Use this when spatial clarity, opening atmosphere, and gallery communication need one coherent set."
       extraGallerySecondary={[
-        { title: 'Choose Exhibitions', subtitle: 'For rooms, works, and curatorial flow.' },
-        { title: 'Choose Gallery Stories', subtitle: 'For interviews, posts, and collector-facing edits.' },
+        { title: 'Choose Exhibition & Gallery Documentation', subtitle: 'For rooms, works, openings, and curatorial flow.' },
+        { title: 'Choose Artist Sessions', subtitle: 'For portrait-led releases, studio work, and profile assets.' },
       ]}
       ctaText="Request availability for your exhibition dates."
       ctaHref="/contact"
       ctaDetail="Clear deliverables. Berlin-based. Simple proposal."
-      serviceSlug="documentation"
+      serviceSlug="exhibition-gallery"
     />
   )
 }
 
-export default Exhibitions
+export default ExhibitionGallery

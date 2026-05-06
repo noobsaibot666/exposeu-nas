@@ -11,8 +11,8 @@ const heroCards = [
 function ArtistSessions() {
   return (
     <WorkPageLayout
-      title="Artist Sessions"
-      heroCopy="Portrait and process coverage for artists, releases, and press kits."
+      title="Artist Sessions & Portraits"
+      heroCopy="Artist sessions and portraits for releases, profiles, and press kits."
       detail="A focused session for portraits, studio details, and launch-ready selects."
       cards={heroCards}
       galleryTitle="A clean asset set for launches, profiles, and ongoing use."
@@ -30,11 +30,11 @@ function ArtistSessions() {
         { title: 'Artist profiles', subtitle: 'When personality and process both matter.' },
         { title: 'Studio updates', subtitle: 'When you need ongoing assets without a full event shoot.' },
       ]}
-      extraGallerySecondaryTitle="Artist Sessions centers the person. Performance centers the live moment."
+      extraGallerySecondaryTitle="Artist Sessions & Portraits centers the person. Concert & Live Event Documentation centers the live moment."
       extraGallerySecondaryCopy="Choose this when portrait, process, and controlled pacing matter most."
       extraGallerySecondary={[
         { title: 'Choose Artist Sessions', subtitle: 'For portrait-led releases, studio work, and profile assets.' },
-        { title: 'Choose Performance', subtitle: 'For live action, timing, crowd energy, and stage cues.' },
+        { title: 'Choose Concert & Live Event Documentation', subtitle: 'For live action, timing, crowd energy, and stage cues.' },
       ]}
       ctaText="Request availability for your artist session."
       ctaHref="/contact"

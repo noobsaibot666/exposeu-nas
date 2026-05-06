@@ -9,7 +9,8 @@
     "lint": "node node_modules/eslint/bin/eslint.js .",
     "preview": "NODE_PATH=node_modules/.darwin-native/node_modules node node_modules/vite/bin/vite.js preview --configLoader runner",
     "server": "node server/index.js",
-    "verify:routes": "node scripts/verify-routes.mjs"
+    "verify:routes": "node scripts/verify-routes.mjs",
+    "verify:service-routes": "node scripts/verify-service-routes.mjs"
   },
   "dependencies": {
     "@microsoft/clarity": "^1.0.2",

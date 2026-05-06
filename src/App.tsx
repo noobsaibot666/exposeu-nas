@@ -1,15 +1,13 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
 import About from './pages/About'
-import Atmospheric from './pages/Atmospheric'
+import BrandAgency from './pages/BrandAgency'
 import CallSession from './pages/CallSession'
+import ConcertsEvents from './pages/ConcertsEvents'
 import Contact from './pages/Contact'
 import ContactSuccess from './pages/ContactSuccess'
-import Exhibitions from './pages/Exhibitions'
-import FashionShow from './pages/FashionShow'
-import GalleryStories from './pages/GalleryStories'
+import ExhibitionGallery from './pages/ExhibitionGallery'
 import Impressum from './pages/Impressum'
-import Performance from './pages/Performance'
 import ArtistSessions from './pages/ArtistSessions'
 import Portfolio from './pages/Portfolio'
 import NotFound from './pages/NotFound'
@@ -130,56 +128,22 @@ function App() {
             <Route path="/call-session" element={<CallSession />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/contact-success" element={<ContactSuccess />} />
-            <Route
-              path="/documentation"
-              element={
-                <>
-                  <Exhibitions />
-                </>
-              }
-            />
-            <Route path="/exhibitions" element={<Navigate to="/documentation" replace />} />
-            <Route
-              path="/atmospheric"
-              element={
-                <>
-                  <Atmospheric />
-                </>
-              }
-            />
-            <Route
-              path="/performance"
-              element={
-                <>
-                  <Performance />
-                </>
-              }
-            />
-            <Route
-              path="/gallery-stories"
-              element={
-                <>
-                  <GalleryStories />
-                </>
-              }
-            />
+            <Route path="/services/concerts-events" element={<ConcertsEvents />} />
+            <Route path="/services/exhibition-gallery" element={<ExhibitionGallery />} />
+            <Route path="/services/artist-sessions" element={<ArtistSessions />} />
+            <Route path="/services/brand-agency" element={<BrandAgency />} />
+            <Route path="/services/performance" element={<Navigate to="/services/concerts-events" replace />} />
+            <Route path="/services/gallery-stories" element={<Navigate to="/services/exhibition-gallery" replace />} />
+            <Route path="/services/fashion-show" element={<Navigate to="/services/brand-agency" replace />} />
+            <Route path="/services/atmospheric-films" element={<Navigate to="/services/concerts-events" replace />} />
+            <Route path="/performance" element={<Navigate to="/services/concerts-events" replace />} />
+            <Route path="/gallery-stories" element={<Navigate to="/services/exhibition-gallery" replace />} />
+            <Route path="/fashion-show" element={<Navigate to="/services/brand-agency" replace />} />
+            <Route path="/atmospheric" element={<Navigate to="/services/concerts-events" replace />} />
+            <Route path="/documentation" element={<Navigate to="/services/exhibition-gallery" replace />} />
+            <Route path="/exhibitions" element={<Navigate to="/services/exhibition-gallery" replace />} />
             <Route path="/impressum" element={<Impressum />} />
-            <Route
-              path="/artist-sessions"
-              element={
-                <>
-                  <ArtistSessions />
-                </>
-              }
-            />
-            <Route
-              path="/fashion-show"
-              element={
-                <>
-                  <FashionShow />
-                </>
-              }
-            />
+            <Route path="/artist-sessions" element={<Navigate to="/services/artist-sessions" replace />} />
             <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/pricing-request/:plan" element={<PricingRequest />} />
             <Route path="/pricing-request/success" element={<PricingRequestSuccess />} />

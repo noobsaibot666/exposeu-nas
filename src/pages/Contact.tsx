@@ -27,12 +27,10 @@ function Contact() {
     const serviceParam = params.get('service')?.trim() ?? ''
     const packageParam = params.get('package')?.trim() ?? ''
     const serviceLabels: Record<string, string> = {
-      documentation: serviceMeta.documentation.label,
-      'gallery-stories': serviceMeta['gallery-stories'].label,
+      'concerts-events': serviceMeta['concerts-events'].label,
+      'exhibition-gallery': serviceMeta['exhibition-gallery'].label,
       'artist-sessions': serviceMeta['artist-sessions'].label,
-      performance: serviceMeta.performance.label,
-      'fashion-show': serviceMeta['fashion-show'].label,
-      atmospheric: serviceMeta.atmospheric.label,
+      'brand-agency': serviceMeta['brand-agency'].label,
     }
     const packageLabels: Record<string, string> = {
       'single-event': 'One-time',
