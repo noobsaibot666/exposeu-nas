@@ -27,15 +27,17 @@ function buildHeroVideoSrc(video: typeof HERO_VIDEO): string {
 const projects = [
   {
     slug: serviceMeta['concerts-events'].slug,
-    title: 'Concert & Live Event Documentation',
+    title: 'Concert & Live Events',
     subtext: 'For venues, promoters, bands, and festival producers',
+    cta: 'Book concerts',
     image: resolveImagePath('/src/assets/images/website/performances/thumb_3_086.jpg'),
     link: serviceMeta['concerts-events'].href,
   },
   {
     slug: serviceMeta['exhibition-gallery'].slug,
-    title: 'Exhibition & Gallery Documentation',
+    title: 'Exhibition & Gallery',
     subtext: 'For galleries, curators, and cultural institutions',
+    cta: 'Book exhibitions',
     image: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
     link: serviceMeta['exhibition-gallery'].href,
   },
@@ -43,6 +45,7 @@ const projects = [
     slug: serviceMeta['artist-sessions'].slug,
     title: 'Artist Sessions & Portraits',
     subtext: 'For musicians, visual artists, and photographers',
+    cta: 'Book a session',
     image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
     link: serviceMeta['artist-sessions'].href,
   },
@@ -50,43 +53,36 @@ const projects = [
     slug: serviceMeta['brand-agency'].slug,
     title: 'Brand & Agency Events',
     subtext: 'For creative agencies, brands, and production houses',
+    cta: 'Book brand events',
     image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
     link: serviceMeta['brand-agency'].href,
   },
 ]
 
-const projectRows = [projects.slice(0, 2), projects.slice(2, 4)]
-
 const heroGallery = [
   {
-    id: 'thumb-5',
-    image: resolveImagePath('/src/assets/images/website/fashion/thumb_3_081.jpg'),
-    label: serviceMeta['brand-agency'].label,
+    id: 'thumb-concerts',
+    image: resolveImagePath('/src/assets/images/website/performances/thumb_3_033.jpg'),
+    label: 'Concert & Live Events',
     rotation: -4,
   },
   {
-    id: 'thumb-1',
+    id: 'thumb-exhibition',
     image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/1_ED_055.png'),
-    label: serviceMeta['exhibition-gallery'].label,
-    rotation: -3,
+    label: 'Exhibition & Gallery',
+    rotation: -2,
   },
   {
-    id: 'thumb-2',
-    image: resolveImagePath('/src/assets/images/website/performances/thumb_3_033.jpg'),
-    label: serviceMeta['concerts-events'].label,
+    id: 'thumb-artist',
+    image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
+    label: 'Artist Sessions & Portraits',
     rotation: 2,
   },
   {
-    id: 'thumb-4',
-    image: resolveImagePath('/src/assets/images/website/performances/thumb_3_027.jpg'),
-    label: serviceMeta['concerts-events'].label,
+    id: 'thumb-brand',
+    image: resolveImagePath('/src/assets/images/website/fashion/thumb_3_081.jpg'),
+    label: 'Brand & Agency Events',
     rotation: 4,
-  },
-  {
-    id: 'thumb-3',
-    image: resolveImagePath('/src/assets/images/website/exhibitions/thumb_3_031.jpg'),
-    label: serviceMeta['exhibition-gallery'].label,
-    rotation: -1,
   },
 ]
 
@@ -110,6 +106,7 @@ const proofAvatars = [
 function HomeV2() {
   const navigate = useNavigate()
   const [activeSection, setActiveSection] = useState('Home')
+  const [videoReady, setVideoReady] = useState(false)
   const location = useLocation()
   const [mobileLayout, setMobileLayout] = useState({
     card: 160,
@@ -127,6 +124,16 @@ function HomeV2() {
 
   useTrackViewEvent('home_view')
   useScrollDepthTracking('home', [25, 50, 75, 90])
+
+  // Reveal video: fires on iframe load + 600ms buffer, with 3s absolute fallback
+  useEffect(() => {
+    const fallback = setTimeout(() => setVideoReady(true), 3000)
+    return () => clearTimeout(fallback)
+  }, [])
+
+  const handleVideoLoad = () => {
+    setTimeout(() => setVideoReady(true), 600)
+  }
 
   const handleScroll = (id: string) => {
     const target = document.querySelector(id)
@@ -183,31 +190,41 @@ function HomeV2() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const ctx = gsap.context(() => {
+      // Nav — slides down and fades in on mount
+      gsap.fromTo(
+        '.home__nav',
+        { opacity: 0, y: -14 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'sine.out', delay: 0.2 },
+      )
+
       if (galleryRef.current) {
         tiltX.current = gsap.quickTo(galleryRef.current, '--hero-tilt-x', { duration: 0.45, ease: 'power3.out' })
         tiltY.current = gsap.quickTo(galleryRef.current, '--hero-tilt-y', { duration: 0.45, ease: 'power3.out' })
       }
 
-      // Hero section — one ordered scroll sequence after the fullscreen video.
+      // Hero section — scrub-based sequence, animates in/out with scroll direction.
+      // start: 'top bottom' begins as soon as hero enters from below the viewport.
+      // end: 'top 15%'  completes once the section is fully visible — so clicking
+      // the scroll button (which lands hero.top near 0%) always shows full content.
       const heroThumbs = gsap.utils.toArray<HTMLElement>('.home__hero-gallery--desktop .home__hero-thumb')
       const heroTimeline = gsap.timeline({
         scrollTrigger: {
           trigger: '.home__hero',
-          start: 'top 88%',
-          end: 'bottom 34%',
-          scrub: 1.35,
+          start: 'top bottom',
+          end: 'top 15%',
+          scrub: 2,
         },
       })
 
       heroTimeline.fromTo(
         '.home__hero-title',
-        { opacity: 0, y: 88, filter: 'blur(12px)' },
-        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.35, ease: 'power4.inOut' },
+        { opacity: 0, y: 44, filter: 'blur(6px)' },
+        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.4, ease: 'sine.inOut' },
       )
 
-      const yOffsets = [96, 78, 108, 86, 102]
-      const xOffsets = [-12, 10, 0, 14, -8]
-      const cardStart = 0.95
+      const yOffsets = [48, 40, 56, 44, 52]
+      const xOffsets = [-6, 5, 0, 7, -4]
+      const cardStart = 0.9
       gsap.utils.shuffle(heroThumbs).forEach((el, i) => {
         el.style.transition = 'none'
         const image = el.querySelector<HTMLElement>('.home__hero-thumb-image')
@@ -220,9 +237,9 @@ function HomeV2() {
             opacity: 0,
             y: yOffsets[i % yOffsets.length],
             x: xOffsets[i % xOffsets.length],
-            scale: 0.93,
-            rotate: [-1.2, 0.9, -0.6, 1.25, -0.8][i % 5],
-            filter: 'blur(9px)',
+            scale: 0.96,
+            rotate: [-0.8, 0.6, -0.4, 0.8, -0.5][i % 5],
+            filter: 'blur(5px)',
           },
           {
             opacity: 1,
@@ -231,71 +248,63 @@ function HomeV2() {
             scale: 1,
             rotate: 0,
             filter: 'blur(0px)',
-            duration: 1.15,
-            ease: 'power3.inOut',
-            clearProps: 'transform',
+            duration: 1.1,
+            ease: 'sine.inOut',
             onComplete: () => { el.style.transition = '' },
           },
-          cardStart + i * 0.18,
+          cardStart + i * 0.16,
         )
       })
 
       heroTimeline
         .fromTo(
           '.home__hero-subhead',
-          { opacity: 0, y: 52, filter: 'blur(10px)' },
-          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.05, ease: 'power3.inOut' },
-          cardStart + heroThumbs.length * 0.18 + 0.48,
+          { opacity: 0, y: 28, filter: 'blur(5px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.0, ease: 'sine.inOut' },
+          cardStart + heroThumbs.length * 0.16 + 0.4,
         )
         .fromTo(
           '.home__hero-cta',
-          { opacity: 0, y: 38, scale: 0.96 },
-          { opacity: 1, y: 0, scale: 1, stagger: 0.14, duration: 0.9, ease: 'power3.inOut' },
-          '>-0.12',
+          { opacity: 0, y: 20, scale: 0.97 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'sine.inOut' },
+          '>-0.1',
         )
 
-      // Cases — section copy and cards rise in as they enter the viewport.
+      // Cases — scrub-based, animates in and out with scroll direction.
       const cards = gsap.utils.toArray<HTMLElement>('.home__case-card')
       const casesHeaderItems = gsap.utils.toArray<HTMLElement>('.home__cases .home__section-header > *')
+      const casesNote = document.querySelector('.home__section-note')
+
+      // Header fades in with scrub
       gsap.fromTo(
         casesHeaderItems,
-        { opacity: 0, y: 42 },
+        { opacity: 0, y: 22 },
         {
           opacity: 1,
           y: 0,
-          stagger: 0.08,
-          ease: 'power3.out',
+          stagger: 0.12,
+          ease: 'sine.inOut',
           scrollTrigger: {
             trigger: '.home__cases',
-            start: 'top 86%',
-            end: 'top 48%',
-            scrub: 0.7,
+            start: 'top 82%',
+            end: 'top 36%',
+            scrub: 1.6,
           },
         },
       )
 
-      const randomCardMotion = gsap.utils.shuffle(
-        cards.map((card, index) => ({
-          card,
-          y: [92, 116, 76, 128, 88, 108][index % 6],
-          x: [-14, 10, 0, 16, -8, 6][index % 6],
-          scale: [0.91, 0.94, 0.9, 0.93, 0.92, 0.95][index % 6],
-          rotate: [-2.2, 1.4, -0.8, 2, -1.5, 0.9][index % 6],
-          scrub: [0.75, 1.05, 0.85, 1.15, 0.95, 1.25][index % 6],
-        })),
-      )
-
-      randomCardMotion.forEach(({ card, y, x, scale, rotate, scrub }, index) => {
+      // Each card arrives from a unique direction for visual interest
+      const cardMotion = [
+        { y: 52, x: -16, rotate: -2.5 },
+        { y: 52, x: 16, rotate: 2.5 },
+        { y: 64, x: -10, rotate: -1.8 },
+        { y: 64, x: 10, rotate: 1.8 },
+      ]
+      cards.forEach((card, i) => {
+        const { y, x, rotate } = cardMotion[i % cardMotion.length]
         gsap.fromTo(
           card,
-          {
-            opacity: 0,
-            y,
-            x,
-            scale,
-            rotate,
-            filter: 'blur(10px)',
-          },
+          { opacity: 0, y, x, scale: 0.94, rotate, filter: 'blur(6px)' },
           {
             opacity: 1,
             y: 0,
@@ -303,59 +312,76 @@ function HomeV2() {
             scale: 1,
             rotate: 0,
             filter: 'blur(0px)',
-            duration: 0.9,
-            delay: index * 0.03,
-            ease: 'power3.out',
+            ease: 'sine.inOut',
             scrollTrigger: {
               trigger: card,
-              start: 'top 94%',
-              end: 'top 58%',
-              scrub,
+              start: 'top 90%',
+              end: 'top 48%',
+              scrub: 1.1,
             },
           },
         )
       })
 
-      // Proof sections — fade + slide with scrub
+      // Note fades in below the cards
+      if (casesNote) {
+        gsap.fromTo(
+          casesNote,
+          { opacity: 0, y: 16 },
+          {
+            opacity: 1,
+            y: 0,
+            ease: 'sine.inOut',
+            scrollTrigger: {
+              trigger: casesNote,
+              start: 'top 90%',
+              end: 'top 50%',
+              scrub: 1.4,
+            },
+          },
+        )
+      }
+
+      // Proof sections — gentle fade + lift with scrub
       const proofSections = gsap.utils.toArray<HTMLElement>('.home__proof')
       proofSections.forEach((section) => {
         const items = Array.from(section.children) as HTMLElement[]
         gsap.fromTo(
           items,
-          { opacity: 0, y: 28 },
+          { opacity: 0, y: 20 },
           {
             opacity: 1,
             y: 0,
-            stagger: 0.08,
-            ease: 'power2.out',
+            stagger: 0.1,
+            ease: 'sine.inOut',
             scrollTrigger: {
               trigger: section,
-              start: 'top 82%',
-              end: 'top 38%',
-              scrub: 0.6,
+              start: 'top 78%',
+              end: 'top 32%',
+              scrub: 1.2,
               toggleActions: 'play none none reverse',
             },
           },
         )
       })
 
-      // Process — slide up with scrub
+      // Process — gentle lift with scrub
       const processSection = document.querySelector<HTMLElement>('.home__process')
       if (processSection) {
         const processItems = gsap.utils.toArray<HTMLElement>('.home__process-header > *, .home__process-step')
         gsap.fromTo(
           processItems,
-          { opacity: 0, y: 36 },
+          { opacity: 0, y: 24 },
           {
             opacity: 1,
             y: 0,
-            stagger: 0.1,
-            ease: 'power2.out',
+            stagger: 0.12,
+            ease: 'sine.inOut',
             scrollTrigger: {
               trigger: processSection,
-              start: 'top 80%',
-              end: 'top 35%',
-              scrub: 0.6,
+              start: 'top 78%',
+              end: 'top 30%',
+              scrub: 1.2,
               toggleActions: 'play none none reverse',
             },
           },
@@ -371,12 +397,12 @@ function HomeV2() {
             const rect = card.getBoundingClientRect()
             const relX = event.clientX - (rect.left + rect.width / 2)
             const relY = event.clientY - (rect.top + rect.height / 2)
-            const rotateX = (-relY / (rect.height / 2)) * 4
-            const rotateY = (relX / (rect.width / 2)) * 4
-            gsap.to(card, { rotationX: rotateX, rotationY: rotateY, scale: 1.04, duration: 0.35, ease: 'power3.out' })
+            const rotateX = (-relY / (rect.height / 2)) * 1.8
+            const rotateY = (relX / (rect.width / 2)) * 1.8
+            gsap.to(card, { rotationX: rotateX, rotationY: rotateY, scale: 1.02, duration: 0.5, ease: 'power2.out' })
           }
-          const handleEnter = () => gsap.to(card, { scale: 1.05, duration: 0.4, ease: 'power3.out' })
-          const handleLeave = () => gsap.to(card, { rotationX: 0, rotationY: 0, scale: 1, duration: 0.6, ease: 'power2.out' })
+          const handleEnter = () => gsap.to(card, { scale: 1.02, duration: 0.5, ease: 'power2.out' })
+          const handleLeave = () => gsap.to(card, { rotationX: 0, rotationY: 0, scale: 1, duration: 0.7, ease: 'sine.inOut' })
 
           card.addEventListener('mousemove', handleMove)
           card.addEventListener('mouseenter', handleEnter)
@@ -476,12 +502,19 @@ function HomeV2() {
             allow="autoplay; fullscreen"
             allowFullScreen
             title="Hero background video"
+            onLoad={handleVideoLoad}
           />
         </div>
         <div className="home__video-overlay" />
-        <div className="home__video-scroll-hint">
+        <div className={`home__video-blind${videoReady ? ' home__video-blind--gone' : ''}`} aria-hidden="true" />
+        <button
+          className="home__video-scroll-hint"
+          type="button"
+          aria-label="Scroll to content"
+          onClick={() => handleScroll('#hero')}
+        >
           <span>Scroll</span>
-        </div>
+        </button>
       </section>
 
       {/* Nav wrapper — hidden on desktop (nav is fixed), visible on mobile */}
@@ -605,36 +638,33 @@ function HomeV2() {
       <section className="home__section home__cases" id="cases" ref={casesRef}>
         <div className="home__section-header">
           <p>Coverage types</p>
-          <h2>Choose the format for your show, release, or space.</h2>
-          <p className="home__section-subcopy">I need content for my:</p>
+          <h2>Choose your format.</h2>
         </div>
         <div className="home__cases-grid">
-          {projectRows.map((row, rowIndex) => (
-            <div className="home__cases-row" key={`case-row-${rowIndex}`}>
-              {row.map((project) => (
-                <Link
-                  key={project.title}
-                  to={project.link}
-                  className="home__case-card"
-                  onClick={() => {
-                    trackEvent('home_service_card_click', {
-                      service_slug: project.slug,
-                      card_position: rowIndex * 2 + row.indexOf(project) + 1,
-                    })
-                  }}
-                >
-                  <div className="home__case-media">
-                    <img src={project.image} alt={project.title} loading="lazy" decoding="async" />
-                  </div>
-                  <div className="home__case-meta">
-                    <h3>{project.title}</h3>
-                    <p className={`home__case-copy ${styles.homeRedesign__cardCopy}`}>{project.subtext}</p>
-                    <span className="home__case-cta">See documentation details</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          ))}
+          <div className="home__cases-row">
+            {projects.map((project, index) => (
+              <Link
+                key={project.title}
+                to={project.link}
+                className="home__case-card"
+                onClick={() => {
+                  trackEvent('home_service_card_click', {
+                    service_slug: project.slug,
+                    card_position: index + 1,
+                  })
+                }}
+              >
+                <div className="home__case-media">
+                  <img src={project.image} alt={project.title} loading="lazy" decoding="async" />
+                </div>
+                <div className="home__case-meta">
+                  <h3>{project.title}</h3>
+                  <p className={`home__case-copy ${styles.homeRedesign__cardCopy}`}>{project.subtext}</p>
+                  <span className="home__case-cta">{project.cta}</span>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
         <p className="home__section-note">
           Need help choosing? <Link to="/contact">Contact us</Link>.

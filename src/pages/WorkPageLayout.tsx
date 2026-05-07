@@ -28,9 +28,6 @@ type WorkPageLayoutProps = {
   extraGalleryTitle?: string
   extraGalleryCopy?: string
   extraGallery?: WorkCard[]
-  extraGallerySecondaryTitle?: string
-  extraGallerySecondaryCopy?: string
-  extraGallerySecondary?: WorkCard[]
 }
 
 function WorkPageLayout({
@@ -49,9 +46,6 @@ function WorkPageLayout({
   extraGalleryTitle,
   extraGalleryCopy,
   extraGallery,
-  extraGallerySecondaryTitle,
-  extraGallerySecondaryCopy,
-  extraGallerySecondary,
 }: WorkPageLayoutProps) {
   const rootRef = useRef<HTMLElement | null>(null)
   const stackRef = useRef<HTMLDivElement | null>(null)
@@ -69,35 +63,37 @@ function WorkPageLayout({
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-
-
     const ctx = gsap.context(() => {
+      // Hero copy — plays immediately on mount (top of page)
       const heroItems = gsap.utils.toArray<HTMLElement>('.work-hero__copy > *')
-      gsap.from(heroItems, {
-        opacity: 0,
-        y: 22,
-        duration: 0.7,
-        stagger: 0.1,
-        ease: 'power2.out',
-      })
+      gsap.fromTo(
+        heroItems,
+        { opacity: 0, y: 20, filter: 'blur(4px)' },
+        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.65, stagger: 0.1, ease: 'sine.inOut' },
+      )
 
-      const cards = gsap.utils.toArray<HTMLElement>('.work-hero__card')
-
-      gsap.from(cards, {
-        opacity: 0,
-        x: -36,
-        y: 10,
-        scale: 0.96,
-        stagger: 0.06,
-        duration: 0.78,
-        ease: 'power3.out',
-        force3D: true,
-        scrollTrigger: {
-          trigger: stackRef.current,
-          start: 'top 78%',
+      // Hero card stack — cascade up from below, one by one
+      const heroCards = gsap.utils.toArray<HTMLElement>('.work-hero__card')
+      gsap.fromTo(
+        heroCards,
+        { opacity: 0, y: 64, scale: 0.93, filter: 'blur(8px)' },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          filter: 'blur(0px)',
+          stagger: 0.12,
+          duration: 0.8,
+          ease: 'sine.inOut',
+          force3D: true,
+          scrollTrigger: {
+            trigger: stackRef.current,
+            start: 'top 82%',
+          },
         },
-      })
+      )
 
+      // Gallery sections
       const gallerySections = gsap.utils.toArray<HTMLElement>('.work-gallery')
       gallerySections.forEach((section) => {
         const sequenceItems = section.querySelectorAll<HTMLElement>('.work-gallery__sequence-item')
@@ -105,61 +101,66 @@ function WorkPageLayout({
         const split = section.querySelector<HTMLElement>('.work-gallery__split')
         const textItems = section.querySelectorAll<HTMLElement>('.work-gallery__text > *')
 
-        gsap.from(sequenceItems, {
-          opacity: 0,
-          y: 36,
-          duration: 0.85,
-          stagger: 0.1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 70%',
+        gsap.fromTo(
+          sequenceItems,
+          { opacity: 0, y: 24, filter: 'blur(3px)' },
+          {
+            opacity: 1,
+            y: 0,
+            filter: 'blur(0px)',
+            duration: 0.7,
+            stagger: 0.09,
+            ease: 'sine.inOut',
+            scrollTrigger: { trigger: section, start: 'top 78%' },
           },
-        })
+        )
 
         if (split) {
-          gsap.from(split, {
-            opacity: 0,
-            y: 30,
-            duration: 0.8,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 80%',
+          gsap.fromTo(
+            split,
+            { opacity: 0, y: 20 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.7,
+              ease: 'sine.inOut',
+              scrollTrigger: { trigger: section, start: 'top 82%' },
             },
-          })
+          )
         }
 
         if (textItems.length) {
-          gsap.from(textItems, {
-            opacity: 0,
-            y: 18,
-            duration: 0.7,
-            stagger: 0.08,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 78%',
+          gsap.fromTo(
+            textItems,
+            { opacity: 0, y: 16 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.65,
+              stagger: 0.08,
+              ease: 'sine.inOut',
+              scrollTrigger: { trigger: section, start: 'top 80%' },
             },
-          })
+          )
         }
 
         if (media) {
-          gsap.from(media, {
-            opacity: 0,
-            scale: 1.04,
-            y: 16,
-            duration: 0.82,
-            ease: 'power3.out',
-            force3D: true,
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 75%',
+          gsap.fromTo(
+            media,
+            { opacity: 0, scale: 1.03, y: 12 },
+            {
+              opacity: 1,
+              scale: 1,
+              y: 0,
+              duration: 0.75,
+              ease: 'sine.inOut',
+              force3D: true,
+              scrollTrigger: { trigger: section, start: 'top 78%' },
             },
-          })
+          )
 
           gsap.to(media, {
-            y: -70,
+            y: -60,
             ease: 'none',
             scrollTrigger: {
               trigger: section,
@@ -169,34 +170,30 @@ function WorkPageLayout({
             },
           })
         }
-
-        // Keep reveal subtle and stable in Chrome by avoiding clip-path/skew tweens.
       })
 
-      gsap.from('.work-cta__content > *', {
-        opacity: 0,
-        y: 18,
-        duration: 0.7,
-        stagger: 0.1,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.work-cta',
-          start: 'top 80%',
+      // CTA section
+      gsap.fromTo(
+        '.work-cta__content > *',
+        { opacity: 0, y: 16 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.65,
+          stagger: 0.1,
+          ease: 'sine.inOut',
+          scrollTrigger: { trigger: '.work-cta', start: 'top 82%' },
         },
-      })
+      )
 
+      // Subtle hover lift on hero cards (desktop only)
       const listeners: Array<() => void> = []
       const hoverMedia = window.matchMedia('(hover: hover) and (pointer: fine)')
-
       if (hoverMedia.matches) {
-        cards.forEach((card) => {
-          const baseScale = Number(card.dataset.scale) || 1
-          const enter = () => {
-            gsap.to(card, { scale: baseScale * 1.03, y: '-=4', duration: 0.35, ease: 'power2.out' })
-          }
-          const leave = () => {
-            gsap.to(card, { scale: baseScale, y: `+=4`, duration: 0.4, ease: 'power2.out' })
-          }
+        heroCards.forEach((card) => {
+          const base = Number(card.dataset.scale) || 1
+          const enter = () => gsap.to(card, { y: -6, scale: base * 1.025, duration: 0.35, ease: 'sine.out' })
+          const leave = () => gsap.to(card, { y: 0, scale: base, duration: 0.45, ease: 'sine.inOut' })
           card.addEventListener('mouseenter', enter)
           card.addEventListener('mouseleave', leave)
           listeners.push(() => {
@@ -215,7 +212,6 @@ function WorkPageLayout({
   const sectionImages = [
     cards[0]?.image,
     cards[1]?.image ?? cards[0]?.image,
-    cards[2]?.image ?? cards[0]?.image,
   ]
 
   const finalCtaHref = serviceSlug ? `/contact?service=${serviceSlug}` : ctaHref
@@ -226,10 +222,9 @@ function WorkPageLayout({
     copy: string,
     items: WorkCard[],
     image?: string,
-    isFlipped?: boolean,
     key?: string,
   ) => (
-    <section className={`section work-gallery${isFlipped ? ' work-gallery--flipped' : ''}`} key={key}>
+    <section className="section work-gallery" key={key}>
       <div className="content work-gallery__split">
         <div className="work-gallery__text">
           <div className="work-gallery__header">
@@ -286,14 +281,12 @@ function WorkPageLayout({
             <p className="work-hero__label">Projects</p>
             <div className="work-hero__stack" ref={stackRef}>
               {cards.map((card, index) => {
-                const scales = [0.98, 1.08, 1.2, 1.32] // tune per card
-                const widths = [240, 280, 320, 360] // px widths per card
-                const translateY = [12, 6, 0, -6] // px vertical offsets per card
-                const overlap = '-20px' // horizontal overlap between cards
+                const scales = [0.98, 1.08, 1.2, 1.32]
+                const widths = [240, 280, 320, 360]
+                const translateY = [12, 6, 0, -6]
                 const scale = scales[index] ?? scales[scales.length - 1]
                 const width = widths[index] ?? widths[widths.length - 1]
                 const ty = translateY[index] ?? translateY[translateY.length - 1]
-
                 return (
                   <div
                     key={card.title}
@@ -302,7 +295,7 @@ function WorkPageLayout({
                     style={
                       {
                         '--card-scale': scale,
-                        '--card-overlap': index === 0 ? '0px' : overlap,
+                        '--card-overlap': index === 0 ? '0px' : '-20px',
                         '--card-width': `${width}px`,
                         '--card-translate': `${ty}px`,
                         '--card-z': 10 + index,
@@ -310,10 +303,6 @@ function WorkPageLayout({
                     }
                   >
                     <div className="work-hero__card-media" style={{ backgroundImage: `url(${card.image})` }} />
-                    <div className="work-hero__card-meta">
-                      <p>{card.title}</p>
-                      {card.subtitle && <span>{card.subtitle}</span>}
-                    </div>
                   </div>
                 )
               })}
@@ -328,36 +317,21 @@ function WorkPageLayout({
         galleryCopy,
         gallery,
         sectionImages[0],
-        false,
         'gallery-primary',
       )}
 
-      {extraGallery &&
-        extraGallery.length > 0 &&
+      {extraGallery && extraGallery.length > 0 &&
         renderSection(
-          'Best for',
+          'Ideal for',
           extraGalleryTitle ?? '',
           extraGalleryCopy ?? '',
           extraGallery,
           sectionImages[1],
-          false,
           'gallery-secondary',
         )}
 
-      {extraGallerySecondary &&
-        extraGallerySecondary.length > 0 &&
-        renderSection(
-          'How this differs',
-          extraGallerySecondaryTitle ?? '',
-          extraGallerySecondaryCopy ?? '',
-          extraGallerySecondary,
-          sectionImages[2],
-          false,
-          'gallery-tertiary',
-        )}
-
       <PricingSection
-        headline={`${title} pricing for one-time and recurring work.`}
+        headline={`Pricing for ${title.toLowerCase()} — one-time and recurring.`}
         serviceSlug={serviceSlug}
       />
 
@@ -365,7 +339,7 @@ function WorkPageLayout({
         <div className="content work-cta__content">
           <div>
             <p className="work-cta__eyebrow">Ready to collaborate?</p>
-            <h3>{ctaText}</h3>
+            <h2>{ctaText}</h2>
             {ctaDetail ? <p>{ctaDetail}</p> : null}
           </div>
           <a

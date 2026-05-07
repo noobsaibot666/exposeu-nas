@@ -826,13 +826,16 @@
 .home__cases-grid {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 0;
   padding-inline: var(--content-gutter);
+  max-width: 900px;
+  margin-inline: auto;
+  width: 100%;
 }
 
 .home__cases-row {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 28px;
   perspective: 1200px;
 }
@@ -856,17 +859,17 @@
 
 .home__case-media img {
   width: 100%;
-  height: clamp(180px, 30vw, 240px);
+  height: clamp(200px, 28vw, 340px);
   object-fit: cover;
   display: block;
   aspect-ratio: 16 / 9;
 }
 
 .home__case-meta {
-  padding: 20px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   height: 100%;
 }
 
@@ -879,23 +882,24 @@
 
 .home__case-meta h3 {
   margin: 0;
-  font-size: 1.4rem;
-  line-height: 1.2;
+  font-size: 1.5rem;
+  line-height: 1.25;
   color: var(--text-strong);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
 }
 
 .home__case-cta {
   border: 1px solid var(--button-solid-border);
   border-radius: 999px;
-  padding: 10px 16px;
+  padding: 9px 18px;
   background: transparent;
   color: var(--button-solid-bg);
   align-self: flex-start;
   margin-top: auto;
   font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .home__case-copy {
@@ -949,6 +953,20 @@
   pointer-events: none;
 }
 
+.home__video-blind {
+  position: absolute;
+  inset: 0;
+  background: #050507;
+  z-index: 3;
+  opacity: 1;
+  transition: opacity 1.1s ease;
+  pointer-events: none;
+}
+
+.home__video-blind--gone {
+  opacity: 0;
+}
+
 .home__video-scroll-hint {
   position: absolute;
   bottom: clamp(64px, 8svh, 96px);
@@ -964,7 +982,11 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   animation: scrollHintBob 2.4s ease-in-out infinite;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 8px;
   user-select: none;
 }
 
@@ -984,10 +1006,6 @@
 @media (max-width: 900px) {
   .home__video-hero {
     min-height: 100svh;
-  }
-
-  .home__cases-row {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
 
   .home__process-grid {

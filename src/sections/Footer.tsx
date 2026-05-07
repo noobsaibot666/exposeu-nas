@@ -34,7 +34,7 @@ function Footer() {
             <p className="footer__label">Documentation types</p>
             {serviceList.map((service) => (
               <Link key={service.slug} to={service.href}>
-                {service.label}
+                {service.label.replace(' Documentation', '')}
               </Link>
             ))}
           </div>

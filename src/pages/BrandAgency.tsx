@@ -12,33 +12,27 @@ function BrandAgency() {
   return (
     <WorkPageLayout
       title="Brand & Agency Events"
-      heroCopy="Brand, agency, runway, and activation coverage for PR, sponsors, and same-day selects."
-      detail="Built for brand moments, guest energy, backstage context, and fast editorial delivery."
+      heroCopy="Brand and agency event coverage for launches, activations, and same-day delivery."
+      detail="Hero frames, editorial selects, and organized finals — built for PR speed and sponsor review."
       cards={heroCards}
-      galleryTitle="Editorial assets for the full event day."
-      galleryCopy="Delivered for event recap, PR outreach, campaign updates, and sponsor follow-up."
+      galleryTitle="What's included."
+      galleryCopy="Delivered for event recap, PR outreach, and campaign follow-up."
       gallery={[
-        { title: 'Hero frames', subtitle: 'Clean brand moments, guests, and atmosphere.' },
-        { title: 'Behind-the-scenes selects', subtitle: 'Prep, production, and team moments.' },
-        { title: 'Priority edits', subtitle: 'Fast selects for press and sponsor use.' },
-        { title: 'Organized finals', subtitle: 'Folders sorted for PR, campaign, archive, and review.' },
+        { title: 'Hero brand moments', subtitle: 'Clean frames of product, guests, and atmosphere.' },
+        { title: 'Behind-the-scenes selects', subtitle: 'Prep, production, and team context.' },
+        { title: 'Priority selects', subtitle: 'Same-day frames for press and sponsor review.' },
+        { title: 'Organized full delivery', subtitle: 'Folders sorted for PR, campaign, and archive.' },
       ]}
-      extraGalleryTitle="Choose this when one brand moment needs multiple outputs fast."
-      extraGalleryCopy="Best for agencies, PR teams, producers, designers, and sponsor-facing recap."
+      extraGalleryTitle="Ideal for"
+      extraGalleryCopy="Agencies and brand teams that need fast, editorial-quality assets with clear output."
       extraGallery={[
-        { title: 'Press pushes', subtitle: 'When same-day hero frames are non-negotiable.' },
-        { title: 'Launch recaps', subtitle: 'When audience, product, and production all matter.' },
-        { title: 'Brand archives', subtitle: 'When each activation needs a clean long-term record.' },
+        { title: 'PR and launch events', subtitle: 'Same-day hero frames for press outreach.' },
+        { title: 'Brand activations', subtitle: 'Audience, product, and production covered in one shoot.' },
+        { title: 'Ongoing brand archives', subtitle: 'Each activation documented consistently for long-term use.' },
       ]}
-      extraGallerySecondaryTitle="Brand & Agency Events is campaign-first. Concert & Live Event Documentation is live-first."
-      extraGallerySecondaryCopy="Choose this when brand objectives, partner deliverables, and PR speed lead the brief."
-      extraGallerySecondary={[
-        { title: 'Choose Brand & Agency Events', subtitle: 'For launches, activations, PR events, and sponsor delivery.' },
-        { title: 'Choose Concert & Live Event Documentation', subtitle: 'For stage action, audience energy, and live cue timing.' },
-      ]}
-      ctaText="Request availability for your brand or agency event."
+      ctaText="Let's cover your event."
       ctaHref="/contact"
-      ctaDetail="Clear deliverables. Berlin-based. Simple proposal."
+      ctaDetail="Berlin-based. Response within 24 hours."
       serviceSlug="brand-agency"
     />
   )

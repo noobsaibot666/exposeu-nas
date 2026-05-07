@@ -12,33 +12,27 @@ function ArtistSessions() {
   return (
     <WorkPageLayout
       title="Artist Sessions & Portraits"
-      heroCopy="Artist sessions and portraits for releases, profiles, and press kits."
-      detail="A focused session for portraits, studio details, and launch-ready selects."
+      heroCopy="Portrait sessions and studio stills for artists, musicians, and creatives."
+      detail="A focused session with selects built for press kits, release campaigns, and profiles."
       cards={heroCards}
-      galleryTitle="A clean asset set for launches, profiles, and ongoing use."
+      galleryTitle="What's included."
       galleryCopy="Built to feel honest, current, and ready to publish."
       gallery={[
-        { title: 'Portrait set', subtitle: 'Multiple framings for press, web, and releases.' },
-        { title: 'Process stills', subtitle: 'Hands, tools, studio, and making context.' },
+        { title: 'Portrait set', subtitle: 'Multiple framings — press, web, and album art.' },
+        { title: 'Studio and process stills', subtitle: 'Workspace, tools, and making context.' },
         { title: 'Short motion clips', subtitle: 'Optional BTS assets for posts and teasers.' },
         { title: 'Organized delivery', subtitle: 'Finals grouped for fast publishing and reuse.' },
       ]}
-      extraGalleryTitle="Choose this when the artist needs to be front and center."
-      extraGalleryCopy="Best for portraits, release campaigns, profiles, and studio communication."
+      extraGalleryTitle="Ideal for"
+      extraGalleryCopy="Artists who need a clean, current asset set to support a release or project."
       extraGallery={[
-        { title: 'Album and release visuals', subtitle: 'When portraits lead the campaign.' },
-        { title: 'Artist profiles', subtitle: 'When personality and process both matter.' },
-        { title: 'Studio updates', subtitle: 'When you need ongoing assets without a full event shoot.' },
+        { title: 'Release campaigns', subtitle: 'Portraits and process shots for albums and singles.' },
+        { title: 'Press and profile updates', subtitle: 'New images for booking, PR, and platform profiles.' },
+        { title: 'Ongoing studio work', subtitle: 'Regular sessions without needing a full event shoot.' },
       ]}
-      extraGallerySecondaryTitle="Artist Sessions & Portraits centers the person. Concert & Live Event Documentation centers the live moment."
-      extraGallerySecondaryCopy="Choose this when portrait, process, and controlled pacing matter most."
-      extraGallerySecondary={[
-        { title: 'Choose Artist Sessions', subtitle: 'For portrait-led releases, studio work, and profile assets.' },
-        { title: 'Choose Concert & Live Event Documentation', subtitle: 'For live action, timing, crowd energy, and stage cues.' },
-      ]}
-      ctaText="Request availability for your artist session."
+      ctaText="Let's plan your session."
       ctaHref="/contact"
-      ctaDetail="Clear deliverables. Berlin-based. Simple proposal."
+      ctaDetail="Berlin-based. Response within 24 hours."
       serviceSlug="artist-sessions"
     />
   )

@@ -11,34 +11,28 @@ const heroCards = [
 function ExhibitionGallery() {
   return (
     <WorkPageLayout
-      title="Exhibition & Gallery Documentation"
-      heroCopy="Exhibition and gallery photo and film for press, archive, and curatorial record."
-      detail="Clean spatial coverage that shows sequence, scale, artworks, and opening atmosphere."
+      title="Exhibition & Gallery"
+      heroCopy="Photo and film for exhibitions, openings, and gallery spaces."
+      detail="Full spatial coverage — artworks, sequence, atmosphere, and opening night in one organized set."
       cards={heroCards}
-      galleryTitle="Press-ready coverage for the full show."
-      galleryCopy="Delivered to read clearly across press, archive, and partner use."
+      galleryTitle="What's included."
+      galleryCopy="Delivered organized for press, archive, and partner distribution."
       gallery={[
         { title: 'Installation stills', subtitle: 'Wide rooms, key works, and clean sightlines.' },
-        { title: 'Opening selects', subtitle: 'Guest atmosphere without staged moments.' },
-        { title: 'Detail frames', subtitle: 'Materials, labels, and installation decisions.' },
-        { title: 'Organized finals', subtitle: 'Named folders ready for press and archive.' },
+        { title: 'Opening atmosphere', subtitle: 'Guest moments without staged scenes.' },
+        { title: 'Detail frames', subtitle: 'Materials, labels, and installation close-ups.' },
+        { title: 'Press-ready delivery', subtitle: 'Named folders sorted for immediate distribution.' },
       ]}
-      extraGalleryTitle="Choose this when the whole exhibition needs to read clearly."
-      extraGalleryCopy="Best for teams that need the full spatial story, not just highlights."
+      extraGalleryTitle="Ideal for"
+      extraGalleryCopy="Teams that need the full spatial and atmospheric story, not just highlights."
       extraGallery={[
-        { title: 'Gallery exhibitions', subtitle: 'Shows where sequence and room flow matter.' },
-        { title: 'Institutional installs', subtitle: 'Programs that need archive and partner-ready sets.' },
-        { title: 'Opening nights', subtitle: 'Events needing both artwork and audience coverage.' },
+        { title: 'Galleries and cultural institutions', subtitle: 'Shows with press, archive, and funder requirements.' },
+        { title: 'Curators and artists', subtitle: 'Curatorial record, portfolio, and printed catalogue.' },
+        { title: 'Opening nights', subtitle: 'Artworks and atmosphere covered in one session.' },
       ]}
-      extraGallerySecondaryTitle="Exhibition & Gallery Documentation explains the full space and story."
-      extraGallerySecondaryCopy="Use this when spatial clarity, opening atmosphere, and gallery communication need one coherent set."
-      extraGallerySecondary={[
-        { title: 'Choose Exhibition & Gallery Documentation', subtitle: 'For rooms, works, openings, and curatorial flow.' },
-        { title: 'Choose Artist Sessions', subtitle: 'For portrait-led releases, studio work, and profile assets.' },
-      ]}
-      ctaText="Request availability for your exhibition dates."
+      ctaText="Let's document your exhibition."
       ctaHref="/contact"
-      ctaDetail="Clear deliverables. Berlin-based. Simple proposal."
+      ctaDetail="Berlin-based. Response within 24 hours."
       serviceSlug="exhibition-gallery"
     />
   )

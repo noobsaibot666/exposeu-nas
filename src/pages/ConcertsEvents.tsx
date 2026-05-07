@@ -11,34 +11,28 @@ const heroCards = [
 function ConcertsEvents() {
   return (
     <WorkPageLayout
-      title="Concert & Live Event Documentation"
-      heroCopy="Concert and live event photo and film with fast timing and clean coverage."
-      detail="Built for stage action, crowd energy, atmosphere, and fast post-show delivery."
+      title="Concert & Live Events"
+      heroCopy="Cinematic photo and film for concerts, live sets, and stage events."
+      detail="Captured live. Delivered same night or next morning, ready to publish."
       cards={heroCards}
-      galleryTitle="Fast-turnaround assets for live sets, programs, and venue teams."
-      galleryCopy="Captured with a low footprint and handed off for immediate use."
+      galleryTitle="What's included."
+      galleryCopy="Organized files delivered fast — built for immediate use."
       gallery={[
         { title: 'Stage coverage', subtitle: 'Key cues, wide moments, and hero frames.' },
-        { title: 'Crowd context', subtitle: 'Audience energy captured without blocking the room.' },
-        { title: 'Recap assets', subtitle: 'Short edits and stills for next-day release.' },
-        { title: 'Clean handoff', subtitle: 'Files named for quick publishing and archive.' },
+        { title: 'Crowd & atmosphere', subtitle: 'Energy and context without obstructing the room.' },
+        { title: 'Same-night selects', subtitle: 'Priority frames for press and social, delivered fast.' },
+        { title: 'Full organized set', subtitle: 'Named files ready for publishing and archive.' },
       ]}
-      extraGalleryTitle="Choose this when timing and live action matter most."
-      extraGalleryCopy="Best for concerts, performances, club programs, and stage-based events."
+      extraGalleryTitle="Ideal for"
+      extraGalleryCopy="Anyone who needs live moments captured cleanly and turned around fast."
       extraGallery={[
-        { title: 'Stage productions', subtitle: 'When cues, light shifts, and timing drive the brief.' },
-        { title: 'Venue marketing', subtitle: 'When recap assets need to land fast.' },
-        { title: 'Touring artists', subtitle: 'When one show must convert into multiple outputs.' },
+        { title: 'Venue and festival teams', subtitle: 'Season recaps, event coverage, and press assets.' },
+        { title: 'Touring artists', subtitle: 'One show, multiple outputs — social, press, and archive.' },
+        { title: 'Club and promoter programs', subtitle: 'Recurring shoots with consistent visual style.' },
       ]}
-      extraGallerySecondaryTitle="Concert & Live Event Documentation is live-first. Artist Sessions is portrait-first."
-      extraGallerySecondaryCopy="Choose this when motion, cues, and crowd atmosphere matter more than posed portraits."
-      extraGallerySecondary={[
-        { title: 'Choose Concert & Live Event Documentation', subtitle: 'For live moments, crowd energy, and recap delivery.' },
-        { title: 'Choose Artist Sessions', subtitle: 'For portraits, process, and controlled studio pacing.' },
-      ]}
-      ctaText="Request availability for your concert or event dates."
+      ctaText="Let's cover your next show."
       ctaHref="/contact"
-      ctaDetail="Clear deliverables. Berlin-based. Simple proposal."
+      ctaDetail="Berlin-based. Response within 24 hours."
       serviceSlug="concerts-events"
     />
   )
