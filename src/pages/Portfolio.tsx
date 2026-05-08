@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import type { CSSProperties, PointerEvent, WheelEvent } from 'react'
+import type { PointerEvent, WheelEvent } from 'react'
 import './Portfolio.css'
 import { resolveImagePath } from '../utils/resolveImagePath'
 import gsap from 'gsap'
@@ -82,6 +82,45 @@ const videos: VideoItem[] = [
     ],
     tag: 'Concert',
     cta: 'View',
+  },
+  {
+    id: 'placeholder-01',
+    title: 'Portfolio preview 01',
+    description: 'Placeholder project preview. Final media and copy to be added.',
+    context: 'placeholder portfolio entry',
+    outcome: 'ready for image or video content',
+    year: '2026',
+    location: 'Berlin',
+    thumb: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
+    slideshowImages: [resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png')],
+    tag: 'Preview',
+    cta: 'Preview',
+  },
+  {
+    id: 'placeholder-02',
+    title: 'Portfolio preview 02',
+    description: 'Placeholder project preview. Final media and copy to be added.',
+    context: 'placeholder portfolio entry',
+    outcome: 'ready for image or video content',
+    year: '2026',
+    location: 'Berlin',
+    thumb: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
+    slideshowImages: [resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png')],
+    tag: 'Preview',
+    cta: 'Preview',
+  },
+  {
+    id: 'placeholder-03',
+    title: 'Portfolio preview 03',
+    description: 'Placeholder project preview. Final media and copy to be added.',
+    context: 'placeholder portfolio entry',
+    outcome: 'ready for image or video content',
+    year: '2026',
+    location: 'Berlin',
+    thumb: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
+    slideshowImages: [resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg')],
+    tag: 'Preview',
+    cta: 'Preview',
   },
 ]
 
@@ -214,7 +253,6 @@ function Portfolio() {
 
       const offerItems = gsap.utils.toArray<HTMLElement>('.portfolio__offers-copy > *')
       gsap.from(offerItems, {
-        opacity: 0,
         y: 18,
         duration: 0.6,
         stagger: 0.08,
@@ -225,30 +263,6 @@ function Portfolio() {
         },
       })
 
-      gsap.fromTo(
-        '.portfolio__offer-card',
-        {
-          opacity: 0,
-          y: 48,
-          scale: 0.96,
-          rotateX: 6,
-          transformOrigin: 'center center',
-        },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          rotateX: 0,
-          duration: 0.95,
-          stagger: { each: 0.08, from: 'start' },
-          ease: 'power2.inOut',
-          clearProps: 'transform',
-          scrollTrigger: {
-            trigger: '.portfolio__offers-grid',
-            start: 'top 85%',
-          },
-        },
-      )
     }, rootRef)
 
     return () => ctx.revert()
@@ -555,14 +569,11 @@ function Portfolio() {
                 key={offer.id}
                 className="portfolio__offer-card"
                 href={offer.link}
-                style={
-                  {
-                    '--offer-accent': offer.accent,
-                    backgroundImage: `url(${offer.background})`,
-                  } as CSSProperties
-                }
               >
-                <div className="portfolio__offer-overlay">
+                <div className="portfolio__offer-image-wrap">
+                  <img className="portfolio__offer-image" src={offer.background} alt="" decoding="async" />
+                </div>
+                <div className="portfolio__offer-content">
                   <div className="portfolio__offer-top">
                     <span className="portfolio__offer-pill">Offer</span>
                     <span className="portfolio__offer-badge">{offer.title}</span>
