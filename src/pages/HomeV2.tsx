@@ -346,6 +346,48 @@ function HomeV2() {
       const proofSections = gsap.utils.toArray<HTMLElement>('.home__proof')
       proofSections.forEach((section) => {
         const items = Array.from(section.children) as HTMLElement[]
+        const avatarItems = gsap.utils.toArray<HTMLElement>('.home__proof-avatar', section)
+        const avatarText = section.querySelector<HTMLElement>('.home__proof-avatar-text')
+
+        if (avatarItems.length) {
+          gsap.set(avatarItems, { opacity: 0, x: -48 })
+          if (avatarText) gsap.set(avatarText, { opacity: 0, x: 18 })
+
+          const avatarMotion = gsap
+            .timeline({ paused: true })
+            .to(avatarItems, {
+              opacity: 1,
+              x: 0,
+              duration: 1.15,
+              stagger: 0.16,
+              ease: 'power2.out',
+            })
+
+          if (avatarText) {
+            avatarMotion.to(
+              avatarText,
+              {
+                opacity: 1,
+                x: 0,
+                duration: 0.9,
+                ease: 'power2.out',
+              },
+              0.12,
+            )
+          }
+
+          gsap.timeline({
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 82%',
+              end: 'bottom 18%',
+              onEnter: () => avatarMotion.restart(true),
+              onEnterBack: () => avatarMotion.restart(true),
+              onLeaveBack: () => avatarMotion.pause(0),
+            },
+          })
+        }
+
         gsap.fromTo(
           items,
           { opacity: 0, y: 20 },
@@ -368,7 +410,7 @@ function HomeV2() {
       // Process — gentle lift with scrub
       const processSection = document.querySelector<HTMLElement>('.home__process')
       if (processSection) {
-        const processItems = gsap.utils.toArray<HTMLElement>('.home__process-header > *, .home__process-step')
+        const processItems = gsap.utils.toArray<HTMLElement>('.home__process-header > *, .home__process-step, .home__process-actions')
         gsap.fromTo(
           processItems,
           { opacity: 0, y: 24 },
@@ -436,7 +478,6 @@ function HomeV2() {
     const sections = [
       { id: 'hero', label: 'Home' },
       { id: 'cases', label: 'Services' },
-      { id: 'services', label: 'Services' },
     ]
 
     const nodes = sections
@@ -624,10 +665,20 @@ function HomeV2() {
 
       <section className="home__section home__proof">
         <div className="home__proof-avatars">
-          {proofAvatars.map((avatar, idx) => (
-            <img key={avatar} src={avatar} alt="Client avatar" loading="lazy" decoding="async" style={{ zIndex: proofAvatars.length - idx }} />
-          ))}
-          <span>Make us part of your creative hub</span>
+          <div className="home__proof-avatar-stack" aria-hidden="true">
+            {proofAvatars.map((avatar, idx) => (
+              <img
+                key={avatar}
+                className="home__proof-avatar"
+                src={avatar}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                style={{ zIndex: proofAvatars.length - idx }}
+              />
+            ))}
+          </div>
+          <span className="home__proof-avatar-text">Make us part of your creative hub</span>
         </div>
         <h2>Documentation is not coverage.</h2>
         <p className={`home__proof-copy ${styles.homeRedesign__bodyCopy}`}>
@@ -636,6 +687,7 @@ function HomeV2() {
       </section>
 
       <section className="home__section home__cases" id="cases" ref={casesRef}>
+        <span id="services" className="home__section-anchor" aria-hidden="true" />
         <div className="home__section-header">
           <p>Coverage types</p>
           <h2>Choose your format.</h2>
@@ -671,37 +723,12 @@ function HomeV2() {
         </p>
       </section>
 
-      <section className="home__section home__proof" id="services">
-        <h2>Start a project.</h2>
-        <p className={`home__proof-copy ${styles.homeRedesign__bodyCopy}`}>
-          Turn your project into press-ready assets with a clear plan and deliverables.
-        </p>
-        <div className="home__proof-actions">
-          <button
-            type="button"
-            onClick={() => {
-              trackHomeCta('Request availability', 'footer_primary')
-              navigate('/contact')
-            }}
-          >
-            Request availability
-          </button>
-          <button
-            type="button"
-            className="home__proof-secondary"
-            onClick={() => {
-              trackHomeCta('View services', 'footer_secondary')
-              handleScroll('#cases')
-            }}
-          >
-            View services
-          </button>
-        </div>
-      </section>
-
       <section className="home__section home__process" id="process">
         <div className="home__process-header">
           <h2>Our Process</h2>
+          <p className={styles.homeRedesign__bodyCopy}>
+            Turn your project into press-ready assets with a clear plan and deliverables.
+          </p>
         </div>
         <div className="home__process-grid">
           <article className="home__process-step">
@@ -716,6 +743,27 @@ function HomeV2() {
             <h3>Deliver</h3>
             <p>You receive press-ready selects and organized finals, ready to publish and archive.</p>
           </article>
+        </div>
+        <div className="home__proof-actions home__process-actions">
+          <button
+            type="button"
+            onClick={() => {
+              trackHomeCta('Request availability', 'process_primary')
+              navigate('/contact')
+            }}
+          >
+            Request availability
+          </button>
+          <button
+            type="button"
+            className="home__proof-secondary"
+            onClick={() => {
+              trackHomeCta('See latest work', 'process_secondary')
+              navigate('/portfolio')
+            }}
+          >
+            See latest work
+          </button>
         </div>
       </section>
 

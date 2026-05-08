@@ -374,6 +374,12 @@
   text-transform: uppercase;
 }
 
+.home__section-anchor {
+  display: block;
+  height: 0;
+  overflow: hidden;
+}
+
 .home__section-note {
   margin: 12px 0 0;
   padding-inline: var(--content-gutter);
@@ -665,9 +671,20 @@
 }
 
 .home__proof-avatars {
+  display: inline-grid;
+  grid-template-columns: max-content minmax(0, max-content);
+  align-items: center;
+  gap: clamp(10px, 1.6vw, 18px);
+  justify-content: center;
+  width: fit-content;
+  max-width: min(100%, 760px);
+  margin-inline: auto;
+}
+
+.home__proof-avatar-stack {
   display: flex;
   align-items: center;
-  gap: 12px;
+  width: max-content;
 }
 
 .home__proof-avatars img {
@@ -678,6 +695,7 @@
   object-fit: cover;
   margin-left: -16px;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+  will-change: transform;
 }
 
 .home__proof-avatars img:first-child {
@@ -689,6 +707,10 @@
   color: var(--text-tertiary);
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  min-width: 0;
+  max-width: 34rem;
+  text-align: left;
+  text-wrap: balance;
 }
 
 .home__proof h2 {
@@ -737,13 +759,20 @@
 .home__process {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 22px;
 }
 
 .home__process-header h2 {
   margin: 0;
-  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-size: clamp(2.4rem, 4.4vw, 3.8rem);
   font-weight: 600;
+  text-align: center;
+}
+
+.home__process-header p {
+  max-width: 680px;
+  margin: 12px auto 0;
+  color: var(--text-soft);
   text-align: center;
 }
 
@@ -780,6 +809,10 @@
   color: var(--text-tertiary);
   font-size: 0.98rem;
   line-height: 1.5;
+}
+
+.home__process-actions {
+  margin-top: 4px;
 }
 
 .home__service-card {
@@ -1025,9 +1058,9 @@
 
 @media (max-width: 640px) {
   .home__proof-avatars {
-    gap: 6px;
-    flex-wrap: wrap;
-    justify-content: center;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 8px;
     overflow: visible;
     max-width: 100%;
     padding: 0 8px 6px;
@@ -1039,7 +1072,6 @@
   }
 
   .home__proof-avatars span {
-    flex: 1 1 100%;
     white-space: normal;
     padding-left: 0;
     text-align: center;
