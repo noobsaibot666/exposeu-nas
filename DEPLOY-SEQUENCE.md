@@ -39,11 +39,11 @@ On the TrueNAS SSH session:
 ```sh
 cd /mnt/Gaia/04_DEV/web/www/exposeu
 sudo docker run --rm \
-  -p 192.168.178.146:5173:5173 \
+  -p 192.168.178.146:8787:8787 \
   -v "$PWD:/app" \
   -w /app \
   node:20-alpine \
-  sh -lc "npm ci && npm run dev -- --host 0.0.0.0"
+  sh -lc "npm ci && npm run server"
 ```
 
 Open this URL from your Mac:
@@ -195,3 +195,17 @@ sudo docker compose -f docker-compose.traefik.yml up -d exposeu-nginx exposeu-co
 ## Notes
 
 - 2026-04-29: Updated SSH commands to use Dockerized Node because TrueNAS does not provide host `npm`.
+
+
+---
+
+### Local
+
+cd /mnt/Gaia/04_DEV/web/www/exposeu
+
+sudo docker run --rm -it \
+  -p 192.168.178.146:5173:5173 \
+  -v "$PWD:/app" \
+  -w /app \
+  node:20-alpine \
+  sh -lc "npm ci && npm run dev -- --host 0.0.0.0 --port 5173"
