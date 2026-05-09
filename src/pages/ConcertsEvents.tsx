@@ -30,7 +30,7 @@ function ConcertsEvents() {
   return (
     <>
       <SEOMeta
-        title="Concert & Live Event Documentation"
+        title="Concert & Live Event Photography Berlin"
         description="Concert and live event documentation in Berlin. Press-ready photo and video, 24–48h delivery. Serving venues, promoters, and artists."
         ogTitle="Concert Documentation Berlin — expose.u"
         ogDescription="Multi-angle concert and live event coverage. Press-ready in 24–48h. Serving Berlin venues and promoters."

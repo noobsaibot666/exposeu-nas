@@ -30,7 +30,7 @@ function ExhibitionGallery() {
   return (
     <>
       <SEOMeta
-        title="Exhibition & Gallery Documentation"
+        title="Exhibition & Gallery Photography Berlin"
         description="Exhibition and gallery documentation in Berlin. Opening night coverage, archive-quality delivery for press and funding."
         ogTitle="Exhibition Documentation Berlin — expose.u"
         ogDescription="Full opening and exhibition coverage. Delivered for press, funding, and archive. Berlin-based."

@@ -1,29 +1,37 @@
+import { useMemo } from 'react'
 import './Page.css'
 import './CallSession.css'
-import { useLocalePath, useTranslation } from '../i18n/LocaleProvider'
+import { useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
+import TopNav from '../components/TopNav'
 
 function CallSession() {
-  const localizePath = useLocalePath()
+  const navigate = useLocaleNavigate()
   const { t } = useTranslation()
+
+  const navLinks = useMemo(
+    () => ({
+      left: [
+        { id: 'home', label: t('nav.home'), onClick: () => navigate('/') },
+        { id: 'services', label: t('nav.services'), href: '/#cases' },
+      ],
+      right: [
+        { id: 'about', label: t('nav.about'), onClick: () => navigate('/about') },
+        { id: 'contact', label: t('nav.contact'), onClick: () => navigate('/contact') },
+      ],
+    }),
+    [navigate, t],
+  )
+
   return (
     <main className="page-shell">
+      <TopNav
+        leftLinks={navLinks.left}
+        rightLinks={navLinks.right}
+        onBrandClick={() => navigate('/')}
+        brandLabel={t('nav.brand')}
+        className="top-nav--page"
+      />
       <section className="section call-session">
-        <div className="content call-session__nav">
-          <nav className="call-session__links call-session__links--left">
-            <a href={localizePath('/')}>{t('nav.home')}</a>
-            <a href={localizePath('/#cases')}>{t('nav.services')}</a>
-            <a href={localizePath('/#claim')}>{t('callSession.navClaim')}</a>
-            <a href={localizePath('/#offer')}>{t('callSession.navOffer')}</a>
-          </nav>
-          <a className="call-session__brand" href={localizePath('/')}>
-            {t('nav.brand')}
-          </a>
-          <nav className="call-session__links call-session__links--right">
-            <a href={localizePath('/about')}>{t('nav.about')}</a>
-            <a href={localizePath('/contact')}>{t('nav.checkAvailability')}</a>
-          </nav>
-        </div>
-
         <div className="content call-session__grid">
           <div className="call-session__header">
             <h1>{t('callSession.header')}</h1>

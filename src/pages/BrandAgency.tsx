@@ -30,7 +30,7 @@ function BrandAgency() {
   return (
     <>
       <SEOMeta
-        title="Brand & Agency Events"
+        title="Brand & Agency Event Photography Berlin"
         description="Brand and agency event documentation in Berlin. Editorial photo and video coverage with fast turnaround."
         ogTitle="Brand Event Documentation Berlin — expose.u"
         ogDescription="Editorial coverage for brand events, launches, and activations in Berlin. Clean, sharp, on deadline."

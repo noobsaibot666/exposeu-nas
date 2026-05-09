@@ -30,7 +30,7 @@ function ArtistSessions() {
   return (
     <>
       <SEOMeta
-        title="Artist Sessions & Portraits"
+        title="Artist Sessions & Portraits Berlin"
         description="Artist portrait and session photography in Berlin. Press-ready images for releases, profiles, and campaigns."
         ogTitle="Artist Sessions Berlin — expose.u"
         ogDescription="Studio and location sessions for musicians and visual artists. Press-ready results, fast."
