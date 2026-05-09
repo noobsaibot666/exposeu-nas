@@ -8,8 +8,9 @@ import Footer from '../sections/Footer'
 import { resolveImagePath } from '../utils/resolveImagePath'
 import { serviceMeta } from '../data/serviceMeta'
 import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
-import { useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
+import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
+import { SchemaOrg, SEOMeta } from '../components/SEOMeta'
 
 // Set type to 'vimeo' or 'youtube' and replace id with the actual video ID
 const HERO_VIDEO = {
@@ -83,8 +84,39 @@ const proofAvatars = [
   resolveImagePath('/src/assets/images/website/performances/thumb_3_086.jpg'),
 ]
 
+const HOME_SCHEMA = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: 'expose.u',
+    description: 'Photo and video documentation for concerts, exhibitions, and live events in Berlin.',
+    url: 'https://expose-u.com',
+    telephone: '+4917622132950',
+    email: 'hello@expose-u.com',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'Duden Straße 24',
+      addressLocality: 'Berlin',
+      addressRegion: 'Berlin',
+      postalCode: '10965',
+      addressCountry: 'DE',
+    },
+    sameAs: ['https://instagram.com/xposeu_official'],
+    image: 'https://expose-u.com/og-default.png',
+    areaServed: { '@type': 'City', name: 'Berlin' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'expose.u',
+    url: 'https://expose-u.com',
+    inLanguage: ['en', 'de'],
+  },
+]
+
 function HomeV2() {
   const navigate = useLocaleNavigate()
+  const { locale } = useLocale()
   const { t } = useTranslation()
   const [activeSection, setActiveSection] = useState('home')
   const [videoReady, setVideoReady] = useState(false)
@@ -546,6 +578,14 @@ function HomeV2() {
 
   return (
     <main className="home home--v2" ref={rootRef} id="main">
+      <SEOMeta
+        title="Berlin Photo & Video Documentation"
+        description="Photo and video documentation for concerts, exhibitions, and live events in Berlin. Serving galleries, artists, venues, and agencies."
+        ogTitle="expose.u — Concert & Exhibition Documentation, Berlin"
+        canonical="https://expose-u.com/"
+        lang={locale}
+      />
+      <SchemaOrg data={HOME_SCHEMA} />
       <div className="home__background" aria-hidden="true" />
       <div className="home__floaters" aria-hidden="true" />
 

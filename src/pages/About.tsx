@@ -4,10 +4,12 @@ import './About.css'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
 import { resolveImagePath } from '../utils/resolveImagePath'
-import { useLocaleNavigate, useLocalePath, useTranslation } from '../i18n/LocaleProvider'
+import { useLocale, useLocaleNavigate, useLocalePath, useTranslation } from '../i18n/LocaleProvider'
+import { SEOMeta } from '../components/SEOMeta'
 
 function About() {
   const navigate = useLocaleNavigate()
+  const { locale } = useLocale()
   const rootRef = useRef<HTMLElement | null>(null)
   const { t, tm } = useTranslation()
   const localizePath = useLocalePath()
@@ -63,6 +65,14 @@ function About() {
 
   return (
     <main className="about" ref={rootRef} id="main">
+      <SEOMeta
+        title="About"
+        description="Berlin-based documentation studio for concerts, exhibitions, and cultural events. Art-first approach, fast delivery."
+        ogTitle="About expose.u — Berlin Documentation Studio"
+        ogDescription="Berlin-based documentation studio run by people inside the cultural scene. Fast delivery. Art-first."
+        canonical="https://expose-u.com/about"
+        lang={locale}
+      />
       <div className="home__nav about__nav">
         <TopNav
           leftLinks={navLinks.left}

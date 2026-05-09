@@ -5,7 +5,8 @@ import gsap from 'gsap'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
 import { trackEvent } from '../utils/analytics'
-import { useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
+import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
+import { SEOMeta } from '../components/SEOMeta'
 
 const TYPE_MAP: Record<string, string> = {
   'concert': 'Concert / Event',
@@ -16,6 +17,7 @@ const TYPE_MAP: Record<string, string> = {
 
 function Contact() {
   const navigate = useLocaleNavigate()
+  const { locale } = useLocale()
   const [searchParams] = useSearchParams()
   const rootRef = useRef<HTMLElement | null>(null)
   const [submitError, setSubmitError] = useState<string | null>(null)
@@ -213,6 +215,14 @@ function Contact() {
 
   return (
     <main className="contact" ref={rootRef} id="main">
+      <SEOMeta
+        title="Contact"
+        description="Get in touch with expose.u — Berlin-based concert and exhibition documentation. Fast response, no sales pressure."
+        ogTitle="Start a Project — expose.u"
+        ogDescription="Tell us what you're working on. We reply within 24 hours. No sales pressure."
+        canonical="https://expose-u.com/contact"
+        lang={locale}
+      />
       <div className="home__nav contact__nav">
         <TopNav
           leftLinks={navLinks.left}

@@ -6,7 +6,8 @@ import gsap from 'gsap'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
 import { serviceMeta } from '../data/serviceMeta'
-import { useLocaleNavigate, useLocalePath, useTranslation } from '../i18n/LocaleProvider'
+import { useLocale, useLocaleNavigate, useLocalePath, useTranslation } from '../i18n/LocaleProvider'
+import { SEOMeta } from '../components/SEOMeta'
 
 type VideoItem = {
   id: string
@@ -165,6 +166,7 @@ const offers: OfferItem[] = [
 
 function Portfolio() {
   const navigate = useLocaleNavigate()
+  const { locale } = useLocale()
   const localizePath = useLocalePath()
   const { t, tm } = useTranslation()
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null)
@@ -477,6 +479,14 @@ function Portfolio() {
 
   return (
     <main className="portfolio" ref={rootRef} id="main">
+      <SEOMeta
+        title="Portfolio"
+        description="Selected documentation work by expose.u — concerts at Silent Green, gallery exhibitions, and artist sessions in Berlin."
+        ogTitle="Portfolio — expose.u"
+        ogDescription="Eight concerts at Silent Green. Gallery exhibitions. Artist sessions. Selected work from Berlin."
+        canonical="https://expose-u.com/portfolio"
+        lang={locale}
+      />
       <div className="portfolio__nav">
         <TopNav
           className="top-nav--page"
