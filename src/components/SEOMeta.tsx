@@ -14,7 +14,7 @@ const DEFAULT_OG_IMAGE = 'https://expose-u.com/og-default.png'
 const SITE_NAME = 'expose.u'
 const BASE_URL = 'https://expose-u.com'
 
-function setMeta(selector: string, attrKey: string, attrValue: string, content: string) {
+function setMeta(selector: string, attrKey: string, content: string) {
   let el = document.querySelector<HTMLMetaElement>(`meta[${attrKey}="${selector}"]`)
   if (!el) {
     el = document.createElement('meta')
@@ -59,18 +59,18 @@ export function SEOMeta({
     document.title = fullTitle
     document.documentElement.setAttribute('lang', lang)
 
-    setMeta('description', 'name', 'description', description)
+    setMeta('description', 'name', description)
 
-    setMeta('og:title', 'property', 'og:title', resolvedOgTitle)
-    setMeta('og:description', 'property', 'og:description', resolvedOgDesc)
-    setMeta('og:image', 'property', 'og:image', ogImage)
-    setMeta('og:type', 'property', 'og:type', 'website')
-    setMeta('og:site_name', 'property', 'og:site_name', SITE_NAME)
-    setMeta('og:locale', 'property', 'og:locale', lang === 'de' ? 'de_DE' : 'en_US')
+    setMeta('og:title', 'property', resolvedOgTitle)
+    setMeta('og:description', 'property', resolvedOgDesc)
+    setMeta('og:image', 'property', ogImage)
+    setMeta('og:type', 'property', 'website')
+    setMeta('og:site_name', 'property', SITE_NAME)
+    setMeta('og:locale', 'property', lang === 'de' ? 'de_DE' : 'en_US')
 
-    setMeta('twitter:title', 'name', 'twitter:title', resolvedOgTitle)
-    setMeta('twitter:description', 'name', 'twitter:description', resolvedOgDesc)
-    setMeta('twitter:image', 'name', 'twitter:image', ogImage)
+    setMeta('twitter:title', 'name', resolvedOgTitle)
+    setMeta('twitter:description', 'name', resolvedOgDesc)
+    setMeta('twitter:image', 'name', ogImage)
 
     if (canonical) {
       setLink('canonical', canonical)
