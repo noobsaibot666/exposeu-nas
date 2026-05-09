@@ -7,7 +7,7 @@
     "scrollAria": "Scroll to content"
   },
   "proof": {
-    "badge": "Make us part of your creative hub",
+    "badge": "Our approach",
     "headline": "Documentation is not coverage.",
     "copy": "Strong visuals need timing, context, and intent. We build assets that already understand the room, the release, and how your audience will see them."
   },
@@ -19,27 +19,27 @@
       "concerts-events": {
         "title": "Concert & Live Events",
         "subtext": "For venues, promoters, bands, and festival producers",
-        "cta": "Book concerts"
+        "cta": "See pricing →"
       },
       "exhibition-gallery": {
         "title": "Exhibition & Gallery",
         "subtext": "For galleries, curators, and cultural institutions",
-        "cta": "Book exhibitions"
+        "cta": "See pricing →"
       },
       "artist-sessions": {
         "title": "Artist Sessions & Portraits",
         "subtext": "For musicians, visual artists, and photographers",
-        "cta": "Book a session"
+        "cta": "See pricing →"
       },
       "brand-agency": {
         "title": "Brand & Agency Events",
         "subtext": "For creative agencies, brands, and production houses",
-        "cta": "Book brand events"
+        "cta": "See pricing →"
       }
     },
     "seeDetails": "See documentation details",
-    "needHelp": "Need help choosing?",
-    "contactUs": "Contact us"
+    "needHelp": "Not sure what fits?",
+    "contactUs": "Let's talk"
   },
   "project": {
     "headline": "Start a project.",

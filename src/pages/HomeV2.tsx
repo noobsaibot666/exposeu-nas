@@ -809,16 +809,6 @@ function HomeV2() {
           >
             {t('home.project.requestAvailability')}
           </button>
-          <button
-            type="button"
-            className="home__proof-secondary"
-            onClick={() => {
-              trackHomeCta(t('home.project.seeLatestWork'), 'process_secondary')
-              navigate('/portfolio')
-            }}
-          >
-            {t('home.project.seeLatestWork')}
-          </button>
         </div>
       </section>
 

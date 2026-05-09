@@ -7,7 +7,7 @@
     "scrollAria": "Zum Inhalt scrollen"
   },
   "proof": {
-    "badge": "Werde mit uns Teil deines kreativen Umfelds",
+    "badge": "Unser Ansatz",
     "headline": "Dokumentation ist nicht gleich Coverage.",
     "copy": "Starke Visuals brauchen Timing, Kontext und Absicht. Wir produzieren Assets, die den Raum, das Release und die Wahrnehmung deines Publikums bereits mitdenken."
   },
@@ -19,27 +19,27 @@
       "concerts-events": {
         "title": "Konzerte & Live-Events",
         "subtext": "Für Venues, Promoter, Bands und Festival-Teams",
-        "cta": "Konzerte anfragen"
+        "cta": "Preise ansehen →"
       },
       "exhibition-gallery": {
         "title": "Ausstellungen & Galerien",
         "subtext": "Für Galerien, Kurator:innen und Kulturinstitutionen",
-        "cta": "Ausstellung anfragen"
+        "cta": "Preise ansehen →"
       },
       "artist-sessions": {
         "title": "Artist Sessions & Portraits",
         "subtext": "Für Musiker:innen, visuelle Künstler:innen und Fotograf:innen",
-        "cta": "Session anfragen"
+        "cta": "Preise ansehen →"
       },
       "brand-agency": {
         "title": "Brand & Agency Events",
         "subtext": "Für Kreativagenturen, Brands und Produktionshäuser",
-        "cta": "Brand Event anfragen"
+        "cta": "Preise ansehen →"
       }
     },
     "seeDetails": "Dokumentation ansehen",
     "needHelp": "Nicht sicher, was passt?",
-    "contactUs": "Kontakt aufnehmen"
+    "contactUs": "Lass uns reden"
   },
   "project": {
     "headline": "Projekt starten.",

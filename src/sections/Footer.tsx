@@ -41,8 +41,7 @@ function Footer() {
           <div className="footer__group">
             <p className="footer__label">{t('footer.nextSteps')}</p>
             <LocalizedLink to="/contact">{t('footer.ctaLink')}</LocalizedLink>
-            <LocalizedLink to="/call-session">{t('footer.bookCall')}</LocalizedLink>
-            <LocalizedLink to="/portfolio">{t('footer.viewPortfolio')}</LocalizedLink>
+<LocalizedLink to="/portfolio">{t('footer.viewPortfolio')}</LocalizedLink>
           </div>
           <div className="footer__group">
             <p className="footer__label">{t('footer.legal')}</p>
