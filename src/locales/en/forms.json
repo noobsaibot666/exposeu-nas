@@ -1,0 +1,115 @@
+{
+  "contact": {
+    "projectTypes": [
+      "Concert / Event",
+      "Exhibition / Gallery",
+      "Artist Session",
+      "Brand / Agency",
+      "Other"
+    ],
+    "errors": {
+      "nameRequired": "Enter your name.",
+      "emailRequired": "Enter your email address.",
+      "emailInvalid": "Enter a valid email address.",
+      "projectTypeRequired": "Select a project type.",
+      "highlightedFields": "Please correct the highlighted fields.",
+      "generic": "Something went wrong — please email us at hello@expose-u.com"
+    },
+    "success": {
+      "eyebrow": "Thank you",
+      "headline": "We received your message.",
+      "copy": "Our team will reach out shortly to plan next steps and confirm details.",
+      "backHome": "Back to Home",
+      "viewPortfolio": "View Portfolio"
+    },
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "projectType": "Type of project",
+      "projectTypePlaceholder": "Select a type…",
+      "message": "Tell us about your show, exhibition, or project.",
+      "companyWebsite": "Company website"
+    },
+    "submit": {
+      "idle": "Send it →",
+      "sending": "Sending…"
+    }
+  },
+  "pricing": {
+    "eyebrow": "Pricing request",
+    "defaultHeadline": "Request a pricing plan.",
+    "defaultDescription": "Share your dates, location, and goals so we can build the right coverage plan.",
+    "planIntros": {
+      "single-event": {
+        "name": "One-time",
+        "intro": "One focused shoot built around your timeline, key moments, and delivery needs."
+      },
+      "monthly-coverage": {
+        "name": "Monthly",
+        "intro": "Recurring documentation with consistent crew, look, and delivery cadence."
+      },
+      "retainer-studio": {
+        "name": "Studio retainer",
+        "intro": "Ongoing support for multi-event programming, launches, and seasonal campaigns."
+      }
+    },
+    "serviceIntros": {
+      "concerts-events": "Live event coverage with sharp timing and fast turnarounds for socials, press, and recaps.",
+      "exhibition-gallery": "Curation-forward coverage designed for press kits, collector previews, and gallery archives.",
+      "artist-sessions": "Portraits and BTS that capture process, personality, and the release story.",
+      "brand-agency": "Brand, agency, runway, and activation coverage built for PR, sponsors, and campaign updates."
+    },
+    "planSelectedFallback": "Plan selected on request",
+    "generalInquiry": "General inquiry",
+    "essentialsHeadline": "Tell us the essentials.",
+    "essentialsCopy": "We’ll review your details and come back with a clear proposal, timeline, and next steps. The form keeps it short so we can reply fast.",
+    "headlineByPlanAndService": "{{plan}} coverage for {{service}}.",
+    "headlineByPlan": "{{plan}} coverage request.",
+    "headlineByService": "Coverage request for {{service}}.",
+    "coverageTypeLabel": "Type of coverage",
+    "coverageTypePlaceholder": "Select a coverage type",
+    "coverageTypeOptions": [
+      "Photo only",
+      "Video only",
+      "Photo + video",
+      "Highlights + recap",
+      "Social-first reels",
+      "Other"
+    ],
+    "fields": {
+      "name": "Name",
+      "namePlaceholder": "Full name",
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "phone": "Phone",
+      "phonePlaceholder": "Phone number",
+      "organization": "Organization",
+      "organizationPlaceholder": "Gallery, label, or studio",
+      "date": "Target date",
+      "datePlaceholder": "Event date or timeframe",
+      "location": "Location",
+      "locationPlaceholder": "City, venue, or region",
+      "coverageNotes": "Coverage details (if other)",
+      "coverageNotesPlaceholder": "Describe the coverage mix you need.",
+      "details": "Project notes",
+      "detailsPlaceholder": "Share the format, deliverables, and any timing constraints."
+    },
+    "errors": {
+      "coverageTypeRequired": "Select a coverage type.",
+      "nameRequired": "Enter your name.",
+      "emailRequired": "Enter your email address.",
+      "coverageNotesRequired": "Tell us what coverage you need.",
+      "missingEndpoint": "Missing form endpoint. Add VITE_PRICING_FORM_ENDPOINT to your environment settings.",
+      "requestFailed": "Something went wrong. Please try again or email us directly."
+    },
+    "submitIdle": "Send request",
+    "submitSending": "Sending...",
+    "success": {
+      "eyebrow": "Thank you",
+      "headline": "Your pricing request is in.",
+      "copy": "We’ll review the details and reach out shortly with next steps, timing, and deliverables.",
+      "backHome": "Back to Home",
+      "viewPortfolio": "View Portfolio"
+    }
+  }
+}

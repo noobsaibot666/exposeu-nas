@@ -1,9 +1,9 @@
 import { useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
 import '../pages/Home.css'
 import { pricingTiers } from '../data/pricingTiers'
 import { pricingByService, type PricingOverridesByService } from '../data/pricingByService'
 import { trackEvent, useElementViewTracking } from '../utils/analytics'
+import { useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
 
 type PricingSectionProps = {
   id?: string
@@ -12,11 +12,25 @@ type PricingSectionProps = {
 }
 
 function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
-  const navigate = useNavigate()
+  const navigate = useLocaleNavigate()
   const sectionRef = useRef<HTMLElement | null>(null)
-  const headlineText = headline ?? 'Straightforward pricing for one-time and recurring work.'
+  const { t, tm } = useTranslation()
+  const headlineText = headline ?? t('pricing.section.headlineDefault')
   const serviceOverrides = (pricingByService as PricingOverridesByService)[serviceSlug ?? ''] ?? {}
-  const tiers = pricingTiers.map((tier) => ({ ...tier, ...(serviceOverrides[tier.slug] ?? {}) }))
+  const tiers = pricingTiers.map((tier) => {
+    const override = serviceOverrides[tier.slug] ?? {}
+    return {
+      slug: tier.slug,
+      name: t(tier.nameKey),
+      cadence: t(tier.cadenceKey),
+      price: override.price ?? tier.price,
+      description: override.descriptionKey ? t(override.descriptionKey) : t(tier.descriptionKey),
+      chooseThisIf: override.chooseThisIfKey ? t(override.chooseThisIfKey) : t(tier.chooseThisIfKey),
+      features: override.featuresKey ? tm<string[]>(override.featuresKey) : tm<string[]>(tier.featuresKey),
+      cta: t(tier.ctaKey),
+      badge: tier.badgeKey ? t(tier.badgeKey) : undefined,
+    }
+  })
 
   useElementViewTracking(sectionRef, 'service_pricing_view', {
     service_slug: serviceSlug,
@@ -42,10 +56,10 @@ function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
     <section className="home__section home__pricing" id={id} ref={sectionRef}>
       <div className="home__pricing-header">
         <div>
-          <p>Pricing</p>
+          <p>{t('pricing.section.headerLabel')}</p>
           <h2>{headlineText}</h2>
         </div>
-        <p>Most clients book this as a one-time project. Monthly options are for recurring work.</p>
+        <p>{t('pricing.section.supportingCopy')}</p>
       </div>
       <div className="home__pricing-grid">
         {tiers.map((tier) => {
@@ -69,7 +83,7 @@ function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
                     <span>{tier.price}</span>
                   ) : (
                     <span>
-                      From{' '}
+                      {t('pricing.section.fromPrefix')}{' '}
                       <span className="home__pricing-amount">
                         {tier.price}
                         {suffix ? <small>{suffix}</small> : null}
@@ -78,7 +92,7 @@ function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
                   )}
               </div>
               <p className="home__pricing-helper">
-                Choose this if: {tier.chooseThisIf}
+                {t('pricing.section.chooseThisIfPrefix')} {tier.chooseThisIf}
               </p>
               <p className="home__pricing-copy">{tier.description}</p>
               <ul>
@@ -97,7 +111,7 @@ function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
         })}
       </div>
       <p className="home__pricing-footnote">
-        Clear scope, clear pricing, simple proposal. Educational and artist-led initiatives receive preferred rates.
+        {t('pricing.section.footnote')}
       </p>
     </section>
   )

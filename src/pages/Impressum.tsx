@@ -1,25 +1,26 @@
 import { useMemo, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
 import './Impressum.css'
+import { useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
 
 function Impressum() {
-  const navigate = useNavigate()
+  const navigate = useLocaleNavigate()
   const rootRef = useRef<HTMLElement | null>(null)
+  const { t } = useTranslation()
 
   const navLinks = useMemo(
     () => ({
       left: [
-        { label: 'Home', onClick: () => navigate('/') },
-        { label: 'Services', href: '/#cases' },
+        { id: 'home', label: t('nav.home'), onClick: () => navigate('/') },
+        { id: 'services', label: t('nav.services'), href: '/#cases' },
       ],
       right: [
-        { label: 'About', onClick: () => navigate('/about') },
-        { label: 'Contact', onClick: () => navigate('/contact') },
+        { id: 'about', label: t('nav.about'), onClick: () => navigate('/about') },
+        { id: 'contact', label: t('nav.contact'), onClick: () => navigate('/contact') },
       ],
     }),
-    [navigate],
+    [navigate, t],
   )
 
   return (
@@ -29,17 +30,17 @@ function Impressum() {
           leftLinks={navLinks.left}
           rightLinks={navLinks.right}
           onBrandClick={() => navigate('/')}
-          brandLabel="expose.u"
+          brandLabel={t('nav.brand')}
           className="top-nav--page"
         />
       </div>
 
       <section className="section impressum__shell">
         <div className="content impressum__content">
-          <h1>Impressum</h1>
+          <h1>{t('legal.title')}</h1>
 
           <div className="impressum__block">
-            <h2>Angaben gemaess § 5 TMG</h2>
+            <h2>{t('legal.companyBlockTitle')}</h2>
             <p>expose.u GbR</p>
             <p>Alan Alves</p>
             <p>Duden Str. 24</p>
@@ -47,7 +48,7 @@ function Impressum() {
           </div>
 
           <div className="impressum__block">
-            <h2>Kontakt</h2>
+            <h2>{t('legal.contactTitle')}</h2>
             <p>
               <a href="mailto:infor@expose-u.com">infor@expose-u.com</a>
             </p>
@@ -57,7 +58,7 @@ function Impressum() {
           </div>
 
           <div className="impressum__block">
-            <h2>Verantwortlich fuer den Inhalt nach § 18 Abs. 2 MStV</h2>
+            <h2>{t('legal.responsibleTitle')}</h2>
             <p>Alan Alves, Duden Str. 24, Berlin</p>
           </div>
         </div>

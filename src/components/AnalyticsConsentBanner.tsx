@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import styles from './AnalyticsConsentBanner.module.css'
 import { ANALYTICS_CONSENT_KEY, initializeAnalyticsConsent } from '../utils/analytics'
+import { useTranslation } from '../i18n/LocaleProvider'
 
 function AnalyticsConsentBanner() {
   const [isVisible, setIsVisible] = useState(() => initializeAnalyticsConsent() === null)
+  const { t } = useTranslation()
 
   const handleChoice = (value: 'true' | 'false') => {
     try {
@@ -19,10 +21,10 @@ function AnalyticsConsentBanner() {
   if (!isVisible) return null
 
   return (
-    <aside className={styles.consent__banner} aria-label="Analytics consent" role="dialog">
-      <p className={styles.consent__title}>Analytics consent</p>
+    <aside className={styles.consent__banner} aria-label={t('common.analytics.ariaLabel')} role="dialog">
+      <p className={styles.consent__title}>{t('common.analytics.title')}</p>
       <p className={styles.consent__copy}>
-        Help us improve Expose.u with anonymous usage insights. We do not collect personal data through analytics.
+        {t('common.analytics.copy')}
       </p>
       <div className={styles.consent__actions}>
         <button
@@ -30,14 +32,14 @@ function AnalyticsConsentBanner() {
           className={`${styles.consent__button} ${styles.consent__buttonPrimary}`}
           onClick={() => handleChoice('true')}
         >
-          Accept
+          {t('common.analytics.accept')}
         </button>
         <button
           type="button"
           className={`${styles.consent__button} ${styles.consent__buttonSecondary}`}
           onClick={() => handleChoice('false')}
         >
-          Reject
+          {t('common.analytics.reject')}
         </button>
       </div>
     </aside>

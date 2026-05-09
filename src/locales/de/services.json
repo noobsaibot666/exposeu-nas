@@ -1,0 +1,131 @@
+{
+  "labels": {
+    "concerts-events": "Konzert- & Live-Event-Dokumentation",
+    "concerts-events-short": "Konzerte & Live-Events",
+    "exhibition-gallery": "Ausstellungs- & Galerie-Dokumentation",
+    "exhibition-gallery-short": "Ausstellungen & Galerien",
+    "artist-sessions": "Artist Sessions & Portraits",
+    "artist-sessions-short": "Artist Sessions & Portraits",
+    "brand-agency": "Brand- & Agency-Events",
+    "brand-agency-short": "Brand & Agency Events"
+  },
+  "shared": {
+    "projects": "Projekte",
+    "whatYouGet": "Was du bekommst",
+    "idealFor": "Ideal für",
+    "howItWorks": "So funktioniert's",
+    "howItWorksHeading": "Einfach — vom ersten Kontakt bis zur finalen Lieferung.",
+    "process": [
+      {
+        "title": "Erzähl uns von deinem Projekt",
+        "body": "Füll das Kontaktformular aus — Umfang, Datum und was du brauchst. Wir melden uns innerhalb von 24 Stunden."
+      },
+      {
+        "title": "Wir stimmen die Details ab",
+        "body": "Ein kurzes Call oder ein kurzer Austausch, um Zugang, Timing und Deliverables zu klären. Kein langes Briefing."
+      },
+      {
+        "title": "Wir dokumentieren. Du erhältst.",
+        "body": "Same-Night- oder 48h-Selects je nach Service. Organisierte Dateien, direkt einsatzbereit."
+      }
+    ],
+    "pricingFor": "Preise für {{service}} — einmalig oder laufend.",
+    "readyToCollaborate": "Bereit für die Zusammenarbeit?",
+    "requestAvailability": "Verfügbarkeit anfragen",
+    "responseTime": "Based in Berlin. Antwort innerhalb von 24 Stunden."
+  },
+  "pages": {
+    "concerts-events": {
+      "title": "Konzerte & Live-Events",
+      "heroCopy": "Deine Shows dokumentiert. Vor dem Morgen pressetauglich geliefert.",
+      "detail": "Wir dokumentieren Konzerte und Live-Events in Berlin – mit Same-Night-Selects, schnellem Turnaround und Assets für Presse, Socials und Sponsor-Recaps.",
+      "socialProof": "8+ Konzerte im Silent Green Kulturquartier, Berlin dokumentiert.",
+      "ctaText": "Lass uns deine nächste Show dokumentieren.",
+      "footerCtaLabel": "Erzähl uns von deiner Show",
+      "cards": ["Live Set", "Bühnenlicht", "Energie", "Bewegung"],
+      "galleryTitle": "Was enthalten ist.",
+      "galleryCopy": "Sauber organisiert und schnell geliefert – für unmittelbare Nutzung.",
+      "gallery": [
+        { "title": "Bühnencoverage", "subtitle": "Wichtige Cues, weite Momente und starke Hero-Frames." },
+        { "title": "Publikum & Atmosphäre", "subtitle": "Energie und Kontext, ohne den Raum zu stören." },
+        { "title": "Same-Night-Selects", "subtitle": "Priorisierte Motive für Presse und Socials, schnell geliefert." },
+        { "title": "Vollständiges Set", "subtitle": "Benannte Dateien, direkt bereit für Publishing und Archiv." }
+      ],
+      "extraGalleryCopy": "Für alle, die Live-Momente sauber dokumentiert und schnell weiterverarbeitet brauchen.",
+      "extraGallery": [
+        { "title": "Venue- und Festivalteams", "subtitle": "Season Recaps, Event-Coverage und Presse-Assets." },
+        { "title": "Tourende Artists", "subtitle": "Eine Show, mehrere Outputs – Social, Presse und Archiv." },
+        { "title": "Club- und Promoter-Programme", "subtitle": "Wiederkehrende Shoots mit konsistenter visueller Sprache." }
+      ]
+    },
+    "exhibition-gallery": {
+      "title": "Ausstellungen & Galerien",
+      "heroCopy": "Deine Ausstellung wirkt über ihre Laufzeit hinaus.",
+      "detail": "Vollständige räumliche Dokumentation für Presse, Förderanträge und Langzeitarchiv – sauber organisiert und direkt bereit zur Weitergabe.",
+      "socialProof": "Zusammenarbeit mit Galerien, Kurator:innen und Kulturinstitutionen in Berlin.",
+      "ctaText": "Lass uns deine Ausstellung dokumentieren.",
+      "footerCtaLabel": "Erzähl uns von deiner Ausstellung",
+      "cards": ["Opening Night", "Lichtstudien", "Kuratorischer Flow", "Installationsdetail"],
+      "galleryTitle": "Was enthalten ist.",
+      "galleryCopy": "Sauber organisiert für Presse, Archiv und Partnerkommunikation.",
+      "gallery": [
+        { "title": "Installationsstills", "subtitle": "Weite Räume, zentrale Werke und klare Sichtachsen." },
+        { "title": "Opening-Atmosphäre", "subtitle": "Gästemomente ohne inszenierte Szenen." },
+        { "title": "Detailaufnahmen", "subtitle": "Materialien, Labels und Installationsnahaufnahmen." },
+        { "title": "Pressefähige Delivery", "subtitle": "Benannte Ordner für direkte Weitergabe." }
+      ],
+      "extraGalleryCopy": "Für Teams, die die ganze räumliche und atmosphärische Geschichte brauchen – nicht nur Highlights.",
+      "extraGallery": [
+        { "title": "Galerien und Kulturinstitutionen", "subtitle": "Shows mit Anforderungen für Presse, Archiv und Förderer." },
+        { "title": "Kurator:innen und Artists", "subtitle": "Kuratorische Dokumentation, Portfolio und Printkatalog." },
+        { "title": "Opening Nights", "subtitle": "Werke und Atmosphäre in einer Session zusammengeführt." }
+      ]
+    },
+    "artist-sessions": {
+      "title": "Artist Sessions & Portraits",
+      "heroCopy": "Neue Arbeit braucht Bilder, die ihr gerecht werden.",
+      "detail": "Portrait- und Studiosessions für Press Kits, Release-Kampagnen und Booking-Profile. Ehrlich, aktuell und schnell publizierbar.",
+      "socialProof": "Portraits und Sessions mit Musiker:innen, bildenden Künstler:innen und Fotograf:innen in Berlin.",
+      "ctaText": "Lass uns deine Session planen.",
+      "footerCtaLabel": "Erzähl uns von deinem Projekt",
+      "cards": ["Portrait", "Im Studio", "Prozess", "Live-Moment"],
+      "galleryTitle": "Was enthalten ist.",
+      "galleryCopy": "Ehrlich, gegenwärtig und direkt bereit zur Veröffentlichung.",
+      "gallery": [
+        { "title": "Portrait-Set", "subtitle": "Mehrere Framing-Varianten für Presse, Web und Cover-Art." },
+        { "title": "Studio- und Prozess-Stills", "subtitle": "Arbeitsumfeld, Tools und Making-Kontext." },
+        { "title": "Kurze Motion-Clips", "subtitle": "Optional BTS-Material für Posts und Teaser." },
+        { "title": "Organisierte Delivery", "subtitle": "Finals gruppiert für schnelle Veröffentlichung und Wiederverwendung." }
+      ],
+      "extraGalleryCopy": "Für Artists, die ein klares, aktuelles Asset-Set für Release oder Projekt brauchen.",
+      "extraGallery": [
+        { "title": "Release-Kampagnen", "subtitle": "Portraits und Prozessbilder für Alben und Singles." },
+        { "title": "Presse- und Profil-Updates", "subtitle": "Neue Bilder für Booking, PR und Plattformprofile." },
+        { "title": "Laufende Studioarbeit", "subtitle": "Regelmäßige Sessions ohne kompletten Event-Shoot." }
+      ]
+    },
+    "brand-agency": {
+      "title": "Brand & Agency Events",
+      "heroCopy": "Eventdokumentation für echtes PR-Tempo.",
+      "detail": "Komplette Coverage mit Same-Day-Hero-Frames für Presse, Sponsor-Recap und Campaign-Follow-up. Berliner Crew, editorialer Standard.",
+      "socialProof": "Zusammenarbeit mit Kreativagenturen, Produktionshäusern und Brand-Teams in Berlin.",
+      "ctaText": "Lass uns dein Event dokumentieren.",
+      "footerCtaLabel": "Erzähl uns von deinem Event",
+      "cards": ["Runway Light", "Backstage", "Final Walk", "Fabric Motion"],
+      "galleryTitle": "Was enthalten ist.",
+      "galleryCopy": "Geliefert für Event-Recap, PR-Outreach und Campaign-Follow-up.",
+      "gallery": [
+        { "title": "Hero-Brand-Momente", "subtitle": "Saubere Frames von Produkt, Gästen und Atmosphäre." },
+        { "title": "Behind-the-Scenes-Selects", "subtitle": "Vorbereitung, Produktion und Teamkontext." },
+        { "title": "Priority Selects", "subtitle": "Same-Day-Frames für Presse und Sponsor-Review." },
+        { "title": "Organisierte Vollauslieferung", "subtitle": "Ordner sortiert für PR, Kampagne und Archiv." }
+      ],
+      "extraGalleryCopy": "Für Agenturen und Brand-Teams, die schnelle, editoriale Assets mit klarer Nutzbarkeit brauchen.",
+      "extraGallery": [
+        { "title": "PR- und Launch-Events", "subtitle": "Same-Day-Hero-Frames für Pressearbeit." },
+        { "title": "Brand Activations", "subtitle": "Publikum, Produkt und Produktion in einem Shoot erfasst." },
+        { "title": "Laufende Brand-Archive", "subtitle": "Jede Aktivierung konsistent für langfristige Nutzung dokumentiert." }
+      ]
+    }
+  }
+}

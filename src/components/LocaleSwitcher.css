@@ -1,0 +1,102 @@
+.locale-switcher {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 4200;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.locale-switcher__trigger {
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 12px;
+  background: rgba(8, 8, 10, 0.64);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+  transition: background-color 180ms ease, color 180ms ease, opacity 180ms ease;
+}
+
+.locale-switcher__trigger:hover {
+  background: rgba(14, 14, 18, 0.82);
+}
+
+.locale-switcher__trigger:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.36);
+  outline-offset: 2px;
+}
+
+.locale-switcher__trigger svg {
+  width: 19px;
+  height: 19px;
+  stroke: currentColor;
+  stroke-width: 1.45;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.locale-switcher__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 132px;
+  padding: 8px;
+  border-radius: 14px;
+  background: rgba(10, 10, 12, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
+  display: grid;
+  gap: 4px;
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 220ms ease;
+}
+
+.locale-switcher__menu.is-open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.locale-switcher__option {
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.88);
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.locale-switcher__option.is-active,
+.locale-switcher__option:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.locale-switcher__option:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.32);
+  outline-offset: -1px;
+}
+
+@media (max-width: 768px) {
+  .locale-switcher {
+    top: 14px;
+    right: 14px;
+  }
+
+  .locale-switcher__trigger {
+    width: 42px;
+    height: 42px;
+  }
+}

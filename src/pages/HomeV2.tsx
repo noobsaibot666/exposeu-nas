@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import gsap from 'gsap'
 import TopNav from '../components/TopNav'
 import './HomeV2.css'
@@ -8,6 +8,8 @@ import Footer from '../sections/Footer'
 import { resolveImagePath } from '../utils/resolveImagePath'
 import { serviceMeta } from '../data/serviceMeta'
 import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
+import { useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
+import LocalizedLink from '../i18n/LocalizedLink'
 
 // Set type to 'vimeo' or 'youtube' and replace id with the actual video ID
 const HERO_VIDEO = {
@@ -24,77 +26,55 @@ function buildHeroVideoSrc(video: typeof HERO_VIDEO): string {
   return `https://www.youtube.com/embed/${video.id}?autoplay=1&mute=1&loop=1&playlist=${video.id}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1`
 }
 
-const projects = [
+const projectVisuals = [
   {
     slug: serviceMeta['concerts-events'].slug,
-    title: 'Concert & Live Events',
-    subtext: 'For venues, promoters, bands, and festival producers',
-    cta: 'Book concerts',
     image: resolveImagePath('/src/assets/images/website/performances/thumb_3_086.jpg'),
     link: serviceMeta['concerts-events'].href,
   },
   {
     slug: serviceMeta['exhibition-gallery'].slug,
-    title: 'Exhibition & Gallery',
-    subtext: 'For galleries, curators, and cultural institutions',
-    cta: 'Book exhibitions',
     image: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
     link: serviceMeta['exhibition-gallery'].href,
   },
   {
     slug: serviceMeta['artist-sessions'].slug,
-    title: 'Artist Sessions & Portraits',
-    subtext: 'For musicians, visual artists, and photographers',
-    cta: 'Book a session',
     image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
     link: serviceMeta['artist-sessions'].href,
   },
   {
     slug: serviceMeta['brand-agency'].slug,
-    title: 'Brand & Agency Events',
-    subtext: 'For creative agencies, brands, and production houses',
-    cta: 'Book brand events',
     image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
     link: serviceMeta['brand-agency'].href,
   },
 ]
 
-const heroGallery = [
+const heroGalleryBase = [
   {
     id: 'thumb-concerts',
     image: resolveImagePath('/src/assets/images/website/performances/thumb_3_033.jpg'),
-    label: 'Concert & Live Events',
+    slug: 'concerts-events',
     rotation: -4,
   },
   {
     id: 'thumb-exhibition',
     image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/1_ED_055.png'),
-    label: 'Exhibition & Gallery',
+    slug: 'exhibition-gallery',
     rotation: -2,
   },
   {
     id: 'thumb-artist',
     image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
-    label: 'Artist Sessions & Portraits',
+    slug: 'artist-sessions',
     rotation: 2,
   },
   {
     id: 'thumb-brand',
     image: resolveImagePath('/src/assets/images/website/fashion/thumb_3_081.jpg'),
-    label: 'Brand & Agency Events',
+    slug: 'brand-agency',
     rotation: 4,
   },
 ]
-
-const heroServices = projects.map((project, index) => ({
-  id: `service-thumb-${project.title}`,
-  image: project.image,
-  label: project.title,
-  rotation: [-4, 2, -1, 3, -2, 4][index % 6],
-  index,
-}))
-
-const mobileHeroStack = heroServices.slice(0, 5)
 
 const proofAvatars = [
   resolveImagePath('/src/assets/images/website/artists/thumb_3_052.jpg'),
@@ -104,8 +84,9 @@ const proofAvatars = [
 ]
 
 function HomeV2() {
-  const navigate = useNavigate()
-  const [activeSection, setActiveSection] = useState('Home')
+  const navigate = useLocaleNavigate()
+  const { t } = useTranslation()
+  const [activeSection, setActiveSection] = useState('home')
   const [videoReady, setVideoReady] = useState(false)
   const location = useLocation()
   const [mobileLayout, setMobileLayout] = useState({
@@ -124,6 +105,40 @@ function HomeV2() {
 
   useTrackViewEvent('home_view')
   useScrollDepthTracking('home', [25, 50, 75, 90])
+
+  const projects = useMemo(
+    () =>
+      projectVisuals.map((project) => ({
+        ...project,
+        title: t(`home.services.cards.${project.slug}.title`),
+        subtext: t(`home.services.cards.${project.slug}.subtext`),
+        cta: t(`home.services.cards.${project.slug}.cta`),
+      })),
+    [t],
+  )
+
+  const heroGallery = useMemo(
+    () =>
+      heroGalleryBase.map((item) => ({
+        ...item,
+        label: t(`home.services.cards.${item.slug}.title`),
+      })),
+    [t],
+  )
+
+  const heroServices = useMemo(
+    () =>
+      projects.map((project, index) => ({
+        id: `service-thumb-${project.slug}`,
+        image: project.image,
+        label: project.title,
+        rotation: [-4, 2, -1, 3, -2, 4][index % 6],
+        index,
+      })),
+    [projects],
+  )
+
+  const mobileHeroStack = heroServices.slice(0, 5)
 
   // Reveal video: fires on iframe load + 600ms buffer, with 3s absolute fallback
   useEffect(() => {
@@ -154,15 +169,15 @@ function HomeV2() {
   const navLinks = useMemo(
     () => ({
       left: [
-        { label: 'Home', onClick: () => handleScroll('#hero') },
-        { label: 'Services', href: '/#cases' },
+        { id: 'home', label: t('nav.home'), onClick: () => handleScroll('#hero') },
+        { id: 'services', label: t('nav.services'), href: '/#cases' },
       ],
       right: [
-        { label: 'About', onClick: () => navigate('/about') },
-        { label: 'Contact', onClick: () => navigate('/contact') },
+        { id: 'about', label: t('nav.about'), onClick: () => navigate('/about') },
+        { id: 'contact', label: t('nav.contact'), onClick: () => navigate('/contact') },
       ],
     }),
-    [navigate],
+    [navigate, t],
   )
 
   const handleGalleryMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -476,8 +491,8 @@ function HomeV2() {
 
   useEffect(() => {
     const sections = [
-      { id: 'hero', label: 'Home' },
-      { id: 'cases', label: 'Services' },
+      { id: 'hero', label: 'home' },
+      { id: 'cases', label: 'services' },
     ]
 
     const nodes = sections
@@ -551,10 +566,10 @@ function HomeV2() {
         <button
           className="home__video-scroll-hint"
           type="button"
-          aria-label="Scroll to content"
+          aria-label={t('home.hero.scrollAria')}
           onClick={() => handleScroll('#hero')}
         >
-          <span>Scroll</span>
+          <span>{t('home.hero.scroll')}</span>
         </button>
       </section>
 
@@ -565,15 +580,15 @@ function HomeV2() {
           leftLinks={navLinks.left}
           rightLinks={navLinks.right}
           onBrandClick={() => navigate('/')}
-          brandLabel="expose.u"
-          activeLabel={activeSection}
+          brandLabel={t('nav.brand')}
+          activeId={activeSection}
         />
       </div>
 
       <header className="home__section home__hero" id="hero">
         <div className="home__hero-body">
           <h1 className="home__hero-title">
-            Documentation for concerts, exhibitions, and creative events.
+            {t('home.hero.headline')}
           </h1>
           <div
             className="home__hero-gallery home__hero-gallery--desktop"
@@ -649,16 +664,16 @@ function HomeV2() {
             })}
           </div>
           <p className="home__hero-subhead">
-            Berlin-based photo and video studio. Press-ready delivery.
+            {t('home.hero.subhead')}
           </p>
           <div className="home__actions">
-            <Link
+            <LocalizedLink
               to="/contact"
               className="home__hero-cta"
-              onClick={() => trackHomeCta('Tell us about your project', 'hero_primary')}
+              onClick={() => trackHomeCta(t('home.hero.primaryCta'), 'hero_primary')}
             >
-              Tell us about your project
-            </Link>
+              {t('home.hero.primaryCta')}
+            </LocalizedLink>
           </div>
         </div>
       </header>
@@ -678,24 +693,24 @@ function HomeV2() {
               />
             ))}
           </div>
-          <span className="home__proof-avatar-text">Make us part of your creative hub</span>
+          <span className="home__proof-avatar-text">{t('home.proof.badge')}</span>
         </div>
-        <h2>Documentation is not coverage.</h2>
+        <h2>{t('home.proof.headline')}</h2>
         <p className={`home__proof-copy ${styles.homeRedesign__bodyCopy}`}>
-          We create assets teams can publish, archive, and reuse.
+          {t('home.proof.copy')}
         </p>
       </section>
 
       <section className="home__section home__cases" id="cases" ref={casesRef}>
         <span id="services" className="home__section-anchor" aria-hidden="true" />
         <div className="home__section-header">
-          <p>Coverage types</p>
-          <h2>Choose your format.</h2>
+          <p>{t('home.services.label')}</p>
+          <h2>{t('home.services.headline')}</h2>
         </div>
         <div className="home__cases-grid">
           <div className="home__cases-row">
             {projects.map((project, index) => (
-              <Link
+              <LocalizedLink
                 key={project.title}
                 to={project.link}
                 className="home__case-card"
@@ -714,55 +729,55 @@ function HomeV2() {
                   <p className={`home__case-copy ${styles.homeRedesign__cardCopy}`}>{project.subtext}</p>
                   <span className="home__case-cta">{project.cta}</span>
                 </div>
-              </Link>
+              </LocalizedLink>
             ))}
           </div>
         </div>
         <p className="home__section-note">
-          Need help choosing? <Link to="/contact">Contact us</Link>.
+          {t('home.services.needHelp')} <LocalizedLink to="/contact">{t('home.services.contactUs')}</LocalizedLink>.
         </p>
       </section>
 
       <section className="home__section home__process" id="process">
         <div className="home__process-header">
-          <h2>Our Process</h2>
+          <h2>{t('home.process.headline')}</h2>
           <p className={styles.homeRedesign__bodyCopy}>
-            Turn your project into press-ready assets with a clear plan and deliverables.
+            {t('home.project.copy')}
           </p>
         </div>
         <div className="home__process-grid">
           <article className="home__process-step">
-            <h3>Consult</h3>
-            <p>We align on intent, timing, and deliverables. You&rsquo;ll know what&rsquo;s happening before we shoot.</p>
+            <h3>{t('home.process.steps.0.title')}</h3>
+            <p>{t('home.process.steps.0.copy')}</p>
           </article>
           <article className="home__process-step">
-            <h3>Capture</h3>
-            <p>We work quietly on site, following your run-of-show and the space&rsquo;s rhythm.</p>
+            <h3>{t('home.process.steps.1.title')}</h3>
+            <p>{t('home.process.steps.1.copy')}</p>
           </article>
           <article className="home__process-step">
-            <h3>Deliver</h3>
-            <p>You receive press-ready selects and organized finals, ready to publish and archive.</p>
+            <h3>{t('home.process.steps.2.title')}</h3>
+            <p>{t('home.process.steps.2.copy')}</p>
           </article>
         </div>
         <div className="home__proof-actions home__process-actions">
           <button
             type="button"
             onClick={() => {
-              trackHomeCta('Request availability', 'process_primary')
+              trackHomeCta(t('home.project.requestAvailability'), 'process_primary')
               navigate('/contact')
             }}
           >
-            Request availability
+            {t('home.project.requestAvailability')}
           </button>
           <button
             type="button"
             className="home__proof-secondary"
             onClick={() => {
-              trackHomeCta('See latest work', 'process_secondary')
+              trackHomeCta(t('home.project.seeLatestWork'), 'process_secondary')
               navigate('/portfolio')
             }}
           >
-            See latest work
+            {t('home.project.seeLatestWork')}
           </button>
         </div>
       </section>

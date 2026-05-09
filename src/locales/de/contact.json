@@ -1,0 +1,13 @@
+{
+  "eyebrow": "Kontakt",
+  "headline": "Erzähl uns, woran du arbeitest.",
+  "ledePrimary": "In der Regel antworten wir innerhalb von 24 Stunden. Keine automatischen Antworten. Kein Verkaufsdruck.",
+  "labels": {
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "studio": "Studio",
+    "instagram": "Instagram"
+  },
+  "studioAddress": "Duden Straße 24, Kreuzberg, Berlin",
+  "successStandalone": "Danke – wir melden uns innerhalb von 24 Stunden bei dir."
+}

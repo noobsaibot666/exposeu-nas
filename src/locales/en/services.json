@@ -1,0 +1,131 @@
+{
+  "labels": {
+    "concerts-events": "Concert & Live Event Documentation",
+    "concerts-events-short": "Concert & Live Events",
+    "exhibition-gallery": "Exhibition & Gallery Documentation",
+    "exhibition-gallery-short": "Exhibition & Gallery",
+    "artist-sessions": "Artist Sessions & Portraits",
+    "artist-sessions-short": "Artist Sessions & Portraits",
+    "brand-agency": "Brand & Agency Events",
+    "brand-agency-short": "Brand & Agency Events"
+  },
+  "shared": {
+    "projects": "Projects",
+    "whatYouGet": "What you get",
+    "idealFor": "Ideal for",
+    "howItWorks": "How it works",
+    "howItWorksHeading": "Simple from first message to final delivery.",
+    "process": [
+      {
+        "title": "Tell us about your project",
+        "body": "Fill out the contact form — scope, date, and what you need. We respond within 24 hours."
+      },
+      {
+        "title": "We align on the details",
+        "body": "A short call or exchange to confirm access, timing, and deliverables. No lengthy briefing process."
+      },
+      {
+        "title": "We document. You receive.",
+        "body": "Same-night or 48h selects depending on service. Organized files, ready to use immediately."
+      }
+    ],
+    "pricingFor": "Pricing for {{service}} — one-time and recurring.",
+    "readyToCollaborate": "Ready to collaborate?",
+    "requestAvailability": "Request availability",
+    "responseTime": "Berlin-based. Response within 24 hours."
+  },
+  "pages": {
+    "concerts-events": {
+      "title": "Concert & Live Events",
+      "heroCopy": "Your shows documented. Press-ready before morning.",
+      "detail": "We cover concerts and live events in Berlin — same-night selects, fast turnaround, built for press, social, and sponsor recap.",
+      "socialProof": "Documented 8+ concerts at Silent Green Kulturquartier, Berlin.",
+      "ctaText": "Let's cover your next show.",
+      "footerCtaLabel": "Tell us about your show",
+      "cards": ["Live Set", "Stage Glow", "Energy Capture", "Motion Freeze"],
+      "galleryTitle": "What's included.",
+      "galleryCopy": "Organized files delivered fast — built for immediate use.",
+      "gallery": [
+        { "title": "Stage coverage", "subtitle": "Key cues, wide moments, and hero frames." },
+        { "title": "Crowd & atmosphere", "subtitle": "Energy and context without obstructing the room." },
+        { "title": "Same-night selects", "subtitle": "Priority frames for press and social, delivered fast." },
+        { "title": "Full organized set", "subtitle": "Named files ready for publishing and archive." }
+      ],
+      "extraGalleryCopy": "Anyone who needs live moments captured cleanly and turned around fast.",
+      "extraGallery": [
+        { "title": "Venue and festival teams", "subtitle": "Season recaps, event coverage, and press assets." },
+        { "title": "Touring artists", "subtitle": "One show, multiple outputs — social, press, and archive." },
+        { "title": "Club and promoter programs", "subtitle": "Recurring shoots with consistent visual style." }
+      ]
+    },
+    "exhibition-gallery": {
+      "title": "Exhibition & Gallery",
+      "heroCopy": "Your exhibition lives longer than its run.",
+      "detail": "Full spatial coverage for press, funding applications, and long-term archive — delivered organized and ready to distribute.",
+      "socialProof": "Working with galleries, curators, and cultural institutions in Berlin.",
+      "ctaText": "Let's document your exhibition.",
+      "footerCtaLabel": "Tell us about your exhibition",
+      "cards": ["Opening Night", "Light Studies", "Curated Flow", "Install Detail"],
+      "galleryTitle": "What's included.",
+      "galleryCopy": "Delivered organized for press, archive, and partner distribution.",
+      "gallery": [
+        { "title": "Installation stills", "subtitle": "Wide rooms, key works, and clean sightlines." },
+        { "title": "Opening atmosphere", "subtitle": "Guest moments without staged scenes." },
+        { "title": "Detail frames", "subtitle": "Materials, labels, and installation close-ups." },
+        { "title": "Press-ready delivery", "subtitle": "Named folders sorted for immediate distribution." }
+      ],
+      "extraGalleryCopy": "Teams that need the full spatial and atmospheric story, not just highlights.",
+      "extraGallery": [
+        { "title": "Galleries and cultural institutions", "subtitle": "Shows with press, archive, and funder requirements." },
+        { "title": "Curators and artists", "subtitle": "Curatorial record, portfolio, and printed catalogue." },
+        { "title": "Opening nights", "subtitle": "Artworks and atmosphere covered in one session." }
+      ]
+    },
+    "artist-sessions": {
+      "title": "Artist Sessions & Portraits",
+      "heroCopy": "New work deserves images that match it.",
+      "detail": "Portrait and studio sessions built for press kits, release campaigns, and booking profiles. Honest, current, fast to publish.",
+      "socialProof": "Shooting musicians, visual artists, and photographers in Berlin.",
+      "ctaText": "Let's plan your session.",
+      "footerCtaLabel": "Tell us about your project",
+      "cards": ["Portrait", "In Studio", "Process", "Live Moment"],
+      "galleryTitle": "What's included.",
+      "galleryCopy": "Built to feel honest, current, and ready to publish.",
+      "gallery": [
+        { "title": "Portrait set", "subtitle": "Multiple framings — press, web, and album art." },
+        { "title": "Studio and process stills", "subtitle": "Workspace, tools, and making context." },
+        { "title": "Short motion clips", "subtitle": "Optional BTS assets for posts and teasers." },
+        { "title": "Organized delivery", "subtitle": "Finals grouped for fast publishing and reuse." }
+      ],
+      "extraGalleryCopy": "Artists who need a clean, current asset set to support a release or project.",
+      "extraGallery": [
+        { "title": "Release campaigns", "subtitle": "Portraits and process shots for albums and singles." },
+        { "title": "Press and profile updates", "subtitle": "New images for booking, PR, and platform profiles." },
+        { "title": "Ongoing studio work", "subtitle": "Regular sessions without needing a full event shoot." }
+      ]
+    },
+    "brand-agency": {
+      "title": "Brand & Agency Events",
+      "heroCopy": "Event documentation built for PR speed.",
+      "detail": "Full coverage with same-day hero frames for press, sponsor recap, and campaign follow-up. Berlin-based crew, editorial standard.",
+      "socialProof": "Working with creative agencies, production houses, and brand teams in Berlin.",
+      "ctaText": "Let's cover your event.",
+      "footerCtaLabel": "Tell us about your event",
+      "cards": ["Runway Light", "Backstage", "Final Walk", "Fabric Motion"],
+      "galleryTitle": "What's included.",
+      "galleryCopy": "Delivered for event recap, PR outreach, and campaign follow-up.",
+      "gallery": [
+        { "title": "Hero brand moments", "subtitle": "Clean frames of product, guests, and atmosphere." },
+        { "title": "Behind-the-scenes selects", "subtitle": "Prep, production, and team context." },
+        { "title": "Priority selects", "subtitle": "Same-day frames for press and sponsor review." },
+        { "title": "Organized full delivery", "subtitle": "Folders sorted for PR, campaign, and archive." }
+      ],
+      "extraGalleryCopy": "Agencies and brand teams that need fast, editorial-quality assets with clear output.",
+      "extraGallery": [
+        { "title": "PR and launch events", "subtitle": "Same-day hero frames for press outreach." },
+        { "title": "Brand activations", "subtitle": "Audience, product, and production covered in one shoot." },
+        { "title": "Ongoing brand archives", "subtitle": "Each activation documented consistently for long-term use." }
+      ]
+    }
+  }
+}

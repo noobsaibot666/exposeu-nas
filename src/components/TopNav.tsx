@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
+import { useLocalePath, useTranslation } from '../i18n/LocaleProvider'
 
 import './TopNav.css'
 
 export type NavItem = {
+  id?: string
   label: string
   href?: string
   onClick?: () => void
@@ -18,6 +20,7 @@ type TopNavProps = {
   onBrandClick?: () => void
   className?: string
   activeLabel?: string
+  activeId?: string
 }
 
 function TopNav({
@@ -28,6 +31,7 @@ function TopNav({
   onBrandClick,
   className,
   activeLabel,
+  activeId,
 }: TopNavProps) {
   const [open, setOpen] = useState(false)
   const [isHidden, setIsHidden] = useState(false)
@@ -35,6 +39,8 @@ function TopNav({
   const lastScrollY = useRef(0)
   const ticking = useRef(false)
   const toggleRef = useRef<HTMLButtonElement>(null)
+  const localizePath = useLocalePath()
+  const { t } = useTranslation()
 
   const navLinks = useMemo(() => [...leftLinks, ...rightLinks], [leftLinks, rightLinks])
 
@@ -106,7 +112,7 @@ function TopNav({
   }, [open])
 
   const renderLink = (item: NavItem) => {
-    const isActive = item.label === activeLabel
+    const isActive = item.id ? item.id === activeId : item.label === activeLabel
     const linkClassName = ['top-nav__link', isActive ? 'top-nav__link--active' : ''].filter(Boolean).join(' ')
     const ariaCurrent = isActive ? 'location' : undefined
 
@@ -127,8 +133,9 @@ function TopNav({
     }
 
     if (item.href && item.href.startsWith('/')) {
+      const href = localizePath(item.href)
       return (
-        <Link className={linkClassName} to={item.href} onClick={closeMenu} aria-current={ariaCurrent}>
+        <Link className={linkClassName} to={href} onClick={closeMenu} aria-current={ariaCurrent}>
           {item.label}
         </Link>
       )
@@ -158,7 +165,7 @@ function TopNav({
     }
 
     return (
-      <a className="top-nav__brand" href={brandHref}>
+      <a className="top-nav__brand" href={localizePath(brandHref)}>
         {brandLabel}
       </a>
     )
@@ -174,11 +181,11 @@ function TopNav({
   const drawer = typeof document !== 'undefined'
     ? createPortal(
       <div className={`top-nav__drawer ${open ? 'is-open' : ''}`}>
-        <button type="button" className="top-nav__scrim" aria-label="Close menu" onClick={closeMenu} />
+        <button type="button" className="top-nav__scrim" aria-label={t('nav.closeMenu')} onClick={closeMenu} />
         <div className="top-nav__drawer-panel" id="mobile-menu">
           <div className="top-nav__drawer-header">
             {renderBrand()}
-            <button type="button" className="top-nav__close" onClick={closeMenu} aria-label="Close menu">
+            <button type="button" className="top-nav__close" onClick={closeMenu} aria-label={t('nav.closeMenu')}>
               ×
             </button>
           </div>
@@ -220,7 +227,7 @@ function TopNav({
             ref={toggleRef}
             aria-expanded={open}
             aria-controls="mobile-menu"
-            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-label={open ? t('nav.closeMenu') : t('nav.openMenu')}
             onClick={() => setOpen((prev) => !prev)}
           >
             <div className="top-nav__toggle-lines" aria-hidden="true" />

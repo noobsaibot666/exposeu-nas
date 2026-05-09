@@ -33,12 +33,20 @@
 }
 
 .about__profile h1 {
-  margin: 0;
+  margin: 0 0 10px;
   font-size: clamp(2rem, 3.4vw + 1rem, 2.9rem);
   letter-spacing: -0.018em;
   line-height: 1.3;
   color: var(--text-strong);
   font-weight: 600;
+}
+
+.about__subline {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--text-muted-strong);
+  line-height: 1.6;
+  max-width: 620px;
 }
 
 .about__grid {
@@ -115,6 +123,27 @@
 
 .about__column--meta a:hover {
   border-bottom-color: var(--link-color);
+}
+
+.about__cta-link {
+  display: inline-flex;
+  margin-top: 16px;
+  padding: 10px 22px;
+  border: 1px solid var(--border-highlight);
+  border-radius: 999px;
+  color: var(--text-strong);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-highlight);
+  transition: background-color 150ms ease, border-color 150ms ease, transform 150ms ease;
+}
+
+.about__cta-link:hover {
+  background: var(--button-ghost-hover-bg);
+  transform: translateY(-1px);
+  border-color: var(--border-highlight);
+  border-bottom-color: var(--border-highlight);
 }
 
 .about__portrait-meta {

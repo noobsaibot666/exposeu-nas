@@ -1,0 +1,115 @@
+{
+  "contact": {
+    "projectTypes": [
+      "Konzert / Event",
+      "Ausstellung / Galerie",
+      "Artist Session",
+      "Brand / Agency",
+      "Sonstiges"
+    ],
+    "errors": {
+      "nameRequired": "Bitte gib deinen Namen ein.",
+      "emailRequired": "Bitte gib deine E-Mail-Adresse ein.",
+      "emailInvalid": "Bitte gib eine gültige E-Mail-Adresse ein.",
+      "projectTypeRequired": "Bitte wähle eine Projektart aus.",
+      "highlightedFields": "Bitte korrigiere die markierten Felder.",
+      "generic": "Etwas ist schiefgelaufen – schreib uns bitte direkt an hello@expose-u.com"
+    },
+    "success": {
+      "eyebrow": "Danke",
+      "headline": "Wir haben deine Nachricht erhalten.",
+      "copy": "Unser Team meldet sich zeitnah bei dir, um die nächsten Schritte und Details abzustimmen.",
+      "backHome": "Zur Startseite",
+      "viewPortfolio": "Portfolio ansehen"
+    },
+    "fields": {
+      "name": "Name",
+      "email": "E-Mail",
+      "projectType": "Projektart",
+      "projectTypePlaceholder": "Typ auswählen…",
+      "message": "Erzähl uns von deiner Show, Ausstellung oder deinem Projekt.",
+      "companyWebsite": "Unternehmenswebsite"
+    },
+    "submit": {
+      "idle": "Abschicken →",
+      "sending": "Wird gesendet…"
+    }
+  },
+  "pricing": {
+    "eyebrow": "Preisanfrage",
+    "defaultHeadline": "Angebot anfragen.",
+    "defaultDescription": "Teile uns Datum, Ort und Ziel mit, damit wir den passenden Dokumentationsumfang vorschlagen können.",
+    "planIntros": {
+      "single-event": {
+        "name": "Einzelprojekt",
+        "intro": "Ein fokussierter Shoot, abgestimmt auf Timing, Schlüsselmomente und die gewünschten Deliverables."
+      },
+      "monthly-coverage": {
+        "name": "Monatlich",
+        "intro": "Wiederkehrende Dokumentation mit konstanter Crew, klarer Bildsprache und verlässlichem Delivery-Rhythmus."
+      },
+      "retainer-studio": {
+        "name": "Studio Retainer",
+        "intro": "Laufende Unterstützung für mehrteilige Programme, Launches und saisonale Kampagnen."
+      }
+    },
+    "serviceIntros": {
+      "concerts-events": "Live-Coverage mit präzisem Timing und schnellen Turnarounds für Socials, Presse und Recaps.",
+      "exhibition-gallery": "Kuratorisch gedachte Coverage für Press Kits, Collector Previews und Galeriearchive.",
+      "artist-sessions": "Portraits und BTS, die Prozess, Persönlichkeit und die Geschichte eines Releases sichtbar machen.",
+      "brand-agency": "Coverage für Brands, Agenturen, Runway und Activations – entwickelt für PR, Sponsoren und Kampagnen-Updates."
+    },
+    "planSelectedFallback": "Paket wird in der Anfrage gewählt",
+    "generalInquiry": "Allgemeine Anfrage",
+    "essentialsHeadline": "Das Wichtigste zuerst.",
+    "essentialsCopy": "Wir prüfen deine Angaben und melden uns mit einem klaren Angebot, Timing und den nächsten Schritten zurück. Das Formular bleibt bewusst kurz, damit wir schnell antworten können.",
+    "headlineByPlanAndService": "{{plan}}-Anfrage für {{service}}.",
+    "headlineByPlan": "{{plan}} anfragen.",
+    "headlineByService": "Anfrage für {{service}}.",
+    "coverageTypeLabel": "Art der Coverage",
+    "coverageTypePlaceholder": "Coverage auswählen",
+    "coverageTypeOptions": [
+      "Nur Foto",
+      "Nur Video",
+      "Foto + Video",
+      "Highlights + Recap",
+      "Social-first Reels",
+      "Sonstiges"
+    ],
+    "fields": {
+      "name": "Name",
+      "namePlaceholder": "Vollständiger Name",
+      "email": "E-Mail",
+      "emailPlaceholder": "du@example.com",
+      "phone": "Telefon",
+      "phonePlaceholder": "Telefonnummer",
+      "organization": "Organisation",
+      "organizationPlaceholder": "Galerie, Label oder Studio",
+      "date": "Zieldatum",
+      "datePlaceholder": "Eventdatum oder Zeitraum",
+      "location": "Ort",
+      "locationPlaceholder": "Stadt, Venue oder Region",
+      "coverageNotes": "Details zur Coverage (bei Sonstiges)",
+      "coverageNotesPlaceholder": "Beschreibe kurz, welche Coverage du brauchst.",
+      "details": "Projekt-Notizen",
+      "detailsPlaceholder": "Teile Format, Deliverables und mögliche Zeitvorgaben mit."
+    },
+    "errors": {
+      "coverageTypeRequired": "Bitte wähle eine Art der Coverage aus.",
+      "nameRequired": "Bitte gib deinen Namen ein.",
+      "emailRequired": "Bitte gib deine E-Mail-Adresse ein.",
+      "coverageNotesRequired": "Sag uns kurz, welche Coverage du brauchst.",
+      "missingEndpoint": "Formular-Endpunkt fehlt. Hinterlege VITE_PRICING_FORM_ENDPOINT in den Umgebungswerten.",
+      "requestFailed": "Etwas ist schiefgelaufen. Bitte versuche es erneut oder schreib uns direkt."
+    },
+    "submitIdle": "Anfrage senden",
+    "submitSending": "Wird gesendet...",
+    "success": {
+      "eyebrow": "Danke",
+      "headline": "Deine Preisanfrage ist eingegangen.",
+      "copy": "Wir prüfen die Details und melden uns zeitnah mit den nächsten Schritten, Timing und Deliverables.",
+      "backHome": "Zur Startseite",
+      "viewPortfolio": "Portfolio ansehen"
+    }
+  }
+}

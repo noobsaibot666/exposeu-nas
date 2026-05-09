@@ -1,0 +1,169 @@
+{
+  "section": {
+    "headerLabel": "Pricing",
+    "headlineDefault": "Straightforward pricing for one-time and recurring work.",
+    "supportingCopy": "Most clients book this as a one-time project. Monthly options are for recurring work.",
+    "fromPrefix": "From",
+    "chooseThisIfPrefix": "Choose this if:",
+    "footnote": "Clear scope, clear pricing, simple proposal. Educational and artist-led initiatives receive preferred rates."
+  },
+  "tiers": {
+    "single-event": {
+      "name": "One-time",
+      "cadence": "One-time project",
+      "description": "Built for one date, one site, and one clear delivery plan.",
+      "chooseThisIf": "you need press-ready assets for one project or event.",
+      "features": [
+        "Editorial photo and video team",
+        "48h highlight cut",
+        "Private proofing gallery"
+      ],
+      "cta": "Get a proposal"
+    },
+    "monthly-coverage": {
+      "name": "Monthly",
+      "cadence": "Monthly retainer",
+      "description": "For recurring shoots that need one team, one rhythm, and fast handoff.",
+      "chooseThisIf": "you need repeat coverage across multiple dates each month.",
+      "features": [
+        "Priority crew and gear",
+        "Lookbook and reels delivered weekly",
+        "Creative direction support"
+      ],
+      "cta": "Get a proposal",
+      "badge": "Popular"
+    },
+    "retainer-studio": {
+      "name": "Studio retainer",
+      "cadence": "Ongoing support",
+      "description": "Best for teams running seasonal programs, launches, or multi-site output.",
+      "chooseThisIf": "you need flexible support across campaigns, venues, or seasons.",
+      "features": [
+        "Dedicated producer in Berlin",
+        "Archive and licensing support",
+        "Seasonal campaign strategy"
+      ],
+      "cta": "Get a proposal"
+    }
+  },
+  "serviceDescriptions": {
+    "concerts-events": {
+      "single-event": "One concert or live event captured with fast selects, reels, and clean hero moments.",
+      "monthly-coverage": "Repeat live event coverage with one crew and one delivery rhythm."
+    },
+    "exhibition-gallery": {
+      "single-event": "One exhibition, opening, or gallery program captured for press, archive, and partner use.",
+      "monthly-coverage": "Recurring gallery documentation with one visual standard and faster turnaround."
+    },
+    "artist-sessions": {
+      "single-event": "One portrait and process session for releases, profiles, and press kits.",
+      "monthly-coverage": "Recurring artist coverage across studio work, launches, and exhibition dates."
+    },
+    "brand-agency": {
+      "single-event": "One brand, agency, runway, or activation event captured for PR, campaign, and sponsor use.",
+      "monthly-coverage": "Seasonal brand event coverage with consistent editorial and campaign output."
+    }
+  },
+  "serviceTiers": {
+    "concerts-events": {
+      "single-event": {
+        "chooseThisIf": "You have one show or event and need press-ready assets fast.",
+        "features": [
+          "Same-night priority selects for press and social",
+          "Full coverage — stage, crowd, atmosphere",
+          "Private proofing gallery + organized delivery"
+        ]
+      },
+      "monthly-coverage": {
+        "chooseThisIf": "You run multiple shows per month and need consistent documentation across dates.",
+        "features": [
+          "Dedicated crew for every show date",
+          "Same-night selects + weekly lookbook",
+          "Consistent visual style across all dates"
+        ]
+      },
+      "retainer-studio": {
+        "features": [
+          "Dedicated producer across your full season",
+          "Archive, licensing, and creative direction",
+          "Priority access and flexible scheduling"
+        ]
+      }
+    },
+    "exhibition-gallery": {
+      "single-event": {
+        "chooseThisIf": "You have one exhibition or opening that needs to be documented for press and archive.",
+        "features": [
+          "Installation stills, detail frames, opening atmosphere",
+          "Press-ready named folders for immediate distribution",
+          "Private proofing gallery"
+        ]
+      },
+      "monthly-coverage": {
+        "chooseThisIf": "You run ongoing programming and need consistent documentation across the season.",
+        "features": [
+          "Recurring documentation across your full program",
+          "Monthly archive for press, funders, and partners",
+          "Priority scheduling for openings and events"
+        ]
+      },
+      "retainer-studio": {
+        "features": [
+          "Dedicated producer for your institution",
+          "Archive, licensing, and catalogue support",
+          "Long-term visual consistency across all programming"
+        ]
+      }
+    },
+    "artist-sessions": {
+      "single-event": {
+        "chooseThisIf": "You have a release, press update, or booking profile that needs a current image set.",
+        "features": [
+          "Portrait set (press, web, and album art framings)",
+          "Process and studio stills",
+          "Private proofing gallery + organized delivery"
+        ]
+      },
+      "monthly-coverage": {
+        "chooseThisIf": "You're in active production and need a consistent visual record across projects and events.",
+        "features": [
+          "Regular sessions across studio work, launches, and events",
+          "Ongoing asset library for releases and campaigns",
+          "Creative direction support"
+        ]
+      },
+      "retainer-studio": {
+        "features": [
+          "Dedicated producer for your full creative output",
+          "Archive and licensing management",
+          "Consistent visual identity across all projects"
+        ]
+      }
+    },
+    "brand-agency": {
+      "single-event": {
+        "chooseThisIf": "You have one launch, activation, or event that needs editorial-quality assets fast.",
+        "features": [
+          "Hero brand frames + editorial BTS selects",
+          "Same-day priority frames for press and sponsor review",
+          "Full organized delivery for PR, campaign, and archive"
+        ]
+      },
+      "monthly-coverage": {
+        "chooseThisIf": "You run regular brand events and need consistent documentation and same-day delivery.",
+        "features": [
+          "Dedicated crew across all brand event dates",
+          "Same-day selects + weekly campaign output",
+          "Creative direction + archive management"
+        ]
+      },
+      "retainer-studio": {
+        "features": [
+          "Dedicated producer for your full brand calendar",
+          "Seasonal campaign strategy and archive",
+          "Priority access and consistent output"
+        ]
+      }
+    }
+  }
+}

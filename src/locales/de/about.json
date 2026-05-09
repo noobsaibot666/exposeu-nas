@@ -1,0 +1,33 @@
+{
+  "label": "Profil",
+  "headline": "expose.u ist ein Berliner Dokumentationsstudio — geführt von Menschen, die selbst Teil der Kulturszene sind.",
+  "subline": "Schnelle Lieferung. Keine generische Coverage. Dokumentiert mit dem gleichen Anspruch wie die Arbeit selbst.",
+  "sections": [
+    {
+      "label": "Die Arbeit",
+      "body": "Foto und Video für Konzerte, Ausstellungen und Events. Geliefert für Presse, Social Media und Archiv."
+    },
+    {
+      "label": "Der Standard",
+      "body": "Nichts Generisches. Jedes Projekt bekommt einen visuellen Ansatz, der zu Raum, Künstler:innen und Atmosphäre passt."
+    },
+    {
+      "label": "Wo wir gearbeitet haben",
+      "body": "Acht Konzertnächte im Silent Green Kulturquartier. Galerie-Openings, Artist Sessions und Brand-Events in Berlin."
+    },
+    {
+      "label": "Wie wir arbeiten",
+      "body": "Erzähl uns vom Event. Wir kommen, dokumentieren es und liefern pressetaugliche Dateien innerhalb von 24–48 Stunden."
+    },
+    {
+      "label": "Wer mit uns arbeitet",
+      "body": "Venues und Veranstalter:innen. Galerien und Kulturinstitutionen. Künstler:innen und Musiker:innen. Agenturen und Brands. In Berlin — verfügbar europaweit."
+    },
+    {
+      "label": "Hier starten",
+      "body": "Planst du etwas? Erzähl uns davon.",
+      "cta": "Gespräch starten"
+    }
+  ],
+  "portraitAlt": "Installationsszene"
+}

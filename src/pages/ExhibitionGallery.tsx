@@ -1,5 +1,6 @@
 import { resolveImagePath } from '../utils/resolveImagePath'
 import WorkPageLayout from './WorkPageLayout'
+import { useTranslation } from '../i18n/LocaleProvider'
 
 const heroCards = [
   { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_thumb/9_16/2_GW_009.png'), title: 'Opening Night' },
@@ -9,30 +10,38 @@ const heroCards = [
 ]
 
 function ExhibitionGallery() {
+  const { t, tm } = useTranslation()
+  const page = tm<{
+    title: string
+    heroCopy: string
+    detail: string
+    socialProof: string
+    ctaText: string
+    footerCtaLabel: string
+    cards: string[]
+    galleryTitle: string
+    galleryCopy: string
+    gallery: Array<{ title: string; subtitle: string }>
+    extraGalleryCopy: string
+    extraGallery: Array<{ title: string; subtitle: string }>
+  }>('services.pages.exhibition-gallery')
   return (
     <WorkPageLayout
-      title="Exhibition & Gallery"
-      heroCopy="Photo and film for exhibitions, openings, and gallery spaces."
-      detail="Full spatial coverage — artworks, sequence, atmosphere, and opening night in one organized set."
-      cards={heroCards}
-      galleryTitle="What's included."
-      galleryCopy="Delivered organized for press, archive, and partner distribution."
-      gallery={[
-        { title: 'Installation stills', subtitle: 'Wide rooms, key works, and clean sightlines.' },
-        { title: 'Opening atmosphere', subtitle: 'Guest moments without staged scenes.' },
-        { title: 'Detail frames', subtitle: 'Materials, labels, and installation close-ups.' },
-        { title: 'Press-ready delivery', subtitle: 'Named folders sorted for immediate distribution.' },
-      ]}
-      extraGalleryTitle="Ideal for"
-      extraGalleryCopy="Teams that need the full spatial and atmospheric story, not just highlights."
-      extraGallery={[
-        { title: 'Galleries and cultural institutions', subtitle: 'Shows with press, archive, and funder requirements.' },
-        { title: 'Curators and artists', subtitle: 'Curatorial record, portfolio, and printed catalogue.' },
-        { title: 'Opening nights', subtitle: 'Artworks and atmosphere covered in one session.' },
-      ]}
-      ctaText="Let's document your exhibition."
+      title={page.title}
+      heroCopy={page.heroCopy}
+      detail={page.detail}
+      socialProof={page.socialProof}
+      cards={heroCards.map((card, index) => ({ ...card, title: page.cards[index] ?? card.title }))}
+      galleryTitle={page.galleryTitle}
+      galleryCopy={page.galleryCopy}
+      gallery={page.gallery}
+      extraGalleryTitle={t('services.shared.idealFor')}
+      extraGalleryCopy={page.extraGalleryCopy}
+      extraGallery={page.extraGallery}
+      ctaText={page.ctaText}
+      ctaLabel={page.footerCtaLabel}
       ctaHref="/contact"
-      ctaDetail="Berlin-based. Response within 24 hours."
+      ctaDetail={t('services.shared.responseTime')}
       serviceSlug="exhibition-gallery"
     />
   )

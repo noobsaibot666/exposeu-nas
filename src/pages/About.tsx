@@ -1,27 +1,30 @@
 import { useEffect, useMemo, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import './About.css'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
 import { resolveImagePath } from '../utils/resolveImagePath'
+import { useLocaleNavigate, useLocalePath, useTranslation } from '../i18n/LocaleProvider'
 
 function About() {
-  const navigate = useNavigate()
+  const navigate = useLocaleNavigate()
   const rootRef = useRef<HTMLElement | null>(null)
+  const { t, tm } = useTranslation()
+  const localizePath = useLocalePath()
+  const sections = tm<Array<{ label: string; body: string; cta?: string }>>('about.sections')
 
   const navLinks = useMemo(
     () => ({
       left: [
-        { label: 'Home', onClick: () => navigate('/') },
-        { label: 'Services', href: '/#cases' },
+        { id: 'home', label: t('nav.home'), onClick: () => navigate('/') },
+        { id: 'services', label: t('nav.services'), href: '/#cases' },
       ],
       right: [
-        { label: 'About', onClick: () => navigate('/about') },
-        { label: 'Contact', onClick: () => navigate('/contact') },
+        { id: 'about', label: t('nav.about'), onClick: () => navigate('/about') },
+        { id: 'contact', label: t('nav.contact'), onClick: () => navigate('/contact') },
       ],
     }),
-    [navigate],
+    [navigate, t],
   )
 
   useEffect(() => {
@@ -65,69 +68,51 @@ function About() {
           leftLinks={navLinks.left}
           rightLinks={navLinks.right}
           onBrandClick={() => navigate('/')}
-          brandLabel="expose.u"
+          brandLabel={t('nav.brand')}
           className="top-nav--page"
-          activeLabel="About"
+          activeId="about"
         />
       </div>
 
       <section className="section about__shell">
         <div className="content about__profile">
-          <div className="about__label">Profile</div>
-          <h1>
-            We’re artist-directors creating photo and video for exhibitions, performances, and
-            galleries. Precise, art-first, and shaped by people inside the scene.
-          </h1>
+          <div className="about__label">{t('about.label')}</div>
+          <div>
+            <h1>{t('about.headline')}</h1>
+            <p className="about__subline">{t('about.subline')}</p>
+          </div>
         </div>
 
         <div className="content about__grid">
           <div className="about__column about__column--wide">
-            <div className="about__row">
-              <p className="about__label">What we create</p>
-              <p className="about__body">
-                Photo and video for exhibitions, openings, performances, and artist releases, built to match your
-                voice and your audience.
-              </p>
-            </div>
-            <div className="about__row">
-              <p className="about__label">How it feels</p>
-              <p className="about__body">
-                Intentional documentation with clean edits, balanced light, and pacing that respects the work, not
-                generic event reels.
-              </p>
-            </div>
-            <div className="about__row">
-              <p className="about__label">Who we shoot</p>
-              <p className="about__body">
-                Artists, curators, and producers from intimate shows to mid-size venues, all with high aesthetic
-                standards.
-              </p>
-            </div>
+            {sections.slice(0, 3).map((section) => (
+              <div className="about__row" key={section.label}>
+                <p className="about__label">{section.label}</p>
+                <p className="about__body">{section.body}</p>
+              </div>
+            ))}
           </div>
 
           <div className="about__portrait-block">
             <div className="about__portrait">
-              <img src={resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_024.png')} alt="Installation scene" />
+              <img src={resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_024.png')} alt={t('about.portraitAlt')} />
             </div>
           </div>
 
           <div className="about__column about__column--meta">
-            <div className="about__row">
-              <p className="about__label">Where we work</p>
-              <p className="about__body">Berlin-based, available for nearby cities as your program expands.</p>
-            </div>
-            <div className="about__row">
-              <p className="about__label">Why us</p>
-              <p className="about__body">
-                We’re artists and directors, fast on set, quiet in your space, obsessive about tone and detail.
-              </p>
-            </div>
-            <div className="about__row">
-              <p className="about__label">Collab</p>
-              <p className="about__body">
-                Tell us what you’re launching. We’ll map documentation, crew, and delivery so your visuals feel unmistakably yours.
-              </p>
-            </div>
+            {sections.slice(3).map((section) => (
+              <div className="about__row" key={section.label}>
+                <p className="about__label">{section.label}</p>
+                <div>
+                  <p className="about__body">{section.body}</p>
+                  {section.cta && (
+                    <a className="about__cta-link" href={localizePath('/contact')}>
+                      {section.cta}
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 

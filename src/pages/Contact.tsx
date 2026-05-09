@@ -1,21 +1,22 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import './Contact.css'
-import { useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
 import { trackEvent } from '../utils/analytics'
+import { useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
 
-const PROJECT_TYPE_OPTIONS = [
-  'Concert / Event',
-  'Exhibition / Gallery',
-  'Artist Session',
-  'Brand / Agency',
-  'Other',
-]
+const TYPE_MAP: Record<string, string> = {
+  'concert': 'Concert / Event',
+  'exhibition': 'Exhibition / Gallery',
+  'artist-session': 'Artist Session',
+  'brand-event': 'Brand / Agency',
+}
 
 function Contact() {
-  const navigate = useNavigate()
+  const navigate = useLocaleNavigate()
+  const [searchParams] = useSearchParams()
   const rootRef = useRef<HTMLElement | null>(null)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [submitted, setSubmitted] = useState(false)
@@ -24,19 +25,24 @@ function Contact() {
   const hasStartedRef = useRef(false)
   const hasSubmittedRef = useRef(false)
   const hasAbandonFiredRef = useRef(false)
+  const { t, tm } = useTranslation()
+  const projectTypeOptions = tm<string[]>('forms.contact.projectTypes')
+
+  const typeParam = searchParams.get('type')
+  const defaultProjectType = typeParam ? (TYPE_MAP[typeParam] ?? '') : ''
 
   const navLinks = useMemo(
     () => ({
       left: [
-        { label: 'Home', onClick: () => navigate('/') },
-        { label: 'Services', href: '/#cases' },
+        { id: 'home', label: t('nav.home'), onClick: () => navigate('/') },
+        { id: 'services', label: t('nav.services'), href: '/#cases' },
       ],
       right: [
-        { label: 'About', onClick: () => navigate('/about') },
-        { label: 'Contact', onClick: () => navigate('/contact') },
+        { id: 'about', label: t('nav.about'), onClick: () => navigate('/about') },
+        { id: 'contact', label: t('nav.contact'), onClick: () => navigate('/contact') },
       ],
     }),
-    [navigate],
+    [navigate, t],
   )
 
   const resolveContactEndpoint = () => {
@@ -72,18 +78,18 @@ function Contact() {
     const companyWebsite = String(formData.get('companyWebsite') || '').trim()
 
     const nextErrors: Record<string, string> = {}
-    if (!name) nextErrors.name = 'Enter your name.'
+    if (!name) nextErrors.name = t('forms.contact.errors.nameRequired')
     if (!email) {
-      nextErrors.email = 'Enter your email address.'
+      nextErrors.email = t('forms.contact.errors.emailRequired')
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      nextErrors.email = 'Enter a valid email address.'
+      nextErrors.email = t('forms.contact.errors.emailInvalid')
     }
-    if (!projectType) nextErrors.projectType = 'Select a project type.'
+    if (!projectType) nextErrors.projectType = t('forms.contact.errors.projectTypeRequired')
 
     if (Object.keys(nextErrors).length > 0) {
       setFieldErrors(nextErrors)
       trackEvent('contact_form_submit_error', { error_type: 'validation', projectType })
-      setSubmitError('Please correct the highlighted fields.')
+      setSubmitError(t('forms.contact.errors.highlightedFields'))
       return
     }
 
@@ -111,7 +117,7 @@ function Contact() {
       try { responseData = await response.json() } catch { responseData = null }
 
       if (!response.ok) {
-        let serverMsg = 'Something went wrong — please email us at hello@expose-u.com'
+        let serverMsg = t('forms.contact.errors.generic')
         if (typeof responseData === 'object' && responseData !== null) {
           const data = responseData as { error?: string | { message?: string } }
           if (typeof data.error === 'string') serverMsg = data.error
@@ -137,7 +143,7 @@ function Contact() {
       const msg =
         err instanceof Error
           ? err.message
-          : 'Something went wrong — please email us at hello@expose-u.com'
+          : t('forms.contact.errors.generic')
       setSubmitError(msg)
       trackEvent('contact_form_submit_error', { error_type: 'api_error' })
     } finally {
@@ -158,7 +164,7 @@ function Contact() {
 
   useEffect(() => {
     trackEvent('contact_view')
-  }, [])
+  }, [t])
 
   useEffect(() => {
     const maybeTrackAbandon = () => {
@@ -212,43 +218,36 @@ function Contact() {
           leftLinks={navLinks.left}
           rightLinks={navLinks.right}
           onBrandClick={() => navigate('/')}
-          brandLabel="expose.u"
+          brandLabel={t('nav.brand')}
           className="top-nav--page"
-          activeLabel="Contact"
+          activeId="contact"
         />
       </div>
 
       <section className="section contact__body">
         <div className="content contact__heading">
-          <p className="contact__eyebrow">Contact</p>
-          <h1>Let&apos;s plan your project.</h1>
-          <p className="contact__lede">
-            We usually reply within 24 hours. No automated replies. No sales pressure.
-          </p>
-          <p className="contact__lede">
-            Reaching out about a specific service or package? Mention it below and we&apos;ll respond accordingly.
-          </p>
+          <p className="contact__eyebrow">{t('contact.eyebrow')}</p>
+          <h1>{t('contact.headline')}</h1>
+          <p className="contact__lede">{t('contact.ledePrimary')}</p>
         </div>
 
         <div className="content contact__grid">
           <div className="contact__info">
             <div className="contact__list">
               <div>
-                <p className="contact__label">Email</p>
+                <p className="contact__label">{t('contact.labels.email')}</p>
                 <a href="mailto:hello@expose-u.com">hello@expose-u.com</a>
               </div>
               <div>
-                <p className="contact__label">Phone</p>
+                <p className="contact__label">{t('contact.labels.phone')}</p>
                 <a href="tel:+4917622132950">+49 176 2213 2950</a>
               </div>
               <div>
-                <p className="contact__label">Studio</p>
-                <p className="contact__address">
-                  Duden Straße 24, Kreuzberg, Berlin
-                </p>
+                <p className="contact__label">{t('contact.labels.studio')}</p>
+                <p className="contact__address">{t('contact.studioAddress')}</p>
               </div>
               <div>
-                <p className="contact__label">Instagram</p>
+                <p className="contact__label">{t('contact.labels.instagram')}</p>
                 <a href="https://instagram.com/xposeu_official" target="_blank" rel="noreferrer">
                   xposeu_official
                 </a>
@@ -258,12 +257,12 @@ function Contact() {
 
           {submitted ? (
             <p className="contact__success contact__success--standalone" role="status">
-              Thanks — we&apos;ll get back to you within 24 hours.
+              {t('contact.successStandalone')}
             </p>
           ) : (
             <form className="contact__form" onSubmit={handleSubmit} onFocus={handleFormFocus} noValidate>
               <div className="contact__field">
-                <label htmlFor="name">Name</label>
+                <label htmlFor="name">{t('forms.contact.fields.name')}</label>
                 <input
                   id="name"
                   name="name"
@@ -281,7 +280,7 @@ function Contact() {
               </div>
 
               <div className="contact__field">
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email">{t('forms.contact.fields.email')}</label>
                 <input
                   id="email"
                   name="email"
@@ -299,7 +298,7 @@ function Contact() {
               </div>
 
               <div className="contact__field contact__field--full">
-                <label htmlFor="projectType">Type of project</label>
+                <label htmlFor="projectType">{t('forms.contact.fields.projectType')}</label>
                 <select
                   id="projectType"
                   name="projectType"
@@ -307,10 +306,10 @@ function Contact() {
                   aria-invalid={fieldErrors.projectType ? 'true' : undefined}
                   aria-describedby={fieldErrors.projectType ? getFieldErrorId('projectType') : undefined}
                   onChange={() => handleFieldInput('projectType')}
-                  defaultValue=""
+                  defaultValue={defaultProjectType}
                 >
-                  <option value="" disabled>Select a type…</option>
-                  {PROJECT_TYPE_OPTIONS.map((opt) => (
+                  <option value="" disabled>{t('forms.contact.fields.projectTypePlaceholder')}</option>
+                  {projectTypeOptions.map((opt) => (
                     <option key={opt} value={opt}>{opt}</option>
                   ))}
                 </select>
@@ -322,7 +321,7 @@ function Contact() {
               </div>
 
               <div className="contact__field contact__field--full">
-                <label htmlFor="message">Tell us about your project</label>
+                <label htmlFor="message">{t('forms.contact.fields.message')}</label>
                 <textarea
                   id="message"
                   name="message"
@@ -333,10 +332,10 @@ function Contact() {
 
               {/* Honeypot */}
               <div
-                style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', overflow: 'hidden' }}
+                style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', overflow: 'hidden', opacity: 0, pointerEvents: 'none' }}
                 aria-hidden="true"
               >
-                <label htmlFor="companyWebsite">Company website</label>
+                <label htmlFor="companyWebsite">{t('forms.contact.fields.companyWebsite')}</label>
                 <input id="companyWebsite" name="companyWebsite" type="text" tabIndex={-1} autoComplete="off" />
               </div>
 
@@ -348,10 +347,10 @@ function Contact() {
                 {isSubmitting ? (
                   <>
                     <span className="contact__spinner" aria-hidden="true" />
-                    Sending…
+                    {t('forms.contact.submit.sending')}
                   </>
                 ) : (
-                  'Send message'
+                  t('forms.contact.submit.idle')
                 )}
               </button>
             </form>

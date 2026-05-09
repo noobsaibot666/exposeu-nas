@@ -1,0 +1,67 @@
+{
+  "hero": {
+    "headline": "Documentation for concerts, exhibitions, and creative events.",
+    "subhead": "Berlin-based photo and video studio. Press-ready delivery.",
+    "primaryCta": "Tell us about your project",
+    "scroll": "Scroll",
+    "scrollAria": "Scroll to content"
+  },
+  "proof": {
+    "badge": "Make us part of your creative hub",
+    "headline": "Documentation is not coverage.",
+    "copy": "Strong visuals need timing, context, and intent. We build assets that already understand the room, the release, and how your audience will see them."
+  },
+  "services": {
+    "label": "Coverage types",
+    "headline": "Choose the format for your show, release, or space.",
+    "subcopy": "I need content for my:",
+    "cards": {
+      "concerts-events": {
+        "title": "Concert & Live Events",
+        "subtext": "For venues, promoters, bands, and festival producers",
+        "cta": "Book concerts"
+      },
+      "exhibition-gallery": {
+        "title": "Exhibition & Gallery",
+        "subtext": "For galleries, curators, and cultural institutions",
+        "cta": "Book exhibitions"
+      },
+      "artist-sessions": {
+        "title": "Artist Sessions & Portraits",
+        "subtext": "For musicians, visual artists, and photographers",
+        "cta": "Book a session"
+      },
+      "brand-agency": {
+        "title": "Brand & Agency Events",
+        "subtext": "For creative agencies, brands, and production houses",
+        "cta": "Book brand events"
+      }
+    },
+    "seeDetails": "See documentation details",
+    "needHelp": "Need help choosing?",
+    "contactUs": "Contact us"
+  },
+  "project": {
+    "headline": "Start a project.",
+    "copy": "Turn your project into press-ready assets with a clear plan and deliverables.",
+    "requestAvailability": "Request availability",
+    "seeLatestWork": "See latest work"
+  },
+  "process": {
+    "headline": "Our Process",
+    "steps": [
+      {
+        "title": "Consult",
+        "copy": "We align on intent, timing, and deliverables. You’ll know what’s happening before we shoot."
+      },
+      {
+        "title": "Capture",
+        "copy": "We work quietly on site, following your run-of-show and the space’s rhythm."
+      },
+      {
+        "title": "Deliver",
+        "copy": "You receive press-ready selects and organized finals, ready to publish and archive."
+      }
+    ]
+  }
+}

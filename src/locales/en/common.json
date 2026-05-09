@@ -1,0 +1,74 @@
+{
+  "skipToContent": "Skip to content",
+  "language": {
+    "switcherLabel": "Change language",
+    "menuLabel": "Available languages"
+  },
+  "analytics": {
+    "ariaLabel": "Analytics consent",
+    "title": "Analytics consent",
+    "copy": "Help us improve Expose.u with anonymous usage insights. We do not collect personal data through analytics.",
+    "accept": "Accept",
+    "reject": "Reject"
+  },
+  "meta": {
+    "home": {
+      "title": "expose.u | Berlin photo and video documentation",
+      "description": "Cinematic photography and video for Berlin galleries, artists, brands, and live events."
+    },
+    "about": {
+      "title": "About | expose.u",
+      "description": "Artist-led photo and video production for exhibitions, performances, and cultural spaces."
+    },
+    "contact": {
+      "title": "Contact | expose.u",
+      "description": "Get in touch with expose.u for exhibitions, live events, artist sessions, and brand documentation."
+    },
+    "contactSuccess": {
+      "title": "Message received | expose.u",
+      "description": "Your contact message was received. Our team will follow up shortly."
+    },
+    "portfolio": {
+      "title": "Portfolio | expose.u",
+      "description": "Selected work from expose.u across live events, exhibitions, artist sessions, and brand activations."
+    },
+    "callSession": {
+      "title": "Book a call | expose.u",
+      "description": "Schedule a short call to clarify scope, timing, and the right documentation package."
+    },
+    "impressum": {
+      "title": "Impressum | expose.u",
+      "description": "Legal information and contact details for expose.u."
+    },
+    "pricingRequest": {
+      "title": "Pricing request | expose.u",
+      "description": "Share your scope and timing so expose.u can prepare a clear proposal."
+    },
+    "pricingSuccess": {
+      "title": "Pricing request received | expose.u",
+      "description": "Your pricing request was received. We will reply with next steps shortly."
+    },
+    "notFound": {
+      "title": "Page not found | expose.u",
+      "description": "The page you requested could not be found."
+    },
+    "services": {
+      "concerts": {
+        "title": "Concert & Live Events | expose.u",
+        "description": "Live event photography and film with fast turnarounds for press, social, and recap use."
+      },
+      "exhibition": {
+        "title": "Exhibition & Gallery | expose.u",
+        "description": "Exhibition and gallery documentation for openings, installations, and archive-ready delivery."
+      },
+      "artist": {
+        "title": "Artist Sessions & Portraits | expose.u",
+        "description": "Portrait sessions and artist documentation for releases, profiles, and campaigns."
+      },
+      "brand": {
+        "title": "Brand & Agency Events | expose.u",
+        "description": "Editorial photo and video coverage for launches, activations, and agency events."
+      }
+    }
+  }
+}

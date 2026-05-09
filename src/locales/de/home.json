@@ -1,0 +1,67 @@
+{
+  "hero": {
+    "headline": "Dokumentation für Konzerte, Ausstellungen und kreative Events.",
+    "subhead": "Foto- und Videostudio aus Berlin. Pressefähig geliefert.",
+    "primaryCta": "Erzähl uns von deinem Projekt",
+    "scroll": "Scrollen",
+    "scrollAria": "Zum Inhalt scrollen"
+  },
+  "proof": {
+    "badge": "Werde mit uns Teil deines kreativen Umfelds",
+    "headline": "Dokumentation ist nicht gleich Coverage.",
+    "copy": "Starke Visuals brauchen Timing, Kontext und Absicht. Wir produzieren Assets, die den Raum, das Release und die Wahrnehmung deines Publikums bereits mitdenken."
+  },
+  "services": {
+    "label": "Formate",
+    "headline": "Wähle das passende Format für Show, Release oder Raum.",
+    "subcopy": "Ich brauche Content für:",
+    "cards": {
+      "concerts-events": {
+        "title": "Konzerte & Live-Events",
+        "subtext": "Für Venues, Promoter, Bands und Festival-Teams",
+        "cta": "Konzerte anfragen"
+      },
+      "exhibition-gallery": {
+        "title": "Ausstellungen & Galerien",
+        "subtext": "Für Galerien, Kurator:innen und Kulturinstitutionen",
+        "cta": "Ausstellung anfragen"
+      },
+      "artist-sessions": {
+        "title": "Artist Sessions & Portraits",
+        "subtext": "Für Musiker:innen, visuelle Künstler:innen und Fotograf:innen",
+        "cta": "Session anfragen"
+      },
+      "brand-agency": {
+        "title": "Brand & Agency Events",
+        "subtext": "Für Kreativagenturen, Brands und Produktionshäuser",
+        "cta": "Brand Event anfragen"
+      }
+    },
+    "seeDetails": "Dokumentation ansehen",
+    "needHelp": "Nicht sicher, was passt?",
+    "contactUs": "Kontakt aufnehmen"
+  },
+  "project": {
+    "headline": "Projekt starten.",
+    "copy": "Mach aus deinem Projekt pressefähige Assets – mit klarem Plan und klaren Deliverables.",
+    "requestAvailability": "Verfügbarkeit anfragen",
+    "seeLatestWork": "Neueste Arbeiten ansehen"
+  },
+  "process": {
+    "headline": "Unser Ablauf",
+    "steps": [
+      {
+        "title": "Abstimmen",
+        "copy": "Wir klären Ziel, Timing und Deliverables. Vor dem Shoot ist klar, was passiert."
+      },
+      {
+        "title": "Produzieren",
+        "copy": "Vor Ort arbeiten wir ruhig und präzise – im Rhythmus deines Ablaufs und des Raums."
+      },
+      {
+        "title": "Liefern",
+        "copy": "Du erhältst pressefähige Selects und sauber organisierte Finals, bereit für Veröffentlichung und Archiv."
+      }
+    ]
+  }
+}

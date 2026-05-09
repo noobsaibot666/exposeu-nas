@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './index.css'
 import App from './App.tsx'
 import { initTheme } from './theme'
+import { LocaleProvider } from './i18n/LocaleProvider'
 
 gsap.registerPlugin(ScrollTrigger)
 initTheme()
@@ -13,7 +14,9 @@ initTheme()
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <LocaleProvider>
+        <App />
+      </LocaleProvider>
     </BrowserRouter>
   </StrictMode>
   ,

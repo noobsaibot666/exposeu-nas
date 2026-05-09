@@ -1,5 +1,6 @@
 import { resolveImagePath } from '../utils/resolveImagePath'
 import WorkPageLayout from './WorkPageLayout'
+import { useTranslation } from '../i18n/LocaleProvider'
 
 const heroCards = [
   { image: resolveImagePath('/src/assets/images/services/4_performance_doc/_thumb/9_16/4_PD_012.png'), title: 'Live Set' },
@@ -9,30 +10,38 @@ const heroCards = [
 ]
 
 function ConcertsEvents() {
+  const { t, tm } = useTranslation()
+  const page = tm<{
+    title: string
+    heroCopy: string
+    detail: string
+    socialProof: string
+    ctaText: string
+    footerCtaLabel: string
+    cards: string[]
+    galleryTitle: string
+    galleryCopy: string
+    gallery: Array<{ title: string; subtitle: string }>
+    extraGalleryCopy: string
+    extraGallery: Array<{ title: string; subtitle: string }>
+  }>('services.pages.concerts-events')
   return (
     <WorkPageLayout
-      title="Concert & Live Events"
-      heroCopy="Cinematic photo and film for concerts, live sets, and stage events."
-      detail="Captured live. Delivered same night or next morning, ready to publish."
-      cards={heroCards}
-      galleryTitle="What's included."
-      galleryCopy="Organized files delivered fast — built for immediate use."
-      gallery={[
-        { title: 'Stage coverage', subtitle: 'Key cues, wide moments, and hero frames.' },
-        { title: 'Crowd & atmosphere', subtitle: 'Energy and context without obstructing the room.' },
-        { title: 'Same-night selects', subtitle: 'Priority frames for press and social, delivered fast.' },
-        { title: 'Full organized set', subtitle: 'Named files ready for publishing and archive.' },
-      ]}
-      extraGalleryTitle="Ideal for"
-      extraGalleryCopy="Anyone who needs live moments captured cleanly and turned around fast."
-      extraGallery={[
-        { title: 'Venue and festival teams', subtitle: 'Season recaps, event coverage, and press assets.' },
-        { title: 'Touring artists', subtitle: 'One show, multiple outputs — social, press, and archive.' },
-        { title: 'Club and promoter programs', subtitle: 'Recurring shoots with consistent visual style.' },
-      ]}
-      ctaText="Let's cover your next show."
+      title={page.title}
+      heroCopy={page.heroCopy}
+      detail={page.detail}
+      socialProof={page.socialProof}
+      cards={heroCards.map((card, index) => ({ ...card, title: page.cards[index] ?? card.title }))}
+      galleryTitle={page.galleryTitle}
+      galleryCopy={page.galleryCopy}
+      gallery={page.gallery}
+      extraGalleryTitle={t('services.shared.idealFor')}
+      extraGalleryCopy={page.extraGalleryCopy}
+      extraGallery={page.extraGallery}
+      ctaText={page.ctaText}
+      ctaLabel={page.footerCtaLabel}
       ctaHref="/contact"
-      ctaDetail="Berlin-based. Response within 24 hours."
+      ctaDetail={t('services.shared.responseTime')}
       serviceSlug="concerts-events"
     />
   )

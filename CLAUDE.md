@@ -40,7 +40,33 @@ The production server is TrueNAS running Docker with Traefik v3 as the reverse p
 - `exposeu-contact` — runs `server/index.js` (contact API)
 - `traefik` — TLS termination + routing; `/api/*` → contact container
 
-**Deploy sequence:** build locally → `git push` → SSH into TrueNAS → `git reset --hard origin/main` → no rebuild needed for static files (nginx serves the `dist/` volume). If `server/index.js` changes, restart the `exposeu-contact` container.
+**Deploy sequence:** run the build on the TrueNAS host through Dockerized Node, then recreate only the changed containers.
+
+Frontend only:
+```sh
+cd /mnt/Gaia/04_DEV/web/www/exposeu
+sudo docker run --rm -u 0 -v "$PWD:/app" -w /app node:20-alpine sh -lc "npm ci && npm run build"
+sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-nginx
+```
+
+API only:
+```sh
+cd /mnt/Gaia/04_DEV/web/www/exposeu
+sudo docker run --rm -u 0 -v "$PWD:/app" -w /app node:20-alpine sh -lc "npm ci"
+sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-contact
+```
+
+Frontend + API:
+```sh
+cd /mnt/Gaia/04_DEV/web/www/exposeu
+sudo docker run --rm -u 0 -v "$PWD:/app" -w /app node:20-alpine sh -lc "npm ci && npm run build"
+sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-nginx exposeu-contact
+```
+
+Guardrails:
+- never recreate `traefik`
+- never run compose without explicit service names
+- only touch `exposeu-nginx` and `exposeu-contact` for this project
 
 **Env vars** — `.env` is loaded by both the frontend (Vite: `VITE_*` prefix) and the Node server. Required server-side vars: `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `CONTACT_TO`, `CONTACT_FROM`. See `.env.example`.
 

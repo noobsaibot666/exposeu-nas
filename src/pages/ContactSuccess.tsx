@@ -1,39 +1,35 @@
 import './Contact.css'
-import { Link } from 'react-router-dom'
 import TopNav from '../components/TopNav'
+import LocalizedLink from '../i18n/LocalizedLink'
+import { useTranslation } from '../i18n/LocaleProvider'
 
 function ContactSuccess() {
+  const { t } = useTranslation()
   return (
     <main className="contact contact--success" id="main">
       <div className="content contact__nav">
         <TopNav
           leftLinks={[
-            { label: 'Home', href: '/' },
-            { label: 'Services', href: '/#cases' },
+            { id: 'home', label: t('nav.home'), href: '/' },
+            { id: 'services', label: t('nav.services'), href: '/#cases' },
           ]}
           rightLinks={[
-            { label: 'About', href: '/about' },
-            { label: 'Contact', href: '/contact' },
+            { id: 'about', label: t('nav.about'), href: '/about' },
+            { id: 'contact', label: t('nav.contact'), href: '/contact' },
           ]}
           className="top-nav--page"
-          activeLabel="Contact"
+          activeId="contact"
         />
       </div>
 
       <section className="section contact__body">
         <div className="content contact__heading">
-          <p className="contact__eyebrow">Thank you</p>
-          <h1>We received your message.</h1>
-          <p className="contact__lede">
-            Our team will reach out shortly to plan next steps and confirm details.
-          </p>
+          <p className="contact__eyebrow">{t('forms.contact.success.eyebrow')}</p>
+          <h1>{t('forms.contact.success.headline')}</h1>
+          <p className="contact__lede">{t('forms.contact.success.copy')}</p>
           <div className="contact__success-actions">
-            <Link className="contact__submit" to="/">
-              Back to Home
-            </Link>
-            <Link className="contact__submit contact__submit--ghost" to="/portfolio">
-              View Portfolio
-            </Link>
+            <LocalizedLink className="contact__submit" to="/">{t('forms.contact.success.backHome')}</LocalizedLink>
+            <LocalizedLink className="contact__submit contact__submit--ghost" to="/portfolio">{t('forms.contact.success.viewPortfolio')}</LocalizedLink>
           </div>
         </div>
       </section>

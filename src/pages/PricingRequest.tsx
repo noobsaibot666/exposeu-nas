@@ -1,51 +1,22 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 import TopNav from '../components/TopNav'
 import { resolveImagePath } from '../utils/resolveImagePath'
 import { trackEvent } from '../utils/analytics'
 import { serviceMeta, type ServiceSlug } from '../data/serviceMeta'
 import './PricingRequest.css'
+import { useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
 
-const planDetails = {
-  'single-event': {
-    name: 'One-time',
-    intro: 'One focused shoot built around your timeline, key moments, and delivery needs.',
-  },
-  'monthly-coverage': {
-    name: 'Monthly',
-    intro: 'Recurring documentation with consistent crew, look, and delivery cadence.',
-  },
-  'retainer-studio': {
-    name: 'Studio retainer',
-    intro: 'Ongoing support for multi-event programming, launches, and seasonal campaigns.',
-  },
-}
-
-const serviceDetails: Record<ServiceSlug, { label: string; image: string; intro: string }> = {
-  'concerts-events': {
-    label: serviceMeta['concerts-events'].label,
-    image: resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_004.png'),
-    intro: 'Live event coverage with sharp timing and fast turnarounds for socials, press, and recaps.',
-  },
-  'exhibition-gallery': {
-    label: serviceMeta['exhibition-gallery'].label,
-    image: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
-    intro: 'Curation-forward coverage designed for press kits, collector previews, and gallery archives.',
-  },
-  'artist-sessions': {
-    label: serviceMeta['artist-sessions'].label,
-    image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
-    intro: 'Portraits and BTS that capture process, personality, and the release story.',
-  },
-  'brand-agency': {
-    label: serviceMeta['brand-agency'].label,
-    image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
-    intro: 'Brand, agency, runway, and activation coverage built for PR, sponsors, and campaign updates.',
-  },
+const serviceImages: Record<ServiceSlug, string> = {
+  'concerts-events': resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_004.png'),
+  'exhibition-gallery': resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
+  'artist-sessions': resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
+  'brand-agency': resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
 }
 
 function PricingRequest() {
-  const navigate = useNavigate()
+  const navigate = useLocaleNavigate()
+  const { t, tm } = useTranslation()
   const { plan } = useParams()
   const [searchParams] = useSearchParams()
   const serviceParam = searchParams.get('service') ?? ''
@@ -54,23 +25,28 @@ function PricingRequest() {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const hasTrackedPlanSelect = useRef(false)
 
-  const planInfo = plan && plan in planDetails ? planDetails[plan as keyof typeof planDetails] : null
-  const serviceInfo =
-    serviceParam && serviceParam in serviceDetails ? serviceDetails[serviceParam as ServiceSlug] : null
+  const planInfo = plan ? tm<{ name: string; intro: string }>(`forms.pricing.planIntros.${plan}`) : null
+  const serviceInfo = serviceParam && serviceParam in serviceMeta
+    ? {
+      label: t(serviceMeta[serviceParam as ServiceSlug].labelKey),
+      image: serviceImages[serviceParam as ServiceSlug],
+      intro: t(`forms.pricing.serviceIntros.${serviceParam}`),
+    }
+    : null
 
   const headline = useMemo(() => {
-    if (serviceInfo && planInfo) return `${planInfo.name} coverage for ${serviceInfo.label}.`
-    if (planInfo) return `${planInfo.name} coverage request.`
-    if (serviceInfo) return `Coverage request for ${serviceInfo.label}.`
-    return 'Request a pricing plan.'
-  }, [planInfo, serviceInfo])
+    if (serviceInfo && planInfo) return t('forms.pricing.headlineByPlanAndService', { plan: planInfo.name, service: serviceInfo.label })
+    if (planInfo) return t('forms.pricing.headlineByPlan', { plan: planInfo.name })
+    if (serviceInfo) return t('forms.pricing.headlineByService', { service: serviceInfo.label })
+    return t('forms.pricing.defaultHeadline')
+  }, [planInfo, serviceInfo, t])
 
   const description = useMemo(() => {
     if (serviceInfo && planInfo) return `${serviceInfo.intro} ${planInfo.intro}`
     if (serviceInfo) return serviceInfo.intro
     if (planInfo) return planInfo.intro
-    return 'Share your dates, location, and goals so we can build the right coverage plan.'
-  }, [planInfo, serviceInfo])
+    return t('forms.pricing.defaultDescription')
+  }, [planInfo, serviceInfo, t])
 
   const heroImage = serviceInfo?.image ?? resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_004.png')
 
@@ -119,11 +95,11 @@ function PricingRequest() {
     payload.coverageNotes = trimmedCoverageNotes
     const nextErrors: Record<string, string> = {}
 
-    if (!coverageType) nextErrors.coverageType = 'Select a coverage type.'
-    if (!trimmedName) nextErrors.fullName = 'Enter your name.'
-    if (!trimmedEmail) nextErrors.email = 'Enter your email address.'
+    if (!coverageType) nextErrors.coverageType = t('forms.pricing.errors.coverageTypeRequired')
+    if (!trimmedName) nextErrors.fullName = t('forms.pricing.errors.nameRequired')
+    if (!trimmedEmail) nextErrors.email = t('forms.pricing.errors.emailRequired')
     if (coverageType === 'Other' && !trimmedCoverageNotes) {
-      nextErrors.coverageNotes = 'Tell us what coverage you need.'
+      nextErrors.coverageNotes = t('forms.pricing.errors.coverageNotesRequired')
     }
 
     if (Object.keys(nextErrors).length > 0) {
@@ -138,7 +114,7 @@ function PricingRequest() {
 
     if (!endpoint) {
       setStatus('error')
-      setErrorMessage('Missing form endpoint. Add VITE_PRICING_FORM_ENDPOINT to your environment settings.')
+      setErrorMessage(t('forms.pricing.errors.missingEndpoint'))
       return
     }
 
@@ -159,7 +135,7 @@ function PricingRequest() {
       console.error(error)
       if (!useNoCors) {
         setStatus('error')
-        setErrorMessage('Something went wrong. Please try again or email us directly.')
+        setErrorMessage(t('forms.pricing.errors.requestFailed'))
         return
       }
     }
@@ -186,29 +162,29 @@ function PricingRequest() {
       <div className="home__nav pricing-request__nav">
         <TopNav
           leftLinks={[
-            { label: 'Home', onClick: () => navigate('/') },
-            { label: 'Services', href: '/#cases' },
+            { id: 'home', label: t('nav.home'), onClick: () => navigate('/') },
+            { id: 'services', label: t('nav.services'), href: '/#cases' },
           ]}
           rightLinks={[
-            { label: 'About', onClick: () => navigate('/about') },
-            { label: 'Contact', onClick: () => navigate('/contact') },
+            { id: 'about', label: t('nav.about'), onClick: () => navigate('/about') },
+            { id: 'contact', label: t('nav.contact'), onClick: () => navigate('/contact') },
           ]}
           onBrandClick={() => navigate('/')}
-          brandLabel="expose.u"
+          brandLabel={t('nav.brand')}
           className="top-nav--page"
-          activeLabel="Services"
+          activeId="services"
         />
       </div>
 
       <section className="pricing-request__hero" style={{ backgroundImage: `url(${heroImage})` }}>
         <div className="pricing-request__hero-overlay" />
         <div className="pricing-request__hero-content content">
-          <p className="pricing-request__eyebrow">Pricing request</p>
+          <p className="pricing-request__eyebrow">{t('forms.pricing.eyebrow')}</p>
           <h1>{headline}</h1>
           <p>{description}</p>
           <div className="pricing-request__meta">
-            <span>{planInfo?.name ?? 'Plan selected on request'}</span>
-            <span>{serviceInfo?.label ?? 'General inquiry'}</span>
+            <span>{planInfo?.name ?? t('forms.pricing.planSelectedFallback')}</span>
+            <span>{serviceInfo?.label ?? t('forms.pricing.generalInquiry')}</span>
           </div>
         </div>
       </section>
@@ -216,18 +192,15 @@ function PricingRequest() {
       <section className="section pricing-request__body">
         <div className="content pricing-request__grid">
           <div className="pricing-request__copy">
-            <h2>Tell us the essentials.</h2>
-            <p>
-              We’ll review your details and come back with a clear proposal, timeline, and next steps. The form keeps it short
-              so we can reply fast.
-            </p>
+            <h2>{t('forms.pricing.essentialsHeadline')}</h2>
+            <p>{t('forms.pricing.essentialsCopy')}</p>
           </div>
 
           <form className="pricing-request__form" onSubmit={handleSubmit}>
             <input type="hidden" name="plan" value={planInfo?.name ?? plan ?? ''} />
             <input type="hidden" name="service" value={serviceInfo?.label ?? serviceParam ?? ''} />
             <div className={`${fieldClass('coverageType')} pricing-request__field--full`}>
-              <label htmlFor="coverageType">Type of coverage</label>
+              <label htmlFor="coverageType">{t('forms.pricing.coverageTypeLabel')}</label>
               <select
                 id="coverageType"
                 name="coverageType"
@@ -235,81 +208,78 @@ function PricingRequest() {
                 onChange={() => clearFieldError('coverageType')}
                 aria-invalid={fieldErrors.coverageType ? 'true' : undefined}
               >
-                <option value="">Select a coverage type</option>
-                <option value="Photo only">Photo only</option>
-                <option value="Video only">Video only</option>
-                <option value="Photo + video">Photo + video</option>
-                <option value="Highlights + recap">Highlights + recap</option>
-                <option value="Social-first reels">Social-first reels</option>
-                <option value="Other">Other</option>
+                <option value="">{t('forms.pricing.coverageTypePlaceholder')}</option>
+                {tm<string[]>('forms.pricing.coverageTypeOptions').map((option) => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
               </select>
               {fieldErrors.coverageType && <span className="pricing-request__field-error">{fieldErrors.coverageType}</span>}
             </div>
             <div className={fieldClass('fullName')}>
-              <label htmlFor="fullName">Name</label>
+              <label htmlFor="fullName">{t('forms.pricing.fields.name')}</label>
               <input
                 id="fullName"
                 name="fullName"
                 type="text"
                 required
-                placeholder="Full name"
+                placeholder={t('forms.pricing.fields.namePlaceholder')}
                 onChange={() => clearFieldError('fullName')}
                 aria-invalid={fieldErrors.fullName ? 'true' : undefined}
               />
               {fieldErrors.fullName && <span className="pricing-request__field-error">{fieldErrors.fullName}</span>}
             </div>
             <div className={fieldClass('email')}>
-              <label htmlFor="email">Email</label>
+              <label htmlFor="email">{t('forms.pricing.fields.email')}</label>
               <input
                 id="email"
                 name="email"
                 type="email"
                 required
-                placeholder="you@example.com"
+                placeholder={t('forms.pricing.fields.emailPlaceholder')}
                 onChange={() => clearFieldError('email')}
                 aria-invalid={fieldErrors.email ? 'true' : undefined}
               />
               {fieldErrors.email && <span className="pricing-request__field-error">{fieldErrors.email}</span>}
             </div>
             <div className="pricing-request__field">
-              <label htmlFor="phone">Phone</label>
-              <input id="phone" name="phone" type="tel" placeholder="Phone number" />
+              <label htmlFor="phone">{t('forms.pricing.fields.phone')}</label>
+              <input id="phone" name="phone" type="tel" placeholder={t('forms.pricing.fields.phonePlaceholder')} />
             </div>
             <div className="pricing-request__field">
-              <label htmlFor="organization">Organization</label>
-              <input id="organization" name="organization" type="text" placeholder="Gallery, label, or studio" />
+              <label htmlFor="organization">{t('forms.pricing.fields.organization')}</label>
+              <input id="organization" name="organization" type="text" placeholder={t('forms.pricing.fields.organizationPlaceholder')} />
             </div>
             <div className="pricing-request__field">
-              <label htmlFor="date">Target date</label>
-              <input id="date" name="date" type="text" placeholder="Event date or timeframe" />
+              <label htmlFor="date">{t('forms.pricing.fields.date')}</label>
+              <input id="date" name="date" type="text" placeholder={t('forms.pricing.fields.datePlaceholder')} />
             </div>
             <div className="pricing-request__field">
-              <label htmlFor="location">Location</label>
-              <input id="location" name="location" type="text" placeholder="City, venue, or region" />
+              <label htmlFor="location">{t('forms.pricing.fields.location')}</label>
+              <input id="location" name="location" type="text" placeholder={t('forms.pricing.fields.locationPlaceholder')} />
             </div>
             <div className={`${fieldClass('coverageNotes')} pricing-request__field--full`}>
-              <label htmlFor="coverageNotes">Coverage details (if other)</label>
+              <label htmlFor="coverageNotes">{t('forms.pricing.fields.coverageNotes')}</label>
               <input
                 id="coverageNotes"
                 name="coverageNotes"
                 type="text"
-                placeholder="Describe the coverage mix you need."
+                placeholder={t('forms.pricing.fields.coverageNotesPlaceholder')}
                 onChange={() => clearFieldError('coverageNotes')}
                 aria-invalid={fieldErrors.coverageNotes ? 'true' : undefined}
               />
               {fieldErrors.coverageNotes && <span className="pricing-request__field-error">{fieldErrors.coverageNotes}</span>}
             </div>
             <div className="pricing-request__field pricing-request__field--full">
-              <label htmlFor="details">Project notes</label>
+              <label htmlFor="details">{t('forms.pricing.fields.details')}</label>
               <textarea
                 id="details"
                 name="details"
                 rows={4}
-                placeholder="Share the format, deliverables, and any timing constraints."
+                placeholder={t('forms.pricing.fields.detailsPlaceholder')}
               />
             </div>
             <button type="submit" disabled={status === 'sending'}>
-              {status === 'sending' ? 'Sending...' : 'Send request'}
+              {status === 'sending' ? t('forms.pricing.submitSending') : t('forms.pricing.submitIdle')}
             </button>
             {status === 'error' && <p className="pricing-request__error">{errorMessage}</p>}
           </form>

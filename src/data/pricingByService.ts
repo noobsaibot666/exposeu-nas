@@ -3,62 +3,89 @@ import type { PricingTier } from './pricingTiers'
 // Simple per-service overrides for pricing cards.
 // Use plan slugs from src/data/pricingTiers.ts (single-event, monthly-coverage, retainer-studio).
 // Only include fields you want to override; everything else uses the base tier values.
-export type PricingOverridesByService = Record<string, Partial<Record<PricingTier['slug'], Partial<PricingTier>>>>
+export type PricingOverride = {
+  price?: string
+  descriptionKey?: string
+  chooseThisIfKey?: string
+  featuresKey?: string
+}
+
+export type PricingOverridesByService = Record<string, Partial<Record<PricingTier['slug'], PricingOverride>>>
 
 export const pricingByService = {
   'concerts-events': {
     'single-event': {
       price: '€900',
-      description: 'One concert or live event captured with fast selects, reels, and clean hero moments.',
+      descriptionKey: 'pricing.serviceDescriptions.concerts-events.single-event',
+      chooseThisIfKey: 'pricing.serviceTiers.concerts-events.single-event.chooseThisIf',
+      featuresKey: 'pricing.serviceTiers.concerts-events.single-event.features',
     },
     'monthly-coverage': {
       price: '€2.9K',
-      description: 'Repeat live event coverage with one crew and one delivery rhythm.',
+      descriptionKey: 'pricing.serviceDescriptions.concerts-events.monthly-coverage',
+      chooseThisIfKey: 'pricing.serviceTiers.concerts-events.monthly-coverage.chooseThisIf',
+      featuresKey: 'pricing.serviceTiers.concerts-events.monthly-coverage.features',
     },
     'retainer-studio': {
       price: 'Custom',
+      featuresKey: 'pricing.serviceTiers.concerts-events.retainer-studio.features',
     },
   },
 
   'exhibition-gallery': {
     'single-event': {
       price: '€600',
-      description: 'One exhibition, opening, or gallery program captured for press, archive, and partner use.',
+      descriptionKey: 'pricing.serviceDescriptions.exhibition-gallery.single-event',
+      chooseThisIfKey: 'pricing.serviceTiers.exhibition-gallery.single-event.chooseThisIf',
+      featuresKey: 'pricing.serviceTiers.exhibition-gallery.single-event.features',
     },
     'monthly-coverage': {
       price: '€2.1K',
-      description: 'Recurring gallery documentation with one visual standard and faster turnaround.',
+      descriptionKey: 'pricing.serviceDescriptions.exhibition-gallery.monthly-coverage',
+      chooseThisIfKey: 'pricing.serviceTiers.exhibition-gallery.monthly-coverage.chooseThisIf',
+      featuresKey: 'pricing.serviceTiers.exhibition-gallery.monthly-coverage.features',
     },
     'retainer-studio': {
       price: 'Custom',
+      featuresKey: 'pricing.serviceTiers.exhibition-gallery.retainer-studio.features',
     },
   },
 
   'artist-sessions': {
     'single-event': {
       price: '€400',
-      description: 'One portrait and process session for releases, profiles, and press kits.',
+      descriptionKey: 'pricing.serviceDescriptions.artist-sessions.single-event',
+      chooseThisIfKey: 'pricing.serviceTiers.artist-sessions.single-event.chooseThisIf',
+      featuresKey: 'pricing.serviceTiers.artist-sessions.single-event.features',
     },
     'monthly-coverage': {
       price: '€1.8K',
-      description: 'Recurring artist coverage across studio work, launches, and exhibition dates.',
+      descriptionKey: 'pricing.serviceDescriptions.artist-sessions.monthly-coverage',
+      chooseThisIfKey: 'pricing.serviceTiers.artist-sessions.monthly-coverage.chooseThisIf',
+      featuresKey: 'pricing.serviceTiers.artist-sessions.monthly-coverage.features',
     },
     'retainer-studio': {
       price: 'Custom',
+      featuresKey: 'pricing.serviceTiers.artist-sessions.retainer-studio.features',
     },
   },
 
   'brand-agency': {
     'single-event': {
       price: '€1.5K',
-      description: 'One brand, agency, runway, or activation event captured for PR, campaign, and sponsor use.',
+      descriptionKey: 'pricing.serviceDescriptions.brand-agency.single-event',
+      chooseThisIfKey: 'pricing.serviceTiers.brand-agency.single-event.chooseThisIf',
+      featuresKey: 'pricing.serviceTiers.brand-agency.single-event.features',
     },
     'monthly-coverage': {
       price: '€5.9K',
-      description: 'Seasonal brand event coverage with consistent editorial and campaign output.',
+      descriptionKey: 'pricing.serviceDescriptions.brand-agency.monthly-coverage',
+      chooseThisIfKey: 'pricing.serviceTiers.brand-agency.monthly-coverage.chooseThisIf',
+      featuresKey: 'pricing.serviceTiers.brand-agency.monthly-coverage.features',
     },
     'retainer-studio': {
       price: 'Custom',
+      featuresKey: 'pricing.serviceTiers.brand-agency.retainer-studio.features',
     },
   },
 } as const

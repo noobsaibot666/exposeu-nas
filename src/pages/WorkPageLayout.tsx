@@ -5,6 +5,8 @@ import TopNav from '../components/TopNav'
 import PricingSection from '../sections/PricingSection'
 import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
 import './WorkPage.css'
+import { useTranslation } from '../i18n/LocaleProvider'
+import { useLocalePath } from '../i18n/LocaleProvider'
 
 export type WorkCard = {
   image?: string
@@ -16,6 +18,7 @@ type WorkPageLayoutProps = {
   title: string
   heroCopy: string
   detail?: string
+  socialProof?: string
   cards: WorkCard[]
   galleryTitle: string
   galleryCopy: string
@@ -34,6 +37,7 @@ function WorkPageLayout({
   title,
   heroCopy,
   detail,
+  socialProof,
   cards,
   galleryTitle,
   galleryCopy,
@@ -49,6 +53,9 @@ function WorkPageLayout({
 }: WorkPageLayoutProps) {
   const rootRef = useRef<HTMLElement | null>(null)
   const stackRef = useRef<HTMLDivElement | null>(null)
+  const { t, tm } = useTranslation()
+  const processSteps = tm<Array<{ title: string; body: string }>>('services.shared.process')
+  const localizePath = useLocalePath()
 
   useTrackViewEvent('service_view', {
     service_slug: serviceSlug,
@@ -172,6 +179,33 @@ function WorkPageLayout({
         }
       })
 
+      // Process section
+      gsap.fromTo(
+        '.work-process__header > *',
+        { opacity: 0, y: 16 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.65,
+          stagger: 0.08,
+          ease: 'sine.inOut',
+          scrollTrigger: { trigger: '.work-process', start: 'top 82%' },
+        },
+      )
+      gsap.fromTo(
+        '.work-process__step',
+        { opacity: 0, y: 28, filter: 'blur(3px)' },
+        {
+          opacity: 1,
+          y: 0,
+          filter: 'blur(0px)',
+          duration: 0.7,
+          stagger: 0.1,
+          ease: 'sine.inOut',
+          scrollTrigger: { trigger: '.work-process', start: 'top 76%' },
+        },
+      )
+
       // CTA section
       gsap.fromTo(
         '.work-cta__content > *',
@@ -258,15 +292,15 @@ function WorkPageLayout({
       <div className="home__nav work-nav">
         <TopNav
           leftLinks={[
-            { label: 'Home', href: '/' },
-            { label: 'Services', href: '/#cases' },
+            { id: 'home', label: t('nav.home'), href: '/' },
+            { id: 'services', label: t('nav.services'), href: '/#cases' },
           ]}
           rightLinks={[
-            { label: 'About', href: '/about' },
-            { label: 'Contact', href: '/contact' },
+            { id: 'about', label: t('nav.about'), href: '/about' },
+            { id: 'contact', label: t('nav.contact'), href: '/contact' },
           ]}
           className="top-nav--page"
-          activeLabel="Services"
+          activeId="services"
         />
       </div>
 
@@ -276,9 +310,10 @@ function WorkPageLayout({
             <p className="work-hero__eyebrow">{title}</p>
             <h1>{heroCopy}</h1>
             {detail && <p className="work-hero__detail">{detail}</p>}
+            {socialProof && <p className="work-hero__social-proof">{socialProof}</p>}
           </div>
           <div className="work-hero__stack-shell">
-            <p className="work-hero__label">Projects</p>
+            <p className="work-hero__label">{t('services.shared.projects')}</p>
             <div className="work-hero__stack" ref={stackRef}>
               {cards.map((card, index) => {
                 const scales = [0.98, 1.08, 1.2, 1.32]
@@ -312,17 +347,17 @@ function WorkPageLayout({
       </section>
 
       {renderSection(
-        'What you get',
+        t('services.shared.whatYouGet'),
         galleryTitle,
         galleryCopy,
         gallery,
         sectionImages[0],
-        'gallery-primary',
+          'gallery-primary',
       )}
 
       {extraGallery && extraGallery.length > 0 &&
         renderSection(
-          'Ideal for',
+          t('services.shared.idealFor'),
           extraGalleryTitle ?? '',
           extraGalleryCopy ?? '',
           extraGallery,
@@ -330,30 +365,48 @@ function WorkPageLayout({
           'gallery-secondary',
         )}
 
+      <section className="section work-process">
+        <div className="content">
+          <div className="work-process__header">
+            <div className="work-gallery__label">{t('services.shared.howItWorks')}</div>
+            <h2 className="work-process__heading">{t('services.shared.howItWorksHeading')}</h2>
+          </div>
+          <ol className="work-process__steps">
+            {processSteps.map((step, i) => (
+              <li className="work-process__step" key={step.title}>
+                <span className="work-process__step-number">{String(i + 1).padStart(2, '0')}</span>
+                <h3 className="work-process__step-title">{step.title}</h3>
+                <p className="work-process__step-body">{step.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
       <PricingSection
-        headline={`Pricing for ${title.toLowerCase()} — one-time and recurring.`}
+        headline={t('services.shared.pricingFor', { service: title.toLowerCase() })}
         serviceSlug={serviceSlug}
       />
 
       <section className="section work-cta">
         <div className="content work-cta__content">
           <div>
-            <p className="work-cta__eyebrow">Ready to collaborate?</p>
+            <p className="work-cta__eyebrow">{t('services.shared.readyToCollaborate')}</p>
             <h2>{ctaText}</h2>
             {ctaDetail ? <p>{ctaDetail}</p> : null}
           </div>
           <a
             className="work-cta__link"
-            href={finalCtaHref}
+            href={localizePath(finalCtaHref)}
             onClick={() =>
               trackEvent('service_cta_click', {
                 service_slug: serviceSlug,
                 service_label: title,
-                cta_label: ctaLabel ?? 'Request availability',
+                cta_label: ctaLabel ?? t('services.shared.requestAvailability'),
                 cta_location: 'service_footer',
               })}
           >
-            {ctaLabel ?? 'Request availability'}
+            {ctaLabel ?? t('services.shared.requestAvailability')}
           </a>
         </div>
       </section>

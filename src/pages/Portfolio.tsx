@@ -3,10 +3,10 @@ import type { PointerEvent, WheelEvent } from 'react'
 import './Portfolio.css'
 import { resolveImagePath } from '../utils/resolveImagePath'
 import gsap from 'gsap'
-import { useNavigate } from 'react-router-dom'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
 import { serviceMeta } from '../data/serviceMeta'
+import { useLocaleNavigate, useLocalePath, useTranslation } from '../i18n/LocaleProvider'
 
 type VideoItem = {
   id: string
@@ -128,43 +128,45 @@ const offers: OfferItem[] = [
   {
     id: 'offer-exhibition',
     title: serviceMeta['exhibition-gallery'].label,
-    blurb: 'Full visual direction for galleries, openings, and installs with immersive screens, loops, and atmosphere.',
-    link: serviceMeta['exhibition-gallery'].href,
-    cta: 'Check availability',
+    blurb: '',
+    link: '/contact?type=exhibition',
+    cta: '',
     accent: '#ffffffff',
     background: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
   },
   {
     id: 'offer-session',
     title: serviceMeta['artist-sessions'].label,
-    blurb: 'Studio and portrait sessions that capture process and story with polished deliverables for press and socials.',
-    link: serviceMeta['artist-sessions'].href,
-    cta: 'Check availability',
+    blurb: '',
+    link: '/contact?type=artist-session',
+    cta: '',
     accent: '#c4b5fd',
     background: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
   },
   {
     id: 'offer-performance',
     title: serviceMeta['concerts-events'].label,
-    blurb: 'Concert and live event capture with cinematic documentation, multi-angle coverage, and quick turnarounds.',
-    link: serviceMeta['concerts-events'].href,
-    cta: 'Check availability',
+    blurb: '',
+    link: '/contact?type=concert',
+    cta: '',
     accent: '#fca5a5',
     background: resolveImagePath('/src/assets/images/website/performances/thumb_3_086.jpg'),
   },
   {
     id: 'offer-brand',
     title: serviceMeta['brand-agency'].label,
-    blurb: 'Editorial brand, agency, runway, and activation coverage with clean angles, sharp detail, and fast delivery.',
-    link: serviceMeta['brand-agency'].href,
-    cta: 'Check availability',
+    blurb: '',
+    link: '/contact?type=brand-event',
+    cta: '',
     accent: '#c7d2fe',
     background: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
   },
 ]
 
 function Portfolio() {
-  const navigate = useNavigate()
+  const navigate = useLocaleNavigate()
+  const localizePath = useLocalePath()
+  const { t, tm } = useTranslation()
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null)
   const [slideIndex, setSlideIndex] = useState(0)
   const [slideDirection, setSlideDirection] = useState(1)
@@ -175,18 +177,43 @@ function Portfolio() {
   const openerRef = useRef<HTMLElement | null>(null)
   const dragState = useRef({ active: false, startX: 0, scrollLeft: 0, moved: false, pointerId: 0 })
 
+  const videoTranslations = tm<Array<Pick<VideoItem, 'id' | 'title' | 'description' | 'context' | 'outcome' | 'tag' | 'cta'>>>('portfolio.videos')
+  const proofItems = tm<string[]>('portfolio.proofStrip')
+  const localizedVideos = useMemo(
+    () => videos.map((video) => ({ ...video, ...(videoTranslations.find((entry) => entry.id === video.id) ?? {}) })),
+    [videoTranslations],
+  )
+
+  const localizedOffers = useMemo(
+    () =>
+      offers.map((offer) => ({
+        ...offer,
+        title:
+          offer.id === 'offer-exhibition'
+            ? t(serviceMeta['exhibition-gallery'].labelKey)
+            : offer.id === 'offer-session'
+              ? t(serviceMeta['artist-sessions'].labelKey)
+              : offer.id === 'offer-performance'
+                ? t(serviceMeta['concerts-events'].labelKey)
+                : t(serviceMeta['brand-agency'].labelKey),
+        blurb: t(`portfolio.offers.cards.${offer.id}.blurb`),
+        cta: t('portfolio.offers.cta'),
+      })),
+    [t],
+  )
+
   const navLinks = useMemo(
     () => ({
       left: [
-        { label: 'Home', onClick: () => navigate('/') },
-        { label: 'Services', href: '/#cases' },
+        { id: 'home', label: t('nav.home'), onClick: () => navigate('/') },
+        { id: 'services', label: t('nav.services'), href: '/#cases' },
       ],
       right: [
-        { label: 'About', onClick: () => navigate('/about') },
-        { label: 'Contact', onClick: () => navigate('/contact') },
+        { id: 'about', label: t('nav.about'), onClick: () => navigate('/about') },
+        { id: 'contact', label: t('nav.contact'), onClick: () => navigate('/contact') },
       ],
     }),
-    [navigate],
+    [navigate, t],
   )
 
 
@@ -441,12 +468,12 @@ function Portfolio() {
   }
 
   const displayVideos = useMemo(() => {
-    if (!isMobile) return videos
-    const filtered = videos.filter((video) => video.id !== 'v4')
+    if (!isMobile) return localizedVideos
+    const filtered = localizedVideos.filter((video) => video.id !== 'v4')
     const boogarins = filtered.find((video) => video.id === 'v5')
     const rest = filtered.filter((video) => video.id !== 'v5')
     return boogarins ? [...rest, boogarins] : rest
-  }, [isMobile])
+  }, [isMobile, localizedVideos])
 
   return (
     <main className="portfolio" ref={rootRef} id="main">
@@ -456,14 +483,15 @@ function Portfolio() {
           leftLinks={navLinks.left}
           rightLinks={navLinks.right}
           onBrandClick={() => navigate('/')}
-          brandLabel="expose.u"
+          brandLabel={t('nav.brand')}
         />
       </div>
 
       <section className="section portfolio__hero">
         <div className="content portfolio__hero-inner">
-          <h1>Moving visuals for stages and walls.</h1>
-          <p>Bold captures with quiet control. See how we frame performances, galleries, and launches.</p>
+          <p className="portfolio__eyebrow">{t('portfolio.hero.eyebrow')}</p>
+          <h1>{t('portfolio.hero.headline')}</h1>
+          <p>{t('portfolio.hero.copy')}</p>
         </div>
       </section>
 
@@ -504,7 +532,7 @@ function Portfolio() {
                       </span>
                     </span>
                     <div className="portfolio__topline">
-                      <span className="portfolio__pill">{video.tag ?? 'Feature'}</span>
+                      <span className="portfolio__pill">{video.tag ?? t('portfolio.labels.feature')}</span>
                       <span className="portfolio__icon">
                         <svg width="12" height="12" viewBox="0 0 22 22" fill="none">
                           <path
@@ -520,17 +548,17 @@ function Portfolio() {
                       <p className="portfolio__title">{video.title}</p>
                       <p className="portfolio__description">{video.description}</p>
                       <p className="portfolio__context">
-                        <span className="portfolio__context-label">Context</span>
+                        <span className="portfolio__context-label">{t('portfolio.labels.context')}</span>
                         {video.context}
                       </p>
                       <p className="portfolio__context">
-                        <span className="portfolio__context-label">Outcome</span>
+                        <span className="portfolio__context-label">{t('portfolio.labels.outcome')}</span>
                         {video.outcome}
                       </p>
                       <div className="portfolio__footer-row">
                         <span className="portfolio__location">{video.location}</span>
                         <span className="portfolio__cta-chip">
-                          {video.cta ?? 'Play'}
+                          {video.cta ?? t('portfolio.labels.play')}
                           <svg width="8" height="14" viewBox="0 0 3 7" fill="none">
                             <path
                               d="M1 6L2.50024 4.1247C2.79242 3.75948 2.79242 3.24052 2.50024 2.87531L1 1"
@@ -550,32 +578,38 @@ function Portfolio() {
         </div>
       </section>
 
+      <div className="portfolio__proofStrip">
+        {proofItems.flatMap((item, i) =>
+          i === 0
+            ? [<span key={item}>{item}</span>]
+            : [
+                <span key={`dot-${i}`} className="portfolio__proofDot" aria-hidden="true">·</span>,
+                <span key={item}>{item}</span>,
+              ]
+        )}
+      </div>
+
       <section className="section portfolio__offers">
         <div className="content portfolio__offers-inner">
           <div className="portfolio__offers-copy">
-            <p className="portfolio__eyebrow">Collaboration</p>
-            <h2>
-              Now that you’ve seen the work,
-              <br />
-              choose how we can team up.
-            </h2>
-            <p className="portfolio__lead">
-              Pick the format that fits your stage, from exhibitions and artist sessions to full performance capture.
-            </p>
+            <p className="portfolio__eyebrow">{t('portfolio.offers.label')}</p>
+            <p className="portfolio__servicesBridge">{t('portfolio.offers.bridge')}</p>
+            <h2>{t('portfolio.offers.headline')}</h2>
+            <p className="portfolio__lead">{t('portfolio.offers.copy')}</p>
           </div>
           <div className="portfolio__offers-grid">
-            {offers.map((offer) => (
+            {localizedOffers.map((offer) => (
               <a
                 key={offer.id}
                 className="portfolio__offer-card"
-                href={offer.link}
+                href={localizePath(offer.link)}
               >
                 <div className="portfolio__offer-image-wrap">
                   <img className="portfolio__offer-image" src={offer.background} alt="" decoding="async" />
                 </div>
                 <div className="portfolio__offer-content">
                   <div className="portfolio__offer-top">
-                    <span className="portfolio__offer-pill">Offer</span>
+                    <span className="portfolio__offer-pill">{t('portfolio.offers.pill')}</span>
                     <span className="portfolio__offer-badge">{offer.title}</span>
                   </div>
                   <p className="portfolio__offer-title">{offer.title}</p>
@@ -611,7 +645,7 @@ function Portfolio() {
             <button
               type="button"
               className="portfolio__close"
-              aria-label="Close video"
+              aria-label={t('portfolio.modal.close')}
               onClick={() => setActiveVideo(null)}
             >
               <svg
@@ -642,7 +676,7 @@ function Portfolio() {
                             <button
                               type="button"
                               className="portfolio__slideshow-arrow portfolio__slideshow-arrow--left"
-                              aria-label="Previous slide"
+                              aria-label={t('portfolio.modal.previousSlide')}
                               onClick={() => {
                                 setSlideDirection(-1)
                                 setSlideIndex((slideIndex - 1 + total) % total)
@@ -653,7 +687,7 @@ function Portfolio() {
                             <button
                               type="button"
                               className="portfolio__slideshow-arrow portfolio__slideshow-arrow--right"
-                              aria-label="Next slide"
+                              aria-label={t('portfolio.modal.nextSlide')}
                               onClick={() => {
                                 setSlideDirection(1)
                                 setSlideIndex((slideIndex + 1) % total)

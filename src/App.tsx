@@ -20,10 +20,16 @@ import { useEffect, useLayoutEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import AnalyticsConsentBanner from './components/AnalyticsConsentBanner'
 import { trackEvent, trackPageView } from './utils/analytics'
+import LocaleSwitcher from './components/LocaleSwitcher'
+import { usePageMeta } from './i18n/pageMeta'
+import { useTranslation } from './i18n/LocaleProvider'
 function App() {
   const location = useLocation()
   const contentRef = useRef<HTMLDivElement>(null)
   const isFirstRender = useRef(true)
+  const { t } = useTranslation()
+
+  usePageMeta()
 
   // Centralized scroll reset + micro-transition on route change
   useLayoutEffect(() => {
@@ -117,36 +123,63 @@ function App() {
   return (
     <ThemeProvider>
       <div className="page">
-        <a className="skip-link" href="#main">Skip to content</a>
+        <a className="skip-link" href="#main">{t('common.skipToContent')}</a>
         <AnalyticsConsentBanner />
+        <LocaleSwitcher />
         <div className="page__content" ref={contentRef}>
           <Routes>
             <Route path="/" element={<HomeV2 />} />
+            <Route path="/de" element={<HomeV2 />} />
             <Route path="/old-home" element={<Home />} />
+            <Route path="/de/old-home" element={<Navigate to="/de" replace />} />
             <Route path="/v2" element={<HomeV2 />} />
+            <Route path="/de/v2" element={<HomeV2 />} />
             <Route path="/about" element={<About />} />
+            <Route path="/de/about" element={<About />} />
             <Route path="/call-session" element={<CallSession />} />
+            <Route path="/de/call-session" element={<CallSession />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/de/contact" element={<Contact />} />
             <Route path="/contact-success" element={<ContactSuccess />} />
+            <Route path="/de/contact-success" element={<ContactSuccess />} />
             <Route path="/services/concerts-events" element={<ConcertsEvents />} />
+            <Route path="/de/services/concerts-events" element={<ConcertsEvents />} />
             <Route path="/services/exhibition-gallery" element={<ExhibitionGallery />} />
+            <Route path="/de/services/exhibition-gallery" element={<ExhibitionGallery />} />
             <Route path="/services/artist-sessions" element={<ArtistSessions />} />
+            <Route path="/de/services/artist-sessions" element={<ArtistSessions />} />
             <Route path="/services/brand-agency" element={<BrandAgency />} />
+            <Route path="/de/services/brand-agency" element={<BrandAgency />} />
             <Route path="/services/performance" element={<Navigate to="/services/concerts-events" replace />} />
+            <Route path="/de/services/performance" element={<Navigate to="/de/services/concerts-events" replace />} />
             <Route path="/services/gallery-stories" element={<Navigate to="/services/exhibition-gallery" replace />} />
+            <Route path="/de/services/gallery-stories" element={<Navigate to="/de/services/exhibition-gallery" replace />} />
             <Route path="/services/fashion-show" element={<Navigate to="/services/brand-agency" replace />} />
+            <Route path="/de/services/fashion-show" element={<Navigate to="/de/services/brand-agency" replace />} />
             <Route path="/services/atmospheric-films" element={<Navigate to="/services/concerts-events" replace />} />
+            <Route path="/de/services/atmospheric-films" element={<Navigate to="/de/services/concerts-events" replace />} />
             <Route path="/performance" element={<Navigate to="/services/concerts-events" replace />} />
+            <Route path="/de/performance" element={<Navigate to="/de/services/concerts-events" replace />} />
             <Route path="/gallery-stories" element={<Navigate to="/services/exhibition-gallery" replace />} />
+            <Route path="/de/gallery-stories" element={<Navigate to="/de/services/exhibition-gallery" replace />} />
             <Route path="/fashion-show" element={<Navigate to="/services/brand-agency" replace />} />
+            <Route path="/de/fashion-show" element={<Navigate to="/de/services/brand-agency" replace />} />
             <Route path="/atmospheric" element={<Navigate to="/services/concerts-events" replace />} />
+            <Route path="/de/atmospheric" element={<Navigate to="/de/services/concerts-events" replace />} />
             <Route path="/documentation" element={<Navigate to="/services/exhibition-gallery" replace />} />
+            <Route path="/de/documentation" element={<Navigate to="/de/services/exhibition-gallery" replace />} />
             <Route path="/exhibitions" element={<Navigate to="/services/exhibition-gallery" replace />} />
+            <Route path="/de/exhibitions" element={<Navigate to="/de/services/exhibition-gallery" replace />} />
             <Route path="/impressum" element={<Impressum />} />
+            <Route path="/de/impressum" element={<Impressum />} />
             <Route path="/artist-sessions" element={<Navigate to="/services/artist-sessions" replace />} />
+            <Route path="/de/artist-sessions" element={<Navigate to="/de/services/artist-sessions" replace />} />
             <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/de/portfolio" element={<Portfolio />} />
             <Route path="/pricing-request/:plan" element={<PricingRequest />} />
+            <Route path="/de/pricing-request/:plan" element={<PricingRequest />} />
             <Route path="/pricing-request/success" element={<PricingRequestSuccess />} />
+            <Route path="/de/pricing-request/success" element={<PricingRequestSuccess />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
