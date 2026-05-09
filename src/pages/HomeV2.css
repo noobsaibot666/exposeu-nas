@@ -109,6 +109,23 @@
   color: #fff;
 }
 
+@media (min-width: 901px) {
+  .home--v2 .home__nav .top-nav__bar {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: clamp(12px, 2vw, 28px);
+    padding-inline: clamp(24px, 5vw, 84px);
+  }
+
+  .home--v2 .home__nav .top-nav__links {
+    gap: clamp(12px, 1.8vw, 28px);
+    min-width: 0;
+  }
+
+  .home--v2 .home__nav .top-nav__links--right {
+    padding-right: 0;
+  }
+}
+
 .home__hero-body {
   display: flex;
   flex-direction: column;
