@@ -8,6 +8,7 @@ import Footer from '../sections/Footer'
 import { resolveImagePath } from '../utils/resolveImagePath'
 import { serviceMeta } from '../data/serviceMeta'
 import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
+import { smoothScrollTo } from '../utils/smoothScroll'
 import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { SchemaOrg, SEOMeta } from '../components/SEOMeta'
@@ -183,8 +184,7 @@ function HomeV2() {
   }
 
   const handleScroll = (id: string) => {
-    const target = document.querySelector(id)
-    target?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    smoothScrollTo(id, 720, 72)
   }
 
   const handleHeroCardClick = () => {
@@ -202,7 +202,7 @@ function HomeV2() {
     () => ({
       left: [
         { id: 'home', label: t('nav.home'), onClick: () => handleScroll('#hero') },
-        { id: 'services', label: t('nav.services'), href: '/#cases' },
+        { id: 'services', label: t('nav.services'), onClick: () => handleScroll('#cases') },
       ],
       right: [
         { id: 'about', label: t('nav.about'), onClick: () => navigate('/about') },
@@ -514,10 +514,8 @@ function HomeV2() {
 
   useEffect(() => {
     if (!location.hash) return
-    const target = document.querySelector(location.hash)
-    if (!target) return
     requestAnimationFrame(() => {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      smoothScrollTo(location.hash, 720, 72)
     })
   }, [location.hash])
 

@@ -30,12 +30,12 @@
 /* Page micro-transition */
 .page__content {
   opacity: 1;
-  transition: opacity 200ms ease-out, transform 200ms ease-out;
+  transition: opacity 320ms ease, transform 320ms ease;
 }
 
 .page__content.is-entering {
   opacity: 0;
-  transform: translateY(8px);
+  transform: translateY(4px);
 }
 
 @media (prefers-reduced-motion: reduce) {
