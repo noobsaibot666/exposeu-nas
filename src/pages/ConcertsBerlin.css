@@ -1,0 +1,251 @@
+.cb {
+  background: var(--bg-base);
+  color: var(--text-strong);
+  min-height: 100svh;
+}
+
+/* ─── Hero ─── */
+
+.cb__hero {
+  padding-top: 48px;
+  padding-bottom: clamp(48px, 8vh, 80px);
+}
+
+.cb__hero-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 760px;
+}
+
+.cb__label {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-card);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  font-size: 0.72rem;
+  width: fit-content;
+}
+
+.cb__hero-inner h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw + 1rem, 3.8rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+}
+
+.cb__subline {
+  margin: 0;
+  font-size: clamp(1rem, 1.5vw + 0.5rem, 1.2rem);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+.cb__credential {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+}
+
+.cb__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  padding: 14px 28px;
+  border-radius: 999px;
+  background: var(--button-solid-bg);
+  color: var(--button-solid-text);
+  border: 1px solid var(--button-solid-border);
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  width: fit-content;
+  transition: transform 150ms ease, opacity 150ms ease;
+}
+
+.cb__cta:hover {
+  transform: translateY(-2px);
+  opacity: 0.92;
+  color: var(--button-solid-text);
+  text-decoration: none;
+}
+
+/* ─── Coverage ─── */
+
+.cb__coverage {
+  padding-block: clamp(42px, 6vh, 72px);
+  border-top: 1px solid var(--border-soft);
+}
+
+.cb__coverage-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.cb__coverage-inner h2,
+.cb__pricing-inner h2,
+.cb__process-inner h2,
+.cb__final-inner h2 {
+  margin: 0;
+  font-size: clamp(1.6rem, 2.5vw + 0.8rem, 2.6rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.cb__bullets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cb__bullets li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.cb__bullets li::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+/* ─── Pricing ─── */
+
+.cb__pricing {
+  padding-block: clamp(42px, 6vh, 72px);
+  border-top: 1px solid var(--border-soft);
+}
+
+.cb__pricing-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 640px;
+}
+
+.cb__pricing-copy {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.cb__pricing-link {
+  font-size: 0.93rem;
+  font-weight: 600;
+  color: var(--text-strong);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: opacity 150ms ease;
+}
+
+.cb__pricing-link:hover {
+  opacity: 0.75;
+}
+
+/* ─── Process ─── */
+
+.cb__process {
+  padding-block: clamp(42px, 6vh, 72px);
+  border-top: 1px solid var(--border-soft);
+}
+
+.cb__process-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.cb__steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(10px, 2vw, 20px);
+}
+
+.cb__step {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(18px, 2.5vw, 24px);
+  border-radius: 18px;
+  border: 1px solid var(--border-soft);
+  background: var(--surface-base);
+}
+
+.cb__step-num {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--text-tertiary);
+}
+
+.cb__step h3 {
+  margin: 0;
+  font-size: 0.97rem;
+  font-weight: 600;
+  color: var(--text-strong);
+  line-height: 1.35;
+}
+
+.cb__step p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ─── Final CTA ─── */
+
+.cb__final {
+  padding-block: clamp(48px, 8vh, 96px);
+  border-top: 1px solid var(--border-soft);
+}
+
+.cb__final-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 24px;
+}
+
+.cb__final-inner h2 {
+  max-width: 480px;
+  font-weight: 400;
+}
+
+/* ─── Responsive ─── */
+
+@media (max-width: 700px) {
+  .cb__steps {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}

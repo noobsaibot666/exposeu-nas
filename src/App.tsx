@@ -12,6 +12,7 @@ import ArtistSessions from './pages/ArtistSessions'
 import Portfolio from './pages/Portfolio'
 import NotFound from './pages/NotFound'
 import Home from './pages/Home'
+import ConcertsBerlin from './pages/ConcertsBerlin'
 import HomeV2 from './pages/HomeV2'
 import PricingRequest from './pages/PricingRequest'
 import PricingRequestSuccess from './pages/PricingRequestSuccess'
@@ -180,6 +181,7 @@ function App() {
             <Route path="/de/pricing-request/:plan" element={<PricingRequest />} />
             <Route path="/pricing-request/success" element={<PricingRequestSuccess />} />
             <Route path="/de/pricing-request/success" element={<PricingRequestSuccess />} />
+            <Route path="/concerts-berlin" element={<ConcertsBerlin />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
