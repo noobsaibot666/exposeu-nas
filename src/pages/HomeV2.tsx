@@ -184,7 +184,7 @@ function HomeV2() {
   }
 
   const handleScroll = (id: string) => {
-    smoothScrollTo(id, 720, 72)
+    smoothScrollTo(id, 500, 72)
   }
 
   const handleHeroCardClick = () => {
@@ -515,7 +515,7 @@ function HomeV2() {
   useEffect(() => {
     if (!location.hash) return
     requestAnimationFrame(() => {
-      smoothScrollTo(location.hash, 720, 72)
+      smoothScrollTo(location.hash, 500, 72)
     })
   }, [location.hash])
 
