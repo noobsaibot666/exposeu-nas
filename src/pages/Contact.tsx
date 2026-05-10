@@ -21,10 +21,12 @@ function Contact() {
   const { locale } = useLocale()
   const [searchParams] = useSearchParams()
   const rootRef = useRef<HTMLElement | null>(null)
+  const selectRef = useRef<HTMLDivElement | null>(null)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [submitted, setSubmitted] = useState(false)
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSelectOpen, setIsSelectOpen] = useState(false)
   const hasStartedRef = useRef(false)
   const hasSubmittedRef = useRef(false)
   const hasAbandonFiredRef = useRef(false)
@@ -33,6 +35,7 @@ function Contact() {
 
   const typeParam = searchParams.get('type')
   const defaultProjectType = typeParam ? (TYPE_MAP[typeParam] ?? '') : ''
+  const [selectedType, setSelectedType] = useState(defaultProjectType)
 
   const navLinks = useMemo(
     () => ({
@@ -164,6 +167,17 @@ function Contact() {
     clearFieldError(name)
     if (submitError) setSubmitError(null)
   }
+
+  useEffect(() => {
+    if (!isSelectOpen) return
+    const handle = (e: MouseEvent) => {
+      if (selectRef.current && !selectRef.current.contains(e.target as Node)) {
+        setIsSelectOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handle)
+    return () => document.removeEventListener('mousedown', handle)
+  }, [isSelectOpen])
 
   useEffect(() => {
     trackEvent('contact_view')
@@ -310,21 +324,49 @@ function Contact() {
               </div>
 
               <div className="contact__field contact__field--full">
-                <label htmlFor="projectType">{t('forms.contact.fields.projectType')}</label>
-                <select
-                  id="projectType"
-                  name="projectType"
-                  required
-                  aria-invalid={fieldErrors.projectType ? 'true' : undefined}
-                  aria-describedby={fieldErrors.projectType ? getFieldErrorId('projectType') : undefined}
-                  onChange={() => handleFieldInput('projectType')}
-                  defaultValue={defaultProjectType}
+                <label htmlFor="projectType-trigger">{t('forms.contact.fields.projectType')}</label>
+                <div
+                  ref={selectRef}
+                  className={`contact__select-wrap${isSelectOpen ? ' is-open' : ''}${fieldErrors.projectType ? ' has-error' : ''}`}
                 >
-                  <option value="" disabled>{t('forms.contact.fields.projectTypePlaceholder')}</option>
-                  {projectTypeOptions.map((opt) => (
-                    <option key={opt} value={opt}>{opt}</option>
-                  ))}
-                </select>
+                  <input type="hidden" name="projectType" value={selectedType} />
+                  <button
+                    type="button"
+                    id="projectType-trigger"
+                    className="contact__select-trigger"
+                    aria-haspopup="listbox"
+                    aria-expanded={isSelectOpen}
+                    aria-invalid={fieldErrors.projectType ? 'true' : undefined}
+                    aria-describedby={fieldErrors.projectType ? getFieldErrorId('projectType') : undefined}
+                    onClick={() => setIsSelectOpen((v) => !v)}
+                  >
+                    <span className={selectedType ? '' : 'contact__select-placeholder'}>
+                      {selectedType || t('forms.contact.fields.projectTypePlaceholder')}
+                    </span>
+                    <svg className="contact__select-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
+                  </button>
+                  {isSelectOpen && (
+                    <ul role="listbox" className="contact__select-dropdown" aria-label={t('forms.contact.fields.projectType')}>
+                      {projectTypeOptions.map((opt) => (
+                        <li
+                          key={opt}
+                          role="option"
+                          aria-selected={selectedType === opt}
+                          className={`contact__select-option${selectedType === opt ? ' is-selected' : ''}`}
+                          onClick={() => {
+                            setSelectedType(opt)
+                            setIsSelectOpen(false)
+                            handleFieldInput('projectType')
+                          }}
+                        >
+                          {opt}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
                 {fieldErrors.projectType && (
                   <span className="contact__field-error" id={getFieldErrorId('projectType')} role="alert">
                     {fieldErrors.projectType}
