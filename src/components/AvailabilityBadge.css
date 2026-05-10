@@ -1,0 +1,18 @@
+.availability-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.availability-badge__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4ade80;
+  flex-shrink: 0;
+  opacity: 0.85;
+}

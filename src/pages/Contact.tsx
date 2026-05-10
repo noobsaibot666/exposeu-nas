@@ -7,6 +7,7 @@ import Footer from '../sections/Footer'
 import { trackEvent } from '../utils/analytics'
 import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
 import { SEOMeta } from '../components/SEOMeta'
+import AvailabilityBadge from '../components/AvailabilityBadge'
 
 const TYPE_MAP: Record<string, string> = {
   'concert': 'Concert / Event',
@@ -236,6 +237,7 @@ function Contact() {
 
       <section className="section contact__body">
         <div className="content contact__heading">
+          <AvailabilityBadge />
           <p className="contact__eyebrow">{t('contact.eyebrow')}</p>
           <h1>{t('contact.headline')}</h1>
           <p className="contact__lede">{t('contact.ledePrimary')}</p>
