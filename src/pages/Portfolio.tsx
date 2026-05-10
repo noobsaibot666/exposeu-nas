@@ -588,14 +588,6 @@ function Portfolio() {
                     </span>
                     <div className="portfolio__topline">
                       <span className="portfolio__pill">{video.tag ?? t('portfolio.labels.feature')}</span>
-                      <span className="portfolio__icon">
-                        <svg width="12" height="12" viewBox="0 0 22 22" fill="none">
-                          <path
-                            d="M20 18.6842C20 19.4109 19.4109 20 18.6842 20C17.9575 20 17.3684 19.4109 17.3684 18.6842V4.49219L2.24609 19.6145C1.73225 20.1284 0.899333 20.1284 0.385485 19.6145C-0.128363 19.1007 -0.128362 18.2678 0.385485 17.7539L15.5078 2.63158H1.31579C0.589099 2.63158 0 2.04248 0 1.31579C0 0.589099 0.589099 0 1.31579 0H20V18.6842Z"
-                            fill="white"
-                          />
-                        </svg>
-                      </span>
                     </div>
                     <div className="portfolio__thumb-overlay" />
                     <div className="portfolio__bottom">

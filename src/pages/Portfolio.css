@@ -224,13 +224,14 @@
 .portfolio__pill {
   display: inline-flex;
   align-items: center;
-  padding: 10px 14px;
-  border-radius: 16px;
+  padding: 5px 10px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.22);
   border: 1px solid rgba(255, 255, 255, 0.6);
   color: var(--text-strong);
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .portfolio__icon {
@@ -336,13 +337,14 @@
 .portfolio__cta-chip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
-  border-radius: 16px;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.22);
   color: var(--text-strong);
-  font-weight: 700;
-  font-size: 0.95rem;
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
   border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
