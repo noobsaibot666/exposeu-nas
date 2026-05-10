@@ -1,10 +1,19 @@
 const easeOutCubic = (t: number): number => 1 - Math.pow(1 - t, 3)
 
+const prefersReducedMotion = () =>
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
 export function smoothScrollTo(selector: string, duration = 500, offset = 0) {
   const target = document.querySelector(selector)
   if (!target) return
 
   const targetY = target.getBoundingClientRect().top + window.scrollY - offset
+
+  if (prefersReducedMotion()) {
+    window.scrollTo({ top: targetY, behavior: 'instant' })
+    return
+  }
+
   const startY = window.scrollY
   const distance = targetY - startY
   const startTime = performance.now()
