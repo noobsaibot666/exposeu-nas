@@ -28,7 +28,7 @@
       "projectType": "Type of project",
       "projectTypePlaceholder": "Select a type…",
       "message": "Tell us about your show, exhibition, or project.",
-      "starterMessage": "Hi — I'm looking for documentation for [event or project name] on [date], in [location]. Looking for [photo / video / both]. Happy to share more details.",
+      "starterMessage": "Hi — [event name], [date], [location]. Need [photo / video / both].",
       "companyWebsite": "Company website"
     },
     "submit": {
