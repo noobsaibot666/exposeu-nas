@@ -8,6 +8,7 @@ interface SEOMetaProps {
   ogImage?: string
   canonical?: string
   lang?: string
+  noAlternates?: boolean
 }
 
 const DEFAULT_OG_IMAGE = 'https://expose-u.com/og-default.png'
@@ -50,6 +51,7 @@ export function SEOMeta({
   ogImage = DEFAULT_OG_IMAGE,
   canonical,
   lang = 'en',
+  noAlternates = false,
 }: SEOMetaProps) {
   useEffect(() => {
     const fullTitle = `${title} | ${SITE_NAME}`
@@ -75,6 +77,8 @@ export function SEOMeta({
     if (canonical) {
       setLink('canonical', canonical)
 
+      if (noAlternates) return
+
       // hreflang alternates
       removeLinks('alternate', 'hreflang')
       const dePath = new URL(canonical).pathname
@@ -99,7 +103,7 @@ export function SEOMeta({
       xEl.setAttribute('href', enHref)
       document.head.appendChild(xEl)
     }
-  }, [title, description, ogTitle, ogDescription, ogImage, canonical, lang])
+  }, [title, description, ogTitle, ogDescription, ogImage, canonical, lang, noAlternates])
 
   return null
 }

@@ -47,6 +47,7 @@ export default function ConcertsBerlin() {
         ogDescription="Berlin-based concert and live event photography. Same-night press selects, full atmospheric coverage. 8+ shows documented at Silent Green. From €900."
         canonical="https://expose-u.com/concerts-berlin"
         lang="en"
+        noAlternates
       />
 
       <div className="home__nav">
