@@ -194,16 +194,22 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
   return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>
 }
 
+// Hooks live here alongside LocaleProvider to keep all locale logic in one
+// file. The react-refresh rule is suppressed because these are intentional
+// companion exports, not components.
+// eslint-disable-next-line react-refresh/only-export-components
 export function useLocale() {
   const context = useContext(LocaleContext)
   if (!context) throw new Error('useLocale must be used inside LocaleProvider')
   return context
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useLocalePath() {
   return useLocale().localizePath
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useLocaleNavigate() {
   const navigate = useNavigate()
   const localize = useLocalePath()
@@ -213,6 +219,7 @@ export function useLocaleNavigate() {
   }, [localize, navigate])
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useTranslation() {
   const { t, tm } = useLocale()
   return { t, tm }

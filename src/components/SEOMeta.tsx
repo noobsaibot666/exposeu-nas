@@ -75,13 +75,20 @@ export function SEOMeta({
     setMeta('twitter:image', 'name', ogImage)
 
     if (canonical) {
+      setMeta('og:url', 'property', canonical)
       setLink('canonical', canonical)
 
       if (noAlternates) return
 
       // hreflang alternates
       removeLinks('alternate', 'hreflang')
-      const dePath = new URL(canonical).pathname
+
+      let dePath: string
+      try {
+        dePath = new URL(canonical).pathname
+      } catch {
+        return
+      }
       const enHref = canonical
       const deHref = `${BASE_URL}/de${dePath === '/' ? '' : dePath}`
 

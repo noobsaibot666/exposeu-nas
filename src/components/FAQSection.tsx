@@ -16,7 +16,7 @@ export default function FAQSection({ service }: Props) {
   const { t, tm } = useTranslation()
   const data = tm<FaqData>('faq')
   const serviceItems = Array.isArray(data[service]) ? (data[service] as FaqItem[]) : []
-  const items = [...data.general, ...serviceItems]
+  const items = [...(data.general ?? []), ...serviceItems]
 
   const [openIndex, setOpenIndex] = useState<number | null>(0)
 
