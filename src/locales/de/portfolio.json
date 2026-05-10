@@ -40,13 +40,13 @@
       "cta": "Öffnen"
     },
     {
-      "id": "placeholder-01",
-      "title": "Portfolio-Vorschau 01",
-      "description": "Platzhalter für ein Projekt. Finale Medien und Copy folgen.",
-      "context": "Platzhalter im Portfolio",
-      "outcome": "bereit für Bild- oder Videoinhalte",
-      "tag": "Vorschau",
-      "cta": "Vorschau"
+      "id": "sanam",
+      "title": "SANAM — Silent Green Berlin",
+      "description": "Vollständige Konzertdokumentation in der Betonhalle. Bühne, Publikum, Atmosphäre — jeder Frame für Presse und Social bereit.",
+      "context": "Presse- & Filmdokumentation, Betonhalle im Silent Green",
+      "outcome": "Pressestills + Social-Media-Inhalte — geliefert",
+      "tag": "Konzert",
+      "cta": "Öffnen"
     },
     {
       "id": "placeholder-02",
