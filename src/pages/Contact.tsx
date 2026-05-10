@@ -27,6 +27,7 @@ function Contact() {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSelectOpen, setIsSelectOpen] = useState(false)
+  const [messageEdited, setMessageEdited] = useState(false)
   const hasStartedRef = useRef(false)
   const hasSubmittedRef = useRef(false)
   const hasAbandonFiredRef = useRef(false)
@@ -380,7 +381,10 @@ function Contact() {
                   id="message"
                   name="message"
                   rows={4}
-                  onChange={() => handleFieldInput('message')}
+                  className={messageEdited ? undefined : 'isStarterMessage'}
+                  defaultValue={t('forms.contact.fields.starterMessage')}
+                  onFocus={(e) => { if (!messageEdited) e.target.select() }}
+                  onChange={() => { setMessageEdited(true); handleFieldInput('message') }}
                 />
               </div>
 

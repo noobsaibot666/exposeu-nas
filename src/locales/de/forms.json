@@ -28,6 +28,7 @@
       "projectType": "Projektart",
       "projectTypePlaceholder": "Typ auswählen…",
       "message": "Erzähl uns von deiner Show, Ausstellung oder deinem Projekt.",
+      "starterMessage": "Hallo — ich suche Dokumentation für [Name der Veranstaltung] am [Datum] in [Ort]. Ich benötige [Foto / Video / beides]. Weitere Details teile ich gerne.",
       "companyWebsite": "Unternehmenswebsite"
     },
     "submit": {
