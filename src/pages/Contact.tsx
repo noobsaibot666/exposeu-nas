@@ -363,6 +363,16 @@ function Contact() {
                   t('forms.contact.submit.idle')
                 )}
               </button>
+
+              <div className="contact__whatsapp">
+                <a
+                  href="https://wa.me/4917622132950"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t('contact.whatsapp')}
+                </a>
+              </div>
             </form>
           )}
         </div>

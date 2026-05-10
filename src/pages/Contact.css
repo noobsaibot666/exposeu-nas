@@ -226,6 +226,23 @@
   outline-offset: 2px;
 }
 
+.contact__whatsapp {
+  grid-column: 1 / -1;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.contact__whatsapp a {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.contact__whatsapp a:hover {
+  color: var(--text-strong);
+}
+
 .contact__success-actions {
   display: inline-flex;
   gap: 12px;
