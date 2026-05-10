@@ -579,13 +579,6 @@ function Portfolio() {
                     style={{ backgroundImage: `url(${video.thumb})` }}
                     aria-hidden="true"
                   >
-                    <span className="portfolio__play" aria-hidden="true">
-                      <span className="portfolio__play-icon">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <polygon points="9 18 19 12 9 6 9 18" />
-                        </svg>
-                      </span>
-                    </span>
                     <div className="portfolio__topline">
                       <span className="portfolio__pill">{video.tag ?? t('portfolio.labels.feature')}</span>
                     </div>
