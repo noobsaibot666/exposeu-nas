@@ -545,7 +545,11 @@ function Portfolio() {
       <section className="section portfolio__hero">
         <div className="content portfolio__hero-inner">
           <p className="portfolio__eyebrow">{t('portfolio.hero.eyebrow')}</p>
-          <h1>{t('portfolio.hero.headline')}</h1>
+          <h1>
+            {t('portfolio.hero.headline').split('. ').map((part, i, arr) => (
+              <span key={i}>{part}{i < arr.length - 1 ? '.' : ''}{i < arr.length - 1 && <br />}</span>
+            ))}
+          </h1>
           <p>{t('portfolio.hero.copy')}</p>
         </div>
       </section>
