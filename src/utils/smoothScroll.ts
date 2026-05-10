@@ -12,7 +12,7 @@ export function smoothScrollTo(selector: string, duration = 500, offset = 0) {
   function step(now: number) {
     const elapsed = now - startTime
     const progress = Math.min(elapsed / duration, 1)
-    window.scrollTo(0, startY + distance * easeOutCubic(progress))
+    window.scrollTo({ top: startY + distance * easeOutCubic(progress), behavior: 'instant' })
     if (progress < 1) requestAnimationFrame(step)
   }
 
