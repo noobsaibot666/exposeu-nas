@@ -58,13 +58,13 @@
       "cta": "View"
     },
     {
-      "id": "placeholder-03",
-      "title": "Portfolio preview 03",
-      "description": "Placeholder project preview. Final media and copy to be added.",
-      "context": "placeholder portfolio entry",
-      "outcome": "ready for image or video content",
-      "tag": "Preview",
-      "cta": "Preview"
+      "id": "gleo",
+      "title": "GLEO — Silent Green Berlin",
+      "description": "Video and photo documentation of GLEO live at the Betonhalle. Full concert coverage, stage to crowd.",
+      "context": "video & photo documentation, Betonhalle at Silent Green",
+      "outcome": "concert coverage — delivered",
+      "tag": "Concert",
+      "cta": "View"
     }
   ],
   "offers": {
