@@ -1,0 +1,29 @@
+{
+  "label": "Frequently asked questions",
+  "general": [
+    { "q": "How far in advance should I book?", "a": "At least 2 weeks for single events, 4 weeks for retainer work." },
+    { "q": "Do you work outside Berlin?", "a": "We're Berlin-based. Nearby projects considered on request." },
+    { "q": "What formats do you deliver in?", "a": "Press JPEG selects in named folders + full-res finals, organized for immediate distribution." },
+    { "q": "Do you offer video as well as photo?", "a": "Yes. Both, or either, depending on scope." }
+  ],
+  "concerts-events": [
+    { "q": "How fast are same-night selects delivered?", "a": "Within a few hours of the show ending. In your inbox before morning." },
+    { "q": "Do you handle press access?", "a": "We align on access during briefing. Most venues handle press credentials directly." },
+    { "q": "How many images are in a typical delivery?", "a": "20–40 press selects + full gallery of finals, depending on scope." }
+  ],
+  "exhibition-gallery": [
+    { "q": "Do you shoot the opening and the installation?", "a": "Both, or either — depending on your program and what you need for press and archive." },
+    { "q": "Can images be used for funding applications?", "a": "Yes. Files are organized exactly for that use — named, formatted, and press-ready." },
+    { "q": "How long does a gallery shoot take?", "a": "Typically 2–4 hours depending on the space and event." }
+  ],
+  "artist-sessions": [
+    { "q": "Where do sessions take place?", "a": "Your studio, a location of your choice, or we find the right space together." },
+    { "q": "How long is a session?", "a": "Typically 2–3 hours. We align on scope and output during briefing." },
+    { "q": "What's included in the delivery?", "a": "Portrait set (press, web, album art framings) + process stills, organized by use." }
+  ],
+  "brand-agency": [
+    { "q": "Is same-day delivery guaranteed?", "a": "For priority selects, yes. Timing is confirmed during briefing." },
+    { "q": "Do you sign NDAs?", "a": "Yes, on request." },
+    { "q": "Can you work with our in-house creative team?", "a": "Yes. We align on brand direction and visual standards during the briefing call." }
+  ]
+}

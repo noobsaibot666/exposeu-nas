@@ -1,0 +1,29 @@
+{
+  "label": "Häufig gestellte Fragen",
+  "general": [
+    { "q": "Wie weit im Voraus sollte ich buchen?", "a": "Mindestens 2 Wochen für einzelne Events, 4 Wochen für Retainer-Projekte." },
+    { "q": "Arbeitet ihr auch außerhalb Berlins?", "a": "Wir sind in Berlin ansässig. Nahegelegene Projekte sind auf Anfrage möglich." },
+    { "q": "In welchen Formaten liefert ihr?", "a": "Pressefertige JPEG-Selects in benannten Ordnern + hochauflösende Finals, zur sofortigen Verteilung strukturiert." },
+    { "q": "Bietet ihr Video und Foto an?", "a": "Ja. Beides oder eines – je nach Scope." }
+  ],
+  "concerts-events": [
+    { "q": "Wie schnell werden Same-Night-Selects geliefert?", "a": "Innerhalb weniger Stunden nach Show-Ende. Noch vor dem Morgen in deinem Postfach." },
+    { "q": "Übernehmt ihr Presseakkreditierungen?", "a": "Wir stimmen den Zugang im Briefing ab. Die meisten Venues regeln Pressekredentials direkt." },
+    { "q": "Wie viele Bilder umfasst eine typische Lieferung?", "a": "20–40 Presseselects + vollständige Galerie mit Finals, je nach Scope." }
+  ],
+  "exhibition-gallery": [
+    { "q": "Fotografiert ihr die Eröffnung und den Aufbau?", "a": "Beides oder eines – je nach Programm und was ihr für Presse und Archiv benötigt." },
+    { "q": "Können die Bilder für Förderanträge verwendet werden?", "a": "Ja. Die Dateien sind genau dafür strukturiert – benannt, formatiert und pressefertig." },
+    { "q": "Wie lange dauert ein Galerie-Shoot?", "a": "In der Regel 2–4 Stunden, abhängig von Raum und Veranstaltung." }
+  ],
+  "artist-sessions": [
+    { "q": "Wo finden Sessions statt?", "a": "In deinem Studio, an einem Ort deiner Wahl – oder wir finden gemeinsam den passenden Ort." },
+    { "q": "Wie lange dauert eine Session?", "a": "In der Regel 2–3 Stunden. Scope und Output klären wir im Briefing." },
+    { "q": "Was ist in der Lieferung enthalten?", "a": "Portrait-Set (Presse, Web, Album-Art-Framings) + Behind-the-Scenes, nach Verwendungszweck strukturiert." }
+  ],
+  "brand-agency": [
+    { "q": "Ist Same-Day-Lieferung garantiert?", "a": "Für Priority-Selects ja. Der Zeitplan wird im Briefing bestätigt." },
+    { "q": "Unterschreibt ihr NDAs?", "a": "Ja, auf Anfrage." },
+    { "q": "Könnt ihr mit unserem internen Creative Team zusammenarbeiten?", "a": "Ja. Wir stimmen Markenrichtung und visuelle Standards im Briefing-Call ab." }
+  ]
+}

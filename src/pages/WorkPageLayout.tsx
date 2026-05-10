@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import TopNav from '../components/TopNav'
 import PricingSection from '../sections/PricingSection'
 import TestimonialsStrip from '../components/TestimonialsStrip'
+import FAQSection from '../components/FAQSection'
 import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
 import './WorkPage.css'
 import { useTranslation } from '../i18n/LocaleProvider'
@@ -390,6 +391,8 @@ function WorkPageLayout({
       />
 
       {serviceSlug && <TestimonialsStrip service={serviceSlug} />}
+
+      {serviceSlug && <FAQSection service={serviceSlug} />}
 
       <section className="section work-cta">
         <div className="content work-cta__content">
