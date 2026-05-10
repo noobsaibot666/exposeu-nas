@@ -69,7 +69,7 @@ const videos: VideoItem[] = [
     context: 'documented live session for touring band',
     outcome: 'delivered release stills + short clips',
     year: '2025',
-    location: 'Brazil',
+    location: 'Lisbon',
     thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/band/Hero.jpg'),
     slideshowImages: [
       resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_001.jpg'),
@@ -587,14 +587,8 @@ function Portfolio() {
                       <span className="portfolio__chip">{video.year}</span>
                       <p className="portfolio__title">{video.title}</p>
                       <p className="portfolio__description">{video.description}</p>
-                      <p className="portfolio__context">
-                        <span className="portfolio__context-label">{t('portfolio.labels.context')}</span>
-                        {video.context}
-                      </p>
-                      <p className="portfolio__context">
-                        <span className="portfolio__context-label">{t('portfolio.labels.outcome')}</span>
-                        {video.outcome}
-                      </p>
+                      <p className="portfolio__context">{video.context}</p>
+                      <p className="portfolio__context">{video.outcome}</p>
                       <div className="portfolio__footer-row">
                         <span className="portfolio__location">{video.location}</span>
                         <span className="portfolio__cta-chip">
