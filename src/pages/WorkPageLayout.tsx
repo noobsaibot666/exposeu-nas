@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react'
 import gsap from 'gsap'
 import TopNav from '../components/TopNav'
 import PricingSection from '../sections/PricingSection'
+import TestimonialsStrip from '../components/TestimonialsStrip'
 import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
 import './WorkPage.css'
 import { useTranslation } from '../i18n/LocaleProvider'
@@ -387,6 +388,8 @@ function WorkPageLayout({
         headline={t('services.shared.pricingFor', { service: title.toLowerCase() })}
         serviceSlug={serviceSlug}
       />
+
+      {serviceSlug && <TestimonialsStrip service={serviceSlug} />}
 
       <section className="section work-cta">
         <div className="content work-cta__content">

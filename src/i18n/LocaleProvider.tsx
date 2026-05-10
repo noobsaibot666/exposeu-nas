@@ -21,6 +21,7 @@ import legalEn from '../locales/en/legal.json'
 import formsEn from '../locales/en/forms.json'
 import notFoundEn from '../locales/en/notFound.json'
 import callSessionEn from '../locales/en/callSession.json'
+import testimonialsEn from '../locales/en/testimonials.json'
 
 import commonDe from '../locales/de/common.json'
 import navDe from '../locales/de/nav.json'
@@ -35,6 +36,7 @@ import legalDe from '../locales/de/legal.json'
 import formsDe from '../locales/de/forms.json'
 import notFoundDe from '../locales/de/notFound.json'
 import callSessionDe from '../locales/de/callSession.json'
+import testimonialsDe from '../locales/de/testimonials.json'
 
 import {
   DEFAULT_LOCALE,
@@ -73,6 +75,7 @@ const resources = {
     forms: formsEn,
     notFound: notFoundEn,
     callSession: callSessionEn,
+    testimonials: testimonialsEn,
   },
   de: {
     common: commonDe,
@@ -88,6 +91,7 @@ const resources = {
     forms: formsDe,
     notFound: notFoundDe,
     callSession: callSessionDe,
+    testimonials: testimonialsDe,
   },
 } satisfies Record<Locale, TranslationTree>
 

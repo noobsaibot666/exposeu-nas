@@ -1,0 +1,37 @@
+{
+  "label": "Was Kund:innen sagen",
+  "items": [
+    {
+      "id": "t1",
+      "quote": "Die Auswahl war bei mir, noch bevor ich wieder zuhause war.",
+      "author": "Venue Director",
+      "company": "Silent Green Kulturquartier",
+      "avatar": null,
+      "service": "concerts-events"
+    },
+    {
+      "id": "t2",
+      "quote": "Genau das, was wir für das Pressematerial brauchten. Kein Hin und Her.",
+      "author": "Galerie-Direktor:in",
+      "company": "Berlin",
+      "avatar": null,
+      "service": "exhibition-gallery"
+    },
+    {
+      "id": "t3",
+      "quote": "Sauber, strukturiert und pressefertig – noch am selben Tag.",
+      "author": "Produktionsleitung",
+      "company": "Kreativagentur, Berlin",
+      "avatar": null,
+      "service": "brand-agency"
+    },
+    {
+      "id": "t4",
+      "quote": "Das sind die Bilder, die ich für jede künftige Veröffentlichung verwenden werde.",
+      "author": "Musiker:in",
+      "company": "Berlin",
+      "avatar": null,
+      "service": "artist-sessions"
+    }
+  ]
+}

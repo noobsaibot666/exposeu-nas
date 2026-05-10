@@ -1,0 +1,37 @@
+{
+  "label": "What clients say",
+  "items": [
+    {
+      "id": "t1",
+      "quote": "They delivered selects before I was back home.",
+      "author": "Venue Director",
+      "company": "Silent Green Kulturquartier",
+      "avatar": null,
+      "service": "concerts-events"
+    },
+    {
+      "id": "t2",
+      "quote": "Exactly what we needed for the press kit. No back and forth.",
+      "author": "Gallery Director",
+      "company": "Berlin",
+      "avatar": null,
+      "service": "exhibition-gallery"
+    },
+    {
+      "id": "t3",
+      "quote": "Clean, organized, and press-ready the same day.",
+      "author": "Production Manager",
+      "company": "Creative Agency, Berlin",
+      "avatar": null,
+      "service": "brand-agency"
+    },
+    {
+      "id": "t4",
+      "quote": "These are the images I'll be using for every release going forward.",
+      "author": "Musician",
+      "company": "Berlin",
+      "avatar": null,
+      "service": "artist-sessions"
+    }
+  ]
+}
