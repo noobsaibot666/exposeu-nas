@@ -865,12 +865,138 @@
 }
 
 @media (max-width: 600px) {
+  .portfolio__hero {
+    padding-top: 0;
+    padding-bottom: 22px;
+  }
+
+  .portfolio__hero-inner {
+    gap: 8px;
+  }
+
+  .portfolio__gallery {
+    padding-top: 32px;
+    padding-bottom: 72px;
+  }
+
+  .portfolio__gallery .content {
+    padding-inline: var(--content-gutter);
+  }
+
+  .portfolio__rail {
+    padding: 28px 0;
+  }
+
   .portfolio__grid {
     grid-template-columns: 1fr;
   }
 
+  .portfolio__overlay {
+    padding: 0;
+    align-items: stretch;
+    background: #000;
+  }
+
+  .portfolio__modal {
+    width: 100vw;
+    max-width: none;
+    min-height: 100svh;
+    display: flex;
+  }
+
+  .portfolio__close {
+    position: fixed;
+    top: max(14px, env(safe-area-inset-top));
+    right: 14px;
+    width: 44px;
+    height: 44px;
+    background: rgba(0, 0, 0, 0.52);
+    backdrop-filter: blur(12px);
+  }
+
+  .portfolio__player {
+    width: 100%;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .portfolio__slideshow {
+    flex: 1;
+    min-height: 0;
+    gap: 0;
+  }
+
+  .portfolio__slideshow-frame {
+    flex: 1;
+    width: 100vw;
+    max-width: none;
+    max-height: none;
+    min-height: 72svh;
+    aspect-ratio: auto;
+    border-radius: 0;
+    touch-action: pan-y;
+  }
+
+  .portfolio__slideshow-frame img {
+    object-fit: contain;
+  }
+
+  .portfolio__slideshow-arrow {
+    width: 48px;
+    height: 48px;
+    background: rgba(0, 0, 0, 0.42);
+  }
+
+  .portfolio__slideshow-arrow--left {
+    left: 10px;
+  }
+
+  .portfolio__slideshow-arrow--right {
+    right: 10px;
+  }
+
+  .portfolio__slideshow-dots {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    z-index: 3;
+  }
+
+  .portfolio__player iframe,
   .portfolio__player video {
-    max-height: 60vh;
+    width: 100vw;
+    max-width: none;
+    max-height: none;
+    height: 100svh;
+    aspect-ratio: auto;
+    border-radius: 0;
+    object-fit: contain;
+  }
+
+  .portfolio__player-meta {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    margin: 0;
+    padding: 56px 18px max(44px, calc(env(safe-area-inset-bottom) + 18px));
+    background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.82));
+    pointer-events: none;
+  }
+
+  .portfolio__player-meta .portfolio__title {
+    font-size: 1rem;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .portfolio__player-meta .portfolio__description {
+    font-size: 0.82rem;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
   }
 
   .portfolio__offers-grid {

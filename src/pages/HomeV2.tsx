@@ -171,7 +171,20 @@ function HomeV2() {
     [projects],
   )
 
-  const mobileHeroStack = heroServices.slice(0, 5)
+  const mobileHeroStack = useMemo(() => {
+    const extraThumb = heroGallery[0]
+
+    return [
+      ...heroServices,
+      {
+        id: `mobile-extra-${extraThumb.id}`,
+        image: extraThumb.image,
+        label: extraThumb.label,
+        rotation: 3,
+        index: heroServices.length,
+      },
+    ]
+  }, [heroGallery, heroServices])
 
   // Reveal video: fires on iframe load + 600ms buffer, with 3s absolute fallback
   useEffect(() => {
@@ -237,9 +250,11 @@ function HomeV2() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const ctx = gsap.context(() => {
+      const isMobile = window.matchMedia('(max-width: 768px)').matches
+
       // Nav — slides down and fades in on mount
       gsap.fromTo(
-        '.home__nav',
+        isMobile ? ['.home__nav', '.locale-switcher'] : '.home__nav',
         { opacity: 0, y: -14 },
         { opacity: 1, y: 0, duration: 0.7, ease: 'sine.out', delay: 0.2 },
       )
@@ -249,73 +264,113 @@ function HomeV2() {
         tiltY.current = gsap.quickTo(galleryRef.current, '--hero-tilt-y', { duration: 0.45, ease: 'power3.out' })
       }
 
-      // Hero section — scrub-based sequence, animates in/out with scroll direction.
-      // start: 'top bottom' begins as soon as hero enters from below the viewport.
-      // end: 'top 15%'  completes once the section is fully visible — so clicking
-      // the scroll button (which lands hero.top near 0%) always shows full content.
-      const heroThumbs = gsap.utils.toArray<HTMLElement>('.home__hero-gallery--desktop .home__hero-thumb')
-      const heroTimeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: '.home__hero',
-          start: 'top bottom',
-          end: 'top 15%',
-          scrub: 2,
-        },
-      })
+      if (isMobile) {
+        const mobileThumbImages = gsap.utils.toArray<HTMLElement>('.home__hero-gallery--mobile .home__hero-thumb-image')
+        const mobileTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: '.home__hero',
+            start: 'top 82%',
+            end: 'top 8%',
+            scrub: 1.4,
+          },
+        })
 
-      heroTimeline.fromTo(
-        '.home__hero-title',
-        { opacity: 0, y: 44, filter: 'blur(6px)' },
-        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.4, ease: 'sine.inOut' },
-      )
-
-      const yOffsets = [48, 40, 56, 44, 52]
-      const xOffsets = [-6, 5, 0, 7, -4]
-      const cardStart = 0.9
-      gsap.utils.shuffle(heroThumbs).forEach((el, i) => {
-        el.style.transition = 'none'
-        const image = el.querySelector<HTMLElement>('.home__hero-thumb-image')
-        const caption = el.querySelector<HTMLElement>('figcaption')
-        const targets = [image, caption].filter(Boolean) as HTMLElement[]
+        mobileTimeline
+          .fromTo(
+            '.home__hero-title',
+            { opacity: 0, y: 34, filter: 'blur(6px)' },
+            { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.1, ease: 'sine.inOut' },
+          )
+          .fromTo(
+            mobileThumbImages,
+            { opacity: 0, y: 36, scale: 0.82, rotate: -6, filter: 'blur(8px)' },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              rotate: 0,
+              filter: 'blur(0px)',
+              duration: 0.95,
+              ease: 'sine.inOut',
+              stagger: 0.08,
+            },
+            0.75,
+          )
+          .fromTo(
+            ['.home__hero-subhead', '.home__hero-cta'],
+            { opacity: 0, y: 24, filter: 'blur(5px)' },
+            { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.85, ease: 'sine.inOut', stagger: 0.12 },
+            1.58,
+          )
+      } else {
+        // Hero section — scrub-based sequence, animates in/out with scroll direction.
+        // start: 'top bottom' begins as soon as hero enters from below the viewport.
+        // end: 'top 15%'  completes once the section is fully visible — so clicking
+        // the scroll button (which lands hero.top near 0%) always shows full content.
+        const heroThumbs = gsap.utils.toArray<HTMLElement>('.home__hero-gallery--desktop .home__hero-thumb')
+        const heroTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: '.home__hero',
+            start: 'top bottom',
+            end: 'top 15%',
+            scrub: 2,
+          },
+        })
 
         heroTimeline.fromTo(
-          targets.length ? targets : el,
-          {
-            opacity: 0,
-            y: yOffsets[i % yOffsets.length],
-            x: xOffsets[i % xOffsets.length],
-            scale: 0.96,
-            rotate: [-0.8, 0.6, -0.4, 0.8, -0.5][i % 5],
-            filter: 'blur(5px)',
-          },
-          {
-            opacity: 1,
-            y: 0,
-            x: 0,
-            scale: 1,
-            rotate: 0,
-            filter: 'blur(0px)',
-            duration: 1.1,
-            ease: 'sine.inOut',
-            onComplete: () => { el.style.transition = '' },
-          },
-          cardStart + i * 0.16,
+          '.home__hero-title',
+          { opacity: 0, y: 44, filter: 'blur(6px)' },
+          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.4, ease: 'sine.inOut' },
         )
-      })
 
-      heroTimeline
-        .fromTo(
-          '.home__hero-subhead',
-          { opacity: 0, y: 28, filter: 'blur(5px)' },
-          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.0, ease: 'sine.inOut' },
-          cardStart + heroThumbs.length * 0.16 + 0.4,
-        )
-        .fromTo(
-          '.home__hero-cta',
-          { opacity: 0, y: 20, scale: 0.97 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'sine.inOut' },
-          '>-0.1',
-        )
+        const yOffsets = [48, 40, 56, 44, 52]
+        const xOffsets = [-6, 5, 0, 7, -4]
+        const cardStart = 0.9
+        gsap.utils.shuffle(heroThumbs).forEach((el, i) => {
+          el.style.transition = 'none'
+          const image = el.querySelector<HTMLElement>('.home__hero-thumb-image')
+          const caption = el.querySelector<HTMLElement>('figcaption')
+          const targets = [image, caption].filter(Boolean) as HTMLElement[]
+
+          heroTimeline.fromTo(
+            targets.length ? targets : el,
+            {
+              opacity: 0,
+              y: yOffsets[i % yOffsets.length],
+              x: xOffsets[i % xOffsets.length],
+              scale: 0.96,
+              rotate: [-0.8, 0.6, -0.4, 0.8, -0.5][i % 5],
+              filter: 'blur(5px)',
+            },
+            {
+              opacity: 1,
+              y: 0,
+              x: 0,
+              scale: 1,
+              rotate: 0,
+              filter: 'blur(0px)',
+              duration: 1.1,
+              ease: 'sine.inOut',
+              onComplete: () => { el.style.transition = '' },
+            },
+            cardStart + i * 0.16,
+          )
+        })
+
+        heroTimeline
+          .fromTo(
+            '.home__hero-subhead',
+            { opacity: 0, y: 28, filter: 'blur(5px)' },
+            { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.0, ease: 'sine.inOut' },
+            cardStart + heroThumbs.length * 0.16 + 0.4,
+          )
+          .fromTo(
+            '.home__hero-cta',
+            { opacity: 0, y: 20, scale: 0.97 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'sine.inOut' },
+            '>-0.1',
+          )
+      }
 
       // Cases — scrub-based, animates in and out with scroll direction.
       const cards = gsap.utils.toArray<HTMLElement>('.home__case-card')
@@ -662,11 +717,11 @@ function HomeV2() {
           >
             {mobileHeroStack.map((thumb, index) => {
               const configs = [
-                { x: -mobileLayout.outer, y: mobileLayout.yOuter, rotate: -24, scale: 0.82, z: 1, opacity: 0.55, blur: 1.5 },
+                { x: -mobileLayout.outer, y: mobileLayout.yOuter + 8, rotate: -24, scale: 0.78, z: 1, opacity: 0.55, blur: 1.5 },
                 { x: -mobileLayout.inner, y: mobileLayout.yInner, rotate: -12, scale: 0.96, z: 2, opacity: 0.85, blur: 0.6 },
                 { x: 0, y: -4, rotate: 0, scale: 1.18, z: 3, opacity: 1, blur: 0 },
                 { x: mobileLayout.inner, y: mobileLayout.yInner, rotate: 12, scale: 0.96, z: 2, opacity: 0.85, blur: 0.6 },
-                { x: mobileLayout.outer, y: mobileLayout.yOuter, rotate: 24, scale: 0.82, z: 1, opacity: 0.55, blur: 1.5 },
+                { x: mobileLayout.outer, y: mobileLayout.yOuter + 8, rotate: 24, scale: 0.78, z: 1, opacity: 0.55, blur: 1.5 },
               ]
               const config = configs[index] ?? configs[2]
               const stackShift = Math.round(mobileLayout.card * 0.22)

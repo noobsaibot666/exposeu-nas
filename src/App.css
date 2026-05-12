@@ -48,3 +48,30 @@
     transform: none;
   }
 }
+
+@media (max-width: 768px) {
+  .page :where(h1) {
+    font-size: clamp(1.85rem, 8.6vw, 3rem);
+    line-height: 1.08;
+  }
+
+  .page :where(h2) {
+    font-size: clamp(1.45rem, 6.4vw, 2.25rem);
+    line-height: 1.12;
+  }
+
+  .page :where(h3) {
+    font-size: clamp(1.04rem, 4.8vw, 1.45rem);
+    line-height: 1.16;
+  }
+
+  .page :where(p, li) {
+    font-size: 0.94em;
+    line-height: 1.45;
+  }
+
+  .page :where(.home__hero-subhead, .home__section-copy, .work-hero__copy, .about-hero__copy, .contact-hero__copy) {
+    font-size: clamp(0.95rem, 3.8vw, 1.08rem);
+    line-height: 1.4;
+  }
+}

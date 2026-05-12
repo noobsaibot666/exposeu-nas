@@ -1,13 +1,18 @@
 import { Globe } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useLocale, useTranslation } from '../i18n/LocaleProvider'
 import './LocaleSwitcher.css'
+
+const HOME_PATHS = new Set(['/', '/de', '/v2', '/de/v2', '/old-home'])
 
 function LocaleSwitcher() {
   const { locale, switchLocale } = useLocale()
   const { t } = useTranslation()
+  const { pathname } = useLocation()
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement | null>(null)
+  const isHome = HOME_PATHS.has(pathname)
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
@@ -25,7 +30,7 @@ function LocaleSwitcher() {
   }, [])
 
   return (
-    <div className="locale-switcher" ref={rootRef}>
+    <div className={`locale-switcher ${isHome ? 'locale-switcher--home' : 'locale-switcher--page'}`} ref={rootRef}>
       <button
         type="button"
         className="locale-switcher__trigger"

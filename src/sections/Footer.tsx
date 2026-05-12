@@ -7,6 +7,12 @@ import LocalizedLink from '../i18n/LocalizedLink'
 function Footer() {
   const { t } = useTranslation()
   const scrollToTop = () => {
+    const hero = document.getElementById('hero')
+    if (hero) {
+      hero.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      return
+    }
+
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
@@ -41,7 +47,7 @@ function Footer() {
           <div className="footer__group">
             <p className="footer__label">{t('footer.nextSteps')}</p>
             <LocalizedLink to="/contact">{t('footer.ctaLink')}</LocalizedLink>
-<LocalizedLink to="/portfolio">{t('footer.viewPortfolio')}</LocalizedLink>
+            <LocalizedLink to="/portfolio">{t('footer.viewPortfolio')}</LocalizedLink>
           </div>
           <div className="footer__group">
             <p className="footer__label">{t('footer.legal')}</p>

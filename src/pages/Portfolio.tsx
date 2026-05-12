@@ -223,6 +223,7 @@ function Portfolio() {
   const rootRef = useRef<HTMLElement | null>(null)
   const openerRef = useRef<HTMLElement | null>(null)
   const dragState = useRef({ active: false, startX: 0, scrollLeft: 0, moved: false, pointerId: 0 })
+  const slideSwipeState = useRef({ active: false, startX: 0, pointerId: 0 })
 
   const videoTranslations = tm<Array<Pick<VideoItem, 'id' | 'title' | 'description' | 'context' | 'outcome' | 'tag' | 'cta'>>>('portfolio.videos')
   const proofItems = tm<string[]>('portfolio.proofStrip')
@@ -390,6 +391,20 @@ function Portfolio() {
     setActiveVideo(video)
   }, [])
 
+  const goToPreviousSlide = useCallback(() => {
+    if (!activeVideo?.slideshowImages?.length) return
+    const total = activeVideo.slideshowImages.length
+    setSlideDirection(-1)
+    setSlideIndex((prev) => (prev - 1 + total) % total)
+  }, [activeVideo])
+
+  const goToNextSlide = useCallback(() => {
+    if (!activeVideo?.slideshowImages?.length) return
+    const total = activeVideo.slideshowImages.length
+    setSlideDirection(1)
+    setSlideIndex((prev) => (prev + 1) % total)
+  }, [activeVideo])
+
   useEffect(() => {
     if (!activeVideo) return
 
@@ -400,22 +415,19 @@ function Portfolio() {
       }
 
       if (!activeVideo.slideshowImages || activeVideo.slideshowImages.length === 0) return
-      const total = activeVideo.slideshowImages.length
 
       if (event.key === 'ArrowLeft') {
-        setSlideDirection(-1)
-        setSlideIndex((prev) => (prev - 1 + total) % total)
+        goToPreviousSlide()
       }
 
       if (event.key === 'ArrowRight') {
-        setSlideDirection(1)
-        setSlideIndex((prev) => (prev + 1) % total)
+        goToNextSlide()
       }
     }
 
     window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
-  }, [activeVideo])
+  }, [activeVideo, goToNextSlide, goToPreviousSlide])
 
   // Focus trap: cycle Tab within the modal overlay
   useEffect(() => {
@@ -492,10 +504,42 @@ function Portfolio() {
     const grid = gridRef.current
     if (!grid || !dragState.current.active) return
     dragState.current.active = false
-    if (dragState.current.pointerId) {
+    if (dragState.current.pointerId && grid.hasPointerCapture(dragState.current.pointerId)) {
       grid.releasePointerCapture(dragState.current.pointerId)
     }
     setIsDragging(false)
+  }
+
+  const handleSlidePointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    if (!activeVideo?.slideshowImages || activeVideo.slideshowImages.length < 2) return
+    slideSwipeState.current = { active: true, startX: event.clientX, pointerId: event.pointerId }
+    if (!event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.setPointerCapture(event.pointerId)
+    }
+  }
+
+  const handleSlidePointerUp = (event: PointerEvent<HTMLDivElement>) => {
+    if (!slideSwipeState.current.active) return
+    const deltaX = event.clientX - slideSwipeState.current.startX
+    slideSwipeState.current.active = false
+    if (event.currentTarget.hasPointerCapture(slideSwipeState.current.pointerId)) {
+      event.currentTarget.releasePointerCapture(slideSwipeState.current.pointerId)
+    }
+
+    if (Math.abs(deltaX) < 42) return
+    if (deltaX > 0) {
+      goToPreviousSlide()
+    } else {
+      goToNextSlide()
+    }
+  }
+
+  const handleSlidePointerCancel = (event: PointerEvent<HTMLDivElement>) => {
+    if (!slideSwipeState.current.active) return
+    slideSwipeState.current.active = false
+    if (event.currentTarget.hasPointerCapture(slideSwipeState.current.pointerId)) {
+      event.currentTarget.releasePointerCapture(slideSwipeState.current.pointerId)
+    }
   }
 
   const getEmbedSrc = (src: string) => {
@@ -708,17 +752,19 @@ function Portfolio() {
                   const current = activeVideo.slideshowImages[slideIndex] ?? activeVideo.slideshowImages[0]
                   return (
                     <div className="portfolio__slideshow">
-                      <div className="portfolio__slideshow-frame">
+                      <div
+                        className="portfolio__slideshow-frame"
+                        onPointerDown={handleSlidePointerDown}
+                        onPointerUp={handleSlidePointerUp}
+                        onPointerCancel={handleSlidePointerCancel}
+                      >
                         {total > 1 && (
                           <>
                             <button
                               type="button"
                               className="portfolio__slideshow-arrow portfolio__slideshow-arrow--left"
                               aria-label={t('portfolio.modal.previousSlide')}
-                              onClick={() => {
-                                setSlideDirection(-1)
-                                setSlideIndex((slideIndex - 1 + total) % total)
-                              }}
+                              onClick={goToPreviousSlide}
                             >
                               <span aria-hidden="true">‹</span>
                             </button>
@@ -726,10 +772,7 @@ function Portfolio() {
                               type="button"
                               className="portfolio__slideshow-arrow portfolio__slideshow-arrow--right"
                               aria-label={t('portfolio.modal.nextSlide')}
-                              onClick={() => {
-                                setSlideDirection(1)
-                                setSlideIndex((slideIndex + 1) % total)
-                              }}
+                              onClick={goToNextSlide}
                             >
                               <span aria-hidden="true">›</span>
                             </button>
