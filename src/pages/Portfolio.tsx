@@ -69,7 +69,7 @@ const videos: VideoItem[] = [
     context: 'documented live session for touring band',
     outcome: 'delivered release stills + short clips',
     year: '2025',
-    location: 'Lisbon',
+    location: 'Berlin',
     thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/band/Hero.jpg'),
     slideshowImages: [
       resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_001.jpg'),

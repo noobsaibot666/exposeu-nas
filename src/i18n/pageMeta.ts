@@ -1,54 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useLocale, useTranslation } from './LocaleProvider'
-
-type MetaConfig = {
-  titleKey: string
-  descriptionKey: string
-}
-
-function getMetaForPath(pathname: string): MetaConfig {
-  if (pathname === '/' || pathname === '/v2' || pathname === '/old-home') {
-    return { titleKey: 'common.meta.home.title', descriptionKey: 'common.meta.home.description' }
-  }
-  if (pathname === '/about') {
-    return { titleKey: 'common.meta.about.title', descriptionKey: 'common.meta.about.description' }
-  }
-  if (pathname === '/contact') {
-    return { titleKey: 'common.meta.contact.title', descriptionKey: 'common.meta.contact.description' }
-  }
-  if (pathname === '/contact-success') {
-    return { titleKey: 'common.meta.contactSuccess.title', descriptionKey: 'common.meta.contactSuccess.description' }
-  }
-  if (pathname === '/portfolio') {
-    return { titleKey: 'common.meta.portfolio.title', descriptionKey: 'common.meta.portfolio.description' }
-  }
-  if (pathname === '/call-session') {
-    return { titleKey: 'common.meta.callSession.title', descriptionKey: 'common.meta.callSession.description' }
-  }
-  if (pathname === '/impressum') {
-    return { titleKey: 'common.meta.impressum.title', descriptionKey: 'common.meta.impressum.description' }
-  }
-  if (pathname === '/pricing-request/success') {
-    return { titleKey: 'common.meta.pricingSuccess.title', descriptionKey: 'common.meta.pricingSuccess.description' }
-  }
-  if (pathname.startsWith('/pricing-request/')) {
-    return { titleKey: 'common.meta.pricingRequest.title', descriptionKey: 'common.meta.pricingRequest.description' }
-  }
-  if (pathname === '/services/concerts-events') {
-    return { titleKey: 'common.meta.services.concerts.title', descriptionKey: 'common.meta.services.concerts.description' }
-  }
-  if (pathname === '/services/exhibition-gallery') {
-    return { titleKey: 'common.meta.services.exhibition.title', descriptionKey: 'common.meta.services.exhibition.description' }
-  }
-  if (pathname === '/services/artist-sessions') {
-    return { titleKey: 'common.meta.services.artist.title', descriptionKey: 'common.meta.services.artist.description' }
-  }
-  if (pathname === '/services/brand-agency') {
-    return { titleKey: 'common.meta.services.brand.title', descriptionKey: 'common.meta.services.brand.description' }
-  }
-  return { titleKey: 'common.meta.notFound.title', descriptionKey: 'common.meta.notFound.description' }
-}
+import { getMetaForPath } from './pageMetaConfig'
 
 function upsertMeta(selector: string, create: () => HTMLElement) {
   const existing = document.head.querySelector<HTMLElement>(selector)
@@ -80,6 +33,11 @@ export function usePageMeta() {
       return el
     }) as HTMLLinkElement
     canonical.href = `${window.location.origin}${localizePath(canonicalPathname)}`
+
+    if (meta.noAlternates) {
+      document.head.querySelectorAll('link[rel="alternate"][hreflang]').forEach((el) => el.remove())
+      return
+    }
 
     const hreflangEn = upsertMeta('link[rel="alternate"][hreflang="en"]', () => {
       const el = document.createElement('link')

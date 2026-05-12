@@ -8,6 +8,7 @@ import {
   normalizeLocalePathname,
   switchLocalePath,
 } from '../../src/i18n/routing.js'
+import { getMetaForPath } from '../../src/i18n/pageMetaConfig.js'
 
 test('detects english as the default locale', () => {
   assert.equal(getLocaleFromPathname('/'), DEFAULT_LOCALE)
@@ -33,4 +34,12 @@ test('adds the german prefix while preserving query strings and hash fragments',
 test('switches between locale variants for the same logical page', () => {
   assert.equal(switchLocalePath('/services/artist-sessions', 'de'), '/de/services/artist-sessions')
   assert.equal(switchLocalePath('/de/services/artist-sessions?package=single-event', 'en'), '/services/artist-sessions?package=single-event')
+})
+
+test('maps concerts berlin to its route-specific meta', () => {
+  const meta = getMetaForPath('/concerts-berlin')
+
+  assert.equal(meta.titleKey, 'common.meta.concertsBerlin.title')
+  assert.equal(meta.descriptionKey, 'common.meta.concertsBerlin.description')
+  assert.equal(meta.noAlternates, true)
 })

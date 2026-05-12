@@ -26,13 +26,16 @@ function PricingRequest() {
   const hasTrackedPlanSelect = useRef(false)
 
   const planInfo = plan ? tm<{ name: string; intro: string }>(`forms.pricing.planIntros.${plan}`) : null
-  const serviceInfo = serviceParam && serviceParam in serviceMeta
-    ? {
-      label: t(serviceMeta[serviceParam as ServiceSlug].labelKey),
-      image: serviceImages[serviceParam as ServiceSlug],
-      intro: t(`forms.pricing.serviceIntros.${serviceParam}`),
+  const serviceInfo = useMemo(() => {
+    if (!serviceParam || !(serviceParam in serviceMeta)) return null
+    const serviceSlug = serviceParam as ServiceSlug
+
+    return {
+      label: t(serviceMeta[serviceSlug].labelKey),
+      image: serviceImages[serviceSlug],
+      intro: t(`forms.pricing.serviceIntros.${serviceSlug}`),
     }
-    : null
+  }, [serviceParam, t])
 
   const headline = useMemo(() => {
     if (serviceInfo && planInfo) return t('forms.pricing.headlineByPlanAndService', { plan: planInfo.name, service: serviceInfo.label })

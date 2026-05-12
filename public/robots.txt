@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://expose-u.com/sitemap.xml
