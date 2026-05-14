@@ -2,6 +2,8 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import nodemailer from 'nodemailer'
+import { randomUUID } from 'node:crypto'
+import { buildMetaLeadEvent, sendMetaEvents } from './metaConversions.js'
 
 const app = express()
 app.set('trust proxy', true)
@@ -9,6 +11,7 @@ const port = Number(process.env.CONTACT_API_PORT || 8787)
 const RATE_LIMIT_WINDOW_MS = 60_000
 const RATE_LIMIT_MAX_REQUESTS = 5
 const contactRequestStore = new Map()
+const metaEventRequestStore = new Map()
 
 const buildSmtpConfig = () => {
   const host = process.env.SMTP_HOST
@@ -31,6 +34,12 @@ const buildSmtpConfig = () => {
     testToken,
   }
 }
+
+const buildMetaConfig = () => ({
+  pixelId: process.env.META_PIXEL_ID || process.env.VITE_META_PIXEL_ID,
+  accessToken: process.env.META_CAPI_TOKEN,
+  testEventCode: process.env.META_TEST_EVENT_CODE,
+})
 
 const hasRequiredConfig = (config) =>
   Boolean(
@@ -125,6 +134,70 @@ const isRateLimited = (ip) => {
   return false
 }
 
+const isStoreRateLimited = (store, ip, maxRequests = RATE_LIMIT_MAX_REQUESTS) => {
+  const now = Date.now()
+  const existingEntries = store.get(ip) || []
+  const recentEntries = existingEntries.filter((timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS)
+
+  if (recentEntries.length >= maxRequests) {
+    store.set(ip, recentEntries)
+    return true
+  }
+
+  recentEntries.push(now)
+  store.set(ip, recentEntries)
+  return false
+}
+
+const sendMetaLeadEvent = async ({
+  email,
+  clientIp,
+  userAgent,
+  sourceUrl,
+  eventId,
+  projectType,
+}) => {
+  const metaConfig = buildMetaConfig()
+  const event = buildMetaLeadEvent({
+    email,
+    clientIp,
+    userAgent,
+    sourceUrl,
+    eventId,
+    projectType,
+  })
+
+  const result = await sendMetaEvents({
+    pixelId: metaConfig.pixelId,
+    accessToken: metaConfig.accessToken,
+    testEventCode: metaConfig.testEventCode,
+    events: [event],
+  })
+
+  if (result.skipped) {
+    console.warn('META CAPI SKIPPED:', {
+      reason: result.reason,
+      hasPixelId: Boolean(metaConfig.pixelId),
+      hasAccessToken: Boolean(metaConfig.accessToken),
+    })
+    return result
+  }
+
+  if (!result.ok) {
+    console.error('META CAPI FAILED:', {
+      status: result.status,
+      body: result.body,
+    })
+    return result
+  }
+
+  console.log('META CAPI SENT:', {
+    status: result.status,
+    eventsReceived: result.body?.events_received,
+  })
+  return result
+}
+
 // Middleware
 app.use(cors())
 app.use(express.json({ limit: '1mb' }))
@@ -157,6 +230,49 @@ app.get('/health', (_req, res) => res.json({ ok: true }))
 app.get('/contact', (_req, res) => res.status(200).send('OK'))
 app.head('/contact', (_req, res) => res.status(200).end())
 
+app.post(['/meta-event', '/api/meta-event'], async (req, res) => {
+  const ip = getClientIp(req)
+  if (isStoreRateLimited(metaEventRequestStore, ip, 20)) {
+    return sendApiError(res, 429, 'RATE_LIMITED', 'Too many requests. Please wait a minute and try again.')
+  }
+
+  const {
+    eventName = 'Lead',
+    email,
+    sourceUrl,
+    eventId,
+    projectType,
+  } = req.body || {}
+
+  if (trimValue(eventName) !== 'Lead') {
+    return sendApiError(res, 400, 'UNSUPPORTED_EVENT', 'Only Lead events are supported.')
+  }
+
+  try {
+    const result = await sendMetaLeadEvent({
+      email,
+      clientIp: ip,
+      userAgent: req.get('user-agent'),
+      sourceUrl,
+      eventId: trimValue(eventId) || randomUUID(),
+      projectType,
+    })
+
+    if (result.skipped) {
+      return sendApiError(res, 500, 'META_CONFIG_MISSING', 'Meta CAPI configuration missing.')
+    }
+
+    if (!result.ok) {
+      return sendApiError(res, 502, 'META_CAPI_FAILED', 'Meta CAPI request failed.')
+    }
+
+    return res.json({ ok: true })
+  } catch (error) {
+    console.error('Meta event endpoint error', serializeError(error))
+    return sendApiError(res, 500, 'META_CAPI_ERROR', 'Meta CAPI request failed.')
+  }
+})
+
 // Contact endpoint
 app.post('/contact', async (req, res) => {
   try {
@@ -172,6 +288,7 @@ app.post('/contact', async (req, res) => {
       packageLabel,
       sourceUrl,
       referrer,
+      eventId,
       companyWebsite,
       message,
     } = req.body || {}
@@ -189,6 +306,7 @@ app.post('/contact', async (req, res) => {
     const trimmedPackageLabel = trimValue(packageLabel)
     const trimmedSourceUrl = trimValue(sourceUrl)
     const trimmedReferrer = trimValue(referrer)
+    const trimmedEventId = trimValue(eventId) || randomUUID()
     const trimmedCompanyWebsite = trimValue(companyWebsite)
 
     const senderName =
@@ -204,6 +322,7 @@ app.post('/contact', async (req, res) => {
       package: trimmedPackage,
       sourceUrl: trimmedSourceUrl,
       referrer: trimmedReferrer,
+      eventId: trimmedEventId,
     })
 
     if (trimmedCompanyWebsite) {
@@ -298,6 +417,19 @@ app.post('/contact', async (req, res) => {
       rejected: info.rejected,
       response: info.response,
     })
+
+    try {
+      await sendMetaLeadEvent({
+        email: trimmedEmail,
+        clientIp: ip,
+        userAgent: req.get('user-agent'),
+        sourceUrl: trimmedSourceUrl || trimmedReferrer,
+        eventId: trimmedEventId,
+        projectType: subjectType,
+      })
+    } catch (error) {
+      console.error('Meta CAPI contact event error', serializeError(error))
+    }
 
     return res.json({ ok: true })
   } catch (error) {

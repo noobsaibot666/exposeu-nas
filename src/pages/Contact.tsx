@@ -16,6 +16,14 @@ const TYPE_MAP: Record<string, string> = {
   'brand-event': 'Brand / Agency',
 }
 
+const createMetaEventId = () => {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID()
+  }
+
+  return `lead-${Date.now()}-${Math.random().toString(36).slice(2)}`
+}
+
 function Contact() {
   const navigate = useLocaleNavigate()
   const { locale } = useLocale()
@@ -104,6 +112,7 @@ function Contact() {
     setIsSubmitting(true)
 
     try {
+      const metaEventId = createMetaEventId()
       const payload = {
         name,
         email,
@@ -111,6 +120,7 @@ function Contact() {
         message,
         sourceUrl: window.location.href,
         referrer: document.referrer,
+        eventId: metaEventId,
         ...(companyWebsite ? { companyWebsite } : {}),
       }
 
@@ -144,7 +154,7 @@ function Contact() {
         })
       }
       if (typeof window.fbq === 'function') {
-        window.fbq('track', 'Lead', { content_name: projectType })
+        window.fbq('track', 'Lead', { content_name: projectType }, { eventID: metaEventId })
       }
     } catch (err: unknown) {
       const msg =

@@ -11,7 +11,7 @@ declare global {
     gtag?: (...args: unknown[]) => void
     dataLayer?: Array<Record<string, unknown> | unknown[]>
     clarity?: (eventName: string, eventValue?: string) => void
-    fbq?: (command: string, event: string, params?: Record<string, unknown>) => void
+    fbq?: (command: string, event: string, params?: Record<string, unknown>, options?: Record<string, unknown>) => void
     _fbq?: unknown
     __analyticsConsent?: boolean
   }
