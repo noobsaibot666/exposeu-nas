@@ -3,14 +3,22 @@
   "items": [
     {
       "id": "t1",
-      "quote": "They delivered selects before I was back home.",
-      "author": "Venue Director",
-      "company": "Silent Green Kulturquartier",
+      "quote": "They shoot with anamorphic cinema lenses. You notice it the moment you see the first frame — nothing generic, nothing flat. Just beautiful.",
+      "author": "George Weber",
+      "company": "Artist",
+      "avatar": null,
+      "service": "artist-sessions"
+    },
+    {
+      "id": "t2",
+      "quote": "Real joy to work with. They made my life easy — photos and video that genuinely reflected the artists’ vibe, not just what was happening on stage.",
+      "author": "Pina Conti de Luca",
+      "company": "Venue Booker",
       "avatar": null,
       "service": "concerts-events"
     },
     {
-      "id": "t2",
+      "id": "t3",
       "quote": "Exactly what we needed for the press kit. No back and forth.",
       "author": "Gallery Director",
       "company": "Berlin",
@@ -18,20 +26,12 @@
       "service": "exhibition-gallery"
     },
     {
-      "id": "t3",
-      "quote": "Clean, organized, and press-ready the same day.",
+      "id": "t4",
+      "quote": "Clean, organized, and press-ready in short time.",
       "author": "Production Manager",
-      "company": "Creative Agency, Berlin",
+      "company": "Galis",
       "avatar": null,
       "service": "brand-agency"
-    },
-    {
-      "id": "t4",
-      "quote": "These are the images I'll be using for every release going forward.",
-      "author": "Musician",
-      "company": "Berlin",
-      "avatar": null,
-      "service": "artist-sessions"
     }
   ]
 }

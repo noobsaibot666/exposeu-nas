@@ -35,6 +35,14 @@ type WorkPageLayoutProps = {
   extraGallery?: WorkCard[]
 }
 
+const renderSentenceBreaks = (text: string) =>
+  text.split(/(?<=\.)\s+/).map((part, index, parts) => (
+    <span key={`${part}-${index}`}>
+      {part}
+      {index < parts.length - 1 ? <br /> : null}
+    </span>
+  ))
+
 function WorkPageLayout({
   title,
   heroCopy,
@@ -310,7 +318,7 @@ function WorkPageLayout({
         <div className="content work-hero__grid">
           <div className="work-hero__copy">
             <p className="work-hero__eyebrow">{title}</p>
-            <h1>{heroCopy}</h1>
+            <h1>{renderSentenceBreaks(heroCopy)}</h1>
             {detail && <p className="work-hero__detail">{detail}</p>}
             {socialProof && <p className="work-hero__social-proof">{socialProof}</p>}
           </div>

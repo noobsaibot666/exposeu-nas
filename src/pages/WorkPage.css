@@ -26,7 +26,7 @@
 }
 
 .work-page .section {
-  padding-block: clamp(42px, 6vh, 72px);
+  padding-block: clamp(28px, 4.5vh, 52px);
 }
 
 .work-nav {
@@ -34,7 +34,8 @@
 }
 
 .work-hero {
-  padding-top: 38px;
+  padding-top: 30px;
+  padding-bottom: clamp(30px, 4vh, 48px);
 }
 
 .work-hero__grid {
@@ -136,10 +137,10 @@
 /* ─── Gallery sections ─── */
 
 .work-gallery {
-  min-height: 100svh;
+  min-height: clamp(620px, 82svh, 860px);
   display: flex;
   align-items: center;
-  padding: clamp(42px, 6vh, 72px) 0;
+  padding: clamp(28px, 4.5vh, 52px) 0;
   background: var(--bg-base);
 }
 
@@ -332,8 +333,8 @@
 /* ─── CTA section ─── */
 
 .work-cta {
-  padding-top: 32px;
-  padding-bottom: 56px;
+  padding-top: 20px;
+  padding-bottom: 44px;
 }
 
 .work-cta__content {
@@ -423,7 +424,7 @@
 
   .work-gallery {
     min-height: auto;
-    padding: 48px 0;
+    padding: 34px 0;
   }
 
   .work-gallery__header {
@@ -479,14 +480,33 @@
 
   .work-cta__content h2 {
     font-size: clamp(1.4rem, 5vw, 2rem);
-    padding-bottom: 20px;
+    padding-bottom: 14px;
+  }
+}
+
+@media (max-width: 900px) {
+  .work-page .section {
+    padding-block: 34px;
   }
 }
 
 @media (max-width: 600px) {
+  .work-page .section {
+    padding-block: 28px;
+  }
+
+  .work-hero {
+    padding-top: 20px;
+    padding-bottom: 26px;
+  }
+
   .work-hero__stack {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+  }
+
+  .work-gallery {
+    padding: 28px 0;
   }
 
   .work-gallery__media {

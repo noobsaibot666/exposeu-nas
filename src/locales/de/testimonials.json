@@ -3,35 +3,35 @@
   "items": [
     {
       "id": "t1",
-      "quote": "Die Auswahl war bei mir, noch bevor ich wieder zuhause war.",
-      "author": "Venue Director",
-      "company": "Silent Green Kulturquartier",
+      "quote": "They shoot with anamorphic cinema lenses. You notice it the moment you see the first frame — nothing generic, nothing flat. Just beautiful.",
+      "author": "George Weber",
+      "company": "Artist",
+      "avatar": null,
+      "service": "artist-sessions"
+    },
+    {
+      "id": "t2",
+      "quote": "Real joy to work with. They made my life easy — photos and video that genuinely reflected the artists’ vibe, not just what was happening on stage.",
+      "author": "Pina Conti de Luca",
+      "company": "Venue Booker",
       "avatar": null,
       "service": "concerts-events"
     },
     {
-      "id": "t2",
-      "quote": "Genau das, was wir für das Pressematerial brauchten. Kein Hin und Her.",
-      "author": "Galerie-Direktor:in",
+      "id": "t3",
+      "quote": "Genau das, was wir für die Pressemappe brauchten. Kein Hin und Her.",
+      "author": "Gallery Director",
       "company": "Berlin",
       "avatar": null,
       "service": "exhibition-gallery"
     },
     {
-      "id": "t3",
-      "quote": "Sauber, strukturiert und pressefertig – noch am selben Tag.",
-      "author": "Produktionsleitung",
-      "company": "Kreativagentur, Berlin",
+      "id": "t4",
+      "quote": "Sauber, organisiert und in kurzer Zeit pressefertig.",
+      "author": "Production Manager",
+      "company": "Galis",
       "avatar": null,
       "service": "brand-agency"
-    },
-    {
-      "id": "t4",
-      "quote": "Das sind die Bilder, die ich für jede künftige Veröffentlichung verwenden werde.",
-      "author": "Musiker:in",
-      "company": "Berlin",
-      "avatar": null,
-      "service": "artist-sessions"
     }
   ]
 }
