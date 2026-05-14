@@ -1040,6 +1040,50 @@
   user-select: none;
 }
 
+/* Mute / unmute toggle — bottom-right corner of the video hero */
+.home__video-mute-btn {
+  position: absolute;
+  bottom: clamp(20px, 3svh, 32px);
+  right: clamp(20px, 3vw, 36px);
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.72);
+  cursor: pointer;
+  padding: 0;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition:
+    background 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease,
+    transform 150ms ease;
+  pointer-events: auto;
+}
+
+.home__video-mute-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.36);
+  color: rgba(255, 255, 255, 0.95);
+  transform: scale(1.08);
+}
+
+.home__video-mute-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 3px;
+}
+
+.home__video-mute-btn svg {
+  display: block;
+  flex-shrink: 0;
+}
+
 @media (min-width: 901px) {
   .home--v2 .home__hero {
     padding-top: 40px;

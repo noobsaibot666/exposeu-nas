@@ -16,14 +16,18 @@ import { SchemaOrg, SEOMeta } from '../components/SEOMeta'
 // Set type to 'vimeo' or 'youtube' and replace id with the actual video ID
 const HERO_VIDEO = {
   type: 'vimeo' as 'vimeo' | 'youtube',
-  id: '863362136',
+  id: '1191974727',
   hash: '',
 }
+
+// How many seconds before the end to jump back to the start
+const EARLY_LOOP_SECONDS = 1
 
 function buildHeroVideoSrc(video: typeof HERO_VIDEO): string {
   if (video.type === 'vimeo') {
     const hashParam = video.hash ? `h=${video.hash}&` : ''
-    return `https://player.vimeo.com/video/${video.id}?${hashParam}background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`
+    // loop=1 = native fallback; api=1 = enables postMessage for early-seek enhancement
+    return `https://player.vimeo.com/video/${video.id}?${hashParam}background=1&autoplay=1&loop=1&byline=0&title=0&muted=1&api=1`
   }
   return `https://www.youtube.com/embed/${video.id}?autoplay=1&mute=1&loop=1&playlist=${video.id}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1`
 }
@@ -121,6 +125,7 @@ function HomeV2() {
   const { t } = useTranslation()
   const [activeSection, setActiveSection] = useState('home')
   const [videoReady, setVideoReady] = useState(false)
+  const [isMuted, setIsMuted] = useState(true)
   const location = useLocation()
   const [mobileLayout, setMobileLayout] = useState({
     card: 160,
@@ -135,6 +140,7 @@ function HomeV2() {
   const galleryRef = useRef<HTMLDivElement | null>(null)
   const tiltX = useRef<((value: number) => void) | null>(null)
   const tiltY = useRef<((value: number) => void) | null>(null)
+  const videoIframeRef = useRef<HTMLIFrameElement | null>(null)
 
   useTrackViewEvent('home_view')
   useScrollDepthTracking('home', [25, 50, 75, 90])
@@ -194,6 +200,72 @@ function HomeV2() {
 
   const handleVideoLoad = () => {
     setTimeout(() => setVideoReady(true), 600)
+    subscribeVimeoEarlyLoop()
+  }
+
+  const toggleMute = () => {
+    const iframe = videoIframeRef.current
+    if (!iframe?.contentWindow) return
+    if (isMuted) {
+      iframe.contentWindow.postMessage(
+        JSON.stringify({ method: 'setVolume', value: 1 }),
+        'https://player.vimeo.com',
+      )
+    } else {
+      iframe.contentWindow.postMessage(
+        JSON.stringify({ method: 'setVolume', value: 0 }),
+        'https://player.vimeo.com',
+      )
+    }
+    setIsMuted((prev) => !prev)
+  }
+
+  // Early-loop via Vimeo postMessage API.
+  // Called from handleVideoLoad so the iframe ref is guaranteed to be populated.
+  // loop=1 in the URL is the safety net — this just makes the loop start earlier.
+  const subscribeVimeoEarlyLoop = () => {
+    if (HERO_VIDEO.type !== 'vimeo') return
+    const iframe = videoIframeRef.current
+    if (!iframe) return
+
+    let seeking = false
+
+    const onMessage = (event: MessageEvent) => {
+      if (!event.origin.includes('vimeo.com')) return
+
+      let data: Record<string, unknown>
+      try {
+        data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data
+      } catch {
+        return
+      }
+
+      if (data.event === 'ready') {
+        iframe.contentWindow?.postMessage(
+          JSON.stringify({ method: 'addEventListener', value: 'timeupdate' }),
+          'https://player.vimeo.com',
+        )
+      }
+
+      if (data.event === 'timeupdate') {
+        const payload = data.data as { seconds: number; duration: number }
+        if (!payload || typeof payload.duration !== 'number') return
+        const remaining = payload.duration - payload.seconds
+
+        if (!seeking && payload.duration > 0 && remaining <= EARLY_LOOP_SECONDS) {
+          seeking = true
+          iframe.contentWindow?.postMessage(
+            JSON.stringify({ method: 'seekTo', value: 0 }),
+            'https://player.vimeo.com',
+          )
+          setTimeout(() => { seeking = false }, 1000)
+        }
+      }
+    }
+
+    window.addEventListener('message', onMessage)
+    // Cleanup is intentionally not returned here because handleVideoLoad
+    // is called once; the listener is cheap and lives for the page lifetime.
   }
 
   const handleScroll = (id: string) => {
@@ -646,6 +718,7 @@ function HomeV2() {
       <section className="home__video-hero" aria-hidden="true">
         <div className="home__video-iframe-wrap">
           <iframe
+            ref={videoIframeRef}
             src={buildHeroVideoSrc(HERO_VIDEO)}
             frameBorder="0"
             allow="autoplay; fullscreen"
@@ -664,6 +737,28 @@ function HomeV2() {
         >
           <span>{t('home.hero.scroll')}</span>
         </button>
+        {HERO_VIDEO.type === 'vimeo' && (
+          <button
+            className="home__video-mute-btn"
+            type="button"
+            aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+            onClick={toggleMute}
+          >
+            {isMuted ? (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <line x1="23" y1="9" x2="17" y2="15" />
+                <line x1="17" y1="9" x2="23" y2="15" />
+              </svg>
+            ) : (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+              </svg>
+            )}
+          </button>
+        )}
       </section>
 
       {/* Nav wrapper — hidden on desktop (nav is fixed), visible on mobile */}
