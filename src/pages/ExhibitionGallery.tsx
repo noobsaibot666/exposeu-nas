@@ -4,11 +4,16 @@ import { useLocale, useTranslation } from '../i18n/LocaleProvider'
 import { SEOMeta } from '../components/SEOMeta'
 
 const heroCards = [
-  { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_thumb/9_16/2_GW_009.png'), title: 'Opening Night' },
-  { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/1_ED_037.png'), title: 'Light Studies' },
-  { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/1_ED_048.png'), title: 'Curated Flow' },
-  { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/1_ED_055.png'), title: 'Install Detail' },
+  { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/0002.jpg'), title: 'Opening Night' },
+  { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/001.png'), title: 'Light Studies' },
+  { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/009.jpg'), title: 'Curated Flow' },
+  { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/012.jpg'), title: 'Install Detail' },
 ]
+
+const sectionImages = {
+  gallery: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/008.jpg'),
+  idealFor: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/003.jpg'),
+}
 
 function ExhibitionGallery() {
   const { locale } = useLocale()
@@ -46,9 +51,11 @@ function ExhibitionGallery() {
         galleryTitle={page.galleryTitle}
         galleryCopy={page.galleryCopy}
         gallery={page.gallery}
+        galleryImage={sectionImages.gallery}
         extraGalleryTitle={t('services.shared.idealFor')}
         extraGalleryCopy={page.extraGalleryCopy}
         extraGallery={page.extraGallery}
+        extraGalleryImage={sectionImages.idealFor}
         ctaText={page.ctaText}
         ctaLabel={page.footerCtaLabel}
         ctaHref="/contact"

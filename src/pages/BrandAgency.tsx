@@ -10,6 +10,11 @@ const heroCards = [
   { image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_041.png'), title: 'Fabric Motion' },
 ]
 
+const sectionImages = {
+  gallery: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_030.png'),
+  idealFor: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
+}
+
 function BrandAgency() {
   const { locale } = useLocale()
   const { t, tm } = useTranslation()
@@ -46,9 +51,11 @@ function BrandAgency() {
         galleryTitle={page.galleryTitle}
         galleryCopy={page.galleryCopy}
         gallery={page.gallery}
+        galleryImage={sectionImages.gallery}
         extraGalleryTitle={t('services.shared.idealFor')}
         extraGalleryCopy={page.extraGalleryCopy}
         extraGallery={page.extraGallery}
+        extraGalleryImage={sectionImages.idealFor}
         ctaText={page.ctaText}
         ctaLabel={page.footerCtaLabel}
         ctaHref="/contact"

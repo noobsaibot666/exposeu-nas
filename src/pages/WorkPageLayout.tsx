@@ -25,6 +25,7 @@ type WorkPageLayoutProps = {
   galleryTitle: string
   galleryCopy: string
   gallery: WorkCard[]
+  galleryImage?: string
   ctaText: string
   ctaHref: string
   serviceSlug?: string
@@ -33,6 +34,7 @@ type WorkPageLayoutProps = {
   extraGalleryTitle?: string
   extraGalleryCopy?: string
   extraGallery?: WorkCard[]
+  extraGalleryImage?: string
 }
 
 const renderSentenceBreaks = (text: string) =>
@@ -52,6 +54,7 @@ function WorkPageLayout({
   galleryTitle,
   galleryCopy,
   gallery,
+  galleryImage,
   ctaText,
   ctaHref,
   serviceSlug,
@@ -60,6 +63,7 @@ function WorkPageLayout({
   extraGalleryTitle,
   extraGalleryCopy,
   extraGallery,
+  extraGalleryImage,
 }: WorkPageLayoutProps) {
   const rootRef = useRef<HTMLElement | null>(null)
   const stackRef = useRef<HTMLDivElement | null>(null)
@@ -253,11 +257,6 @@ function WorkPageLayout({
     return () => ctx.revert()
   }, [])
 
-  const sectionImages = [
-    cards[0]?.image,
-    cards[1]?.image ?? cards[0]?.image,
-  ]
-
   const finalCtaHref = serviceSlug ? `/contact?service=${serviceSlug}` : ctaHref
 
   const renderSection = (
@@ -361,8 +360,8 @@ function WorkPageLayout({
         galleryTitle,
         galleryCopy,
         gallery,
-        sectionImages[0],
-          'gallery-primary',
+        galleryImage,
+        'gallery-primary',
       )}
 
       {extraGallery && extraGallery.length > 0 &&
@@ -371,7 +370,7 @@ function WorkPageLayout({
           extraGalleryTitle ?? '',
           extraGalleryCopy ?? '',
           extraGallery,
-          sectionImages[1],
+          extraGalleryImage,
           'gallery-secondary',
         )}
 
