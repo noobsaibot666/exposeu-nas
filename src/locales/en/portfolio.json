@@ -15,7 +15,7 @@
     {
       "id": "v1",
       "title": "Lick the walls to understand echoes",
-      "description": "Sound-reactive installation. We found a way to make it visible.",
+      "description": "Sound installation made visible.",
       "context": "Sound installation documentation, Berlin",
       "outcome": "Press stills + full archive set — delivered",
       "tag": "Live Event",
@@ -24,7 +24,7 @@
     {
       "id": "v2",
       "title": "Abigail Toll - IDOL - Silent Green",
-      "description": "One night at Silent Green. Multiple artists. All documented.",
+      "description": "A multi-artist night, fully documented.",
       "context": "Live performance night, Silent Green Kulturquartier",
       "outcome": "Recap film + press-ready stills — delivered",
       "tag": "Live Event",
@@ -33,7 +33,7 @@
     {
       "id": "v5",
       "title": "Boogarins Band",
-      "description": "A touring band in session. Images built to travel with the release.",
+      "description": "Release-ready session images.",
       "context": "Live session, international touring band",
       "outcome": "Release stills + short-form clips — delivered",
       "tag": "Concert",
@@ -42,7 +42,7 @@
     {
       "id": "sanam",
       "title": "SANAM — Silent Green Berlin",
-      "description": "Full concert documentation at the Betonhalle. Stage, crowd, atmosphere — every frame built for press and social.",
+      "description": "Stage, crowd, and atmosphere for press and social.",
       "context": "press & film documentation, Betonhalle at Silent Green",
       "outcome": "press stills + social media content — delivered",
       "tag": "Concert",
@@ -51,7 +51,7 @@
     {
       "id": "seefeel",
       "title": "Seefeel — Silent Green Berlin",
-      "description": "Concert press and film documentation at the Betonhalle. Full coverage from stage to crowd.",
+      "description": "Concert coverage from stage to crowd.",
       "context": "press & film documentation, Betonhalle at Silent Green",
       "outcome": "concert coverage — delivered",
       "tag": "Concert",
@@ -60,7 +60,7 @@
     {
       "id": "gleo",
       "title": "GLEO — Silent Green Berlin",
-      "description": "Video and photo documentation of GLEO live at the Betonhalle. Full concert coverage, stage to crowd.",
+      "description": "Live photo and video coverage.",
       "context": "video & photo documentation, Betonhalle at Silent Green",
       "outcome": "concert coverage — delivered",
       "tag": "Concert",
@@ -76,13 +76,13 @@
     "cta": "Start a project",
     "cards": {
       "offer-exhibition": {
-        "blurb": "Full coverage from opening night through the run. Delivered for press releases, funding applications, and archive. The gallery stays open in your files long after it closes."
+        "blurb": "Exhibition coverage for press, funding, and archive."
       },
       "offer-session": {
-        "blurb": "Studio and location sessions for musicians and visual artists building a body of work. Images that represent the practice, not just the person."
+        "blurb": "Portraits and sessions for artists building a body of work."
       },
       "offer-performance": {
-        "blurb": "Multi-angle documentation for a single show or a full season. Delivered within 24–48h. Built for socials, press kits, and everything that needs to move fast."
+        "blurb": "Live documentation for shows, seasons, press, and social."
       },
       "offer-brand": {
         "blurb": "Editorial documentation for brand events, launches, and activations. Clean, sharp, on deadline. The kind of coverage your client expects."

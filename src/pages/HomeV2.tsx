@@ -20,10 +20,16 @@ const HERO_VIDEO = {
   hash: '',
 }
 
+const MOBILE_HERO_VIDEO = {
+  type: 'vimeo' as 'vimeo' | 'youtube',
+  id: '1192614730',
+  hash: '',
+}
+
 // How many seconds before the end to jump back to the start
 const EARLY_LOOP_SECONDS = 1
 
-function buildHeroVideoSrc(video: typeof HERO_VIDEO): string {
+function buildHeroVideoSrc(video: typeof HERO_VIDEO | typeof MOBILE_HERO_VIDEO): string {
   if (video.type === 'vimeo') {
     const hashParam = video.hash ? `h=${video.hash}&` : ''
     // loop=1 = native fallback; api=1 = enables postMessage for early-seek enhancement
@@ -120,6 +126,7 @@ function HomeV2() {
   const { t } = useTranslation()
   const [activeSection, setActiveSection] = useState('home')
   const [videoReady, setVideoReady] = useState(false)
+  const [mobileVideoReady, setMobileVideoReady] = useState(false)
   const [isMuted, setIsMuted] = useState(true)
   const location = useLocation()
   const [mobileLayout, setMobileLayout] = useState({
@@ -136,6 +143,7 @@ function HomeV2() {
   const tiltX = useRef<((value: number) => void) | null>(null)
   const tiltY = useRef<((value: number) => void) | null>(null)
   const videoIframeRef = useRef<HTMLIFrameElement | null>(null)
+  const mobileVideoIframeRef = useRef<HTMLIFrameElement | null>(null)
 
   useTrackViewEvent('home_view')
   useScrollDepthTracking('home', [25, 50, 75, 90])
@@ -193,9 +201,18 @@ function HomeV2() {
     return () => clearTimeout(fallback)
   }, [])
 
+  useEffect(() => {
+    const fallback = setTimeout(() => setMobileVideoReady(true), 3000)
+    return () => clearTimeout(fallback)
+  }, [])
+
   const handleVideoLoad = () => {
     setTimeout(() => setVideoReady(true), 600)
     subscribeVimeoEarlyLoop()
+  }
+
+  const handleMobileVideoLoad = () => {
+    setTimeout(() => setMobileVideoReady(true), 600)
   }
 
   const toggleMute = () => {
@@ -335,9 +352,14 @@ function HomeV2() {
         const mobileThumbImages = gsap.utils.toArray<HTMLElement>('.home__hero-gallery--mobile .home__hero-thumb-image')
         const mobileHeroItems = gsap.utils.toArray<HTMLElement>('.home__hero-title, .home__hero-gallery--mobile .home__hero-thumb-image, .home__hero-subhead, .home__hero-cta')
 
-        gsap.set(mobileHeroItems, { opacity: 1, y: 0, scale: 1, rotate: 0, filter: 'blur(0px)' })
-
-        const mobileTimeline = gsap.timeline({ delay: 0.36 })
+        const mobileTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: '.home__hero',
+            start: 'top 82%',
+            end: 'top 20%',
+            scrub: 0.9,
+          },
+        })
 
         mobileTimeline
           .fromTo(
@@ -722,7 +744,7 @@ function HomeV2() {
       <div className="home__floaters" aria-hidden="true" />
 
       {/* Fullscreen video hero — desktop only */}
-      <section className="home__video-hero" aria-label="Background video">
+      <section className="home__video-hero home__video-hero--desktop" aria-label="Background video">
         <div className="home__video-iframe-wrap" aria-hidden="true">
           <iframe
             ref={videoIframeRef}
@@ -767,6 +789,32 @@ function HomeV2() {
             )}
           </button>
         )}
+      </section>
+
+      {/* Fullscreen video hero — mobile only */}
+      <section className="home__video-hero home__video-hero--mobile" aria-label="Background video">
+        <div className="home__video-iframe-wrap home__video-iframe-wrap--mobile" aria-hidden="true">
+          <iframe
+            ref={mobileVideoIframeRef}
+            src={buildHeroVideoSrc(MOBILE_HERO_VIDEO)}
+            frameBorder="0"
+            allow="autoplay; fullscreen"
+            allowFullScreen
+            title="Mobile hero background video"
+            tabIndex={-1}
+            onLoad={handleMobileVideoLoad}
+          />
+        </div>
+        <div className="home__video-overlay" />
+        <div className={`home__video-blind${mobileVideoReady ? ' home__video-blind--gone' : ''}`} aria-hidden="true" />
+        <button
+          className="home__video-scroll-hint"
+          type="button"
+          aria-label={t('home.hero.scrollAria')}
+          onClick={() => handleScroll('#hero')}
+        >
+          <span>{t('home.hero.scroll')}</span>
+        </button>
       </section>
 
       {/* Nav wrapper — hidden on desktop (nav is fixed), visible on mobile */}

@@ -990,6 +990,10 @@
   background: #050507;
 }
 
+.home__video-hero--mobile {
+  display: none;
+}
+
 .home--v2 .home__background {
   display: none;
 }
@@ -1012,6 +1016,13 @@
   height: 100%;
   border: none;
   pointer-events: none;
+}
+
+.home__video-iframe-wrap--mobile {
+  width: 100vw;
+  height: 177.78vw;
+  min-height: 100svh;
+  min-width: 56.25svh;
 }
 
 .home__video-overlay {
@@ -1118,8 +1129,13 @@
 /* ─── Responsive (shared with Home.css) ─── */
 
 @media (max-width: 900px) {
-  .home__video-hero {
+  .home__video-hero--desktop {
     display: none;
+  }
+
+  .home__video-hero--mobile {
+    display: block;
+    min-height: 100svh;
   }
 
   .home__process-grid {

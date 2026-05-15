@@ -15,7 +15,7 @@
     {
       "id": "v1",
       "title": "Lick the walls to understand echoes",
-      "description": "Soundreaktive Installation. Wir haben einen Weg gefunden, sie sichtbar zu machen.",
+      "description": "Soundinstallation sichtbar gemacht.",
       "context": "Soundinstallation, Berlin",
       "outcome": "Presse-Stills + vollständiges Archivset — geliefert",
       "tag": "Live Event",
@@ -24,7 +24,7 @@
     {
       "id": "v2",
       "title": "Abigail Toll - IDOL - Silent Green",
-      "description": "Eine Nacht im Silent Green. Mehrere Künstler:innen. Alles dokumentiert.",
+      "description": "Ein Abend mit mehreren Künstler:innen, vollständig dokumentiert.",
       "context": "Live-Performanceabend, Silent Green Kulturquartier",
       "outcome": "Recap-Film + pressetaugliche Stills — geliefert",
       "tag": "Live Event",
@@ -33,7 +33,7 @@
     {
       "id": "v5",
       "title": "Boogarins Band",
-      "description": "Eine Tourband in der Session. Bilder, die mit dem Release reisen.",
+      "description": "Release-fertige Session-Bilder.",
       "context": "Live-Session, internationale Tourband",
       "outcome": "Release-Stills + Kurzclips — geliefert",
       "tag": "Konzert",
@@ -42,7 +42,7 @@
     {
       "id": "sanam",
       "title": "SANAM — Silent Green Berlin",
-      "description": "Vollständige Konzertdokumentation in der Betonhalle. Bühne, Publikum, Atmosphäre — jeder Frame für Presse und Social bereit.",
+      "description": "Bühne, Publikum und Atmosphäre für Presse und Social.",
       "context": "Presse- & Filmdokumentation, Betonhalle im Silent Green",
       "outcome": "Pressestills + Social-Media-Inhalte — geliefert",
       "tag": "Konzert",
@@ -51,7 +51,7 @@
     {
       "id": "seefeel",
       "title": "Seefeel — Silent Green Berlin",
-      "description": "Konzertpresse- und Filmdokumentation in der Betonhalle. Vollständige Abdeckung von Bühne bis Publikum.",
+      "description": "Konzertcoverage von Bühne bis Publikum.",
       "context": "Presse- & Filmdokumentation, Betonhalle im Silent Green",
       "outcome": "Konzertberichterstattung — geliefert",
       "tag": "Konzert",
@@ -60,7 +60,7 @@
     {
       "id": "gleo",
       "title": "GLEO — Silent Green Berlin",
-      "description": "Video- und Fotodokumentation von GLEO live in der Betonhalle. Vollständige Konzertberichterstattung von der Bühne bis zum Publikum.",
+      "description": "Live-Coverage in Foto und Video.",
       "context": "Video- & Fotodokumentation, Betonhalle im Silent Green",
       "outcome": "Konzertberichterstattung — geliefert",
       "tag": "Konzert",
@@ -76,13 +76,13 @@
     "cta": "Projekt starten",
     "cards": {
       "offer-exhibition": {
-        "blurb": "Komplette Coverage vom Opening bis zum letzten Tag. Geliefert für Pressemitteilungen, Förderanträge und Archiv. Die Ausstellung bleibt in deinen Dateien — auch wenn sie schon geschlossen hat."
+        "blurb": "Ausstellungsdokumentation für Presse, Förderung und Archiv."
       },
       "offer-session": {
-        "blurb": "Studio- und Location-Sessions für Musiker:innen und bildende Künstler:innen, die an einem Werk arbeiten. Bilder, die die Praxis zeigen — nicht nur die Person."
+        "blurb": "Portraits und Sessions für Künstler:innen mit eigener Praxis."
       },
       "offer-performance": {
-        "blurb": "Mehrperspektivische Dokumentation — für einen Abend oder eine ganze Saison. Innerhalb von 24–48h geliefert. Für Socials, Pressekits und alles, was schnell muss."
+        "blurb": "Live-Dokumentation für Shows, Presse und Social Media."
       },
       "offer-brand": {
         "blurb": "Editoriale Dokumentation für Brand-Events, Launches und Aktivierungen. Sauber, präzise, pünktlich. Die Coverage, die dein Auftraggeber erwartet."

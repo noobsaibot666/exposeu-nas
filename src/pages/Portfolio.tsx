@@ -26,11 +26,11 @@ type VideoItem = {
 
 type OfferItem = {
   id: string
+  slug: string
   title: string
   blurb: string
   link: string
   cta: string
-  accent: string
   background: string
 }
 
@@ -172,40 +172,31 @@ const videos: VideoItem[] = [
 
 const offers: OfferItem[] = [
   {
+    id: 'offer-performance',
+    slug: serviceMeta['concerts-events'].slug,
+    title: serviceMeta['concerts-events'].label,
+    blurb: '',
+    link: serviceMeta['concerts-events'].href,
+    cta: '',
+    background: resolveImagePath('/src/assets/images/website/artists/002.jpg'),
+  },
+  {
     id: 'offer-exhibition',
+    slug: serviceMeta['exhibition-gallery'].slug,
     title: serviceMeta['exhibition-gallery'].label,
     blurb: '',
-    link: '/contact?type=exhibition',
+    link: serviceMeta['exhibition-gallery'].href,
     cta: '',
-    accent: '#ffffffff',
-    background: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
+    background: resolveImagePath('/src/assets/images/website/_incoming/homepage/services/exhibition-gallery/001.jpg'),
   },
   {
     id: 'offer-session',
+    slug: serviceMeta['artist-sessions'].slug,
     title: serviceMeta['artist-sessions'].label,
     blurb: '',
-    link: '/contact?type=artist-session',
+    link: serviceMeta['artist-sessions'].href,
     cta: '',
-    accent: '#c4b5fd',
-    background: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
-  },
-  {
-    id: 'offer-performance',
-    title: serviceMeta['concerts-events'].label,
-    blurb: '',
-    link: '/contact?type=concert',
-    cta: '',
-    accent: '#fca5a5',
-    background: resolveImagePath('/src/assets/images/website/performances/thumb_3_086.jpg'),
-  },
-  {
-    id: 'offer-brand',
-    title: serviceMeta['brand-agency'].label,
-    blurb: '',
-    link: '/contact?type=brand-event',
-    cta: '',
-    accent: '#c7d2fe',
-    background: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
+    background: resolveImagePath('/src/assets/images/website/_incoming/homepage/services/artist-sessions/0015.jpeg'),
   },
 ]
 
@@ -236,14 +227,7 @@ function Portfolio() {
     () =>
       offers.map((offer) => ({
         ...offer,
-        title:
-          offer.id === 'offer-exhibition'
-            ? t(serviceMeta['exhibition-gallery'].labelKey)
-            : offer.id === 'offer-session'
-              ? t(serviceMeta['artist-sessions'].labelKey)
-              : offer.id === 'offer-performance'
-                ? t(serviceMeta['concerts-events'].labelKey)
-                : t(serviceMeta['brand-agency'].labelKey),
+        title: t(`home.services.cards.${offer.slug}.title`),
         blurb: t(`portfolio.offers.cards.${offer.id}.blurb`),
         cta: t('portfolio.offers.cta'),
       })),
@@ -675,7 +659,6 @@ function Portfolio() {
         <div className="content portfolio__offers-inner">
           <div className="portfolio__offers-copy">
             <p className="portfolio__eyebrow">{t('portfolio.offers.label')}</p>
-            <p className="portfolio__servicesBridge">{t('portfolio.offers.bridge')}</p>
             <h2>{t('portfolio.offers.headline')}</h2>
             <p className="portfolio__lead">{t('portfolio.offers.copy')}</p>
           </div>
@@ -690,23 +673,10 @@ function Portfolio() {
                   <img className="portfolio__offer-image" src={offer.background} alt="" decoding="async" />
                 </div>
                 <div className="portfolio__offer-content">
-                  <div className="portfolio__offer-top">
-                    <span className="portfolio__offer-pill">{t('portfolio.offers.pill')}</span>
-                    <span className="portfolio__offer-badge">{offer.title}</span>
-                  </div>
                   <p className="portfolio__offer-title">{offer.title}</p>
                   <p className="portfolio__offer-blurb">{offer.blurb}</p>
                   <span className="portfolio__offer-cta">
                     {offer.cta}
-                    <svg width="10" height="16" viewBox="0 0 6 10" fill="none">
-                      <path
-                        d="M1 9L4.5 5L1 1"
-                        stroke="white"
-                        strokeWidth="1.2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
                   </span>
                 </div>
               </a>

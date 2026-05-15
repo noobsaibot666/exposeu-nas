@@ -263,7 +263,7 @@
   bottom: 24px;
   z-index: 2;
   display: grid;
-  gap: 10px;
+  gap: 6px;
   opacity: 1;
   transform: none;
   transition: opacity 420ms ease, transform 420ms ease;
@@ -296,7 +296,7 @@
   margin: 0;
   color: var(--text-secondary);
   font-size: 0.85rem;
-  line-height: 1.4;
+  line-height: 1.18;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   line-clamp: 1;
@@ -308,7 +308,7 @@
   margin: 0;
   color: var(--text-tertiary);
   font-size: 0.72rem;
-  line-height: 1.2;
+  line-height: 1.12;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   line-clamp: 1;
@@ -702,10 +702,10 @@
 
 .portfolio__offers-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 380px));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
   width: 100%;
-  max-width: 784px;
+  max-width: min(1260px, calc(100vw - 48px));
   justify-content: center;
   margin-inline: auto;
   align-items: stretch;
@@ -717,8 +717,8 @@
   position: relative;
   display: flex !important;
   flex-direction: column;
-  border-radius: 18px;
-  background: var(--surface-base);
+  border-radius: 16px;
+  background: var(--surface-card);
   border: 1px solid var(--border-soft);
   color: var(--text-strong);
   text-decoration: none;
@@ -726,8 +726,9 @@
   width: 100%;
   min-width: 0;
   min-height: 0;
+  height: auto;
   box-shadow: none;
-  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, filter 180ms ease;
+  transition: transform 200ms ease, border-color 180ms ease, filter 180ms ease;
   opacity: 1 !important;
   visibility: visible !important;
   transform: none !important;
@@ -743,8 +744,9 @@
 .portfolio__offer-image {
   display: block;
   width: 100%;
-  height: 210px;
+  height: clamp(240px, 24vw, 330px);
   object-fit: cover;
+  aspect-ratio: 16 / 9;
 }
 
 .portfolio__offer-card:hover {
@@ -754,87 +756,61 @@
   filter: saturate(1.08);
 }
 
-.portfolio__offer-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.85rem;
-  gap: 10px;
-  margin-bottom: auto;
-}
-
 .portfolio__offer-content {
   position: relative;
-  padding: 18px;
+  padding: 16px 22px 18px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  min-height: 218px;
-  height: 100%;
+  gap: 10px;
+  min-height: 0;
+  height: auto;
   background: var(--surface-card);
-}
-
-.portfolio__offer-pill {
-  padding: 5px 9px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid var(--border-soft);
-  color: var(--text-strong);
-  font-weight: 700;
-}
-
-.portfolio__offer-badge {
-  padding: 5px 9px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text-strong);
-  font-weight: 700;
-  border: 1px solid var(--border-soft);
 }
 
 .portfolio__offer-title {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
+  line-height: 1.25;
   font-weight: 800;
   color: var(--text-strong);
+  text-decoration: none;
+  white-space: normal;
 }
 
 .portfolio__offer-blurb {
-  margin: 0;
-  color: var(--text-strong);
+  margin: 0 0 6px;
+  color: var(--text-soft);
   font-size: 0.96rem;
-  line-height: 1.5;
+  line-height: 1.38;
+  text-decoration: none;
 }
 
 .portfolio__offer-cta {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 12px;
-  background: rgba(255, 255, 255, 0.14);
-  border-radius: 12px;
-  color: var(--text-strong);
-  font-weight: 700;
-  width: fit-content;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  margin-top: auto;
+  border: 1px solid var(--button-solid-border);
+  border-radius: 999px;
+  padding: 9px 18px;
+  background: transparent;
+  color: var(--button-solid-bg);
+  align-self: flex-start;
+  margin-top: 10px;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
 .portfolio__offer-card,
 .portfolio__offer-card .portfolio__offer-title,
-.portfolio__offer-card .portfolio__offer-blurb,
-.portfolio__offer-card .portfolio__offer-pill,
-.portfolio__offer-card .portfolio__offer-badge,
-.portfolio__offer-card .portfolio__offer-cta {
+.portfolio__offer-card .portfolio__offer-blurb {
   color: var(--text-strong);
 }
 
 .portfolio__offer-card .portfolio__offer-blurb {
-  color: rgba(255, 255, 255, 0.82);
-}
-
-.portfolio__offer-cta svg {
-  display: block;
+  color: var(--text-soft);
 }
 
 @media (max-width: 1200px) {
@@ -860,7 +836,7 @@
   }
 
   .portfolio__offers-grid {
-    grid-template-columns: minmax(0, 380px);
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -1004,6 +980,14 @@
   }
 
   .portfolio__offer-image {
-    height: 180px;
+    height: 240px;
+  }
+
+  .portfolio__offer-content {
+    padding: 16px;
+  }
+
+  .portfolio__offer-title {
+    font-size: 1.15rem;
   }
 }
