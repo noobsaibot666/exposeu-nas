@@ -35,17 +35,17 @@ function buildHeroVideoSrc(video: typeof HERO_VIDEO): string {
 const projectVisuals = [
   {
     slug: serviceMeta['concerts-events'].slug,
-    image: resolveImagePath('/src/assets/images/website/performances/thumb_3_086.jpg'),
+    image: resolveImagePath('/src/assets/images/website/artists/002.jpg'),
     link: serviceMeta['concerts-events'].href,
   },
   {
     slug: serviceMeta['exhibition-gallery'].slug,
-    image: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/services/exhibition-gallery/001.jpg'),
     link: serviceMeta['exhibition-gallery'].href,
   },
   {
     slug: serviceMeta['artist-sessions'].slug,
-    image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/services/artist-sessions/0015.jpeg'),
     link: serviceMeta['artist-sessions'].href,
   },
   {
@@ -58,32 +58,32 @@ const projectVisuals = [
 const heroGalleryBase = [
   {
     id: 'thumb-concerts',
-    image: resolveImagePath('/src/assets/images/website/performances/thumb_3_033.jpg'),
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/concerts-events/DSC_4346.jpg'),
     slug: 'concerts-events',
     rotation: -4,
   },
   {
     id: 'thumb-exhibition',
-    image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/1_ED_055.png'),
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/exhibition-gallery/004.jpg'),
     slug: 'exhibition-gallery',
     rotation: -2,
   },
   {
     id: 'thumb-artist',
-    image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/artist-sessions/001.jpg'),
     slug: 'artist-sessions',
     rotation: 2,
   },
   {
     id: 'thumb-brand',
-    image: resolveImagePath('/src/assets/images/website/fashion/thumb_3_081.jpg'),
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/brand-agency/0021.jpeg'),
     slug: 'brand-agency',
     rotation: 4,
   },
 ]
 
 const proofAvatars = [
-  resolveImagePath('/src/assets/images/website/artists/thumb_3_052.jpg'),
+  resolveImagePath('/src/assets/images/website/artists/DSC_5336.jpg'),
   resolveImagePath('/src/assets/images/website/artists/thumb_3_060.jpg'),
   resolveImagePath('/src/assets/images/website/fashion/thumb_3_057.jpg'),
   resolveImagePath('/src/assets/images/website/performances/thumb_3_086.jpg'),
