@@ -25,6 +25,11 @@
   margin-bottom: 28px;
 }
 
+.contact__heading .availability-badge {
+  justify-self: end;
+  text-align: right;
+}
+
 .contact__heading h1 {
   margin: 0;
   font-size: clamp(2.6rem, 4vw + 1rem, 4rem);
@@ -217,7 +222,7 @@
 }
 
 .contact__field textarea.isStarterMessage {
-  font-size: 1rem;
+  font-size: 0.9rem;
   line-height: 1.35;
   opacity: 0.72;
 }
@@ -273,13 +278,13 @@
   font-weight: 800;
   border: 1px solid var(--button-solid-border);
   border-radius: 999px;
-  padding: 14px 24px;
+  padding: 10px 22px;
   cursor: pointer;
   transition: transform 150ms ease, opacity 150ms ease, background-color 150ms ease, border-color 150ms ease;
   grid-column: 1 / -1;
   width: max-content;
   margin-top: 0;
-  min-height: 52px;
+  min-height: 40px;
 }
 
 .contact__submit,

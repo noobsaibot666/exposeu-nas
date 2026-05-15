@@ -754,19 +754,39 @@
   justify-content: center;
 }
 
-.home__proof-actions button {
+.home__proof-actions button,
+.home__process-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 198px;
   border-radius: 999px;
   padding: 12px 24px;
   border: 1px solid var(--button-outline-border);
   background: transparent;
   color: var(--button-solid-bg);
   cursor: pointer;
+  font: inherit;
+  line-height: normal;
+  text-decoration: none;
 }
 
 .home__proof-actions button:first-child {
   background: var(--button-solid-bg);
   color: var(--button-solid-text);
   border-color: var(--button-solid-border);
+}
+
+.home__process-secondary,
+.home__process-secondary:visited {
+  background: #17191d;
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.home__process-secondary:hover {
+  color: #fff;
+  text-decoration: none;
 }
 
 .home__proof-secondary {
@@ -877,16 +897,16 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  padding-inline: var(--content-gutter);
-  max-width: 900px;
+  padding-inline: 0;
+  max-width: min(1260px, calc(100vw - 48px));
   margin-inline: auto;
   width: 100%;
 }
 
 .home__cases-row {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 28px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
   perspective: 1200px;
 }
 
@@ -909,7 +929,7 @@
 
 .home__case-media img {
   width: 100%;
-  height: clamp(200px, 28vw, 340px);
+  height: clamp(200px, 21vw, 290px);
   object-fit: cover;
   display: block;
   aspect-ratio: 16 / 9;
@@ -1099,7 +1119,7 @@
 
 @media (max-width: 900px) {
   .home__video-hero {
-    min-height: 100svh;
+    display: none;
   }
 
   .home__process-grid {
@@ -1213,6 +1233,10 @@
     grid-template-columns: 1fr;
   }
 
+  .home__case-media img {
+    height: clamp(180px, 20vw, 260px);
+  }
+
   /* Allow card titles to wrap instead of ellipsis */
   .home__case-meta h3 {
     white-space: normal;
@@ -1222,12 +1246,14 @@
   /* Full-width tap targets */
   .home__actions button,
   .home__hero-cta,
-  .home__proof-actions button {
+  .home__proof-actions button,
+  .home__process-secondary {
     width: 100%;
   }
 
   .home__actions button,
   .home__proof-actions button,
+  .home__process-secondary,
   .home__pricing-card button,
   .home__service-card button,
   .home__case-meta button {

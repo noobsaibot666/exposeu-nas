@@ -48,11 +48,6 @@ const projectVisuals = [
     image: resolveImagePath('/src/assets/images/website/_incoming/homepage/services/artist-sessions/0015.jpeg'),
     link: serviceMeta['artist-sessions'].href,
   },
-  {
-    slug: serviceMeta['brand-agency'].slug,
-    image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
-    link: serviceMeta['brand-agency'].href,
-  },
 ]
 
 const heroGalleryBase = [
@@ -76,15 +71,15 @@ const heroGalleryBase = [
   },
   {
     id: 'thumb-brand',
-    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/brand-agency/0021.jpeg'),
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/brand-agency/033.jpeg'),
     slug: 'brand-agency',
     rotation: 4,
   },
 ]
 
 const proofAvatars = [
-  resolveImagePath('/src/assets/images/website/artists/DSC_5336.jpg'),
-  resolveImagePath('/src/assets/images/website/artists/thumb_3_060.jpg'),
+  resolveImagePath('/src/assets/images/website/artists/thumb_3_052.jpg'),
+  resolveImagePath('/src/assets/images/website/fashion/thumb_3_033.jpg'),
   resolveImagePath('/src/assets/images/website/fashion/thumb_3_057.jpg'),
   resolveImagePath('/src/assets/images/website/performances/thumb_3_086.jpg'),
 ]
@@ -338,20 +333,17 @@ function HomeV2() {
 
       if (isMobile) {
         const mobileThumbImages = gsap.utils.toArray<HTMLElement>('.home__hero-gallery--mobile .home__hero-thumb-image')
-        const mobileTimeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: '.home__hero',
-            start: 'top 82%',
-            end: 'top 8%',
-            scrub: 1.4,
-          },
-        })
+        const mobileHeroItems = gsap.utils.toArray<HTMLElement>('.home__hero-title, .home__hero-gallery--mobile .home__hero-thumb-image, .home__hero-subhead, .home__hero-cta')
+
+        gsap.set(mobileHeroItems, { opacity: 1, y: 0, scale: 1, rotate: 0, filter: 'blur(0px)' })
+
+        const mobileTimeline = gsap.timeline({ delay: 0.36 })
 
         mobileTimeline
           .fromTo(
             '.home__hero-title',
             { opacity: 0, y: 34, filter: 'blur(6px)' },
-            { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.1, ease: 'sine.inOut' },
+            { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.82, ease: 'sine.out' },
           )
           .fromTo(
             mobileThumbImages,
@@ -362,18 +354,31 @@ function HomeV2() {
               scale: 1,
               rotate: 0,
               filter: 'blur(0px)',
-              duration: 0.95,
-              ease: 'sine.inOut',
-              stagger: 0.08,
+              duration: 0.72,
+              ease: 'sine.out',
+              stagger: 0.06,
             },
-            0.75,
+            0.48,
           )
           .fromTo(
             ['.home__hero-subhead', '.home__hero-cta'],
             { opacity: 0, y: 24, filter: 'blur(5px)' },
-            { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.85, ease: 'sine.inOut', stagger: 0.12 },
-            1.58,
+            { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.68, ease: 'sine.out', stagger: 0.1 },
+            1.08,
           )
+
+        gsap.to(mobileHeroItems, {
+          opacity: 0,
+          y: -18,
+          filter: 'blur(4px)',
+          ease: 'sine.inOut',
+          scrollTrigger: {
+            trigger: '.home__hero',
+            start: 'bottom 38%',
+            end: 'bottom 8%',
+            scrub: 0.65,
+          },
+        })
       } else {
         // Hero section — scrub-based sequence, animates in/out with scroll direction.
         // start: 'top bottom' begins as soon as hero enters from below the viewport.
@@ -444,39 +449,45 @@ function HomeV2() {
           )
       }
 
-      // Cases — scrub-based, animates in and out with scroll direction.
+      // Cases — quick staged entrance.
       const cards = gsap.utils.toArray<HTMLElement>('.home__case-card')
       const casesHeaderItems = gsap.utils.toArray<HTMLElement>('.home__cases .home__section-header > *')
       const casesNote = document.querySelector('.home__section-note')
 
-      // Header fades in with scrub
       gsap.fromTo(
         casesHeaderItems,
         { opacity: 0, y: 22 },
         {
           opacity: 1,
           y: 0,
-          stagger: 0.12,
+          stagger: 0.08,
           ease: 'sine.inOut',
           scrollTrigger: {
             trigger: '.home__cases',
-            start: 'top 82%',
-            end: 'top 36%',
-            scrub: 1.6,
+            start: 'top 88%',
+            end: 'top 62%',
+            scrub: 0.7,
           },
         },
       )
 
-      // Each card arrives from a unique direction for visual interest
       const cardMotion = [
         { y: 52, x: -16, rotate: -2.5 },
         { y: 52, x: 16, rotate: 2.5 },
         { y: 64, x: -10, rotate: -1.8 },
         { y: 64, x: 10, rotate: 1.8 },
       ]
+      const casesTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: '.home__cases-row',
+          start: 'top 86%',
+          toggleActions: 'play none none reverse',
+        },
+      })
+
       cards.forEach((card, i) => {
         const { y, x, rotate } = cardMotion[i % cardMotion.length]
-        gsap.fromTo(
+        casesTimeline.fromTo(
           card,
           { opacity: 0, y, x, scale: 0.94, rotate, filter: 'blur(6px)' },
           {
@@ -486,14 +497,10 @@ function HomeV2() {
             scale: 1,
             rotate: 0,
             filter: 'blur(0px)',
-            ease: 'sine.inOut',
-            scrollTrigger: {
-              trigger: card,
-              start: 'top 90%',
-              end: 'top 48%',
-              scrub: 1.1,
-            },
+            duration: 0.5,
+            ease: 'sine.out',
           },
+          i * 0.08,
         )
       })
 
@@ -508,9 +515,9 @@ function HomeV2() {
             ease: 'sine.inOut',
             scrollTrigger: {
               trigger: casesNote,
-              start: 'top 90%',
-              end: 'top 50%',
-              scrub: 1.4,
+              start: 'top 94%',
+              end: 'top 72%',
+              scrub: 0.55,
             },
           },
         )
@@ -532,8 +539,8 @@ function HomeV2() {
             .to(avatarItems, {
               opacity: 1,
               x: 0,
-              duration: 1.15,
-              stagger: 0.16,
+              duration: 0.75,
+              stagger: 0.08,
               ease: 'power2.out',
             })
 
@@ -543,17 +550,17 @@ function HomeV2() {
               {
                 opacity: 1,
                 x: 0,
-                duration: 0.9,
+                duration: 0.55,
                 ease: 'power2.out',
               },
-              0.12,
+              0.08,
             )
           }
 
           gsap.timeline({
             scrollTrigger: {
               trigger: section,
-              start: 'top 82%',
+              start: 'top 88%',
               end: 'bottom 18%',
               onEnter: () => avatarMotion.restart(true),
               onEnterBack: () => avatarMotion.restart(true),
@@ -564,17 +571,17 @@ function HomeV2() {
 
         gsap.fromTo(
           items,
-          { opacity: 0, y: 20 },
+          { opacity: 0, y: 14 },
           {
             opacity: 1,
             y: 0,
-            stagger: 0.1,
+            stagger: 0.06,
             ease: 'sine.inOut',
             scrollTrigger: {
               trigger: section,
-              start: 'top 78%',
-              end: 'top 32%',
-              scrub: 1.2,
+              start: 'top 88%',
+              end: 'top 58%',
+              scrub: 0.55,
               toggleActions: 'play none none reverse',
             },
           },
@@ -587,17 +594,17 @@ function HomeV2() {
         const processItems = gsap.utils.toArray<HTMLElement>('.home__process-header > *, .home__process-step, .home__process-actions')
         gsap.fromTo(
           processItems,
-          { opacity: 0, y: 24 },
+          { opacity: 0, y: 16 },
           {
             opacity: 1,
             y: 0,
-            stagger: 0.12,
+            stagger: 0.07,
             ease: 'sine.inOut',
             scrollTrigger: {
               trigger: processSection,
-              start: 'top 78%',
-              end: 'top 30%',
-              scrub: 1.2,
+              start: 'top 88%',
+              end: 'top 58%',
+              scrub: 0.55,
               toggleActions: 'play none none reverse',
             },
           },
@@ -715,8 +722,8 @@ function HomeV2() {
       <div className="home__floaters" aria-hidden="true" />
 
       {/* Fullscreen video hero — desktop only */}
-      <section className="home__video-hero" aria-hidden="true">
-        <div className="home__video-iframe-wrap">
+      <section className="home__video-hero" aria-label="Background video">
+        <div className="home__video-iframe-wrap" aria-hidden="true">
           <iframe
             ref={videoIframeRef}
             src={buildHeroVideoSrc(HERO_VIDEO)}
@@ -724,6 +731,7 @@ function HomeV2() {
             allow="autoplay; fullscreen"
             allowFullScreen
             title="Hero background video"
+            tabIndex={-1}
             onLoad={handleVideoLoad}
           />
         </div>
@@ -957,6 +965,13 @@ function HomeV2() {
           >
             {t('home.project.requestAvailability')}
           </button>
+          <LocalizedLink
+            to="/portfolio"
+            className="home__process-secondary"
+            onClick={() => trackHomeCta('Latest Jobs', 'process_secondary')}
+          >
+            Latest Jobs
+          </LocalizedLink>
         </div>
       </section>
 

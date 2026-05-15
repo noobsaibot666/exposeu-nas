@@ -262,10 +262,9 @@ function Contact() {
 
       <section className="section contact__body">
         <div className="content contact__heading">
-          <AvailabilityBadge />
-          <p className="contact__eyebrow">{t('contact.eyebrow')}</p>
           <h1>{t('contact.headline')}</h1>
           <p className="contact__lede">{t('contact.ledePrimary')}</p>
+          <AvailabilityBadge />
         </div>
 
         <div className="content contact__grid">

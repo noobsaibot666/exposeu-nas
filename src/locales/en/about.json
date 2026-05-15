@@ -1,32 +1,32 @@
 {
   "label": "Profile",
-  "headline": "expose.u is a Berlin-based documentation studio run by people who work inside the cultural scene — not just around it.",
-  "subline": "Fast delivery. No generic coverage. Documented with the same care the artists put into making it.",
+  "headline": "Berlin documentation from inside the cultural scene.",
+  "subline": "Fast delivery. No generic coverage. Artist-level care.",
   "sections": [
     {
-      "label": "The Work",
-      "body": "Photo and video for concerts, exhibitions, and events. Delivered for press, social, and archive."
+      "label": "Work",
+      "body": "Photo and video for concerts, exhibitions, and events, ready for press, social, and archive."
     },
     {
-      "label": "The Standard",
-      "body": "Nothing generic. Every project gets a visual approach built for its specific context — the space, the artists, the room."
+      "label": "Standard",
+      "body": "No generic coverage. Each project is shaped around its space, artists, and atmosphere."
     },
     {
-      "label": "Where we've worked",
-      "body": "Eight concert nights at Silent Green Kulturquartier. Gallery openings, artist sessions, and brand events across Berlin."
+      "label": "Experience",
+      "body": "Concerts, exhibitions, sessions, and cultural events across Berlin."
     },
     {
-      "label": "How we work",
-      "body": "Tell us about the event. We show up, cover it, and deliver press-ready files within 24–48 hours."
+      "label": "Process",
+      "body": "Tell us what is happening. We document it and deliver press-ready files in 24–48 hours."
     },
     {
-      "label": "Who hires us",
-      "body": "Venues and promoters. Galleries and cultural institutions. Artists and musicians. Agencies and brands. Berlin-based — available across Europe."
+      "label": "Clients",
+      "body": "Venues, galleries, artists, agencies, and brands. Berlin-based, available across Europe."
     },
     {
-      "label": "Start here",
-      "body": "Something coming up? Tell us about it.",
-      "cta": "Start a conversation"
+      "label": "Start",
+      "body": "Something coming up?",
+      "cta": "Contact us"
     }
   ],
   "portraitAlt": "Installation scene"

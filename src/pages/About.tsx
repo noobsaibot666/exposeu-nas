@@ -33,31 +33,45 @@ function About() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const ctx = gsap.context(() => {
-      gsap.from('.about__profile', { opacity: 0, y: 24, duration: 0.8, ease: 'power2.out' })
+      gsap.fromTo(
+        '.about__profile',
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', clearProps: 'opacity,transform' },
+      )
 
       const rows = gsap.utils.toArray<HTMLElement>('.about__row')
-      gsap.from(rows, {
-        opacity: 0,
-        y: 20,
-        duration: 0.7,
-        stagger: 0.08,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.about__grid',
-          start: 'top 80%',
+      gsap.fromTo(
+        rows,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          stagger: 0.08,
+          ease: 'power2.out',
+          clearProps: 'opacity,transform',
+          scrollTrigger: {
+            trigger: '.about__grid',
+            start: 'top 80%',
+          },
         },
-      })
+      )
 
-      gsap.from('.about__portrait', {
-        opacity: 0,
-        scale: 0.96,
-        duration: 0.8,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.about__portrait-block',
-          start: 'top 80%',
+      gsap.fromTo(
+        '.about__portrait',
+        { opacity: 0, scale: 0.96 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          ease: 'power2.out',
+          clearProps: 'opacity,transform',
+          scrollTrigger: {
+            trigger: '.about__portrait-block',
+            start: 'top 80%',
+          },
         },
-      })
+      )
     }, rootRef)
 
     return () => ctx.revert()
@@ -68,7 +82,7 @@ function About() {
       <SEOMeta
         title="About"
         description="Berlin-based documentation studio for concerts, exhibitions, and cultural events. Art-first approach, fast delivery."
-        ogTitle="About expose.u — Berlin Documentation Studio"
+        ogTitle="About expose.u | Berlin Documentation Studio"
         ogDescription="Berlin-based documentation studio run by people inside the cultural scene. Fast delivery. Art-first."
         canonical="https://expose-u.com/about"
         lang={locale}
@@ -86,7 +100,7 @@ function About() {
 
       <section className="section about__shell">
         <div className="content about__profile">
-          <div className="about__label">{t('about.label')}</div>
+          <div className="about__profile-spacer" aria-hidden="true" />
           <div>
             <h1>{t('about.headline')}</h1>
             <p className="about__subline">{t('about.subline')}</p>
