@@ -67,6 +67,13 @@ function Contact() {
     return `${base.replace(/\/+$/, '')}/api/contact`
   }
 
+  const resolveTrackLeadEndpoint = () => {
+    const raw = String(import.meta.env.VITE_CONTACT_API_BASE || '').trim()
+    if (!raw) return '/api/track-lead'
+    const base = raw.startsWith('http://') || raw.startsWith('https://') ? raw : `https://${raw}`
+    return `${base.replace(/\/+$/, '')}/api/track-lead`
+  }
+
   const clearFieldError = (name: string) => {
     if (!fieldErrors[name]) return
     setFieldErrors((prev) => {
@@ -156,6 +163,20 @@ function Contact() {
       if (typeof window.fbq === 'function') {
         window.fbq('track', 'Lead', { content_name: projectType }, { eventID: metaEventId })
       }
+
+      fetch(resolveTrackLeadEndpoint(), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          eventName: 'Lead',
+          email,
+          sourceUrl: window.location.href,
+          eventId: metaEventId,
+          projectType,
+        }),
+      }).catch((error) => {
+        console.warn('Meta CAPI Lead tracking request failed', error)
+      })
     } catch (err: unknown) {
       const msg =
         err instanceof Error

@@ -98,3 +98,18 @@ curl -k https://localhost/api/contact \
   -H "Content-Type: application/json" \
   --data '{"email":"test@example.com","message":"smoke"}'
 ```
+-- Deploy All ---
+
+cd /mnt/Gaia/04_DEV/web/www/exposeu
+
+sudo rm -rf node_modules/.tmp .tmp-tests
+
+sudo docker run --rm -u 0 \
+  -v "$PWD:/app" \
+  -w /app \
+  node:20-alpine \
+  sh -lc "npm ci && npm run build"
+
+sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-nginx exposeu-contact
+
+sudo docker compose -f docker-compose.traefik.yml ps

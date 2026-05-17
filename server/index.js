@@ -230,7 +230,7 @@ app.get('/health', (_req, res) => res.json({ ok: true }))
 app.get('/contact', (_req, res) => res.status(200).send('OK'))
 app.head('/contact', (_req, res) => res.status(200).end())
 
-app.post(['/meta-event', '/api/meta-event'], async (req, res) => {
+app.post(['/track-lead', '/api/track-lead', '/meta-event', '/api/meta-event'], async (req, res) => {
   const ip = getClientIp(req)
   if (isStoreRateLimited(metaEventRequestStore, ip, 20)) {
     return sendApiError(res, 429, 'RATE_LIMITED', 'Too many requests. Please wait a minute and try again.')
@@ -417,19 +417,6 @@ app.post('/contact', async (req, res) => {
       rejected: info.rejected,
       response: info.response,
     })
-
-    try {
-      await sendMetaLeadEvent({
-        email: trimmedEmail,
-        clientIp: ip,
-        userAgent: req.get('user-agent'),
-        sourceUrl: trimmedSourceUrl || trimmedReferrer,
-        eventId: trimmedEventId,
-        projectType: subjectType,
-      })
-    } catch (error) {
-      console.error('Meta CAPI contact event error', serializeError(error))
-    }
 
     return res.json({ ok: true })
   } catch (error) {
