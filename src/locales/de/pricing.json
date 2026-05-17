@@ -56,8 +56,8 @@
       "monthly-coverage": "Wiederkehrende Galerie-Coverage mit einem visuellen Standard."
     },
     "artist-sessions": {
-      "single-event": "Eine fokussierte Portrait- und Process-Session.",
-      "monthly-coverage": "Wiederkehrende Artist-Coverage über aktive Projekte."
+      "single-event": "Eine fokussierte Session für deine aktuelle Arbeit.",
+      "monthly-coverage": "Laufende visuelle Begleitung, während deine Arbeit wächst."
     },
     "brand-agency": {
       "single-event": "Fokussierte Brand-Event-Coverage für PR und Kampagne.",
@@ -117,26 +117,26 @@
     },
     "artist-sessions": {
       "single-event": {
-        "chooseThisIf": "du ein aktuelles Bildset brauchst.",
+        "chooseThisIf": "du Bilder brauchst, die sich nach deiner Arbeit anfühlen.",
         "features": [
-          "Schneller Ablauf vom Briefing zum Shoot",
-          "Coverage von Portrait, Prozess und Studio",
-          "Deliverables nach Artist-Bedarf"
+          "Einfache Planung von Artist zu Artist",
+          "Portrait, Prozess, Studiomomente",
+          "Dateien für deinen nächsten Schritt"
         ]
       },
       "monthly-coverage": {
-        "chooseThisIf": "du einen konsistenten visuellen Record brauchst.",
+        "chooseThisIf": "du langfristig einen visuellen Partner willst.",
         "features": [
-          "Monatliche Produktionsplanung",
-          "Wiederkehrende Sessions über abgestimmte Projekte",
-          "Deliverables monatlich abgestimmt"
+          "Monatlicher Check-in und Session-Plan",
+          "Wiederkehrende Shoots rund um deine Arbeit",
+          "Assets für Releases und Presse"
         ]
       },
       "retainer-studio": {
         "features": [
-          "Produktionsplanung für Creative Output",
-          "Flexible Crew und Delivery",
-          "Archiv- und Identity-Support"
+          "Planung nach deinem kreativen Rhythmus",
+          "Flexible Session- und Delivery-Struktur",
+          "Archiv- und Visual-Identity-Support"
         ]
       }
     },

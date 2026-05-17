@@ -186,6 +186,7 @@
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.2;
+  text-wrap: balance;
 }
 
 .work-gallery__header p {
@@ -286,7 +287,8 @@
   letter-spacing: -0.02em;
   line-height: 1.2;
   color: var(--text-strong);
-  max-width: 580px;
+  max-width: 720px;
+  text-wrap: balance;
 }
 
 .work-process__steps {

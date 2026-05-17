@@ -354,8 +354,9 @@
 .home__pricing-header>div h2 {
   font-size: clamp(2rem, 4vw, 3rem);
   margin: 12px 0 0;
-  max-width: 760px;
+  max-width: 920px;
   line-height: 1.1;
+  text-wrap: balance;
 }
 
 .home__pricing-header>p {

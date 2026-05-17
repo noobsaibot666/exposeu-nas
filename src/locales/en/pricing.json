@@ -56,8 +56,8 @@
       "monthly-coverage": "Recurring gallery coverage with one visual standard."
     },
     "artist-sessions": {
-      "single-event": "Focused portrait and process session.",
-      "monthly-coverage": "Recurring artist coverage across active projects."
+      "single-event": "A focused session for your current work.",
+      "monthly-coverage": "Ongoing visual support as your work develops."
     },
     "brand-agency": {
       "single-event": "Focused brand event coverage for PR and campaign.",
@@ -117,26 +117,26 @@
     },
     "artist-sessions": {
       "single-event": {
-        "chooseThisIf": "You need a current image set.",
+        "chooseThisIf": "You need images that feel like your work.",
         "features": [
-          "Fast brief-to-shoot rollout",
-          "Portrait, process, and studio coverage",
-          "Deliverables shaped to artist needs"
+          "Simple artist-to-artist planning",
+          "Portrait, process, studio moments",
+          "Files shaped for your next step"
         ]
       },
       "monthly-coverage": {
-        "chooseThisIf": "You need a consistent visual record.",
+        "chooseThisIf": "You want a visual partner over time.",
         "features": [
-          "Monthly production planning",
-          "Recurring sessions across agreed projects",
-          "Deliverables shaped monthly"
+          "Monthly check-in and session plan",
+          "Recurring shoots around your work",
+          "Assets ready for releases and press"
         ]
       },
       "retainer-studio": {
         "features": [
-          "Creative production planning",
-          "Flexible crew and delivery",
-          "Archive and identity support"
+          "Planning around your creative rhythm",
+          "Flexible session and delivery setup",
+          "Archive and visual identity support"
         ]
       }
     },

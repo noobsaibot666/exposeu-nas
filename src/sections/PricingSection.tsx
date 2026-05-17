@@ -17,16 +17,33 @@ function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
   const { t, tm } = useTranslation()
   const headlineText = headline ?? t('pricing.section.headlineDefault')
   const serviceOverrides = (pricingByService as PricingOverridesByService)[serviceSlug ?? ''] ?? {}
+  const getFeatureList = (key: string) => {
+    try {
+      const value = tm<unknown>(key)
+      if (Array.isArray(value)) {
+        return value.filter((item): item is string => typeof item === 'string' && item.trim().length > 0)
+      }
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.warn(`[pricing] Missing feature list "${key}".`, error)
+      }
+    }
+    return []
+  }
+
   const tiers = pricingTiers.map((tier) => {
     const override = serviceOverrides[tier.slug] ?? {}
+    const price = String(override.price ?? tier.price)
+    const features = getFeatureList(override.featuresKey ?? tier.featuresKey)
+
     return {
       slug: tier.slug,
       name: t(tier.nameKey),
       cadence: t(tier.cadenceKey),
-      price: override.price ?? tier.price,
+      price,
       description: override.descriptionKey ? t(override.descriptionKey) : t(tier.descriptionKey),
       chooseThisIf: override.chooseThisIfKey ? t(override.chooseThisIfKey) : t(tier.chooseThisIfKey),
-      features: override.featuresKey ? tm<string[]>(override.featuresKey) : tm<string[]>(tier.featuresKey),
+      features,
       cta: t(tier.ctaKey),
       badge: tier.badgeKey ? t(tier.badgeKey) : undefined,
     }

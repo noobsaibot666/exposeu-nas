@@ -53,13 +53,13 @@ export const pricingByService = {
 
   'artist-sessions': {
     'single-event': {
-      price: '€300',
+      price: '€250',
       descriptionKey: 'pricing.serviceDescriptions.artist-sessions.single-event',
       chooseThisIfKey: 'pricing.serviceTiers.artist-sessions.single-event.chooseThisIf',
       featuresKey: 'pricing.serviceTiers.artist-sessions.single-event.features',
     },
     'monthly-coverage': {
-      price: '€2.5K',
+      price: '€1.9K',
       descriptionKey: 'pricing.serviceDescriptions.artist-sessions.monthly-coverage',
       chooseThisIfKey: 'pricing.serviceTiers.artist-sessions.monthly-coverage.chooseThisIf',
       featuresKey: 'pricing.serviceTiers.artist-sessions.monthly-coverage.features',
