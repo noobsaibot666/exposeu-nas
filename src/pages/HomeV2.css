@@ -421,27 +421,47 @@
 
 .home__pricing-header {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: flex-start;
   gap: 16px;
-  align-items: flex-end;
+  align-items: flex-start;
+}
+
+.home__pricing-header > div {
+  width: 100%;
 }
 
 .home__pricing-header > div p {
   text-transform: uppercase;
-  letter-spacing: 0.35em;
-  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
   color: var(--text-tertiary);
+}
+
+.home__pricing-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  margin: 0;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-card);
+  font-weight: 700;
 }
 
 .home__pricing-header > div h2 {
   font-size: clamp(2rem, 4vw, 3rem);
   margin: 12px 0 0;
+  max-width: 760px;
+  line-height: 1.1;
 }
 
 .home__pricing-header > p {
-  max-width: 420px;
+  max-width: 640px;
   color: var(--text-tertiary);
+  margin: 0;
 }
 
 .home__pricing-footnote {
@@ -449,6 +469,7 @@
   max-width: 640px;
   margin: 0 auto;
   text-align: center;
+  white-space: pre-line;
 }
 
 .home__pricing-grid {
@@ -575,7 +596,29 @@
 }
 
 .home__pricing-card--custom .home__pricing-value {
-  padding-bottom: 112px;
+  padding-bottom: 0;
+}
+
+.home__pricing-card--custom {
+  background: linear-gradient(180deg, rgba(18, 18, 18, 0.98), rgba(5, 5, 5, 0.96));
+  border-color: rgba(245, 245, 244, 0.24);
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.34);
+}
+
+.home__pricing-card--custom .home__pricing-meta h3,
+.home__pricing-card--custom .home__pricing-meta p,
+.home__pricing-card--custom .home__pricing-value span,
+.home__pricing-card--custom .home__pricing-copy {
+  color: rgba(245, 245, 244, 0.96);
+}
+
+.home__pricing-card--custom .home__pricing-helper,
+.home__pricing-card--custom ul {
+  color: rgba(245, 245, 244, 0.78);
+}
+
+.home__pricing-card--custom li span {
+  color: #4df2a3;
 }
 
 .home__pricing-value span {
@@ -618,12 +661,13 @@
 
 .home__pricing-card li {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
 }
 
 .home__pricing-card li span {
   color: var(--positive-accent);
+  line-height: 1.45;
 }
 
 .home__pricing-card button {

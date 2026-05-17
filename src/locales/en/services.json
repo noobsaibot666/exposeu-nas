@@ -18,7 +18,7 @@
     "process": [
       {
         "title": "Tell us about your project",
-        "body": "Fill out the contact form — scope, date, and what you need. We respond within 24 hours."
+        "body": "Fill out the contact form with scope, date, and what you need. We respond within 24 hours."
       },
       {
         "title": "We align on the details",
@@ -26,10 +26,10 @@
       },
       {
         "title": "We document. You receive.",
-        "body": "Same-night or 48h selects depending on service. Organized files, ready to use immediately."
+        "body": "Delivery timing is agreed around the project needs. Organized files, ready to use immediately."
       }
     ],
-    "pricingFor": "Pricing for {{service}} — one-time and recurring.",
+    "pricingFor": "Clear {{service}} pricing.",
     "readyToCollaborate": "Ready to collaborate?",
     "requestAvailability": "Request availability",
     "responseTime": "Berlin-based. Response within 24 hours."
@@ -37,31 +37,31 @@
   "pages": {
     "concerts-events": {
       "title": "Concert & Live Events",
-      "heroCopy": "Your shows documented. Press-ready before morning.",
-      "detail": "We cover concerts and live events in Berlin — same-night selects, fast turnaround, built for press, social, and sponsor recap.",
-      "socialProof": "Documented 8+ concerts at Silent Green Kulturquartier, Berlin.",
+      "heroCopy": "Concert coverage with atmosphere. Built for press, socials, and archive.",
+      "detail": "We cover concerts and live events in Berlin with fast selects, strong coverage, and assets for press, social, and sponsor recap.",
+      "socialProof": "",
       "ctaText": "Let's cover your next show.",
       "footerCtaLabel": "Tell us about your show",
       "cards": ["Live Set", "Stage Glow", "Energy Capture", "Motion Freeze"],
       "galleryTitle": "What's included.",
-      "galleryCopy": "Organized files delivered fast — built for immediate use.",
+      "galleryCopy": "Organized files delivered fast for immediate use.",
       "gallery": [
         { "title": "Stage coverage", "subtitle": "Key cues, wide moments, and hero frames." },
         { "title": "Crowd & atmosphere", "subtitle": "Energy and context without obstructing the room." },
-        { "title": "Same-night selects", "subtitle": "Priority frames for press and social, delivered fast." },
+        { "title": "Fast selects", "subtitle": "Priority frames for press and social, timed to the project." },
         { "title": "Full organized set", "subtitle": "Named files ready for publishing and archive." }
       ],
       "extraGalleryCopy": "Anyone who needs live moments captured cleanly and turned around fast.",
       "extraGallery": [
         { "title": "Venue and festival teams", "subtitle": "Season recaps, event coverage, and press assets." },
-        { "title": "Touring artists", "subtitle": "One show, multiple outputs — social, press, and archive." },
+        { "title": "Touring artists", "subtitle": "One show, multiple outputs for social, press, and archive." },
         { "title": "Club and promoter programs", "subtitle": "Recurring shoots with consistent visual style." }
       ]
     },
     "exhibition-gallery": {
       "title": "Exhibition & Gallery",
       "heroCopy": "Your exhibition lives longer than its run.",
-      "detail": "Full spatial coverage for press, funding applications, and long-term archive — delivered organized and ready to distribute.",
+      "detail": "Full spatial coverage for press, funding applications, and long-term archive, delivered organized and ready to distribute.",
       "socialProof": "Working with galleries, curators, and cultural institutions in Berlin.",
       "ctaText": "Let's document your exhibition.",
       "footerCtaLabel": "Tell us about your exhibition",
@@ -92,7 +92,7 @@
       "galleryTitle": "What's included.",
       "galleryCopy": "Built to feel honest, current, and ready to publish.",
       "gallery": [
-        { "title": "Portrait set", "subtitle": "Multiple framings — press, web, and album art." },
+        { "title": "Portrait set", "subtitle": "Multiple framings for press, web, and album art." },
         { "title": "Studio and process stills", "subtitle": "Workspace, tools, and making context." },
         { "title": "Short motion clips", "subtitle": "Optional BTS assets for posts and teasers." },
         { "title": "Organized delivery", "subtitle": "Finals grouped for fast publishing and reuse." }
@@ -107,7 +107,7 @@
     "brand-agency": {
       "title": "Brand & Agency Events",
       "heroCopy": "Event documentation built for PR speed.",
-      "detail": "Full coverage with same-day hero frames for press, sponsor recap, and campaign follow-up. Berlin-based crew, editorial standard.",
+      "detail": "Full coverage with fast hero frames for press, sponsor recap, and campaign follow-up. Berlin-based crew, editorial standard.",
       "socialProof": "Working with creative agencies, production houses, and brand teams in Berlin.",
       "ctaText": "Let's cover your event.",
       "footerCtaLabel": "Tell us about your event",
@@ -117,12 +117,12 @@
       "gallery": [
         { "title": "Hero brand moments", "subtitle": "Clean frames of product, guests, and atmosphere." },
         { "title": "Behind-the-scenes selects", "subtitle": "Prep, production, and team context." },
-        { "title": "Priority selects", "subtitle": "Same-day frames for press and sponsor review." },
+        { "title": "Priority selects", "subtitle": "Fast frames for press and sponsor review." },
         { "title": "Organized full delivery", "subtitle": "Folders sorted for PR, campaign, and archive." }
       ],
       "extraGalleryCopy": "Agencies and brand teams that need fast, editorial-quality assets with clear output.",
       "extraGallery": [
-        { "title": "PR and launch events", "subtitle": "Same-day hero frames for press outreach." },
+        { "title": "PR and launch events", "subtitle": "Fast hero frames for press outreach." },
         { "title": "Brand activations", "subtitle": "Audience, product, and production covered in one shoot." },
         { "title": "Ongoing brand archives", "subtitle": "Each activation documented consistently for long-term use." }
       ]

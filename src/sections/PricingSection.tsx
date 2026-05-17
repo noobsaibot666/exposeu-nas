@@ -56,7 +56,7 @@ function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
     <section className="home__section home__pricing" id={id} ref={sectionRef}>
       <div className="home__pricing-header">
         <div>
-          <p>{t('pricing.section.headerLabel')}</p>
+          <p className="home__pricing-label">{t('pricing.section.headerLabel')}</p>
           <h2>{headlineText}</h2>
         </div>
         <p>{t('pricing.section.supportingCopy')}</p>

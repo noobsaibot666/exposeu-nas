@@ -14,11 +14,11 @@
     "whatYouGet": "Was du bekommst",
     "idealFor": "Ideal für",
     "howItWorks": "So funktioniert's",
-    "howItWorksHeading": "Einfach — vom ersten Kontakt bis zur finalen Lieferung.",
+    "howItWorksHeading": "Einfach vom ersten Kontakt bis zur finalen Lieferung.",
     "process": [
       {
         "title": "Erzähl uns von deinem Projekt",
-        "body": "Füll das Kontaktformular aus — Umfang, Datum und was du brauchst. Wir melden uns innerhalb von 24 Stunden."
+        "body": "Füll das Kontaktformular mit Umfang, Datum und Bedarf aus. Wir melden uns innerhalb von 24 Stunden."
       },
       {
         "title": "Wir stimmen die Details ab",
@@ -26,10 +26,10 @@
       },
       {
         "title": "Wir dokumentieren. Du erhältst.",
-        "body": "Same-Night- oder 48h-Selects je nach Service. Organisierte Dateien, direkt einsatzbereit."
+        "body": "Das Delivery-Timing stimmen wir auf den Projektbedarf ab. Organisierte Dateien, direkt einsatzbereit."
       }
     ],
-    "pricingFor": "Preise für {{service}} — einmalig oder laufend.",
+    "pricingFor": "Klare Preise für {{service}}.",
     "readyToCollaborate": "Bereit für die Zusammenarbeit?",
     "requestAvailability": "Verfügbarkeit anfragen",
     "responseTime": "Based in Berlin. Antwort innerhalb von 24 Stunden."
@@ -37,9 +37,9 @@
   "pages": {
     "concerts-events": {
       "title": "Konzerte & Live-Events",
-      "heroCopy": "Deine Shows dokumentiert. Vor dem Morgen pressetauglich geliefert.",
-      "detail": "Wir dokumentieren Konzerte und Live-Events in Berlin – mit Same-Night-Selects, schnellem Turnaround und Assets für Presse, Socials und Sponsor-Recaps.",
-      "socialProof": "8+ Konzerte im Silent Green Kulturquartier, Berlin dokumentiert.",
+      "heroCopy": "Konzert-Coverage mit Atmosphäre. Für Presse, Socials und Archiv.",
+      "detail": "Wir dokumentieren Konzerte und Live-Events in Berlin mit schnellen Selects, starker Coverage und Assets für Presse, Socials und Sponsor-Recaps.",
+      "socialProof": "",
       "ctaText": "Lass uns deine nächste Show dokumentieren.",
       "footerCtaLabel": "Erzähl uns von deiner Show",
       "cards": ["Live Set", "Bühnenlicht", "Energie", "Bewegung"],
@@ -48,7 +48,7 @@
       "gallery": [
         { "title": "Bühnencoverage", "subtitle": "Wichtige Cues, weite Momente und starke Hero-Frames." },
         { "title": "Publikum & Atmosphäre", "subtitle": "Energie und Kontext, ohne den Raum zu stören." },
-        { "title": "Same-Night-Selects", "subtitle": "Priorisierte Motive für Presse und Socials, schnell geliefert." },
+        { "title": "Schnelle Selects", "subtitle": "Priorisierte Motive für Presse und Socials, abgestimmt auf das Projekt." },
         { "title": "Vollständiges Set", "subtitle": "Benannte Dateien, direkt bereit für Publishing und Archiv." }
       ],
       "extraGalleryCopy": "Für alle, die Live-Momente sauber dokumentiert und schnell weiterverarbeitet brauchen.",
@@ -107,7 +107,7 @@
     "brand-agency": {
       "title": "Brand & Agency Events",
       "heroCopy": "Eventdokumentation für echtes PR-Tempo.",
-      "detail": "Komplette Coverage mit Same-Day-Hero-Frames für Presse, Sponsor-Recap und Campaign-Follow-up. Berliner Crew, editorialer Standard.",
+      "detail": "Komplette Coverage mit schnellen Hero-Frames für Presse, Sponsor-Recap und Campaign-Follow-up. Berliner Crew, editorialer Standard.",
       "socialProof": "Zusammenarbeit mit Kreativagenturen, Produktionshäusern und Brand-Teams in Berlin.",
       "ctaText": "Lass uns dein Event dokumentieren.",
       "footerCtaLabel": "Erzähl uns von deinem Event",
@@ -117,12 +117,12 @@
       "gallery": [
         { "title": "Hero-Brand-Momente", "subtitle": "Saubere Frames von Produkt, Gästen und Atmosphäre." },
         { "title": "Behind-the-Scenes-Selects", "subtitle": "Vorbereitung, Produktion und Teamkontext." },
-        { "title": "Priority Selects", "subtitle": "Same-Day-Frames für Presse und Sponsor-Review." },
+        { "title": "Priority Selects", "subtitle": "Schnelle Frames für Presse und Sponsor-Review." },
         { "title": "Organisierte Vollauslieferung", "subtitle": "Ordner sortiert für PR, Kampagne und Archiv." }
       ],
       "extraGalleryCopy": "Für Agenturen und Brand-Teams, die schnelle, editoriale Assets mit klarer Nutzbarkeit brauchen.",
       "extraGallery": [
-        { "title": "PR- und Launch-Events", "subtitle": "Same-Day-Hero-Frames für Pressearbeit." },
+        { "title": "PR- und Launch-Events", "subtitle": "Schnelle Hero-Frames für Pressearbeit." },
         { "title": "Brand Activations", "subtitle": "Publikum, Produkt und Produktion in einem Shoot erfasst." },
         { "title": "Laufende Brand-Archive", "subtitle": "Jede Aktivierung konsistent für langfristige Nutzung dokumentiert." }
       ]

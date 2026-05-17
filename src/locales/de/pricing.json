@@ -1,167 +1,167 @@
 {
   "section": {
     "headerLabel": "Preise",
-    "headlineDefault": "Klare Preise für Einzelprojekte und laufende Zusammenarbeit.",
-    "supportingCopy": "Die meisten Kund:innen buchen ein Einzelprojekt. Monatliche Modelle sind für wiederkehrende Produktionen gedacht.",
+    "headlineDefault": "Klare Preise für fokussierte Dokumentation.",
+    "supportingCopy": "Starte mit einem fokussierten Event, klarem Umfang und schneller Delivery.",
     "fromPrefix": "Ab",
-    "chooseThisIfPrefix": "Das passt, wenn:",
-    "footnote": "Klarer Umfang, klare Preise, unkompliziertes Angebot. Künstlerisch und edukativ geprägte Initiativen erhalten bevorzugte Konditionen."
+    "chooseThisIfPrefix": "Ideal, wenn:",
+    "footnote": "Klarer Umfang, klare Preise, unkompliziertes Angebot.\nKünstlerisch und edukativ geprägte Initiativen erhalten bevorzugte Konditionen."
   },
   "tiers": {
     "single-event": {
       "name": "Einzelprojekt",
-      "cadence": "Einmaliges Projekt",
-      "description": "Gedacht für ein Datum, einen Ort und einen klaren Deliverable-Plan.",
-      "chooseThisIf": "du für ein Projekt oder Event pressefähige Assets brauchst.",
+      "cadence": "Ein fokussierter Shoot",
+      "description": "Ein Datum, klare Coverage, schnelle Delivery.",
+      "chooseThisIf": "du pressefähige Assets für ein Event brauchst.",
       "features": [
-        "Editoriales Foto- und Video-Team",
-        "48h Highlight-Cut",
-        "Private Proofing-Galerie"
+        "Schneller Ablauf vom Briefing zum Shoot",
+        "Fokussierte abgestimmte Coverage",
+        "Deliverables nach Bedarf"
       ],
       "cta": "Angebot anfragen"
     },
     "monthly-coverage": {
       "name": "Monatlich",
-      "cadence": "Monatlicher Retainer",
-      "description": "Für wiederkehrende Produktionen, die ein konstantes Team, einen klaren Rhythmus und schnelle Übergaben brauchen.",
-      "chooseThisIf": "du über mehrere Termine pro Monat hinweg kontinuierliche Coverage brauchst.",
+      "cadence": "Wiederkehrende Coverage",
+      "description": "Regelmäßige Shoots, konsistenter Look, verlässliche Übergabe.",
+      "chooseThisIf": "du jeden Monat wiederkehrende Coverage brauchst.",
       "features": [
-        "Priorisierter Zugriff auf Team und Equipment",
-        "Lookbook und Reels wöchentlich geliefert",
-        "Support bei Creative Direction"
+        "Monatliche Produktionsplanung",
+        "Wiederkehrende abgestimmte Coverage",
+        "Deliverables monatlich abgestimmt"
       ],
       "cta": "Angebot anfragen",
       "badge": "Beliebt"
     },
     "retainer-studio": {
       "name": "Studio Retainer",
-      "cadence": "Laufende Begleitung",
-      "description": "Ideal für Teams mit saisonalen Programmen, Launches oder mehreren Standorten.",
-      "chooseThisIf": "du flexible Unterstützung über Kampagnen, Venues oder Saisons hinweg brauchst.",
+      "cadence": "Flexible Saisonbegleitung",
+      "description": "Senior Production für größere Shoots und langfristige Arbeit.",
+      "chooseThisIf": "du einen dedizierten Produktionspartner brauchst.",
       "features": [
-        "Dedizierte Producer-Rolle in Berlin",
-        "Archiv- und Lizenzsupport",
-        "Saisonale Kampagnenstrategie"
+        "Produktionsplanung und Koordination",
+        "Flexible Crew, Scope und Delivery",
+        "Archiv- und Nutzungssupport"
       ],
       "cta": "Angebot anfragen"
     }
   },
   "serviceDescriptions": {
     "concerts-events": {
-      "single-event": "Ein Konzert oder Live-Event mit schnellen Selects, Reels und starken Hero-Momenten.",
-      "monthly-coverage": "Wiederkehrende Live-Event-Coverage mit eingespieltem Team und klarem Delivery-Rhythmus."
+      "single-event": "Fokussierte Konzert-Coverage mit praktischer Delivery.",
+      "monthly-coverage": "Wiederkehrende Live-Coverage mit klarem Delivery-Rhythmus."
     },
     "exhibition-gallery": {
-      "single-event": "Eine Ausstellung, ein Opening oder ein Galerieprogramm – produziert für Presse, Archiv und Partnerkommunikation.",
-      "monthly-coverage": "Wiederkehrende Galerie-Dokumentation mit konsistentem visuellen Standard und schnellerem Turnaround."
+      "single-event": "Fokussierte Ausstellungs-Coverage für Presse und Archiv.",
+      "monthly-coverage": "Wiederkehrende Galerie-Coverage mit einem visuellen Standard."
     },
     "artist-sessions": {
-      "single-event": "Eine Portrait- und Process-Session für Releases, Profile und Press Kits.",
-      "monthly-coverage": "Wiederkehrende Artist-Coverage für Studioarbeit, Launches und Ausstellungstermine."
+      "single-event": "Eine fokussierte Portrait- und Process-Session.",
+      "monthly-coverage": "Wiederkehrende Artist-Coverage über aktive Projekte."
     },
     "brand-agency": {
-      "single-event": "Ein Brand-, Agency-, Runway- oder Activation-Event – produziert für PR, Kampagne und Sponsor-Kommunikation.",
-      "monthly-coverage": "Saisonale Brand-Event-Coverage mit konsistentem editorialen und kampagnenfähigen Output."
+      "single-event": "Fokussierte Brand-Event-Coverage für PR und Kampagne.",
+      "monthly-coverage": "Saisonale Brand-Coverage mit konsistentem Output."
     }
   },
   "serviceTiers": {
     "concerts-events": {
       "single-event": {
-        "chooseThisIf": "du eine Show oder ein Event hast und schnell pressetaugliche Assets brauchst.",
+        "chooseThisIf": "du pressetaugliche Assets aus einer Show brauchst.",
         "features": [
-          "Same-Night-Priority-Selects für Presse und Socials",
-          "Volle Coverage — Bühne, Publikum, Atmosphäre",
-          "Private Proofing-Galerie + organisierte Auslieferung"
+          "Schneller Ablauf vom Briefing zum Shoot",
+          "Bühne, Publikum, Atmosphäre",
+          "Deliverables nach Eventbedarf"
         ]
       },
       "monthly-coverage": {
-        "chooseThisIf": "du mehrere Shows pro Monat veranstaltest und über alle Termine hinweg eine konsistente Dokumentation brauchst.",
+        "chooseThisIf": "du konsistente Coverage über mehrere Termine brauchst.",
         "features": [
-          "Dediziertes Team für jeden Show-Termin",
-          "Same-Night-Selects + wöchentliches Lookbook",
-          "Konsistente visuelle Sprache über alle Termine hinweg"
+          "Monatliche Produktionsplanung",
+          "Wiederkehrende Termine",
+          "Deliverables monatlich abgestimmt"
         ]
       },
       "retainer-studio": {
         "features": [
-          "Dedizierte Producer-Rolle über deine ganze Saison hinweg",
-          "Archiv-, Lizenz- und Creative-Direction-Support",
-          "Priorisierter Zugang und flexible Planung"
+          "Produktionsplanung für die Saison",
+          "Flexible Crew und Delivery",
+          "Archiv- und Creative-Support"
         ]
       }
     },
     "exhibition-gallery": {
       "single-event": {
-        "chooseThisIf": "du eine Ausstellung oder ein Opening hast, das für Presse und Archiv dokumentiert werden soll.",
+        "chooseThisIf": "du eine Ausstellung sauber dokumentiert brauchst.",
         "features": [
-          "Installationsstills, Detailframes und Opening-Atmosphäre",
-          "Pressefertige benannte Ordner zur direkten Weitergabe",
-          "Private Proofing-Galerie"
+          "Schneller Ablauf vom Briefing zum Shoot",
+          "Coverage von Installation, Details und Opening",
+          "Deliverables nach Ausstellungsbedarf"
         ]
       },
       "monthly-coverage": {
-        "chooseThisIf": "du ein laufendes Programm hast und über die Saison hinweg konsistente Dokumentation brauchst.",
+        "chooseThisIf": "du konsistente Saison-Dokumentation brauchst.",
         "features": [
-          "Wiederkehrende Dokumentation über dein gesamtes Programm",
-          "Monatliches Archiv für Presse, Förderer und Partner",
-          "Priorisierte Planung für Openings und Events"
+          "Monatliche Produktionsplanung",
+          "Wiederkehrende Coverage über das abgestimmte Programm",
+          "Deliverables monatlich abgestimmt"
         ]
       },
       "retainer-studio": {
         "features": [
-          "Dedizierte Producer-Rolle für deine Institution",
-          "Archiv-, Lizenz- und Katalogsupport",
-          "Langfristige visuelle Konsistenz über das gesamte Programm"
+          "Produktionsplanung für Institutionen",
+          "Flexible Crew und Delivery",
+          "Archiv- und Katalogsupport"
         ]
       }
     },
     "artist-sessions": {
       "single-event": {
-        "chooseThisIf": "du ein Release, ein Presse-Update oder ein Booking-Profil hast, das einen aktuellen Bildsatz braucht.",
+        "chooseThisIf": "du ein aktuelles Bildset brauchst.",
         "features": [
-          "Portrait-Set (Presse-, Web- und Album-Art-Framings)",
-          "Prozess- und Studio-Stills",
-          "Private Proofing-Galerie + organisierte Auslieferung"
+          "Schneller Ablauf vom Briefing zum Shoot",
+          "Coverage von Portrait, Prozess und Studio",
+          "Deliverables nach Artist-Bedarf"
         ]
       },
       "monthly-coverage": {
-        "chooseThisIf": "du mitten in der Produktion bist und über Projekte und Events hinweg eine konsistente visuelle Dokumentation brauchst.",
+        "chooseThisIf": "du einen konsistenten visuellen Record brauchst.",
         "features": [
-          "Regelmäßige Sessions für Studioarbeit, Launches und Events",
-          "Laufende Asset-Bibliothek für Releases und Kampagnen",
-          "Support bei der Creative Direction"
+          "Monatliche Produktionsplanung",
+          "Wiederkehrende Sessions über abgestimmte Projekte",
+          "Deliverables monatlich abgestimmt"
         ]
       },
       "retainer-studio": {
         "features": [
-          "Dedizierte Producer-Rolle für deinen gesamten kreativen Output",
-          "Archiv- und Lizenzmanagement",
-          "Konsistente visuelle Identität über alle Projekte hinweg"
+          "Produktionsplanung für Creative Output",
+          "Flexible Crew und Delivery",
+          "Archiv- und Identity-Support"
         ]
       }
     },
     "brand-agency": {
       "single-event": {
-        "chooseThisIf": "du einen Launch, eine Activation oder ein Event hast, das schnell editoriale Assets braucht.",
+        "chooseThisIf": "du schnelle Editorial Assets brauchst.",
         "features": [
-          "Hero-Brand-Frames + editoriale BTS-Selects",
-          "Same-Day-Priority-Frames für Presse und Sponsor-Review",
-          "Vollständig organisierte Auslieferung für PR, Kampagne und Archiv"
+          "Schneller Ablauf vom Briefing zum Shoot",
+          "Coverage von Hero-Momenten, BTS und Atmosphäre",
+          "Deliverables nach Kampagnenbedarf"
         ]
       },
       "monthly-coverage": {
-        "chooseThisIf": "du regelmäßig Brand-Events umsetzt und konsistente Dokumentation mit Same-Day-Delivery brauchst.",
+        "chooseThisIf": "du konsistente Brand-Coverage brauchst.",
         "features": [
-          "Dediziertes Team über alle Brand-Event-Termine hinweg",
-          "Same-Day-Selects + wöchentlicher Kampagnen-Output",
-          "Creative Direction + Archivmanagement"
+          "Monatliche Produktionsplanung",
+          "Wiederkehrende Coverage über abgestimmte Activations",
+          "Deliverables monatlich abgestimmt"
         ]
       },
       "retainer-studio": {
         "features": [
-          "Dedizierte Producer-Rolle für deinen gesamten Brand-Kalender",
-          "Saisonale Kampagnenstrategie und Archiv",
-          "Priorisierter Zugang und konsistenter Output"
+          "Produktionsplanung für Brand-Kalender",
+          "Flexible Crew und Delivery",
+          "Kampagnenarchiv-Support"
         ]
       }
     }
