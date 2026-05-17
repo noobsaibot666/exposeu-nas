@@ -1,7 +1,6 @@
 import { useEffect, useRef, type RefObject } from 'react'
 
 const GA_ID = import.meta.env.VITE_GA_MEASUREMENT_ID
-const PIXEL_ID = import.meta.env.VITE_META_PIXEL_ID
 
 type Primitive = string | number | boolean | undefined | null
 export type AnalyticsParams = Record<string, Primitive>
@@ -134,14 +133,6 @@ export const hasAnalyticsConsent = () => {
 
 const shouldSendAnalytics = () => hasAnalyticsInstalled() && hasAnalyticsConsent()
 
-let pixelInitialized = false
-
-const ensurePixelInitialized = () => {
-  if (pixelInitialized || !PIXEL_ID || typeof window.fbq !== 'function') return
-  window.fbq('init', PIXEL_ID)
-  pixelInitialized = true
-}
-
 const getDefaultParams = (): AnalyticsParams => ({
   page_path: typeof window !== 'undefined' ? window.location.pathname + window.location.search : undefined,
   page_title: typeof document !== 'undefined' ? document.title : undefined,
@@ -189,10 +180,8 @@ export const trackPageView = (path: string, params: AnalyticsParams = {}) => {
     })
   }
 
-  ensurePixelInitialized()
-  if (typeof window.fbq === 'function' && PIXEL_ID) {
-    window.fbq('track', 'PageView')
-  }
+  // Meta Pixel's initial PageView is fired by the required snippet in index.html.
+  // Avoid sending an additional SPA route PageView here.
 }
 
 export function trackEvent(name: string, params?: AnalyticsParams): void
