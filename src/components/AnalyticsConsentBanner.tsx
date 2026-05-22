@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import styles from './AnalyticsConsentBanner.module.css'
-import { ANALYTICS_CONSENT_KEY, initializeAnalyticsConsent } from '../utils/analytics'
+import { ANALYTICS_CONSENT_KEY, initializeAnalyticsConsent, updateGoogleConsentMode } from '../utils/analytics'
 import { useTranslation } from '../i18n/LocaleProvider'
 
 function AnalyticsConsentBanner() {
@@ -14,7 +14,9 @@ function AnalyticsConsentBanner() {
       // ignore storage access issues
     }
 
-    window.__analyticsConsent = value === 'true'
+    const granted = value === 'true'
+    window.__analyticsConsent = granted
+    updateGoogleConsentMode(granted)
     setIsVisible(false)
   }
 
