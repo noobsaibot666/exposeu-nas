@@ -7,7 +7,7 @@ import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
 import { serviceMeta } from '../data/serviceMeta'
 import { useLocale, useLocaleNavigate, useLocalePath, useTranslation } from '../i18n/LocaleProvider'
-import { SEOMeta } from '../components/SEOMeta'
+import { SchemaOrg, SEOMeta } from '../components/SEOMeta'
 
 type VideoItem = {
   id: string
@@ -19,6 +19,9 @@ type VideoItem = {
   location: string
   thumb: string
   videoSrc?: string
+  embedUrl?: string
+  thumbnailUrl?: string
+  uploadDate?: string
   slideshowImages?: string[]
   tag?: string
   cta?: string
@@ -45,6 +48,9 @@ const videos: VideoItem[] = [
     location: 'Berlin',
     thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/01/thumb_0.jpg'),
     videoSrc: 'https://youtu.be/00OZBQL4W3Q',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/00OZBQL4W3Q',
+    thumbnailUrl: 'https://i.ytimg.com/vi/00OZBQL4W3Q/maxresdefault.jpg',
+    uploadDate: '2025-01-01',
     tag: 'Live Event',
     cta: 'Watch',
   },
@@ -59,6 +65,9 @@ const videos: VideoItem[] = [
     thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/02/thumb_0.jpg'),
     videoSrc:
       'https://www.youtube-nocookie.com/embed/DkruqulWupw?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0',
+    embedUrl: 'https://www.youtube-nocookie.com/embed/DkruqulWupw',
+    thumbnailUrl: 'https://i.ytimg.com/vi/DkruqulWupw/maxresdefault.jpg',
+    uploadDate: '2025-01-01',
     tag: 'Live Event',
     cta: 'Watch',
   },
@@ -233,6 +242,43 @@ function Portfolio() {
       })),
     [t],
   )
+
+  const portfolioVideoSchema = useMemo(() => {
+    const videoObjects = localizedVideos
+      .filter((video) => video.embedUrl && video.thumbnailUrl && video.uploadDate)
+      .map((video) => ({
+        '@type': 'VideoObject',
+        name: video.title,
+        description: video.description,
+        thumbnailUrl: [video.thumbnailUrl],
+        uploadDate: video.uploadDate,
+        embedUrl: video.embedUrl,
+        url: `https://expose-u.com/portfolio#${video.id}`,
+        inLanguage: locale,
+        publisher: {
+          '@type': 'Organization',
+          name: 'expose.u',
+          logo: {
+            '@type': 'ImageObject',
+            url: 'https://expose-u.com/og-default.png',
+          },
+        },
+      }))
+
+    return {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'CollectionPage',
+          name: 'Portfolio - expose.u',
+          url: 'https://expose-u.com/portfolio',
+          inLanguage: locale,
+          video: videoObjects,
+        },
+        ...videoObjects,
+      ],
+    }
+  }, [localizedVideos, locale])
 
   const navLinks = useMemo(
     () => ({
@@ -560,6 +606,7 @@ function Portfolio() {
         canonical="https://expose-u.com/portfolio"
         lang={locale}
       />
+      <SchemaOrg data={portfolioVideoSchema} />
       <div className="portfolio__nav">
         <TopNav
           className="top-nav--page"
@@ -596,6 +643,7 @@ function Portfolio() {
               {displayVideos.map((video) => (
                 <button
                   key={video.id}
+                  id={video.id}
                   type="button"
                   className="portfolio__card"
                   onClick={() => {

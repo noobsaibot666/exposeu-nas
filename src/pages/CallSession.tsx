@@ -1,12 +1,14 @@
 import { useMemo } from 'react'
 import './Page.css'
 import './CallSession.css'
-import { useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
+import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
 import TopNav from '../components/TopNav'
+import { SEOMeta } from '../components/SEOMeta'
 
 function CallSession() {
   const navigate = useLocaleNavigate()
   const { t } = useTranslation()
+  const { locale } = useLocale()
 
   const navLinks = useMemo(
     () => ({
@@ -24,6 +26,14 @@ function CallSession() {
 
   return (
     <main className="page-shell">
+      <SEOMeta
+        title="Book a call"
+        description="Schedule a short call to clarify scope, timing, and the right documentation package."
+        ogTitle="Book a call — expose.u"
+        ogDescription="15 minutes to clarify your project scope and which package fits. No pressure."
+        canonical="https://expose-u.com/call-session"
+        lang={locale}
+      />
       <TopNav
         leftLinks={navLinks.left}
         rightLinks={navLinks.right}

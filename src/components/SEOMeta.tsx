@@ -1,4 +1,6 @@
 import { useEffect } from 'react'
+import { getLocalizedCanonicalUrl } from '../i18n/seoUrl'
+import type { Locale } from '../i18n/routing'
 
 interface SEOMetaProps {
   title: string
@@ -7,7 +9,7 @@ interface SEOMetaProps {
   ogDescription?: string
   ogImage?: string
   canonical?: string
-  lang?: string
+  lang?: Locale
   noAlternates?: boolean
 }
 
@@ -75,10 +77,15 @@ export function SEOMeta({
     setMeta('twitter:image', 'name', ogImage)
 
     if (canonical) {
-      setMeta('og:url', 'property', canonical)
-      setLink('canonical', canonical)
+      const localizedCanonical = getLocalizedCanonicalUrl(canonical, lang)
 
-      if (noAlternates) return
+      setMeta('og:url', 'property', localizedCanonical)
+      setLink('canonical', localizedCanonical)
+
+      if (noAlternates) {
+        removeLinks('alternate', 'hreflang')
+        return
+      }
 
       // hreflang alternates
       removeLinks('alternate', 'hreflang')

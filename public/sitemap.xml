@@ -1,43 +1,190 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+
   <url>
     <loc>https://expose-u.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/"/>
   </url>
+
+  <url>
+    <loc>https://expose-u.com/de</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/"/>
+  </url>
+
   <url>
     <loc>https://expose-u.com/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/about"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/about"/>
   </url>
+
+  <url>
+    <loc>https://expose-u.com/de/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/about"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/about"/>
+  </url>
+
   <url>
     <loc>https://expose-u.com/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/contact"/>
   </url>
+
+  <url>
+    <loc>https://expose-u.com/de/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/contact"/>
+  </url>
+
   <url>
     <loc>https://expose-u.com/services/concerts-events</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/services/concerts-events"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/services/concerts-events"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/services/concerts-events"/>
   </url>
+
+  <url>
+    <loc>https://expose-u.com/de/services/concerts-events</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/services/concerts-events"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/services/concerts-events"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/services/concerts-events"/>
+  </url>
+
   <url>
     <loc>https://expose-u.com/services/exhibition-gallery</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/services/exhibition-gallery"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/services/exhibition-gallery"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/services/exhibition-gallery"/>
   </url>
+
+  <url>
+    <loc>https://expose-u.com/de/services/exhibition-gallery</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/services/exhibition-gallery"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/services/exhibition-gallery"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/services/exhibition-gallery"/>
+  </url>
+
   <url>
     <loc>https://expose-u.com/services/artist-sessions</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/services/artist-sessions"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/services/artist-sessions"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/services/artist-sessions"/>
   </url>
+
+  <url>
+    <loc>https://expose-u.com/de/services/artist-sessions</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/services/artist-sessions"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/services/artist-sessions"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/services/artist-sessions"/>
+  </url>
+
   <url>
     <loc>https://expose-u.com/services/brand-agency</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/services/brand-agency"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/services/brand-agency"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/services/brand-agency"/>
   </url>
+
+  <url>
+    <loc>https://expose-u.com/de/services/brand-agency</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/services/brand-agency"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/services/brand-agency"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/services/brand-agency"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/portfolio</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/portfolio"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/portfolio"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/portfolio"/>
+    <video:video>
+      <video:thumbnail_loc>https://i.ytimg.com/vi/00OZBQL4W3Q/maxresdefault.jpg</video:thumbnail_loc>
+      <video:title><![CDATA[Lick the walls to understand echoes]]></video:title>
+      <video:description><![CDATA[Audio-reactive installation with immersive sound and visuals.]]></video:description>
+      <video:player_loc>https://www.youtube-nocookie.com/embed/00OZBQL4W3Q</video:player_loc>
+      <video:publication_date>2025-01-01</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://i.ytimg.com/vi/DkruqulWupw/maxresdefault.jpg</video:thumbnail_loc>
+      <video:title><![CDATA[Abigail Toll - IDOL - Silent Green]]></video:title>
+      <video:description><![CDATA[Music performance captured at Silent Green, Berlin.]]></video:description>
+      <video:player_loc>https://www.youtube-nocookie.com/embed/DkruqulWupw</video:player_loc>
+      <video:publication_date>2025-01-01</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+    </video:video>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/de/portfolio</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/portfolio"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/portfolio"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/portfolio"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/call-session</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/call-session"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/call-session"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/call-session"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/de/call-session</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/call-session"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/call-session"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/call-session"/>
+  </url>
+
   <url>
     <loc>https://expose-u.com/concerts-berlin</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+
 </urlset>

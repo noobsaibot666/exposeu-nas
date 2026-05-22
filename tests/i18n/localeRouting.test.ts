@@ -9,6 +9,7 @@ import {
   switchLocalePath,
 } from '../../src/i18n/routing.js'
 import { getMetaForPath } from '../../src/i18n/pageMetaConfig.js'
+import { getLocalizedCanonicalUrl } from '../../src/i18n/seoUrl.js'
 
 test('detects english as the default locale', () => {
   assert.equal(getLocaleFromPathname('/'), DEFAULT_LOCALE)
@@ -42,4 +43,10 @@ test('maps concerts berlin to its route-specific meta', () => {
   assert.equal(meta.titleKey, 'common.meta.concertsBerlin.title')
   assert.equal(meta.descriptionKey, 'common.meta.concertsBerlin.description')
   assert.equal(meta.noAlternates, true)
+})
+
+test('localizes canonical URLs for locale-specific pages', () => {
+  assert.equal(getLocalizedCanonicalUrl('https://expose-u.com/portfolio', 'en'), 'https://expose-u.com/portfolio')
+  assert.equal(getLocalizedCanonicalUrl('https://expose-u.com/portfolio', 'de'), 'https://expose-u.com/de/portfolio')
+  assert.equal(getLocalizedCanonicalUrl('https://expose-u.com/', 'de'), 'https://expose-u.com/de')
 })

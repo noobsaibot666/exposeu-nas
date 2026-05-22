@@ -27,12 +27,26 @@ export function usePageMeta() {
     })
     description.setAttribute('content', t(meta.descriptionKey))
 
+    const localeCanonical = `${window.location.origin}${localizePath(canonicalPathname)}`
+
     const canonical = upsertMeta('link[rel="canonical"]', () => {
       const el = document.createElement('link')
       el.setAttribute('rel', 'canonical')
       return el
     }) as HTMLLinkElement
-    canonical.href = `${window.location.origin}${localizePath(canonicalPathname)}`
+    canonical.href = localeCanonical
+
+    upsertMeta('meta[property="og:url"]', () => {
+      const el = document.createElement('meta')
+      el.setAttribute('property', 'og:url')
+      return el
+    }).setAttribute('content', localeCanonical)
+
+    upsertMeta('meta[property="og:locale"]', () => {
+      const el = document.createElement('meta')
+      el.setAttribute('property', 'og:locale')
+      return el
+    }).setAttribute('content', locale === 'de' ? 'de_DE' : 'en_US')
 
     if (meta.noAlternates) {
       document.head.querySelectorAll('link[rel="alternate"][hreflang]').forEach((el) => el.remove())
