@@ -83,6 +83,28 @@
   color: var(--text-secondary) !important;
 }
 
+.work-hero__cta {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 20px;
+  padding: 11px 24px;
+  border-radius: 999px;
+  border: 1px solid var(--border-highlight);
+  background: var(--button-ghost-bg);
+  color: var(--text-strong);
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  width: fit-content;
+  transition: transform 150ms ease, background-color 150ms ease, border-color 150ms ease;
+}
+
+.work-hero__cta:hover {
+  transform: translateY(-2px);
+  background: var(--button-ghost-hover-bg);
+  border-color: var(--border-highlight);
+}
+
 .work-hero__stack {
   display: flex;
   gap: 0;

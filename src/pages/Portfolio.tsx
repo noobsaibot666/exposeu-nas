@@ -267,16 +267,11 @@ function Portfolio() {
 
     return {
       '@context': 'https://schema.org',
-      '@graph': [
-        {
-          '@type': 'CollectionPage',
-          name: 'Portfolio - expose.u',
-          url: 'https://expose-u.com/portfolio',
-          inLanguage: locale,
-          video: videoObjects,
-        },
-        ...videoObjects,
-      ],
+      '@type': 'CollectionPage',
+      name: 'Portfolio - expose.u',
+      url: 'https://expose-u.com/portfolio',
+      inLanguage: locale,
+      video: videoObjects,
     }
   }, [localizedVideos, locale])
 

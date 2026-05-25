@@ -320,6 +320,20 @@ function WorkPageLayout({
             <h1>{renderSentenceBreaks(heroCopy)}</h1>
             {detail && <p className="work-hero__detail">{detail}</p>}
             {socialProof && <p className="work-hero__social-proof">{socialProof}</p>}
+            <a
+              className="work-hero__cta"
+              href={localizePath(finalCtaHref)}
+              onClick={() =>
+                trackEvent('service_cta_click', {
+                  service_slug: serviceSlug,
+                  service_label: title,
+                  cta_label: ctaLabel ?? t('services.shared.requestAvailability'),
+                  cta_location: 'service_hero',
+                })
+              }
+            >
+              {ctaLabel ?? t('services.shared.requestAvailability')}
+            </a>
           </div>
           <div className="work-hero__stack-shell">
             <p className="work-hero__label">{t('services.shared.projects')}</p>
