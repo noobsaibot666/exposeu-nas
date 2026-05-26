@@ -32,7 +32,8 @@
     "pricingFor": "Clear {{service}} pricing.",
     "readyToCollaborate": "Ready to collaborate?",
     "requestAvailability": "Request availability",
-    "responseTime": "Berlin-based. Response within 24 hours."
+    "responseTime": "Berlin-based. Response within 24 hours.",
+    "moreServices": "More services"
   },
   "pages": {
     "concerts-events": {

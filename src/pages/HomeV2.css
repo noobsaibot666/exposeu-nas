@@ -261,6 +261,20 @@
   outline-offset: 2px;
 }
 
+.home__hero-cta--ghost {
+  background: transparent;
+  border-color: var(--border-strong);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.home__hero-cta--ghost:hover,
+.home__hero-cta--ghost:visited {
+  color: var(--text-strong);
+  background: var(--surface-card);
+  opacity: 1;
+}
+
 .home__hero-gallery {
   --hero-tilt-x: 0;
   --hero-tilt-y: 0;

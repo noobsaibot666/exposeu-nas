@@ -54,6 +54,11 @@ const projectVisuals = [
     image: resolveImagePath('/src/assets/images/website/_incoming/homepage/services/artist-sessions/0015.jpeg'),
     link: serviceMeta['artist-sessions'].href,
   },
+  {
+    slug: serviceMeta['brand-agency'].slug,
+    image: resolveImagePath('/src/assets/images/website/fashion/thumb_3_081.jpg'),
+    link: serviceMeta['brand-agency'].href,
+  },
 ]
 
 const heroGalleryBase = [
@@ -914,9 +919,16 @@ function HomeV2() {
             <LocalizedLink
               to="/contact"
               className="home__hero-cta"
-              onClick={() => trackHomeCta(t('home.hero.primaryCta'), 'hero_primary')}
+              onClick={() => setTimeout(() => trackHomeCta(t('home.hero.primaryCta'), 'hero_primary'), 0)}
             >
               {t('home.hero.primaryCta')}
+            </LocalizedLink>
+            <LocalizedLink
+              to="/portfolio"
+              className="home__hero-cta home__hero-cta--ghost"
+              onClick={() => setTimeout(() => trackHomeCta(t('home.hero.secondaryCta'), 'hero_secondary'), 0)}
+            >
+              {t('home.hero.secondaryCta')} →
             </LocalizedLink>
           </div>
         </div>

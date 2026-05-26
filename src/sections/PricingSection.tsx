@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useMemo, useRef, useTransition } from 'react'
 import '../pages/Home.css'
 import { pricingTiers } from '../data/pricingTiers'
 import { pricingByService, type PricingOverridesByService } from '../data/pricingByService'
@@ -14,59 +14,62 @@ type PricingSectionProps = {
 function PricingSection({ id, headline, serviceSlug }: PricingSectionProps) {
   const navigate = useLocaleNavigate()
   const sectionRef = useRef<HTMLElement | null>(null)
+  const [, startTransition] = useTransition()
   const { t, tm } = useTranslation()
   const headlineText = headline ?? t('pricing.section.headlineDefault')
-  const serviceOverrides = (pricingByService as PricingOverridesByService)[serviceSlug ?? ''] ?? {}
-  const getFeatureList = (key: string) => {
-    try {
-      const value = tm<unknown>(key)
-      if (Array.isArray(value)) {
-        return value.filter((item): item is string => typeof item === 'string' && item.trim().length > 0)
-      }
-    } catch (error) {
-      if (import.meta.env.DEV) {
-        console.warn(`[pricing] Missing feature list "${key}".`, error)
-      }
-    }
-    return []
-  }
 
-  const tiers = pricingTiers.map((tier) => {
-    const override = serviceOverrides[tier.slug] ?? {}
-    const price = String(override.price ?? tier.price)
-    const features = getFeatureList(override.featuresKey ?? tier.featuresKey)
-
-    return {
-      slug: tier.slug,
-      name: t(tier.nameKey),
-      cadence: t(tier.cadenceKey),
-      price,
-      description: override.descriptionKey ? t(override.descriptionKey) : t(tier.descriptionKey),
-      chooseThisIf: override.chooseThisIfKey ? t(override.chooseThisIfKey) : t(tier.chooseThisIfKey),
-      features,
-      cta: t(tier.ctaKey),
-      badge: tier.badgeKey ? t(tier.badgeKey) : undefined,
+  const tiers = useMemo(() => {
+    const serviceOverrides = (pricingByService as PricingOverridesByService)[serviceSlug ?? ''] ?? {}
+    const getFeatureList = (key: string) => {
+      try {
+        const value = tm<unknown>(key)
+        if (Array.isArray(value)) {
+          return value.filter((item): item is string => typeof item === 'string' && item.trim().length > 0)
+        }
+      } catch (error) {
+        if (import.meta.env.DEV) {
+          console.warn(`[pricing] Missing feature list "${key}".`, error)
+        }
+      }
+      return []
     }
-  })
+
+    return pricingTiers.map((tier) => {
+      const override = serviceOverrides[tier.slug] ?? {}
+      const price = String(override.price ?? tier.price)
+      const features = getFeatureList(override.featuresKey ?? tier.featuresKey)
+
+      return {
+        slug: tier.slug,
+        name: t(tier.nameKey),
+        cadence: t(tier.cadenceKey),
+        price,
+        description: override.descriptionKey ? t(override.descriptionKey) : t(tier.descriptionKey),
+        chooseThisIf: override.chooseThisIfKey ? t(override.chooseThisIfKey) : t(tier.chooseThisIfKey),
+        features,
+        cta: t(tier.ctaKey),
+        badge: tier.badgeKey ? t(tier.badgeKey) : undefined,
+      }
+    })
+  }, [serviceSlug, t, tm])
 
   useElementViewTracking(sectionRef, 'service_pricing_view', {
     service_slug: serviceSlug,
   })
 
   const handleSelectPlan = (slug: string, tierLabel: string) => {
-    trackEvent('service_tier_click', {
+    const params = new URLSearchParams()
+    params.set('package', slug)
+    if (serviceSlug) params.set('service', serviceSlug)
+    const url = `/contact?${params.toString()}`
+
+    startTransition(() => { navigate(url) })
+
+    setTimeout(() => trackEvent('service_tier_click', {
       service_slug: serviceSlug,
       tier_id: slug,
       tier_label: tierLabel,
-    })
-
-    const params = new URLSearchParams()
-    params.set('package', slug)
-    if (serviceSlug) {
-      params.set('service', serviceSlug)
-    }
-    const url = `/contact?${params.toString()}`
-    navigate(url)
+    }), 0)
   }
 
   return (

@@ -9,6 +9,7 @@ import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/
 import './WorkPage.css'
 import { useTranslation } from '../i18n/LocaleProvider'
 import { useLocalePath } from '../i18n/LocaleProvider'
+import { serviceList } from '../data/serviceMeta'
 
 export type WorkCard = {
   image?: string
@@ -324,12 +325,12 @@ function WorkPageLayout({
               className="work-hero__cta"
               href={localizePath(finalCtaHref)}
               onClick={() =>
-                trackEvent('service_cta_click', {
+                setTimeout(() => trackEvent('service_cta_click', {
                   service_slug: serviceSlug,
                   service_label: title,
                   cta_label: ctaLabel ?? t('services.shared.requestAvailability'),
                   cta_location: 'service_hero',
-                })
+                }), 0)
               }
             >
               {ctaLabel ?? t('services.shared.requestAvailability')}
@@ -415,6 +416,34 @@ function WorkPageLayout({
 
       {serviceSlug && <FAQSection service={serviceSlug} />}
 
+      {serviceSlug && (
+        <section className="work-more-services">
+          <div className="content work-more-services__inner">
+            <p className="work-gallery__label">{t('services.shared.moreServices')}</p>
+            <div className="work-more-services__grid">
+              {serviceList
+                .filter((s) => s.slug !== serviceSlug)
+                .map((service) => (
+                  <a
+                    key={service.slug}
+                    href={localizePath(service.href)}
+                    className="work-more-services__card"
+                    onClick={() =>
+                      setTimeout(() => trackEvent('service_related_click', {
+                        from_service: serviceSlug,
+                        to_service: service.slug,
+                      }), 0)
+                    }
+                  >
+                    <span className="work-more-services__name">{t(service.shortLabelKey)}</span>
+                    <span className="work-more-services__arrow" aria-hidden="true">→</span>
+                  </a>
+                ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       <section className="section work-cta">
         <div className="content work-cta__content">
           <div>
@@ -426,12 +455,12 @@ function WorkPageLayout({
             className="work-cta__link"
             href={localizePath(finalCtaHref)}
             onClick={() =>
-              trackEvent('service_cta_click', {
+              setTimeout(() => trackEvent('service_cta_click', {
                 service_slug: serviceSlug,
                 service_label: title,
                 cta_label: ctaLabel ?? t('services.shared.requestAvailability'),
                 cta_location: 'service_footer',
-              })}
+              }), 0)}
           >
             {ctaLabel ?? t('services.shared.requestAvailability')}
           </a>
