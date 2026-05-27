@@ -206,8 +206,8 @@ export default function ReleaseContentKit() {
               ease: 'power2.in',
               scrollTrigger: {
                 trigger: section,
-                start: 'top 35%',
-                end: 'top -10%',
+                start: 'top 5%',
+                end: 'top -30%',
                 scrub: 0.4,
               },
             },
