@@ -128,26 +128,43 @@ export default function ReleaseContentKit() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const ctx = gsap.context(() => {
+      // Nav drop in
       gsap.fromTo(
         ['.rck__nav', '.locale-switcher'],
-        { opacity: 0, y: -14 },
-        { opacity: 1, y: 0, duration: 0.7, ease: 'sine.out', delay: 0.12 },
+        { opacity: 0, y: -18 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out', delay: 0.1 },
       )
 
+      // Hero entrance — cinematic stagger with blur
       gsap.fromTo(
         '.rck__hero-inner > *',
-        { opacity: 0, y: 26, filter: 'blur(6px)' },
-        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.8, stagger: 0.09, ease: 'sine.out' },
+        { opacity: 0, y: 36, filter: 'blur(10px)' },
+        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.1, stagger: 0.12, ease: 'power3.out', delay: 0.18 },
       )
 
+      // Hero parallax
       gsap.to('.rck__hero', {
-        backgroundPosition: 'center 58%',
+        backgroundPosition: 'center 62%',
         ease: 'none',
         scrollTrigger: {
           trigger: '.rck__hero',
           start: 'top top',
           end: 'bottom top',
           scrub: 0.8,
+        },
+      })
+
+      // Hero content exit — drift up as hero scrolls away
+      gsap.to('.rck__hero-inner', {
+        opacity: 0,
+        y: -40,
+        filter: 'blur(6px)',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.rck__hero',
+          start: 'center top',
+          end: 'bottom top',
+          scrub: 0.5,
         },
       })
 
@@ -158,20 +175,40 @@ export default function ReleaseContentKit() {
         )
 
         if (items.length) {
+          // IN: section enters from below
           gsap.fromTo(
             items,
-            { opacity: 0, y: 22, filter: 'blur(4px)' },
+            { opacity: 0, y: 30, filter: 'blur(7px)' },
             {
               opacity: 1,
               y: 0,
               filter: 'blur(0px)',
-              stagger: 0.055,
-              ease: 'sine.inOut',
+              stagger: 0.07,
+              ease: 'power2.out',
               scrollTrigger: {
                 trigger: section,
-                start: 'top 86%',
-                end: 'top 58%',
-                scrub: 0.65,
+                start: 'top 92%',
+                end: 'top 52%',
+                scrub: 0.5,
+              },
+            },
+          )
+
+          // OUT: section exits from top — reverse stagger so last items leave first
+          gsap.fromTo(
+            items,
+            { opacity: 1, y: 0, filter: 'blur(0px)', immediateRender: false },
+            {
+              opacity: 0,
+              y: -24,
+              filter: 'blur(5px)',
+              stagger: { each: 0.05, from: 'end' },
+              ease: 'power2.in',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 35%',
+                end: 'top -10%',
+                scrub: 0.4,
               },
             },
           )
@@ -179,22 +216,28 @@ export default function ReleaseContentKit() {
 
         const media = section.querySelector<HTMLElement>('.rck__image')
         if (media) {
+          // Image entrance — scrub-tied for scroll-feel
           gsap.fromTo(
             media,
-            { opacity: 0, y: 26, scale: 0.985, filter: 'blur(5px)' },
+            { opacity: 0, y: 30, scale: 0.96, filter: 'blur(8px)' },
             {
               opacity: 1,
               y: 0,
               scale: 1,
               filter: 'blur(0px)',
-              duration: 0.85,
-              ease: 'sine.out',
-              scrollTrigger: { trigger: section, start: 'top 78%', toggleActions: 'play none none reverse' },
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 85%',
+                end: 'top 45%',
+                scrub: 0.5,
+              },
             },
           )
 
+          // Image parallax
           gsap.to(media, {
-            y: -42,
+            y: -52,
             ease: 'none',
             scrollTrigger: {
               trigger: section,
