@@ -13,27 +13,7 @@ const SERVICE_SLUG = 'release-content-kit'
 const heroImage = resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/021.jpeg')
 const studioImage = resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/023.jpeg')
 
-const artistTypes = [
-  'Musicians', 'Singers', 'DJs', 'Producers',
-  'Bands', 'Performers', 'Visual artists',
-  'Independent creatives', 'Labels and managers',
-]
-
-const releaseTypes = [
-  'Single release', 'EP release', 'Album campaign', 'Live show',
-  'Tour announcement', 'Music video launch', 'New artist profile',
-]
-
-const contentItems = [
-  ['Press photos', 'For media coverage, booking outreach, and announcements.'],
-  ['Artist portraits', 'Visuals that reflect your sound, aesthetic, and identity.'],
-  ['Short video clips', 'Reels, teasers, and moments built to stop the scroll.'],
-  ['Social & platform assets', 'Sized and ready for Instagram, TikTok, Spotify, and YouTube.'],
-  ['Behind-the-scenes content', 'Authentic moments that show the person behind the music.'],
-  ['Release visuals', 'Hero images and campaign assets ready for drop day.'],
-  ['Print & digital files', 'High-res assets for posters, flyers, and press kits.'],
-  ['Fully custom session', 'We shape the kit around what your release actually needs.'],
-]
+const PLATFORM_ICONS = [IconInstagram, IconTikTok, IconSpotify, IconYouTube, IconPress, IconPoster]
 
 const testimonials = [
   {
@@ -107,21 +87,17 @@ function IconPoster() {
   )
 }
 
-const platforms = [
-  { name: 'Instagram', use: 'Posts, reels, and stories that stop the scroll', Icon: IconInstagram },
-  { name: 'TikTok', use: 'Short clips built for your audience and the algorithm', Icon: IconTikTok },
-  { name: 'Spotify', use: 'Profile and artist imagery that matches your sound', Icon: IconSpotify },
-  { name: 'YouTube', use: 'Thumbnails, channel art, and short-form video content', Icon: IconYouTube },
-  { name: 'Press & Media', use: 'Photos that make promoters and journalists pay attention', Icon: IconPress },
-  { name: 'Posters & Print', use: 'High-res files ready for venues and digital campaigns', Icon: IconPoster },
-]
-
 export default function ReleaseContentKit() {
   const rootRef = useRef<HTMLElement | null>(null)
   const navigate = useLocaleNavigate()
   const localizePath = useLocalePath()
   const { locale } = useLocale()
-  const { t } = useTranslation()
+  const { t, tm } = useTranslation()
+
+  const artistTypes = tm<string[]>('services.pages.release-content-kit.audience.artistTypes')
+  const releaseTypes = tm<string[]>('services.pages.release-content-kit.audience.releaseTypes')
+  const cards = tm<Array<{ title: string; body: string }>>('services.pages.release-content-kit.included.cards')
+  const platforms = tm<Array<{ name: string; use: string }>>('services.pages.release-content-kit.usage.platforms').map((p, i) => ({ ...p, Icon: PLATFORM_ICONS[i] }))
 
   useTrackViewEvent('landing_page_view', {
     page_slug: SERVICE_SLUG,
@@ -278,16 +254,16 @@ export default function ReleaseContentKit() {
 
       <section className="rck__hero" style={{ backgroundImage: `linear-gradient(90deg, rgba(5, 7, 11, 0.88), rgba(5, 7, 11, 0.5)), url(${heroImage})` }}>
         <div className="content rck__hero-inner">
-          <h1>Your release is set.<br />Is your content?</h1>
+          <h1>{t('services.pages.release-content-kit.hero.h1Line1')}<br />{t('services.pages.release-content-kit.hero.h1Line2')}</h1>
           <p className="rck__subheadline">
-            Artists who don't show up visually get skipped — no matter how good the music is. Release Content Kit gives you photos, short clips, and social assets built around your campaign, ready before you drop.
+            {t('services.pages.release-content-kit.hero.subheadline')}
           </p>
           <div className="rck__actions">
             <a className="rck__button rck__button--primary" href={contactHref} onClick={() => trackCta('hero_primary')}>
-              Get your content kit
+              {t('services.pages.release-content-kit.hero.cta')}
             </a>
             <a className="rck__button" href="#included" onClick={() => trackCta('hero_secondary')}>
-              See what's included
+              {t('services.pages.release-content-kit.hero.ctaSecondary')}
             </a>
           </div>
         </div>
@@ -296,19 +272,19 @@ export default function ReleaseContentKit() {
       <section className="section rck__audience">
         <div className="content rck__split">
           <div>
-            <p className="rck__label">Artist to artist</p>
-            <h2>We've been where you are.</h2>
+            <p className="rck__label">{t('services.pages.release-content-kit.audience.label')}</p>
+            <h2>{t('services.pages.release-content-kit.audience.h2')}</h2>
           </div>
           <div className="rck__copy">
             <div className="rck__tag-group">
-              <h3>We work with</h3>
-              <div className="rck__tag-grid" aria-label="Artist types">
+              <h3>{t('services.pages.release-content-kit.audience.h3Artists')}</h3>
+              <div className="rck__tag-grid" aria-label={t('services.pages.release-content-kit.audience.h3Artists')}>
                 {artistTypes.map((item) => <span key={item}>{item}</span>)}
               </div>
             </div>
             <div className="rck__tag-group">
-              <h3>Ready for every release</h3>
-              <div className="rck__tag-grid" aria-label="Release types">
+              <h3>{t('services.pages.release-content-kit.audience.h3Releases')}</h3>
+              <div className="rck__tag-grid" aria-label={t('services.pages.release-content-kit.audience.h3Releases')}>
                 {releaseTypes.map((item) => <span key={item}>{item}</span>)}
               </div>
             </div>
@@ -322,11 +298,11 @@ export default function ReleaseContentKit() {
             <div className="rck__image" style={{ backgroundImage: `url(${studioImage})` }} />
           </div>
           <div>
-            <p className="rck__label">What you get</p>
-            <h2>Everything you need. Nothing you don't.</h2>
-            <p className="rck__lede">Artists lose momentum at launch because the content isn't ready. We make sure yours is — photos, clips, and assets built around your release, before day one.</p>
+            <p className="rck__label">{t('services.pages.release-content-kit.included.label')}</p>
+            <h2>{t('services.pages.release-content-kit.included.h2')}</h2>
+            <p className="rck__lede">{t('services.pages.release-content-kit.included.lede')}</p>
             <div className="rck__asset-grid">
-              {contentItems.map(([title, body]) => (
+              {cards.map(({ title, body }) => (
                 <a
                   className="rck__asset-card"
                   href={localizePath(`/contact?service=${SERVICE_SLUG}&package=${encodeURIComponent(title.toLowerCase().replace(/\s+/g, '-'))}`)}
@@ -339,7 +315,7 @@ export default function ReleaseContentKit() {
               ))}
             </div>
             <a className="rck__section-cta" href={contactHref} onClick={() => trackCta('included')}>
-              Start your release kit
+              {t('services.pages.release-content-kit.included.cta')}
             </a>
           </div>
         </div>
@@ -347,9 +323,9 @@ export default function ReleaseContentKit() {
 
       <section className="section rck__usage">
         <div className="content">
-          <p className="rck__label">Your content works everywhere</p>
-          <h2>Your image is always on.</h2>
-          <p className="rck__usage-intro">Before someone presses play, they've already formed an opinion. Great content makes sure that first impression reflects your art, your voice, and your style.</p>
+          <p className="rck__label">{t('services.pages.release-content-kit.usage.label')}</p>
+          <h2>{t('services.pages.release-content-kit.usage.h2')}</h2>
+          <p className="rck__usage-intro">{t('services.pages.release-content-kit.usage.intro')}</p>
           <div className="rck__platform-grid">
             {platforms.map(({ name, use, Icon }) => (
               <div className="rck__platform-item" key={name}>
@@ -360,14 +336,14 @@ export default function ReleaseContentKit() {
             ))}
           </div>
           <a className="rck__section-cta" href={contactHref} onClick={() => trackCta('usage')}>
-            Start your release kit
+            {t('services.pages.release-content-kit.usage.cta')}
           </a>
         </div>
       </section>
 
       <section className="section rck__testimonials">
         <div className="content">
-          <p className="rck__label">Artists we've worked with</p>
+          <p className="rck__label">{t('services.pages.release-content-kit.testimonials.label')}</p>
           <div className="rck__testimonial-grid">
             {testimonials.map((item, i) => (
               <div className="rck__testimonial-card" key={i}>
@@ -391,10 +367,10 @@ export default function ReleaseContentKit() {
 
       <section className="section rck__final">
         <div className="content rck__final-inner">
-          <h2>Let's build your release kit.</h2>
-          <p>We work side by side with artists — from the first message to the final files. Every session is shaped around your release, your sound, and your timeline.</p>
+          <h2>{t('services.pages.release-content-kit.final.h2')}</h2>
+          <p>{t('services.pages.release-content-kit.final.body')}</p>
           <a className="rck__button rck__button--primary" href={contactHref} onClick={() => trackCta('final')}>
-            Start your release kit
+            {t('services.pages.release-content-kit.final.cta')}
           </a>
         </div>
       </section>

@@ -129,6 +129,61 @@
         { "title": "Brand activations", "subtitle": "Audience, product, and production covered in one shoot." },
         { "title": "Ongoing brand archives", "subtitle": "Each activation documented consistently for long-term use." }
       ]
+    },
+    "release-content-kit": {
+      "hero": {
+        "h1Line1": "Your release is set.",
+        "h1Line2": "Is your content?",
+        "subheadline": "Artists who don't show up visually get skipped — no matter how good the music is. Release Content Kit gives you photos, short clips, and social assets built around your campaign, ready before you drop.",
+        "cta": "Get your content kit",
+        "ctaSecondary": "See what's included"
+      },
+      "audience": {
+        "label": "Artist to artist",
+        "h2": "We've been where you are.",
+        "h3Artists": "We work with",
+        "h3Releases": "Ready for every release",
+        "artistTypes": ["Musicians", "Singers", "DJs", "Producers", "Bands", "Performers", "Visual artists", "Independent creatives", "Labels and managers"],
+        "releaseTypes": ["Single release", "EP release", "Album campaign", "Live show", "Tour announcement", "Music video launch", "New artist profile"]
+      },
+      "included": {
+        "label": "What you get",
+        "h2": "Everything you need. Nothing you don't.",
+        "lede": "Artists lose momentum at launch because the content isn't ready. We make sure yours is — photos, clips, and assets built around your release, before day one.",
+        "cards": [
+          { "title": "Press photos", "body": "For media coverage, booking outreach, and announcements." },
+          { "title": "Artist portraits", "body": "Visuals that reflect your sound, aesthetic, and identity." },
+          { "title": "Short video clips", "body": "Reels, teasers, and moments built to stop the scroll." },
+          { "title": "Social & platform assets", "body": "Sized and ready for Instagram, TikTok, Spotify, and YouTube." },
+          { "title": "Behind-the-scenes content", "body": "Authentic moments that show the person behind the music." },
+          { "title": "Release visuals", "body": "Hero images and campaign assets ready for drop day." },
+          { "title": "Print & digital files", "body": "High-res assets for posters, flyers, and press kits." },
+          { "title": "Fully custom session", "body": "We shape the kit around what your release actually needs." }
+        ],
+        "cta": "Start your release kit"
+      },
+      "usage": {
+        "label": "Your content works everywhere",
+        "h2": "Your image is always on.",
+        "intro": "Before someone presses play, they've already formed an opinion. Great content makes sure that first impression reflects your art, your voice, and your style.",
+        "platforms": [
+          { "name": "Instagram", "use": "Posts, reels, and stories that stop the scroll" },
+          { "name": "TikTok", "use": "Short clips built for your audience and the algorithm" },
+          { "name": "Spotify", "use": "Profile and artist imagery that matches your sound" },
+          { "name": "YouTube", "use": "Thumbnails, channel art, and short-form video content" },
+          { "name": "Press & Media", "use": "Photos that make promoters and journalists pay attention" },
+          { "name": "Posters & Print", "use": "High-res files ready for venues and digital campaigns" }
+        ],
+        "cta": "Start your release kit"
+      },
+      "testimonials": {
+        "label": "Artists we've worked with"
+      },
+      "final": {
+        "h2": "Let's build your release kit.",
+        "body": "We work side by side with artists — from the first message to the final files. Every session is shaped around your release, your sound, and your timeline.",
+        "cta": "Start your release kit"
+      }
     }
   }
 }

@@ -129,6 +129,61 @@
         { "title": "Brand Activations", "subtitle": "Publikum, Produkt und Produktion in einem Shoot erfasst." },
         { "title": "Laufende Brand-Archive", "subtitle": "Jede Aktivierung konsistent für langfristige Nutzung dokumentiert." }
       ]
+    },
+    "release-content-kit": {
+      "hero": {
+        "h1Line1": "Dein Release steht.",
+        "h1Line2": "Dein Content auch?",
+        "subheadline": "Artists, die visuell nicht präsent sind, werden übersehen — egal wie gut die Musik ist. Das Release Content Kit gibt dir Fotos, kurze Clips und Social Assets, die auf deine Kampagne abgestimmt sind – bereit, bevor du droppst.",
+        "cta": "Dein Content Kit starten",
+        "ctaSecondary": "Was enthalten ist"
+      },
+      "audience": {
+        "label": "Artist to Artist",
+        "h2": "Wir kennen das Gefühl.",
+        "h3Artists": "Wir arbeiten mit",
+        "h3Releases": "Bereit für jeden Release",
+        "artistTypes": ["Musiker:innen", "Sänger:innen", "DJs", "Producers", "Bands", "Performer:innen", "Bildende Künstler:innen", "Unabhängige Kreative", "Labels und Manager:innen"],
+        "releaseTypes": ["Single-Release", "EP-Release", "Album-Kampagne", "Live-Show", "Tour-Ankündigung", "Musikvideo-Launch", "Neues Artist-Profil"]
+      },
+      "included": {
+        "label": "Was du bekommst",
+        "h2": "Alles, was du brauchst. Nichts, was du nicht brauchst.",
+        "lede": "Artists verlieren beim Launch Schwung, weil der Content nicht bereit ist. Wir sorgen dafür, dass deiner es ist — Fotos, Clips und Assets rund um deinen Release, vor dem ersten Tag.",
+        "cards": [
+          { "title": "Pressefotos", "body": "Für Mediencoverage, Booking-Outreach und Ankündigungen." },
+          { "title": "Artist-Portraits", "body": "Visuals, die deinen Sound, deine Ästhetik und deine Identität widerspiegeln." },
+          { "title": "Kurze Video-Clips", "body": "Reels, Teaser und Momente, die den Scroll stoppen." },
+          { "title": "Social- & Plattform-Assets", "body": "Formatiert und bereit für Instagram, TikTok, Spotify und YouTube." },
+          { "title": "Behind-the-Scenes-Content", "body": "Authentische Momente, die den Menschen hinter der Musik zeigen." },
+          { "title": "Release-Visuals", "body": "Hero-Bilder und Kampagnen-Assets, bereit für den Drop-Day." },
+          { "title": "Print- & Digitaldateien", "body": "Hochauflösende Assets für Poster, Flyer und Presse-Kits." },
+          { "title": "Vollständig individuelle Session", "body": "Wir gestalten das Kit um das, was dein Release wirklich braucht." }
+        ],
+        "cta": "Dein Release Kit starten"
+      },
+      "usage": {
+        "label": "Dein Content funktioniert überall",
+        "h2": "Dein Auftritt läuft immer.",
+        "intro": "Bevor jemand auf Play drückt, hat er sich bereits eine Meinung gebildet. Guter Content sorgt dafür, dass dieser erste Eindruck deine Kunst, deine Stimme und deinen Stil widerspiegelt.",
+        "platforms": [
+          { "name": "Instagram", "use": "Posts, Reels und Stories, die den Scroll stoppen" },
+          { "name": "TikTok", "use": "Kurze Clips für dein Publikum und den Algorithmus" },
+          { "name": "Spotify", "use": "Profil- und Artist-Imagery, das zu deinem Sound passt" },
+          { "name": "YouTube", "use": "Thumbnails, Channel-Art und Kurzvideos" },
+          { "name": "Presse & Medien", "use": "Fotos, die Promoter und Journalist:innen aufmerken lassen" },
+          { "name": "Poster & Print", "use": "Hochauflösende Dateien für Venues und digitale Kampagnen" }
+        ],
+        "cta": "Dein Release Kit starten"
+      },
+      "testimonials": {
+        "label": "Artists, mit denen wir gearbeitet haben"
+      },
+      "final": {
+        "h2": "Lass uns dein Release Kit bauen.",
+        "body": "Wir arbeiten Seite an Seite mit Artists — von der ersten Nachricht bis zu den finalen Dateien. Jede Session ist auf deinen Release, deinen Sound und deinen Zeitplan abgestimmt.",
+        "cta": "Dein Release Kit starten"
+      }
     }
   }
 }
