@@ -491,7 +491,7 @@ a.rck__testimonial-handle:hover {
   }
 
   .rck__asset-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .rck__platform-grid {
@@ -500,6 +500,11 @@ a.rck__testimonial-handle:hover {
 
   .rck__testimonial-grid {
     grid-template-columns: 1fr;
+  }
+
+  .rck__testimonial-card {
+    align-items: center;
+    text-align: center;
   }
 }
 
@@ -516,6 +521,6 @@ a.rck__testimonial-handle:hover {
   }
 
   .rck__platform-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
