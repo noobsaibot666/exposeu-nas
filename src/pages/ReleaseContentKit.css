@@ -38,7 +38,6 @@
   z-index: 1;
   display: grid;
   gap: 18px;
-  max-width: 820px;
 }
 
 .rck__label {
@@ -58,7 +57,7 @@
 }
 
 .rck__hero h1 {
-  max-width: 820px;
+  max-width: 980px;
   font-size: clamp(3.15rem, 7vw, 6.7rem);
   line-height: 1.08;
   font-weight: 700;
@@ -66,7 +65,7 @@
 }
 
 .rck__subheadline {
-  max-width: 720px;
+  max-width: 860px;
   color: var(--text-strong);
   font-size: clamp(1.18rem, 1.5vw, 1.52rem);
   line-height: 1.4;
