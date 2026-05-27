@@ -15,10 +15,10 @@
 
 .rck__hero {
   position: relative;
-  min-height: min(720px, 90svh);
+  min-height: min(860px, 94svh);
   display: flex;
   align-items: end;
-  padding: clamp(120px, 18vh, 170px) 0 clamp(46px, 8vh, 76px);
+  padding: clamp(120px, 18vh, 170px) 0 clamp(24px, 4vh, 44px);
   background-position: center;
   background-size: cover;
   will-change: background-position;
@@ -506,6 +506,7 @@ a.rck__testimonial-handle:hover {
 @media (max-width: 560px) {
   .rck__hero {
     padding-top: 112px;
+    padding-bottom: 18px;
   }
 
   .rck__actions,
