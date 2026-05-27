@@ -20,14 +20,14 @@ const testimonials = [
     name: 'Sallisa Rosa',
     handle: '@sallisarosa',
     url: 'https://www.instagram.com/sallisarosa/',
-    avatar: 'https://scontent-ber1-1.cdninstagram.com/v/t51.82787-15/652796295_18089769638330939_1907733073130546045_n.jpg?stp=dst-jpg_e35_p640x640_sh2.08_tt6&_nc_cat=102&ig_cache_key=Mjk1NzA5Mjk2OTA2MTk2OTA3Ng%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMTQ0MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=J31ZZVy2tF8Q7kNvwGa85Q5&_nc_oc=AdoMkIcXURPjFSNhfmR2g-aKuZ4sA7z6Inmov1Sh26Qf_9UXbL9CCusAlPzbAQAJbBY&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-ber1-1.cdninstagram.com&_nc_gid=TuvwhXNO_PzB-9ASmcNU0Q&_nc_ss=7a22e&oh=00_Af6xQoYbjSHxfkgqTxr_44QmN-uDm-L1uByY2O3xHyW31Q&oe=6A1CF28A',
+    avatar: '/testimonials/sallisa-rosa.jpg',
     quote: 'It\'s great to work with people who genuinely understand your message and what you want to express.',
   },
   {
     name: 'luarr.wav',
     handle: '@luarr.wav',
     url: 'https://www.instagram.com/luarr.wav/',
-    avatar: 'https://scontent-ber1-1.cdninstagram.com/v/t51.82787-15/567976927_18534094309065172_7684482206608417902_n.jpg?stp=dst-jpg_e35_p640x640_sh2.08_tt6&_nc_cat=103&ig_cache_key=Mzc0NzcwOTkzMDE3OTI3MDYyMQ%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMTM2NS5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=Lw3OoXeW7FwQ7kNvwGTIpvq&_nc_oc=Ado5ZP-FAjG2794LvLhi-S34qIDlPN2oxOVbgJv4IXFr-QmkLvJg6K1QXV5bHKPg_As&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-ber1-1.cdninstagram.com&_nc_gid=UMptYs2M7Ef2aT92Z9xvug&_nc_ss=7a22e&oh=00_Af7xyWMy0aRnLD8gNh4hDRhH-Imy4CU_wOylMToexRdCQw&oe=6A1CF5C4',
+    avatar: '/testimonials/luarr-wav.jpg',
     quote: '4 shows, one weekend. Easy does it!',
   },
 ]
@@ -113,6 +113,11 @@ export default function ReleaseContentKit() {
 
   useEffect(() => {
     if (typeof window.fbq !== 'function') return
+    window.fbq('track', 'ViewContent', {
+      content_name: 'Release Content Kit',
+      content_category: 'photography_service',
+      content_type: 'service',
+    })
     window.fbq('trackCustom', 'ReleaseContentKitView', {
       content_name: 'Release Content Kit',
       content_category: SERVICE_SLUG,
@@ -237,6 +242,7 @@ export default function ReleaseContentKit() {
         description={t('common.meta.releaseContentKit.description')}
         ogTitle={t('common.meta.releaseContentKit.title')}
         ogDescription={t('common.meta.releaseContentKit.description')}
+        ogImage="https://expose-u.com/og-release-content-kit.jpg"
         canonical="https://expose-u.com/release-content-kit"
         lang={locale}
       />
@@ -348,7 +354,7 @@ export default function ReleaseContentKit() {
             {testimonials.map((item, i) => (
               <div className="rck__testimonial-card" key={i}>
                 {item.avatar
-                  ? <img className="rck__testimonial-avatar" src={item.avatar} alt={item.name} width={52} height={52} loading="lazy" referrerPolicy="no-referrer" />
+                  ? <img className="rck__testimonial-avatar" src={item.avatar} alt={item.name} width={52} height={52} loading="lazy" />
                   : <div className="rck__testimonial-avatar" aria-hidden="true" />
                 }
                 <blockquote className="rck__testimonial-quote">"{item.quote}"</blockquote>
