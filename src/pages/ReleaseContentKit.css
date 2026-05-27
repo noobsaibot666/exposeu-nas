@@ -62,7 +62,7 @@
   font-size: clamp(3.15rem, 7vw, 6.7rem);
   line-height: 1.08;
   font-weight: 700;
-  text-wrap: balance;
+  text-wrap: pretty;
 }
 
 .rck__subheadline {
@@ -71,7 +71,7 @@
   font-size: clamp(1.18rem, 1.5vw, 1.52rem);
   line-height: 1.4;
   font-weight: 500;
-  text-wrap: balance;
+  text-wrap: pretty;
 }
 
 .rck__lede,
