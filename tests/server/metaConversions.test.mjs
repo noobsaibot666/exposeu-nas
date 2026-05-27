@@ -23,6 +23,8 @@ test('buildMetaLeadEvent includes dedupe event id and user data', () => {
     sourceUrl: 'https://expose-u.com/contact',
     eventId: 'lead-123',
     projectType: 'Concert / Event',
+    service: 'release-content-kit',
+    packageSlug: 'campaign-kit',
     eventTime: 1_762_997_200,
   })
 
@@ -35,6 +37,8 @@ test('buildMetaLeadEvent includes dedupe event id and user data', () => {
   assert.equal(event.user_data.client_user_agent, 'Mozilla/5.0')
   assert.equal(event.user_data.em.length, 1)
   assert.equal(event.custom_data.content_name, 'Concert / Event')
+  assert.equal(event.custom_data.content_category, 'release-content-kit')
+  assert.equal(event.custom_data.content_type, 'campaign-kit')
 })
 
 test('sendMetaEvents posts to the configured Meta Graph endpoint', async () => {

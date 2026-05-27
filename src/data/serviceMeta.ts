@@ -3,6 +3,7 @@ export type ServiceSlug =
   | 'exhibition-gallery'
   | 'artist-sessions'
   | 'brand-agency'
+  | 'release-content-kit'
 
 export type ServiceMeta = {
   slug: ServiceSlug
@@ -40,6 +41,13 @@ export const serviceMeta: Record<ServiceSlug, ServiceMeta> = {
     labelKey: 'services.labels.brand-agency',
     shortLabelKey: 'services.labels.brand-agency-short',
     href: '/services/brand-agency',
+  },
+  'release-content-kit': {
+    slug: 'release-content-kit',
+    label: 'Release Content Kit',
+    labelKey: 'services.labels.release-content-kit',
+    shortLabelKey: 'services.labels.release-content-kit-short',
+    href: '/release-content-kit',
   },
 }
 

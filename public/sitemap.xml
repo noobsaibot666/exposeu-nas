@@ -182,6 +182,24 @@
   </url>
 
   <url>
+    <loc>https://expose-u.com/release-content-kit</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/release-content-kit"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/release-content-kit"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/release-content-kit"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/de/release-content-kit</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/release-content-kit"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/release-content-kit"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/release-content-kit"/>
+  </url>
+
+  <url>
     <loc>https://expose-u.com/concerts-berlin</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

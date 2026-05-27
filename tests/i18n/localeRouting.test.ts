@@ -10,6 +10,7 @@ import {
 } from '../../src/i18n/routing.js'
 import { getMetaForPath } from '../../src/i18n/pageMetaConfig.js'
 import { getLocalizedCanonicalUrl } from '../../src/i18n/seoUrl.js'
+import { serviceMeta } from '../../src/data/serviceMeta.js'
 
 test('detects english as the default locale', () => {
   assert.equal(getLocaleFromPathname('/'), DEFAULT_LOCALE)
@@ -43,6 +44,19 @@ test('maps concerts berlin to its route-specific meta', () => {
   assert.equal(meta.titleKey, 'common.meta.concertsBerlin.title')
   assert.equal(meta.descriptionKey, 'common.meta.concertsBerlin.description')
   assert.equal(meta.noAlternates, true)
+})
+
+test('maps release content kit to its route-specific meta', () => {
+  const meta = getMetaForPath('/release-content-kit')
+
+  assert.equal(meta.titleKey, 'common.meta.releaseContentKit.title')
+  assert.equal(meta.descriptionKey, 'common.meta.releaseContentKit.description')
+})
+
+test('registers release content kit as a tracked service offer', () => {
+  assert.equal(serviceMeta['release-content-kit'].slug, 'release-content-kit')
+  assert.equal(serviceMeta['release-content-kit'].href, '/release-content-kit')
+  assert.equal(serviceMeta['release-content-kit'].labelKey, 'services.labels.release-content-kit')
 })
 
 test('localizes canonical URLs for locale-specific pages', () => {

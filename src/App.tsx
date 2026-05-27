@@ -16,6 +16,7 @@ import ConcertsBerlin from './pages/ConcertsBerlin'
 import HomeV2 from './pages/HomeV2'
 import PricingRequest from './pages/PricingRequest'
 import PricingRequestSuccess from './pages/PricingRequestSuccess'
+import ReleaseContentKit from './pages/ReleaseContentKit'
 import { ThemeProvider } from './ThemeContext'
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
@@ -139,6 +140,8 @@ function App() {
             <Route path="/de/about" element={<About />} />
             <Route path="/call-session" element={<CallSession />} />
             <Route path="/de/call-session" element={<CallSession />} />
+            <Route path="/release-content-kit" element={<ReleaseContentKit />} />
+            <Route path="/de/release-content-kit" element={<ReleaseContentKit />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/de/contact" element={<Contact />} />
             <Route path="/contact-success" element={<ContactSuccess />} />

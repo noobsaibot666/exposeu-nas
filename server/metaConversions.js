@@ -17,6 +17,8 @@ export const buildMetaLeadEvent = ({
   sourceUrl,
   eventId,
   projectType,
+  service,
+  packageSlug,
   eventTime = Math.floor(Date.now() / 1000),
 }) => {
   const emailHash = hashEmail(email)
@@ -33,7 +35,15 @@ export const buildMetaLeadEvent = ({
     action_source: 'website',
     ...(trimValue(sourceUrl) ? { event_source_url: trimValue(sourceUrl) } : {}),
     user_data: userData,
-    ...(trimValue(projectType) ? { custom_data: { content_name: trimValue(projectType) } } : {}),
+    ...(trimValue(projectType) || trimValue(service) || trimValue(packageSlug)
+      ? {
+          custom_data: {
+            ...(trimValue(projectType) ? { content_name: trimValue(projectType) } : {}),
+            ...(trimValue(service) ? { content_category: trimValue(service) } : {}),
+            ...(trimValue(packageSlug) ? { content_type: trimValue(packageSlug) } : {}),
+          },
+        }
+      : {}),
   }
 }
 

@@ -4,6 +4,7 @@
       "Konzert / Event",
       "Ausstellung / Galerie",
       "Artist Session",
+      "Release Content Kit",
       "Brand / Agency",
       "Sonstiges"
     ],
@@ -58,6 +59,7 @@
       "concerts-events": "Live-Coverage mit präzisem Timing und schnellen Turnarounds für Socials, Presse und Recaps.",
       "exhibition-gallery": "Kuratorisch gedachte Coverage für Press Kits, Collector Previews und Galeriearchive.",
       "artist-sessions": "Portraits und BTS, die Prozess, Persönlichkeit und die Geschichte eines Releases sichtbar machen.",
+      "release-content-kit": "Foto- und Videoassets für Single, Album, Show, Tour oder Release-Kampagne.",
       "brand-agency": "Coverage für Brands, Agenturen, Runway und Activations – entwickelt für PR, Sponsoren und Kampagnen-Updates."
     },
     "planSelectedFallback": "Paket wird in der Anfrage gewählt",

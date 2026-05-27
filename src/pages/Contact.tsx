@@ -8,6 +8,7 @@ import { trackEvent } from '../utils/analytics'
 import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
 import { SEOMeta } from '../components/SEOMeta'
 import AvailabilityBadge from '../components/AvailabilityBadge'
+import { serviceMeta, type ServiceSlug } from '../data/serviceMeta'
 
 const TYPE_MAP: Record<string, string> = {
   'concert': 'Concert / Event',
@@ -43,8 +44,16 @@ function Contact() {
   const projectTypeOptions = tm<string[]>('forms.contact.projectTypes')
 
   const typeParam = searchParams.get('type')
-  const defaultProjectType = typeParam ? (TYPE_MAP[typeParam] ?? '') : ''
+  const serviceParam = searchParams.get('service')
+  const packageParam = searchParams.get('package')
+  const selectedService = serviceParam && serviceParam in serviceMeta ? serviceMeta[serviceParam as ServiceSlug] : null
+  const selectedServiceLabel = selectedService ? t(selectedService.labelKey) : ''
+  const defaultProjectType = selectedServiceLabel || (typeParam ? (TYPE_MAP[typeParam] ?? '') : '')
   const [selectedType, setSelectedType] = useState(defaultProjectType)
+
+  useEffect(() => {
+    if (defaultProjectType) setSelectedType(defaultProjectType)
+  }, [defaultProjectType])
 
   const navLinks = useMemo(
     () => ({
@@ -128,6 +137,8 @@ function Contact() {
         sourceUrl: window.location.href,
         referrer: document.referrer,
         eventId: metaEventId,
+        ...(selectedService ? { service: selectedService.slug, serviceLabel: selectedServiceLabel } : {}),
+        ...(packageParam ? { package: packageParam } : {}),
         ...(companyWebsite ? { companyWebsite } : {}),
       }
 
@@ -152,16 +163,26 @@ function Contact() {
 
       hasSubmittedRef.current = true
       setSubmitted(true)
-      trackEvent('contact_form_submit_success', { projectType })
+      trackEvent('contact_form_submit_success', {
+        projectType,
+        service_slug: selectedService?.slug,
+        package_slug: packageParam,
+      })
 
       if (typeof window.gtag === 'function') {
         window.gtag('event', 'form_submit_contact', {
           event_category: 'contact',
           event_label: projectType,
+          service_slug: selectedService?.slug,
+          package_slug: packageParam,
         })
       }
       if (typeof window.fbq === 'function') {
-        window.fbq('track', 'Lead', { content_name: projectType }, { eventID: metaEventId })
+        window.fbq('track', 'Lead', {
+          content_name: projectType,
+          content_category: selectedService?.slug,
+          content_type: packageParam || undefined,
+        }, { eventID: metaEventId })
       }
 
       fetch(resolveTrackLeadEndpoint(), {
@@ -173,6 +194,8 @@ function Contact() {
           sourceUrl: window.location.href,
           eventId: metaEventId,
           projectType,
+          service: selectedService?.slug,
+          package: packageParam,
         }),
       }).catch((error) => {
         console.warn('Meta CAPI Lead tracking request failed', error)

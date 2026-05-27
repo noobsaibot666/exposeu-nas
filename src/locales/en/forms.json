@@ -4,6 +4,7 @@
       "Concert / Event",
       "Exhibition / Gallery",
       "Artist Session",
+      "Release Content Kit",
       "Brand / Agency",
       "Other"
     ],
@@ -58,6 +59,7 @@
       "concerts-events": "Live event coverage with sharp timing and fast turnarounds for socials, press, and recaps.",
       "exhibition-gallery": "Curation-forward coverage designed for press kits, collector previews, and gallery archives.",
       "artist-sessions": "Portraits and BTS that capture process, personality, and the release story.",
+      "release-content-kit": "Photo and video assets for a single, album, show, tour, or campaign release.",
       "brand-agency": "Brand, agency, runway, and activation coverage built for PR, sponsors, and campaign updates."
     },
     "planSelectedFallback": "Plan selected on request",

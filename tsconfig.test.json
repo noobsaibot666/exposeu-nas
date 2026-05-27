@@ -15,6 +15,7 @@
     "tests/**/*.ts",
     "src/i18n/routing.ts",
     "src/i18n/seoUrl.ts",
-    "src/i18n/pageMetaConfig.ts"
+    "src/i18n/pageMetaConfig.ts",
+    "src/data/serviceMeta.ts"
   ]
 }

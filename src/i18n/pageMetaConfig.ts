@@ -23,6 +23,12 @@ export function getMetaForPath(pathname: string): MetaConfig {
   if (pathname === '/call-session') {
     return { titleKey: 'common.meta.callSession.title', descriptionKey: 'common.meta.callSession.description' }
   }
+  if (pathname === '/release-content-kit') {
+    return {
+      titleKey: 'common.meta.releaseContentKit.title',
+      descriptionKey: 'common.meta.releaseContentKit.description',
+    }
+  }
   if (pathname === '/impressum') {
     return { titleKey: 'common.meta.impressum.title', descriptionKey: 'common.meta.impressum.description' }
   }

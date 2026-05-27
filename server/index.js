@@ -156,6 +156,8 @@ const sendMetaLeadEvent = async ({
   sourceUrl,
   eventId,
   projectType,
+  service,
+  packageSlug,
 }) => {
   const metaConfig = buildMetaConfig()
   const event = buildMetaLeadEvent({
@@ -165,6 +167,8 @@ const sendMetaLeadEvent = async ({
     sourceUrl,
     eventId,
     projectType,
+    service,
+    packageSlug,
   })
 
   const result = await sendMetaEvents({
@@ -242,6 +246,8 @@ app.post(['/track-lead', '/api/track-lead', '/meta-event', '/api/meta-event'], a
     sourceUrl,
     eventId,
     projectType,
+    service,
+    package: packageSlug,
   } = req.body || {}
 
   if (trimValue(eventName) !== 'Lead') {
@@ -256,6 +262,8 @@ app.post(['/track-lead', '/api/track-lead', '/meta-event', '/api/meta-event'], a
       sourceUrl,
       eventId: trimValue(eventId) || randomUUID(),
       projectType,
+      service: trimValue(service),
+      packageSlug: trimValue(packageSlug),
     })
 
     if (result.skipped) {
