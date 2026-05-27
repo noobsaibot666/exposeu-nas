@@ -194,24 +194,6 @@ export default function ReleaseContentKit() {
             },
           )
 
-          // OUT: section exits from top — reverse stagger so last items leave first
-          gsap.fromTo(
-            items,
-            { opacity: 1, y: 0, filter: 'blur(0px)', immediateRender: false },
-            {
-              opacity: 0,
-              y: -24,
-              filter: 'blur(5px)',
-              stagger: { each: 0.05, from: 'end' },
-              ease: 'power2.in',
-              scrollTrigger: {
-                trigger: section,
-                start: 'top 5%',
-                end: 'top -30%',
-                scrub: 0.4,
-              },
-            },
-          )
         }
 
         const media = section.querySelector<HTMLElement>('.rck__image')
