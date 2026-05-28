@@ -56,10 +56,12 @@ const projectVisuals = [
   },
   {
     slug: serviceMeta['brand-agency'].slug,
-    image: resolveImagePath('/src/assets/images/website/fashion/thumb_3_081.jpg'),
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/brand-agency/033.jpeg'),
     link: serviceMeta['brand-agency'].href,
   },
 ]
+
+const hiddenHomeServiceSlugs = new Set(['brand-agency'])
 
 const heroGalleryBase = [
   {
@@ -82,7 +84,7 @@ const heroGalleryBase = [
   },
   {
     id: 'thumb-brand',
-    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/brand-agency/033.jpeg'),
+    image: resolveImagePath('src/assets/images/landing/agency_hero_01.jpeg'),
     slug: 'brand-agency',
     rotation: 4,
   },
@@ -155,12 +157,14 @@ function HomeV2() {
 
   const projects = useMemo(
     () =>
-      projectVisuals.map((project) => ({
-        ...project,
-        title: t(`home.services.cards.${project.slug}.title`),
-        subtext: t(`home.services.cards.${project.slug}.subtext`),
-        cta: t(`home.services.cards.${project.slug}.cta`),
-      })),
+      projectVisuals
+        .filter((project) => !hiddenHomeServiceSlugs.has(project.slug))
+        .map((project) => ({
+          ...project,
+          title: t(`home.services.cards.${project.slug}.title`),
+          subtext: t(`home.services.cards.${project.slug}.subtext`),
+          cta: t(`home.services.cards.${project.slug}.cta`),
+        })),
     [t],
   )
 

@@ -32,7 +32,7 @@ export type AdLandingPageConfig = {
   includedLabel: string
   includedHeading: string
   includedLede: string
-  includedCards: Array<{ title: string; body: string }>
+  includedCards: Array<{ title: string; body: string; slug?: string }>
   includedCta: string
   usageLabel: string
   usageHeading: string
@@ -274,8 +274,8 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
             <h2>{config.includedHeading}</h2>
             <p className="alp__lede">{config.includedLede}</p>
             <div className="alp__asset-grid">
-              {config.includedCards.map(({ title, body }) => {
-                const packageSlug = title.toLowerCase().replace(/\s+/g, '-')
+              {config.includedCards.map(({ title, body, slug }) => {
+                const packageSlug = slug ?? title.toLowerCase().replace(/\s+/g, '-')
                 return (
                   <a
                     className="alp__asset-card"
