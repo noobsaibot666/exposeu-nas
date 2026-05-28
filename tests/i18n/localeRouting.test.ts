@@ -43,7 +43,7 @@ test('maps concerts berlin to its route-specific meta', () => {
 
   assert.equal(meta.titleKey, 'common.meta.concertsBerlin.title')
   assert.equal(meta.descriptionKey, 'common.meta.concertsBerlin.description')
-  assert.equal(meta.noAlternates, true)
+  assert.equal(meta.noAlternates, undefined)
 })
 
 test('maps release content kit to its route-specific meta', () => {
@@ -51,6 +51,16 @@ test('maps release content kit to its route-specific meta', () => {
 
   assert.equal(meta.titleKey, 'common.meta.releaseContentKit.title')
   assert.equal(meta.descriptionKey, 'common.meta.releaseContentKit.description')
+})
+
+test('maps ad landing pages to route-specific meta', () => {
+  const exhibition = getMetaForPath('/exhibition-gallery')
+  const brand = getMetaForPath('/brand-agency')
+
+  assert.equal(exhibition.titleKey, 'common.meta.exhibitionGalleryLanding.title')
+  assert.equal(exhibition.descriptionKey, 'common.meta.exhibitionGalleryLanding.description')
+  assert.equal(brand.titleKey, 'common.meta.brandAgencyLanding.title')
+  assert.equal(brand.descriptionKey, 'common.meta.brandAgencyLanding.description')
 })
 
 test('registers release content kit as a tracked service offer', () => {

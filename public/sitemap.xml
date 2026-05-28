@@ -203,6 +203,54 @@
     <loc>https://expose-u.com/concerts-berlin</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/concerts-berlin"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/concerts-berlin"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/concerts-berlin"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/de/concerts-berlin</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/concerts-berlin"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/concerts-berlin"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/concerts-berlin"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/exhibition-gallery</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/exhibition-gallery"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/exhibition-gallery"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/exhibition-gallery"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/de/exhibition-gallery</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/exhibition-gallery"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/exhibition-gallery"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/exhibition-gallery"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/brand-agency</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/brand-agency"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/brand-agency"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/brand-agency"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/de/brand-agency</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/brand-agency"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/brand-agency"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/brand-agency"/>
   </url>
 
 </urlset>

@@ -12,7 +12,9 @@ import ArtistSessions from './pages/ArtistSessions'
 import Portfolio from './pages/Portfolio'
 import NotFound from './pages/NotFound'
 import Home from './pages/Home'
+import BrandAgencyLanding from './pages/BrandAgencyLanding'
 import ConcertsBerlin from './pages/ConcertsBerlin'
+import ExhibitionGalleryLanding from './pages/ExhibitionGalleryLanding'
 import HomeV2 from './pages/HomeV2'
 import PricingRequest from './pages/PricingRequest'
 import PricingRequestSuccess from './pages/PricingRequestSuccess'
@@ -142,6 +144,10 @@ function App() {
             <Route path="/de/call-session" element={<CallSession />} />
             <Route path="/release-content-kit" element={<ReleaseContentKit />} />
             <Route path="/de/release-content-kit" element={<ReleaseContentKit />} />
+            <Route path="/exhibition-gallery" element={<ExhibitionGalleryLanding />} />
+            <Route path="/de/exhibition-gallery" element={<ExhibitionGalleryLanding />} />
+            <Route path="/brand-agency" element={<BrandAgencyLanding />} />
+            <Route path="/de/brand-agency" element={<BrandAgencyLanding />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/de/contact" element={<Contact />} />
             <Route path="/contact-success" element={<ContactSuccess />} />
@@ -185,6 +191,7 @@ function App() {
             <Route path="/pricing-request/success" element={<PricingRequestSuccess />} />
             <Route path="/de/pricing-request/success" element={<PricingRequestSuccess />} />
             <Route path="/concerts-berlin" element={<ConcertsBerlin />} />
+            <Route path="/de/concerts-berlin" element={<ConcertsBerlin />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

@@ -29,6 +29,18 @@ export function getMetaForPath(pathname: string): MetaConfig {
       descriptionKey: 'common.meta.releaseContentKit.description',
     }
   }
+  if (pathname === '/exhibition-gallery') {
+    return {
+      titleKey: 'common.meta.exhibitionGalleryLanding.title',
+      descriptionKey: 'common.meta.exhibitionGalleryLanding.description',
+    }
+  }
+  if (pathname === '/brand-agency') {
+    return {
+      titleKey: 'common.meta.brandAgencyLanding.title',
+      descriptionKey: 'common.meta.brandAgencyLanding.description',
+    }
+  }
   if (pathname === '/impressum') {
     return { titleKey: 'common.meta.impressum.title', descriptionKey: 'common.meta.impressum.description' }
   }
@@ -54,7 +66,6 @@ export function getMetaForPath(pathname: string): MetaConfig {
     return {
       titleKey: 'common.meta.concertsBerlin.title',
       descriptionKey: 'common.meta.concertsBerlin.description',
-      noAlternates: true,
     }
   }
   return { titleKey: 'common.meta.notFound.title', descriptionKey: 'common.meta.notFound.description' }
