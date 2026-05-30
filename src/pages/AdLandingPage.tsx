@@ -207,6 +207,20 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
       cta_location: location,
       package_slug: packageSlug,
     }), 0)
+
+    if (typeof window.fbq === 'function') {
+      window.fbq('trackCustom', 'LandingPageCtaClick', {
+        content_name: config.metaContentName,
+        content_category: config.serviceSlug,
+        page_slug: config.slug,
+        cta_location: location,
+        package_slug: packageSlug,
+      })
+    }
+
+    if (typeof window.clarity === 'function') {
+      window.clarity('event', `landing_page_cta_click_${config.slug}_${location}`)
+    }
   }
 
   return (

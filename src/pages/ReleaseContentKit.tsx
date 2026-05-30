@@ -28,7 +28,7 @@ const testimonials = [
     handle: '@luarr.wav',
     url: 'https://www.instagram.com/luarr.wav/',
     avatar: '/testimonials/luarr-wav.jpg',
-    quote: '4 shows, one weekend. Easy does it!',
+    quote: '3 shows, one weekend, in just a few hours they managed to create enough content to last a lifetime. Easy does it!',
   },
 ]
 
