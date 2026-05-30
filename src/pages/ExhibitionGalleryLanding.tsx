@@ -6,7 +6,7 @@ const baseConfig = {
   slug: 'exhibition-gallery',
   serviceSlug: 'exhibition-gallery',
   canonical: 'https://expose-u.com/exhibition-gallery',
-  heroImage: resolveImagePath('src/assets/images/landing/gallery_hero.jpeg'),
+  heroImage: resolveImagePath('/src/assets/images/landing/gallery_hero_01.jpeg'),
   supportImage: resolveImagePath('src/assets/images/landing/gallery_hero_03.jpeg'),
   metaContentName: 'Exhibition Gallery Landing Page',
   customPixelEvent: 'ExhibitionGalleryLandingView',

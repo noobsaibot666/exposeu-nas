@@ -27,7 +27,7 @@ export const serviceMeta: Record<ServiceSlug, ServiceMeta> = {
     label: 'Exhibition & Gallery Documentation',
     labelKey: 'services.labels.exhibition-gallery',
     shortLabelKey: 'services.labels.exhibition-gallery-short',
-    href: '/services/exhibition-gallery',
+    href: '/exhibition-gallery',
   },
   'artist-sessions': {
     slug: 'artist-sessions',
