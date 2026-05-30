@@ -28,6 +28,7 @@ export type AdLandingPageConfig = {
   ctaSecondary: string
   audienceLabel: string
   audienceHeading: string
+  audienceBody?: string[]
   audienceGroups: Array<{ title: string; items: string[] }>
   includedLabel: string
   includedHeading: string
@@ -266,6 +267,11 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
           <div>
             <p className="alp__label">{config.audienceLabel}</p>
             <h2>{config.audienceHeading}</h2>
+            {config.audienceBody?.length ? (
+              <div className="alp__audience-body">
+                {config.audienceBody.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+              </div>
+            ) : null}
           </div>
           <div className="alp__copy">
             {config.audienceGroups.map((group) => (

@@ -181,6 +181,19 @@
   max-width: 680px;
 }
 
+.alp__audience-body {
+  display: grid;
+  gap: 10px;
+  max-width: 640px;
+  margin-top: 18px;
+}
+
+.alp__audience-body p {
+  color: rgba(245, 245, 244, 0.74);
+  font-size: clamp(1.02rem, 1.1vw, 1.16rem);
+  line-height: 1.58;
+}
+
 .alp__tag-group {
   display: grid;
   gap: 12px;
