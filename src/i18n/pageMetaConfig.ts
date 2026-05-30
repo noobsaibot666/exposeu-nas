@@ -41,6 +41,12 @@ export function getMetaForPath(pathname: string): MetaConfig {
       descriptionKey: 'common.meta.brandAgencyLanding.description',
     }
   }
+  if (pathname === '/popups') {
+    return {
+      titleKey: 'common.meta.popupsLanding.title',
+      descriptionKey: 'common.meta.popupsLanding.description',
+    }
+  }
   if (pathname === '/impressum') {
     return { titleKey: 'common.meta.impressum.title', descriptionKey: 'common.meta.impressum.description' }
   }

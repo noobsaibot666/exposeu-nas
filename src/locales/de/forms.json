@@ -6,6 +6,7 @@
       "Artist Session",
       "Release Content Kit",
       "Brand / Agency",
+      "Pop-up / Launch",
       "Sonstiges"
     ],
     "errors": {
@@ -60,7 +61,8 @@
       "exhibition-gallery": "Kuratorisch gedachte Coverage für Press Kits, Collector Previews und Galeriearchive.",
       "artist-sessions": "Portraits und BTS, die Prozess, Persönlichkeit und die Geschichte eines Releases sichtbar machen.",
       "release-content-kit": "Foto- und Videoassets für Single, Album, Show, Tour oder Release-Kampagne.",
-      "brand-agency": "Coverage für Brands, Agenturen, Runway und Activations – entwickelt für PR, Sponsoren und Kampagnen-Updates."
+      "brand-agency": "Coverage für Brands, Agenturen, Runway und Activations – entwickelt für PR, Sponsoren und Kampagnen-Updates.",
+      "popups": "Foto- und Videoassets für Pop-ups, Launches, temporären Retail und kulturelle Brand-Momente."
     },
     "planSelectedFallback": "Paket wird in der Anfrage gewählt",
     "generalInquiry": "Allgemeine Anfrage",

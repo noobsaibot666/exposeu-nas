@@ -34,6 +34,8 @@ export type AdLandingPageConfig = {
   includedLede: string
   includedCards: Array<{ title: string; body: string; slug?: string }>
   includedCta: string
+  proofLabel: string
+  proofItems: Array<{ title: string; body: string }>
   usageLabel: string
   usageHeading: string
   usageIntro: string
@@ -123,7 +125,7 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
 
       gsap.utils.toArray<HTMLElement>('.alp .section').forEach((section) => {
         const items = gsap.utils.toArray<HTMLElement>(
-          '.alp__label, h2, .alp__copy > *, .alp__lede, .alp__usage-intro, .alp__tag-grid span, .alp__asset-card, .alp__platform-item, .alp__section-cta, .alp__final-inner > *',
+          '.alp__label, h2, .alp__copy > *, .alp__lede, .alp__usage-intro, .alp__tag-grid span, .alp__asset-card, .alp__proof-item, .alp__platform-item, .alp__section-cta, .alp__final-inner > *',
           section,
         )
 
@@ -292,6 +294,20 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
             <a className="alp__section-cta" href={contactHref} onClick={() => trackCta('included')}>
               {config.includedCta}
             </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="section alp__proof">
+        <div className="content">
+          <p className="alp__label">{config.proofLabel}</p>
+          <div className="alp__proof-grid">
+            {config.proofItems.map(({ title, body }) => (
+              <div className="alp__proof-item" key={title}>
+                <h3>{title}</h3>
+                <p>{body}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

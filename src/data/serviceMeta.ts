@@ -4,6 +4,7 @@ export type ServiceSlug =
   | 'artist-sessions'
   | 'brand-agency'
   | 'release-content-kit'
+  | 'popups'
 
 export type ServiceMeta = {
   slug: ServiceSlug
@@ -48,6 +49,13 @@ export const serviceMeta: Record<ServiceSlug, ServiceMeta> = {
     labelKey: 'services.labels.release-content-kit',
     shortLabelKey: 'services.labels.release-content-kit-short',
     href: '/release-content-kit',
+  },
+  popups: {
+    slug: 'popups',
+    label: 'Pop-ups',
+    labelKey: 'services.labels.popups',
+    shortLabelKey: 'services.labels.popups-short',
+    href: '/popups',
   },
 }
 

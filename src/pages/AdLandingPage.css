@@ -297,6 +297,22 @@
   margin-top: 28px;
 }
 
+.alp__proof-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.alp__proof-item {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  border: 1px solid rgba(245, 245, 244, 0.14);
+  border-radius: 8px;
+  background: rgba(245, 245, 244, 0.055);
+}
+
 .alp__platform-item {
   display: grid;
   gap: 10px;
@@ -348,6 +364,7 @@
   }
 
   .alp__asset-grid,
+  .alp__proof-grid,
   .alp__platform-grid {
     grid-template-columns: 1fr;
   }

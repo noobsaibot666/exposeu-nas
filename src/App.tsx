@@ -19,6 +19,7 @@ import HomeV2 from './pages/HomeV2'
 import PricingRequest from './pages/PricingRequest'
 import PricingRequestSuccess from './pages/PricingRequestSuccess'
 import ReleaseContentKit from './pages/ReleaseContentKit'
+import PopupsLanding from './pages/PopupsLanding'
 import { ThemeProvider } from './ThemeContext'
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
@@ -148,6 +149,8 @@ function App() {
             <Route path="/de/exhibition-gallery" element={<ExhibitionGalleryLanding />} />
             <Route path="/brand-agency" element={<BrandAgencyLanding />} />
             <Route path="/de/brand-agency" element={<BrandAgencyLanding />} />
+            <Route path="/popups" element={<PopupsLanding />} />
+            <Route path="/de/popups" element={<PopupsLanding />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/de/contact" element={<Contact />} />
             <Route path="/contact-success" element={<ContactSuccess />} />
