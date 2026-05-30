@@ -352,26 +352,6 @@ export default function ReleaseContentKit() {
         </div>
       </section>
 
-      <section className="section rck__usage">
-        <div className="content">
-          <p className="rck__label">{t('services.pages.release-content-kit.usage.label')}</p>
-          <h2>{t('services.pages.release-content-kit.usage.h2')}</h2>
-          <p className="rck__usage-intro">{t('services.pages.release-content-kit.usage.intro')}</p>
-          <div className="rck__platform-grid">
-            {platforms.map(({ name, use, Icon }) => (
-              <div className="rck__platform-item" key={name}>
-                <div className="rck__platform-icon"><Icon /></div>
-                <h3>{name}</h3>
-                <p>{use}</p>
-              </div>
-            ))}
-          </div>
-          <a className="rck__section-cta" href={contactHref} onClick={() => trackCta('usage')}>
-            {t('services.pages.release-content-kit.usage.cta')}
-          </a>
-        </div>
-      </section>
-
       <section className="section rck__testimonials">
         <div className="content">
           <p className="rck__label">{t('services.pages.release-content-kit.testimonials.label')}</p>
@@ -393,6 +373,26 @@ export default function ReleaseContentKit() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="section rck__usage">
+        <div className="content">
+          <p className="rck__label">{t('services.pages.release-content-kit.usage.label')}</p>
+          <h2>{t('services.pages.release-content-kit.usage.h2')}</h2>
+          <p className="rck__usage-intro">{t('services.pages.release-content-kit.usage.intro')}</p>
+          <div className="rck__platform-grid">
+            {platforms.map(({ name, use, Icon }) => (
+              <div className="rck__platform-item" key={name}>
+                <div className="rck__platform-icon"><Icon /></div>
+                <h3>{name}</h3>
+                <p>{use}</p>
+              </div>
+            ))}
+          </div>
+          <a className="rck__section-cta" href={contactHref} onClick={() => trackCta('usage')}>
+            {t('services.pages.release-content-kit.usage.cta')}
+          </a>
         </div>
       </section>
 
