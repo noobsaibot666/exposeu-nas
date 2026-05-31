@@ -178,6 +178,19 @@ const sendEvent = (name: string, params: AnalyticsParams = {}) => {
   }
 }
 
+const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'] as const
+
+function extractUtmParams(): AnalyticsParams {
+  if (typeof window === 'undefined') return {}
+  const sp = new URLSearchParams(window.location.search)
+  const utm: AnalyticsParams = {}
+  for (const key of UTM_KEYS) {
+    const val = sp.get(key)
+    if (val) utm[key] = val
+  }
+  return utm
+}
+
 export const trackPageView = (path: string, params: AnalyticsParams = {}) => {
   if (!shouldSendAnalytics()) return
 
@@ -187,6 +200,9 @@ export const trackPageView = (path: string, params: AnalyticsParams = {}) => {
       page_title: typeof document !== 'undefined' ? document.title : undefined,
       source_url: typeof window !== 'undefined' ? window.location.href : undefined,
       referrer: typeof document !== 'undefined' ? document.referrer || undefined : undefined,
+      // Forward UTM params explicitly so GA4 attributes the session correctly
+      // even when gtag('config') is called multiple times during SPA navigation
+      ...extractUtmParams(),
       ...params,
     })
   }

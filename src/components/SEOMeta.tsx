@@ -124,15 +124,23 @@ export function SEOMeta({
 
 export function SchemaOrg({ data }: { data: unknown }) {
   useEffect(() => {
-    const json = JSON.stringify(data)
-    let el = document.querySelector<HTMLScriptElement>('script[data-schema-org]')
-    if (!el) {
-      el = document.createElement('script')
+    // Always remove stale tags first to avoid duplicates on SPA navigation
+    document.querySelectorAll('script[data-schema-org]').forEach((el) => el.remove())
+
+    // One <script> tag per schema item — Clarity and fbevents.js both
+    // crash when the root JSON-LD value is an array instead of an object
+    const items = Array.isArray(data) ? data : [data]
+    items.forEach((item, i) => {
+      const el = document.createElement('script')
       el.setAttribute('type', 'application/ld+json')
-      el.setAttribute('data-schema-org', '')
+      el.setAttribute('data-schema-org', String(i))
+      el.textContent = JSON.stringify(item)
       document.head.appendChild(el)
+    })
+
+    return () => {
+      document.querySelectorAll('script[data-schema-org]').forEach((el) => el.remove())
     }
-    el.textContent = json
   }, [data])
 
   return null
