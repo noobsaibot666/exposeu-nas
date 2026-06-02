@@ -197,6 +197,8 @@ function Contact() {
           service: selectedService?.slug,
           package: packageParam,
         }),
+      }).then((r) => {
+        if (!r.ok) console.warn('Meta CAPI Lead tracking returned non-ok status', r.status)
       }).catch((error) => {
         console.warn('Meta CAPI Lead tracking request failed', error)
       })
@@ -236,7 +238,7 @@ function Contact() {
 
   useEffect(() => {
     trackEvent('contact_view')
-  }, [t])
+  }, [])
 
   useEffect(() => {
     const maybeTrackAbandon = () => {

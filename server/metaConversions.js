@@ -67,11 +67,13 @@ export const sendMetaEvents = async ({
   }
 
   const url = new URL(`https://graph.facebook.com/${GRAPH_API_VERSION}/${trimmedPixelId}/events`)
-  url.searchParams.set('access_token', trimmedAccessToken)
 
   const response = await fetchImpl(url.toString(), {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${trimmedAccessToken}`,
+    },
     body: JSON.stringify({
       data,
       ...(trimValue(testEventCode) ? { test_event_code: trimValue(testEventCode) } : {}),

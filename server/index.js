@@ -6,12 +6,15 @@ import { randomUUID } from 'node:crypto'
 import { buildMetaLeadEvent, sendMetaEvents } from './metaConversions.js'
 
 const app = express()
-app.set('trust proxy', true)
+// Trust exactly 1 proxy hop (Traefik). 'true' would trust all hops and allow
+// clients to spoof X-Forwarded-For to bypass rate limiting.
+app.set('trust proxy', 1)
 const port = Number(process.env.CONTACT_API_PORT || 8787)
 const RATE_LIMIT_WINDOW_MS = 60_000
 const RATE_LIMIT_MAX_REQUESTS = 5
 const contactRequestStore = new Map()
 const metaEventRequestStore = new Map()
+const smtpTestRequestStore = new Map()
 
 const buildSmtpConfig = () => {
   const host = process.env.SMTP_HOST
@@ -98,25 +101,18 @@ const sendApiError = (res, status, code, message) =>
   })
 
 const getClientIp = (req) => {
+  // cf-connecting-ip is set by Cloudflare and cannot be spoofed from the client.
   const cfConnectingIp = req.headers['cf-connecting-ip']
   if (typeof cfConnectingIp === 'string' && cfConnectingIp.trim()) {
     return cfConnectingIp.trim()
   }
-
   if (Array.isArray(cfConnectingIp) && cfConnectingIp[0]) {
     return cfConnectingIp[0].trim()
   }
 
-  const forwarded = req.headers['x-forwarded-for']
-  if (typeof forwarded === 'string' && forwarded.trim()) {
-    return forwarded.split(',')[0].trim()
-  }
-
-  if (Array.isArray(forwarded) && forwarded[0]) {
-    return forwarded[0].trim()
-  }
-
-  return req.ip || req.connection?.remoteAddress || req.socket?.remoteAddress || 'unknown'
+  // With trust proxy: 1, Express resolves req.ip to the real client IP set by
+  // Traefik — raw X-Forwarded-For is not read here to prevent spoofing.
+  return req.ip || req.socket?.remoteAddress || 'unknown'
 }
 
 const isRateLimited = (ip) => {
@@ -203,7 +199,16 @@ const sendMetaLeadEvent = async ({
 }
 
 // Middleware
-app.use(cors())
+const allowedOrigins = process.env.NODE_ENV === 'development'
+  ? ['http://localhost:5173', 'http://localhost:4173', 'https://expose-u.com']
+  : ['https://expose-u.com']
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow server-to-server requests (no origin) and whitelisted origins only.
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true)
+    callback(new Error(`CORS: origin ${origin} not allowed`))
+  },
+}))
 app.use(express.json({ limit: '1mb' }))
 app.use((req, _res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`)
@@ -435,7 +440,7 @@ app.post('/contact', async (req, res) => {
 
 app.get('/smtp-test', async (req, res) => {
   const ip = getClientIp(req)
-  if (isRateLimited(ip)) {
+  if (isStoreRateLimited(smtpTestRequestStore, ip)) {
     console.warn('SMTP TEST RATE LIMITED:', {
       ts: new Date().toISOString(),
       ip,
