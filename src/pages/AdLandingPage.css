@@ -51,7 +51,7 @@
   line-height: 1.1;
   font-weight: 700;
   letter-spacing: 0;
-  text-wrap: balance;
+  text-wrap: pretty;
 }
 
 .alp__subheadline {
@@ -369,6 +369,7 @@
   .alp__hero {
     min-height: min(760px, 92svh);
     padding-top: 112px;
+    padding-bottom: 18px;
   }
 
   .alp__split,
@@ -377,8 +378,11 @@
   }
 
   .alp__asset-grid,
-  .alp__proof-grid,
   .alp__platform-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .alp__proof-grid {
     grid-template-columns: 1fr;
   }
 

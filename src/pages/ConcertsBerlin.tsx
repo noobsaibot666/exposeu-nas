@@ -6,6 +6,7 @@ const baseConfig = {
   slug: 'concerts-berlin',
   serviceSlug: 'concerts-events',
   canonical: 'https://expose-u.com/concerts-berlin',
+  ogImage: 'https://expose-u.com/og-concerts-berlin.jpg',
   heroImage: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4340.jpg'),
   supportImage: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4263.jpg'),
   metaContentName: 'Concerts Berlin Landing Page',

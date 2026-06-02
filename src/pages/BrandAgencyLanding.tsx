@@ -6,6 +6,7 @@ const baseConfig = {
   slug: 'brand-agency',
   serviceSlug: 'brand-agency',
   canonical: 'https://expose-u.com/brand-agency',
+  ogImage: 'https://expose-u.com/og-brand-agency.jpg',
   heroImage: resolveImagePath('src/assets/images/landing/agency_hero_01.jpeg'),
   supportImage: resolveImagePath('src/assets/images/landing/agency_hero.jpeg'),
   metaContentName: 'Brand Agency Landing Page',

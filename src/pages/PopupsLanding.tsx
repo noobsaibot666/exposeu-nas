@@ -6,6 +6,7 @@ const baseConfig = {
   slug: 'popups',
   serviceSlug: 'popups',
   canonical: 'https://expose-u.com/popups',
+  ogImage: 'https://expose-u.com/og-popups.jpg',
   heroImage: resolveImagePath('src/assets/images/landing/popup_hero.jpeg'),
   supportImage: resolveImagePath('src/assets/images/landing/popup_02.jpeg'),
   metaContentName: 'Popups Landing Page',

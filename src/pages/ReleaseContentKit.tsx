@@ -258,6 +258,20 @@ export default function ReleaseContentKit() {
       cta_location: location,
       package_slug: packageSlug,
     }), 0)
+
+    if (typeof window.fbq === 'function') {
+      window.fbq('trackCustom', 'LandingPageCtaClick', {
+        content_name: 'Release Content Kit',
+        content_category: SERVICE_SLUG,
+        page_slug: SERVICE_SLUG,
+        cta_location: location,
+        package_slug: packageSlug,
+      })
+    }
+
+    if (typeof window.clarity === 'function') {
+      window.clarity('event', `landing_page_cta_click_${SERVICE_SLUG}_${location}`)
+    }
   }
 
   return (
