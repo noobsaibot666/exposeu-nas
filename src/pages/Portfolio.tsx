@@ -551,6 +551,8 @@ function Portfolio() {
 
   const handleSlidePointerDown = (event: PointerEvent<HTMLDivElement>) => {
     if (!activeVideo?.slideshowImages || activeVideo.slideshowImages.length < 2) return
+    // Skip swipe capture when clicking a button — pointer capture steals the click event
+    if ((event.target as HTMLElement).closest('button')) return
     slideSwipeState.current = { active: true, startX: event.clientX, pointerId: event.pointerId }
     if (!event.currentTarget.hasPointerCapture(event.pointerId)) {
       event.currentTarget.setPointerCapture(event.pointerId)
