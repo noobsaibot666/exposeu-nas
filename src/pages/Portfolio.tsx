@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { PointerEvent, WheelEvent } from 'react'
 import './Portfolio.css'
 import { resolveImagePath } from '../utils/resolveImagePath'
@@ -224,6 +224,12 @@ function Portfolio() {
   const openerRef = useRef<HTMLElement | null>(null)
   const dragState = useRef({ active: false, startX: 0, scrollLeft: 0, moved: false, pointerId: 0 })
   const slideSwipeState = useRef({ active: false, startX: 0, pointerId: 0 })
+  // Stable ref always pointing at current nav state — avoids stale closures in the keyboard handler
+  const navRef = useRef<{
+    activeVideo: VideoItem | null
+    goNext: () => void
+    goPrev: () => void
+  }>({ activeVideo: null, goNext: () => {}, goPrev: () => {} })
 
   const videoTranslations = tm<Array<Pick<VideoItem, 'id' | 'title' | 'description' | 'context' | 'outcome' | 'tag' | 'cta'>>>('portfolio.videos')
   const proofItems = tm<string[]>('portfolio.proofStrip')
@@ -430,29 +436,37 @@ function Portfolio() {
     setSlideIndex((prev) => (prev + 1) % total)
   }, [activeVideo])
 
-  useEffect(() => {
-    if (!activeVideo) return
+  // Keep navRef current after every render — runs before paint so the keyboard
+  // handler always reads live values without holding stale closures.
+  useLayoutEffect(() => {
+    navRef.current.activeVideo = activeVideo
+    navRef.current.goNext = goToNextSlide
+    navRef.current.goPrev = goToPreviousSlide
+  })
 
-    const handleKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setActiveVideo(null)
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      const { activeVideo: av, goNext, goPrev } = navRef.current
+
+      if (e.key === 'Escape') {
+        if (av) setActiveVideo(null)
         return
       }
 
-      if (!activeVideo.slideshowImages || activeVideo.slideshowImages.length === 0) return
+      if (!av?.slideshowImages?.length) return
 
-      if (event.key === 'ArrowLeft') {
-        goToPreviousSlide()
-      }
-
-      if (event.key === 'ArrowRight') {
-        goToNextSlide()
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        goPrev()
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault()
+        goNext()
       }
     }
 
     window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
-  }, [activeVideo, goToNextSlide, goToPreviousSlide])
+  }, []) // stable — registered once, reads live values via navRef
 
   // Focus trap: cycle Tab within the modal overlay
   useEffect(() => {
