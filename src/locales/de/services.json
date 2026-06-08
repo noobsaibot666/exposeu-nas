@@ -1,13 +1,13 @@
 {
   "labels": {
-    "concerts-events": "Konzert- & Live-Event-Dokumentation",
+    "concerts-events": "Live-Eventdokumentation",
     "concerts-events-short": "Konzerte & Live-Events",
     "exhibition-gallery": "Ausstellungs- & Galerie-Dokumentation",
     "exhibition-gallery-short": "Ausstellungen & Galerien",
     "artist-sessions": "Artist Sessions & Portraits",
     "artist-sessions-short": "Artist Sessions & Portraits",
-    "brand-agency": "Brand- & Agency-Events",
-    "brand-agency-short": "Brand & Agency Events",
+    "brand-agency": "Brand & Agency Dokumentation",
+    "brand-agency-short": "Brand & Agency",
     "release-content-kit": "Release Content Kit",
     "release-content-kit-short": "Release Content Kit",
     "popups": "Pop-ups",
@@ -16,7 +16,7 @@
   "shared": {
     "projects": "Projekte",
     "whatYouGet": "Was du bekommst",
-    "idealFor": "Ideal für",
+    "idealFor": "Mit wem wir arbeiten",
     "howItWorks": "So funktioniert's",
     "howItWorksHeading": "Einfach vom ersten Kontakt bis zur finalen Lieferung.",
     "process": [
@@ -42,8 +42,8 @@
   "pages": {
     "concerts-events": {
       "title": "Konzerte & Live-Events",
-      "heroCopy": "Konzert-Coverage mit Atmosphäre. Für Presse, Socials und Archiv.",
-      "detail": "Wir dokumentieren Konzerte und Live-Events in Berlin mit schnellen Selects, starker Coverage und Assets für Presse, Socials und Sponsor-Recaps.",
+      "heroCopy": "Live-Eventdokumentation für Venues, Labels und Veranstalter. Die Assets, die du für die nächste Buchung, die nächste Ankündigung, die nächste Kampagne brauchst.",
+      "detail": "Foto- und Videodokumentation für Konzerte, Shows und Kulturveranstaltungen in Berlin. Schnelle Lieferung. Ein Team. Alles organisiert für den unmittelbaren Einsatz.",
       "socialProof": "",
       "ctaText": "Lass uns deine nächste Show dokumentieren.",
       "footerCtaLabel": "Erzähl uns von deiner Show",
@@ -56,12 +56,18 @@
         { "title": "Schnelle Selects", "subtitle": "Priorisierte Motive für Presse und Socials, abgestimmt auf das Projekt." },
         { "title": "Vollständiges Set", "subtitle": "Benannte Dateien, direkt bereit für Publishing und Archiv." }
       ],
-      "extraGalleryCopy": "Für alle, die Live-Momente sauber dokumentiert und schnell weiterverarbeitet brauchen.",
+      "midNote": "Gute Dokumentation hält nicht nur eine Show fest. Sie wird zum Pressematerial für die nächste Buchung, zum visuellen Pitch für Sponsor:innen, zum Social-Content für den Folgemonat. Wir dokumentieren das Event — damit du mit Assets rausgehst, die wirklich etwas leisten.",
+      "extraGalleryCopy": "Pressekampagnen, Season Recaps und Content für Labels, Venues und Veranstalter.",
       "extraGallery": [
-        { "title": "Venue- und Festivalteams", "subtitle": "Season Recaps, Event-Coverage und Presse-Assets." },
-        { "title": "Tourende Artists", "subtitle": "Eine Show, mehrere Outputs – Social, Presse und Archiv." },
-        { "title": "Club- und Promoter-Programme", "subtitle": "Wiederkehrende Shoots mit konsistenter visueller Sprache." }
-      ]
+        { "title": "Labels und Artist Management", "subtitle": "Pressekampagnen, Tour-Content und Archiv-Coverage." },
+        { "title": "Venue- und Festivalteams", "subtitle": "Season Recaps, Event-Coverage und Buchungsmaterial." },
+        { "title": "Promoter und Club-Programme", "subtitle": "Wiederkehrende Shoots mit konsistenter visueller Sprache." },
+        { "title": "Unabhängige Artists", "subtitle": "Eine Show, mehrere Outputs – Social, Presse und Archiv." }
+      ],
+      "pricing": {
+        "body": "Jede Produktion hat unterschiedliche Anforderungen.\n\nWir erstellen ein individuelles Angebot auf Basis von Umfang, Zeitplan und gewünschtem Ergebnis.",
+        "cta": "Verfügbarkeit anfragen"
+      }
     },
     "exhibition-gallery": {
       "title": "Ausstellungen & Galerien",
@@ -79,18 +85,24 @@
         { "title": "Detailaufnahmen", "subtitle": "Materialien, Labels und Installationsnahaufnahmen." },
         { "title": "Pressefähige Delivery", "subtitle": "Benannte Ordner für direkte Weitergabe." }
       ],
+      "midNote": "Kleines Team. Wir arbeiten ruhig – um Besucher:innen, Sammler:innen und die Werke selbst herum.\nPressefähige Selects innerhalb von 24 Stunden.\nErfahrung mit Installationsfotografie, Perspektivverzerrung und Galerie-Etikette.\nFoto und Video aus einem Team.",
       "extraGalleryCopy": "Für Teams, die die ganze räumliche und atmosphärische Geschichte brauchen – nicht nur Highlights.",
       "extraGallery": [
         { "title": "Galerien und Kulturinstitutionen", "subtitle": "Shows mit Anforderungen für Presse, Archiv und Förderer." },
         { "title": "Kurator:innen und Artists", "subtitle": "Kuratorische Dokumentation, Portfolio und Printkatalog." },
+        { "title": "Museen und Stiftungen", "subtitle": "Archiv- und Katalogdokumentation für institutionelle Sammlungen." },
         { "title": "Opening Nights", "subtitle": "Werke und Atmosphäre in einer Session zusammengeführt." }
-      ]
+      ],
+      "pricing": {
+        "body": "Jede Ausstellung ist einzigartig.\n\nProjekte werden individuell auf Umfang, Zeitplan und gewünschte Deliverables abgestimmt.",
+        "cta": "Verfügbarkeit anfragen"
+      }
     },
     "artist-sessions": {
       "title": "Artist Sessions & Portraits",
       "heroCopy": "Neue Arbeit braucht Bilder, die ihr gerecht werden.",
-      "detail": "Portrait- und Studiosessions für Press Kits, Release-Kampagnen und Booking-Profile. Ehrlich, aktuell und schnell publizierbar.",
-      "socialProof": "Portraits und Sessions mit Musiker:innen, bildenden Künstler:innen und Fotograf:innen in Berlin.",
+      "detail": "Portrait- und Studiosessions für Press Kits, Release-Kampagnen und Booking-Profile. Eine Session, alles was du brauchst.",
+      "socialProof": "Wir arbeiten mit Künstler:innen, Labels, Manager:innen und kreativen Studios in Berlin.",
       "ctaText": "Lass uns deine Session planen.",
       "footerCtaLabel": "Erzähl uns von deinem Projekt",
       "cards": ["Portrait", "Im Studio", "Prozess", "Live-Moment"],
@@ -102,35 +114,49 @@
         { "title": "Kurze Motion-Clips", "subtitle": "Optional BTS-Material für Posts und Teaser." },
         { "title": "Organisierte Delivery", "subtitle": "Finals gruppiert für schnelle Veröffentlichung und Wiederverwendung." }
       ],
-      "extraGalleryCopy": "Für Artists, die ein klares, aktuelles Asset-Set für Release oder Projekt brauchen.",
+      "extraGalleryCopy": "Künstler:innen, Labels, Manager:innen und kreative Studios, die ein klares, aktuelles Asset-Set brauchen.",
       "extraGallery": [
-        { "title": "Release-Kampagnen", "subtitle": "Portraits und Prozessbilder für Alben und Singles." },
+        { "title": "Release-Kampagnen", "subtitle": "Portraits und Content-Pakete für Alben, Singles und Touren." },
+        { "title": "Labels und Management", "subtitle": "Visuelle Assets für Presse, Ankündigungen und Kampagnen-Launches." },
         { "title": "Presse- und Profil-Updates", "subtitle": "Neue Bilder für Booking, PR und Plattformprofile." },
         { "title": "Laufende Studioarbeit", "subtitle": "Regelmäßige Sessions ohne kompletten Event-Shoot." }
-      ]
+      ],
+      "pricing": {
+        "title": "Artist Sessions",
+        "body": "Editoriale Foto- und Videosessions für Künstler:innen, Releases und kreative Projekte.\n\nWir sind Künstler:innen, die für Künstler:innen arbeiten.\n\nUnsere Produktionen basieren auf Storytelling, Art Direction und echter Zusammenarbeit — und gehen deshalb oft über ein klassisches Fotoshooting hinaus.\n\nDie meisten unabhängigen Produktionen bewegen sich — je nach Konzept, Ort und gewünschtem Umfang — zwischen 400 € und 700 €.\n\nAuch kleinere unabhängige Projekte oder Kollaborationen mit begrenztem Budget sind jederzeit willkommen.",
+        "cta": "Verfügbarkeit anfragen"
+      }
     },
     "brand-agency": {
-      "title": "Brand & Agency Events",
-      "heroCopy": "Eventdokumentation für echtes PR-Tempo.",
-      "detail": "Komplette Coverage mit schnellen Hero-Frames für Presse, Sponsor-Recap und Campaign-Follow-up. Berliner Crew, editorialer Standard.",
+      "title": "Brand & Agency",
+      "heroCopy": "Dokumentation für gestaltete Erlebnisse.",
+      "detail": "Foto und Video für Brand Activations, Installationen und Agenturprojekte. Für Case Studies, Award Submissions und Kundenpräsentationen.",
       "socialProof": "Zusammenarbeit mit Kreativagenturen, Produktionshäusern und Brand-Teams in Berlin.",
-      "ctaText": "Lass uns dein Event dokumentieren.",
-      "footerCtaLabel": "Erzähl uns von deinem Event",
+      "ctaText": "Lass uns dein nächstes Projekt dokumentieren.",
+      "footerCtaLabel": "Projektverfügbarkeit anfragen",
       "cards": ["Runway Light", "Backstage", "Final Walk", "Fabric Motion"],
       "galleryTitle": "Was enthalten ist.",
-      "galleryCopy": "Geliefert für Event-Recap, PR-Outreach und Campaign-Follow-up.",
+      "galleryCopy": "Geliefert für Case Studies, Award Submissions und Kundenpräsentationen.",
       "gallery": [
-        { "title": "Hero-Brand-Momente", "subtitle": "Saubere Frames von Produkt, Gästen und Atmosphäre." },
-        { "title": "Behind-the-Scenes-Selects", "subtitle": "Vorbereitung, Produktion und Teamkontext." },
-        { "title": "Priority Selects", "subtitle": "Schnelle Frames für Presse und Sponsor-Review." },
+        { "title": "Hero-Brand-Momente", "subtitle": "Saubere Frames des Raums, des Produkts und der Atmosphäre." },
+        { "title": "Raum-Dokumentation", "subtitle": "Wide- und Detailaufnahmen der gestalteten Umgebung." },
+        { "title": "Behind the Scenes", "subtitle": "Produktionskontext und Teammomente." },
+        { "title": "Award Submission Imagery", "subtitle": "Raumsequenzen und Hero-Frames für Wettbewerbe und Pitches." },
+        { "title": "Case Study Material", "subtitle": "Website- und Portfolio-Dokumentation in Präsentationsqualität." },
         { "title": "Organisierte Vollauslieferung", "subtitle": "Ordner sortiert für PR, Kampagne und Archiv." }
       ],
-      "extraGalleryCopy": "Für Agenturen und Brand-Teams, die schnelle, editoriale Assets mit klarer Nutzbarkeit brauchen.",
+      "midNote": "Von Designern gebaut.\nWir verstehen, wie Agenturen fertige Arbeit präsentieren und was die Dokumentation leisten muss. Kleines Team. Ruhig am Set. Foto und Video aus einem Team. Berlin-based.",
+      "extraGalleryCopy": "Agenturen, Studios und Brand-Teams, die Erlebnisse bauen, die dokumentiert werden sollten.",
       "extraGallery": [
-        { "title": "PR- und Launch-Events", "subtitle": "Schnelle Hero-Frames für Pressearbeit." },
-        { "title": "Brand Activations", "subtitle": "Publikum, Produkt und Produktion in einem Shoot erfasst." },
-        { "title": "Laufende Brand-Archive", "subtitle": "Jede Aktivierung konsistent für langfristige Nutzung dokumentiert." }
-      ]
+        { "title": "Experience Design Agenturen", "subtitle": "Raum-Dokumentation für Award Submissions, Case Studies und New Business." },
+        { "title": "Creative und Production Studios", "subtitle": "Activations, Installationen und Environments für Client-Handover und Portfolio." },
+        { "title": "Brand-Teams", "subtitle": "Product Launches, Events und Kampagnen für Presse und Campaign-Follow-up." },
+        { "title": "Exhibition Designer und Architekt:innen", "subtitle": "Fertige Spaces dokumentiert auf dem Standard, den dein Portfolio verlangt." }
+      ],
+      "pricing": {
+        "body": "Projekte werden gemeinsam mit Agenturen und Marken entwickelt und individuell entsprechend Umfang und Produktionsanforderungen kalkuliert.",
+        "cta": "Projektverfügbarkeit anfragen"
+      }
     },
     "release-content-kit": {
       "hero": {

@@ -61,7 +61,7 @@ const projectVisuals = [
   },
 ]
 
-const hiddenHomeServiceSlugs = new Set(['brand-agency'])
+const hiddenHomeServiceSlugs = new Set<string>()
 
 const heroGalleryBase = [
   {

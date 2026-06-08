@@ -29,15 +29,17 @@ function ConcertsEvents() {
     galleryTitle: string
     galleryCopy: string
     gallery: Array<{ title: string; subtitle: string }>
+    midNote: string
     extraGalleryCopy: string
     extraGallery: Array<{ title: string; subtitle: string }>
+    pricing: { body: string; cta: string }
   }>('services.pages.concerts-events')
   return (
     <>
       <SEOMeta
-        title="Concert & Live Event Photography Berlin"
-        description="Concert and live event documentation in Berlin. Press-ready photo and video, 24–48h delivery. Serving venues, promoters, and artists."
-        ogTitle="Concert Documentation Berlin — expose.u"
+        title="Live Event Documentation Berlin — expose.u"
+        description="Photo and video documentation for concerts, venues, labels and promoters in Berlin. Press-ready delivery. One crew, photo and video."
+        ogTitle="Live Event Documentation Berlin — expose.u"
         ogDescription="Multi-angle concert and live event coverage. Press-ready in 24–48h. Serving Berlin venues and promoters."
         canonical="https://expose-u.com/services/concerts-events"
         lang={locale}
@@ -52,10 +54,14 @@ function ConcertsEvents() {
         galleryCopy={page.galleryCopy}
         gallery={page.gallery}
         galleryImage={sectionImages.gallery}
+        midSectionNote={page.midNote}
         extraGalleryTitle={t('services.shared.idealFor')}
         extraGalleryCopy={page.extraGalleryCopy}
         extraGallery={page.extraGallery}
         extraGalleryImage={sectionImages.idealFor}
+        editorialPricingBody={page.pricing.body}
+        editorialPricingCta={page.pricing.cta}
+        editorialPricingCtaHref="/contact?service=concerts-events"
         ctaText={page.ctaText}
         ctaLabel={page.footerCtaLabel}
         ctaHref="/contact"

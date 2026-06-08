@@ -36,6 +36,11 @@ type WorkPageLayoutProps = {
   extraGalleryCopy?: string
   extraGallery?: WorkCard[]
   extraGalleryImage?: string
+  editorialPricingTitle?: string
+  editorialPricingBody?: string
+  editorialPricingCta?: string
+  editorialPricingCtaHref?: string
+  midSectionNote?: string
 }
 
 const renderSentenceBreaks = (text: string) =>
@@ -65,6 +70,11 @@ function WorkPageLayout({
   extraGalleryCopy,
   extraGallery,
   extraGalleryImage,
+  editorialPricingTitle,
+  editorialPricingBody,
+  editorialPricingCta,
+  editorialPricingCtaHref,
+  midSectionNote,
 }: WorkPageLayoutProps) {
   const rootRef = useRef<HTMLElement | null>(null)
   const stackRef = useRef<HTMLDivElement | null>(null)
@@ -379,6 +389,18 @@ function WorkPageLayout({
         'gallery-primary',
       )}
 
+      {midSectionNote && (
+        <div className="work-mid-note">
+          <div className="content">
+            <div className="work-mid-note__inner">
+              {midSectionNote.split('\n').filter(Boolean).map((line, i) => (
+                <p key={i} className="work-mid-note__text">{line}</p>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {extraGallery && extraGallery.length > 0 &&
         renderSection(
           t('services.shared.idealFor'),
@@ -407,10 +429,41 @@ function WorkPageLayout({
         </div>
       </section>
 
-      <PricingSection
-        headline={t('services.shared.pricingFor', { service: title.toLowerCase() })}
-        serviceSlug={serviceSlug}
-      />
+      {editorialPricingBody ? (
+        <section className="section work-editorial-pricing">
+          <div className="content">
+            <div className="work-editorial-pricing__inner">
+              {editorialPricingTitle && (
+                <h2 className="work-editorial-pricing__title">{editorialPricingTitle}</h2>
+              )}
+              {editorialPricingBody.split('\n').filter(Boolean).map((para, i) => (
+                <p key={i} className="work-editorial-pricing__body">{para}</p>
+              ))}
+              {editorialPricingCta && (
+                <a
+                  href={localizePath(editorialPricingCtaHref ?? finalCtaHref)}
+                  className="work-editorial-pricing__cta"
+                  onClick={() =>
+                    setTimeout(() => trackEvent('service_cta_click', {
+                      service_slug: serviceSlug,
+                      service_label: title,
+                      cta_label: editorialPricingCta,
+                      cta_location: 'pricing_section',
+                    }), 0)
+                  }
+                >
+                  {editorialPricingCta} →
+                </a>
+              )}
+            </div>
+          </div>
+        </section>
+      ) : (
+        <PricingSection
+          headline={t('services.shared.pricingFor', { service: title.toLowerCase() })}
+          serviceSlug={serviceSlug}
+        />
+      )}
 
       {serviceSlug && <TestimonialsStrip service={serviceSlug} />}
 

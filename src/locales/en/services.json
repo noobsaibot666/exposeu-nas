@@ -1,13 +1,13 @@
 {
   "labels": {
-    "concerts-events": "Concert & Live Event Documentation",
+    "concerts-events": "Live Event Documentation",
     "concerts-events-short": "Concert & Live Events",
     "exhibition-gallery": "Exhibition & Gallery Documentation",
     "exhibition-gallery-short": "Exhibition & Gallery",
     "artist-sessions": "Artist Sessions & Portraits",
     "artist-sessions-short": "Artist Sessions & Portraits",
-    "brand-agency": "Brand & Agency Events",
-    "brand-agency-short": "Brand & Agency Events",
+    "brand-agency": "Brand & Agency Documentation",
+    "brand-agency-short": "Brand & Agency",
     "release-content-kit": "Release Content Kit",
     "release-content-kit-short": "Release Content Kit",
     "popups": "Pop-ups",
@@ -16,7 +16,7 @@
   "shared": {
     "projects": "Projects",
     "whatYouGet": "What you get",
-    "idealFor": "Ideal for",
+    "idealFor": "Who we work with",
     "howItWorks": "How it works",
     "howItWorksHeading": "Simple from first message to final delivery.",
     "process": [
@@ -42,8 +42,8 @@
   "pages": {
     "concerts-events": {
       "title": "Concert & Live Events",
-      "heroCopy": "Concert coverage with atmosphere. Built for press, socials, and archive.",
-      "detail": "We cover concerts and live events in Berlin with fast selects, strong coverage, and assets for press, social, and sponsor recap.",
+      "heroCopy": "Live event documentation for venues, labels and promoters. The assets you need for the next booking, the next announcement, the next campaign.",
+      "detail": "Photo and video coverage for concerts, shows and cultural events in Berlin. Fast delivery. One crew. Everything organized for immediate use.",
       "socialProof": "",
       "ctaText": "Let's cover your next show.",
       "footerCtaLabel": "Tell us about your show",
@@ -56,12 +56,18 @@
         { "title": "Fast selects", "subtitle": "Priority frames for press and social, timed to the project." },
         { "title": "Full organized set", "subtitle": "Named files ready for publishing and archive." }
       ],
-      "extraGalleryCopy": "Anyone who needs live moments captured cleanly and turned around fast.",
+      "midNote": "Good documentation doesn't just record a show. It becomes the press material for the next booking, the visual pitch for sponsors, the social content for the following month. We cover the event so you walk away with assets that actually do something.",
+      "extraGalleryCopy": "Press campaigns, season recaps, and content for labels, venues and promoters.",
       "extraGallery": [
-        { "title": "Venue and festival teams", "subtitle": "Season recaps, event coverage, and press assets." },
-        { "title": "Touring artists", "subtitle": "One show, multiple outputs for social, press, and archive." },
-        { "title": "Club and promoter programs", "subtitle": "Recurring shoots with consistent visual style." }
-      ]
+        { "title": "Labels and artist management", "subtitle": "Press campaigns, tour content, and archive coverage." },
+        { "title": "Venues and festival teams", "subtitle": "Season recaps, event coverage, and booking material." },
+        { "title": "Promoters and club programs", "subtitle": "Recurring shoots with consistent visual style." },
+        { "title": "Independent artists", "subtitle": "One show, multiple outputs for social, press, and archive." }
+      ],
+      "pricing": {
+        "body": "Every production has different requirements.\n\nWe prepare an individual proposal based on venue, timing and what you need the coverage for.",
+        "cta": "Check availability"
+      }
     },
     "exhibition-gallery": {
       "title": "Exhibition & Gallery",
@@ -79,18 +85,24 @@
         { "title": "Detail frames", "subtitle": "Materials, labels, and installation close-ups." },
         { "title": "Press-ready delivery", "subtitle": "Named folders sorted for immediate distribution." }
       ],
+      "midNote": "Small crew. We work quietly around visitors, collectors and the work itself.\nPress-ready selects within 24 hours.\nExperience with installation photography, artwork distortion and gallery etiquette.\nPhoto and video from one team.",
       "extraGalleryCopy": "Teams that need the full spatial and atmospheric story, not just highlights.",
       "extraGallery": [
         { "title": "Galleries and cultural institutions", "subtitle": "Shows with press, archive, and funder requirements." },
         { "title": "Curators and artists", "subtitle": "Curatorial record, portfolio, and printed catalogue." },
+        { "title": "Museums and foundations", "subtitle": "Archive and catalogue documentation for institutional collections." },
         { "title": "Opening nights", "subtitle": "Artworks and atmosphere covered in one session." }
-      ]
+      ],
+      "pricing": {
+        "body": "Every exhibition is different.\n\nProjects are tailored to scale, timing and what you need the documentation for.",
+        "cta": "Check availability"
+      }
     },
     "artist-sessions": {
       "title": "Artist Sessions & Portraits",
       "heroCopy": "New work deserves images that match it.",
-      "detail": "Portrait and studio sessions built for press kits, release campaigns, and booking profiles. Honest, current, fast to publish.",
-      "socialProof": "Shooting musicians, visual artists, and photographers in Berlin.",
+      "detail": "Portrait and studio sessions built for press kits, release campaigns and booking profiles. One session, everything you need.",
+      "socialProof": "Working with artists, labels, managers and creative studios in Berlin.",
       "ctaText": "Let's plan your session.",
       "footerCtaLabel": "Tell us about your project",
       "cards": ["Portrait", "In Studio", "Process", "Live Moment"],
@@ -102,35 +114,49 @@
         { "title": "Short motion clips", "subtitle": "Optional BTS assets for posts and teasers." },
         { "title": "Organized delivery", "subtitle": "Finals grouped for fast publishing and reuse." }
       ],
-      "extraGalleryCopy": "Artists who need a clean, current asset set to support a release or project.",
+      "extraGalleryCopy": "Artists, labels, managers and creative studios who need a clean, current asset set.",
       "extraGallery": [
-        { "title": "Release campaigns", "subtitle": "Portraits and process shots for albums and singles." },
-        { "title": "Press and profile updates", "subtitle": "New images for booking, PR, and platform profiles." },
+        { "title": "Release campaigns", "subtitle": "Portraits and content packages for albums, singles and tours." },
+        { "title": "Labels and management", "subtitle": "Visual assets for press, announcements and campaign launches." },
+        { "title": "Press and profile updates", "subtitle": "New images for booking, PR and platform profiles." },
         { "title": "Ongoing studio work", "subtitle": "Regular sessions without needing a full event shoot." }
-      ]
+      ],
+      "pricing": {
+        "title": "Artist Sessions",
+        "body": "Editorial photo and video sessions for artists, releases and creative projects.\n\nWe are artists working for artists.\n\nOur sessions are built around art direction, storytelling and real collaboration — which means they often go further than a standard photo shoot.\n\nMost independent artist productions fall between €400 and €700, depending on concept, location and what you need the session for.\n\nIf you are working on something smaller, or building something meaningful with a limited budget, we are always happy to talk.",
+        "cta": "Check availability"
+      }
     },
     "brand-agency": {
-      "title": "Brand & Agency Events",
-      "heroCopy": "Event documentation built for PR speed.",
-      "detail": "Full coverage with fast hero frames for press, sponsor recap, and campaign follow-up. Berlin-based crew, editorial standard.",
+      "title": "Brand & Agency",
+      "heroCopy": "Documentation for designed experiences.",
+      "detail": "Photo and video for brand activations, installations and agency-built environments. Built for case studies, award submissions and client presentations.",
       "socialProof": "Working with creative agencies, production houses, and brand teams in Berlin.",
-      "ctaText": "Let's cover your event.",
-      "footerCtaLabel": "Tell us about your event",
+      "ctaText": "Let's document your next project.",
+      "footerCtaLabel": "Request project availability",
       "cards": ["Runway Light", "Backstage", "Final Walk", "Fabric Motion"],
       "galleryTitle": "What's included.",
-      "galleryCopy": "Delivered for event recap, PR outreach, and campaign follow-up.",
+      "galleryCopy": "Delivered for case studies, award submissions, and client presentations.",
       "gallery": [
-        { "title": "Hero brand moments", "subtitle": "Clean frames of product, guests, and atmosphere." },
-        { "title": "Behind-the-scenes selects", "subtitle": "Prep, production, and team context." },
-        { "title": "Priority selects", "subtitle": "Fast frames for press and sponsor review." },
-        { "title": "Organized full delivery", "subtitle": "Folders sorted for PR, campaign, and archive." }
+        { "title": "Hero brand moments", "subtitle": "Clean frames of the space, product and atmosphere." },
+        { "title": "Spatial documentation", "subtitle": "Wide and detail coverage of the designed environment." },
+        { "title": "Behind-the-scenes", "subtitle": "Production context and team moments." },
+        { "title": "Award submission imagery", "subtitle": "Spatial sequences and hero frames for competition and pitch use." },
+        { "title": "Case study material", "subtitle": "Website and portfolio documentation at presentation quality." },
+        { "title": "Organized full delivery", "subtitle": "Folders sorted for PR, campaign and archive." }
       ],
-      "extraGalleryCopy": "Agencies and brand teams that need fast, editorial-quality assets with clear output.",
+      "midNote": "Built by designers.\nWe understand how agencies present finished work and what the documentation needs to do. Small crew. Quiet on set. Photo and video from one team. Berlin-based.",
+      "extraGalleryCopy": "Agencies, studios and brand teams that build experiences worth documenting.",
       "extraGallery": [
-        { "title": "PR and launch events", "subtitle": "Fast hero frames for press outreach." },
-        { "title": "Brand activations", "subtitle": "Audience, product, and production covered in one shoot." },
-        { "title": "Ongoing brand archives", "subtitle": "Each activation documented consistently for long-term use." }
-      ]
+        { "title": "Experience design agencies", "subtitle": "Spatial documentation for award submissions, case studies and new business." },
+        { "title": "Creative and production studios", "subtitle": "Activations, installations and environments documented for client handover and portfolio." },
+        { "title": "Brand teams", "subtitle": "Product launches, events and campaigns documented for press and campaign follow-up." },
+        { "title": "Exhibition designers and architects", "subtitle": "Finished spaces documented at the standard your portfolio requires." }
+      ],
+      "pricing": {
+        "body": "Projects are developed together with agencies and brands, and quoted individually based on scope and production requirements.",
+        "cta": "Request project availability"
+      }
     },
     "release-content-kit": {
       "hero": {

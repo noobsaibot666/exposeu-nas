@@ -354,6 +354,81 @@
   line-height: 1.6;
 }
 
+/* ─── Editorial pricing section ─── */
+
+.work-editorial-pricing {
+  padding-block: clamp(52px, 8vh, 80px);
+  text-align: center;
+}
+
+.work-editorial-pricing__inner {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.work-editorial-pricing__title {
+  margin: 0 0 8px;
+  font-size: clamp(1.7rem, 2.2vw + 0.9rem, 2.4rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-strong);
+}
+
+.work-editorial-pricing__body {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  max-width: 580px;
+}
+
+.work-editorial-pricing__cta {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-strong);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-highlight);
+  padding-bottom: 2px;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+
+.work-editorial-pricing__cta:hover {
+  color: var(--text-secondary);
+  border-color: var(--border-soft);
+}
+
+/* ─── Mid-section note (trust signals / outcomes) ─── */
+
+.work-mid-note {
+  padding-block: clamp(20px, 3vh, 32px);
+}
+
+.work-mid-note__inner {
+  max-width: 680px;
+  padding: clamp(20px, 2.5vw, 28px) clamp(20px, 3vw, 32px);
+  border-radius: 20px;
+  border: 1px solid var(--border-soft);
+  background: var(--surface-base);
+}
+
+.work-mid-note__text {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.work-mid-note__text:last-child {
+  margin-bottom: 0;
+}
+
 /* ─── More services ─── */
 
 .work-more-services {

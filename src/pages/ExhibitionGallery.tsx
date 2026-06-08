@@ -29,14 +29,16 @@ function ExhibitionGallery() {
     galleryTitle: string
     galleryCopy: string
     gallery: Array<{ title: string; subtitle: string }>
+    midNote: string
     extraGalleryCopy: string
     extraGallery: Array<{ title: string; subtitle: string }>
+    pricing: { body: string; cta: string }
   }>('services.pages.exhibition-gallery')
   return (
     <>
       <SEOMeta
-        title="Exhibition & Gallery Photography Berlin"
-        description="Exhibition and gallery documentation in Berlin. Opening night coverage, archive-quality delivery for press and funding."
+        title="Exhibition Documentation Berlin — expose.u"
+        description="Photo and video documentation for galleries, museums and cultural institutions in Berlin. Press-ready delivery. Small crew. 24-hour turnaround."
         ogTitle="Exhibition Documentation Berlin — expose.u"
         ogDescription="Full opening and exhibition coverage. Delivered for press, funding, and archive. Berlin-based."
         canonical="https://expose-u.com/services/exhibition-gallery"
@@ -52,10 +54,14 @@ function ExhibitionGallery() {
         galleryCopy={page.galleryCopy}
         gallery={page.gallery}
         galleryImage={sectionImages.gallery}
+        midSectionNote={page.midNote}
         extraGalleryTitle={t('services.shared.idealFor')}
         extraGalleryCopy={page.extraGalleryCopy}
         extraGallery={page.extraGallery}
         extraGalleryImage={sectionImages.idealFor}
+        editorialPricingBody={page.pricing.body}
+        editorialPricingCta={page.pricing.cta}
+        editorialPricingCtaHref="/contact?service=exhibition-gallery"
         ctaText={page.ctaText}
         ctaLabel={page.footerCtaLabel}
         ctaHref="/contact"

@@ -29,16 +29,18 @@ function BrandAgency() {
     galleryTitle: string
     galleryCopy: string
     gallery: Array<{ title: string; subtitle: string }>
+    midNote: string
     extraGalleryCopy: string
     extraGallery: Array<{ title: string; subtitle: string }>
+    pricing: { body: string; cta: string }
   }>('services.pages.brand-agency')
   return (
     <>
       <SEOMeta
-        title="Brand & Agency Event Photography Berlin"
-        description="Brand and agency event documentation in Berlin. Editorial photo and video coverage with fast turnaround."
-        ogTitle="Brand Event Documentation Berlin — expose.u"
-        ogDescription="Editorial coverage for brand events, launches, and activations in Berlin. Clean, sharp, on deadline."
+        title="Brand & Agency Documentation Berlin — expose.u"
+        description="Photo and video documentation for brand activations, agencies and designed experiences in Berlin. Award submissions, case studies, client presentations."
+        ogTitle="Brand & Agency Documentation Berlin — expose.u"
+        ogDescription="Documentation for designed experiences. Photo and video for agencies, brand activations and installations in Berlin."
         canonical="https://expose-u.com/services/brand-agency"
         lang={locale}
       />
@@ -52,10 +54,14 @@ function BrandAgency() {
         galleryCopy={page.galleryCopy}
         gallery={page.gallery}
         galleryImage={sectionImages.gallery}
+        midSectionNote={page.midNote}
         extraGalleryTitle={t('services.shared.idealFor')}
         extraGalleryCopy={page.extraGalleryCopy}
         extraGallery={page.extraGallery}
         extraGalleryImage={sectionImages.idealFor}
+        editorialPricingBody={page.pricing.body}
+        editorialPricingCta={page.pricing.cta}
+        editorialPricingCtaHref="/contact?service=brand-agency&package=project"
         ctaText={page.ctaText}
         ctaLabel={page.footerCtaLabel}
         ctaHref="/contact"

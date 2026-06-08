@@ -31,12 +31,13 @@ function ArtistSessions() {
     gallery: Array<{ title: string; subtitle: string }>
     extraGalleryCopy: string
     extraGallery: Array<{ title: string; subtitle: string }>
+    pricing: { title?: string; body: string; cta: string }
   }>('services.pages.artist-sessions')
   return (
     <>
       <SEOMeta
-        title="Artist Sessions & Portraits Berlin"
-        description="Artist portrait and session photography in Berlin. Press-ready images for releases, profiles, and campaigns."
+        title="Artist Sessions Berlin — Editorial Content for Artists — expose.u"
+        description="Photo and video sessions for artists, releases and creative campaigns in Berlin. Press portraits, vertical content, campaign visuals. €400–700."
         ogTitle="Artist Sessions Berlin — expose.u"
         ogDescription="Studio and location sessions for musicians and visual artists. Press-ready results, fast."
         canonical="https://expose-u.com/services/artist-sessions"
@@ -56,6 +57,10 @@ function ArtistSessions() {
         extraGalleryCopy={page.extraGalleryCopy}
         extraGallery={page.extraGallery}
         extraGalleryImage={sectionImages.idealFor}
+        editorialPricingTitle={page.pricing.title}
+        editorialPricingBody={page.pricing.body}
+        editorialPricingCta={page.pricing.cta}
+        editorialPricingCtaHref="/contact?service=artist-sessions"
         ctaText={page.ctaText}
         ctaLabel={page.footerCtaLabel}
         ctaHref="/contact"
