@@ -27,9 +27,17 @@
     },
     {
       "id": "t4",
-      "quote": "Clean, organized, and press-ready in short time.",
+      "quote": "Clean, well-organized delivery. The spatial documentation and hero shots covered everything we needed — client handover, case study, and the pitch follow-up. Nothing needed chasing.",
       "author": "Production Manager",
       "company": "Galis",
+      "avatar": null,
+      "service": "brand-agency"
+    },
+    {
+      "id": "t5",
+      "quote": "The spatial sequences went straight into the award submission without adjustment. The documentation matched the quality of the build — that's not something you can take for granted.",
+      "author": "Creative Director",
+      "company": "Berlin",
       "avatar": null,
       "service": "brand-agency"
     }

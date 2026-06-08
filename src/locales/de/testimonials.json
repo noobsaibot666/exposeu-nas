@@ -27,9 +27,17 @@
     },
     {
       "id": "t4",
-      "quote": "Sauber, organisiert und in kurzer Zeit pressefertig.",
+      "quote": "Saubere, gut organisierte Lieferung. Die Raumdokumentation und Hero-Aufnahmen haben alles abgedeckt — Kundenabgabe, Fallstudie und Pitch-Follow-up. Nichts musste nachgefasst werden.",
       "author": "Production Manager",
       "company": "Galis",
+      "avatar": null,
+      "service": "brand-agency"
+    },
+    {
+      "id": "t5",
+      "quote": "Die Raumsequenzen gingen direkt in die Award-Einreichung — ohne Anpassungen. Die Dokumentation entsprach der Qualität des Projekts. Das kann man nicht voraussetzen.",
+      "author": "Creative Director",
+      "company": "Berlin",
       "avatar": null,
       "service": "brand-agency"
     }
