@@ -40,24 +40,24 @@ function buildHeroVideoSrc(video: typeof HERO_VIDEO | typeof MOBILE_HERO_VIDEO):
 
 const projectVisuals = [
   {
-    slug: serviceMeta['concerts-events'].slug,
-    image: resolveImagePath('/src/assets/images/website/artists/002.jpg'),
-    link: serviceMeta['concerts-events'].href,
-  },
-  {
     slug: serviceMeta['exhibition-gallery'].slug,
     image: resolveImagePath('/src/assets/images/website/_incoming/homepage/services/exhibition-gallery/001.jpg'),
     link: serviceMeta['exhibition-gallery'].href,
   },
   {
-    slug: serviceMeta['artist-sessions'].slug,
-    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/services/artist-sessions/0015.jpeg'),
-    link: serviceMeta['artist-sessions'].href,
-  },
-  {
     slug: serviceMeta['brand-agency'].slug,
     image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/brand-agency/033.jpeg'),
     link: serviceMeta['brand-agency'].href,
+  },
+  {
+    slug: serviceMeta['concerts-events'].slug,
+    image: resolveImagePath('/src/assets/images/website/artists/002.jpg'),
+    link: serviceMeta['concerts-events'].href,
+  },
+  {
+    slug: serviceMeta['artist-sessions'].slug,
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/services/artist-sessions/0015.jpeg'),
+    link: serviceMeta['artist-sessions'].href,
   },
 ]
 

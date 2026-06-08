@@ -61,6 +61,7 @@
   line-height: 1.48;
   font-weight: 500;
   text-wrap: pretty;
+  white-space: pre-line;
 }
 
 .alp__actions {
@@ -365,6 +366,71 @@
   font-size: clamp(1.08rem, 1.3vw, 1.28rem);
 }
 
+/* audience descriptive items */
+.alp__audience-items {
+  display: grid;
+  gap: 14px;
+}
+
+.alp__audience-item {
+  display: grid;
+  gap: 7px;
+  padding: 18px;
+  border: 1px solid rgba(245, 245, 244, 0.14);
+  border-radius: 8px;
+  background: rgba(245, 245, 244, 0.055);
+}
+
+.alp__audience-item p {
+  color: var(--text-secondary);
+  font-size: 0.98rem;
+  line-height: 1.56;
+}
+
+/* what the documentation does */
+.alp__what-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.alp__what-item {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  border: 1px solid rgba(245, 245, 244, 0.14);
+  border-radius: 8px;
+  background: rgba(245, 245, 244, 0.045);
+}
+
+.alp__what-item p {
+  color: var(--text-secondary);
+  font-size: 0.98rem;
+  line-height: 1.56;
+}
+
+/* proof prose variant */
+.alp__proof-prose {
+  display: grid;
+  gap: 16px;
+  max-width: 680px;
+  margin-top: 18px;
+}
+
+.alp__proof-prose p:first-child {
+  font-size: clamp(1.15rem, 1.3vw, 1.32rem);
+  font-weight: 600;
+  color: var(--text-strong);
+  line-height: 1.3;
+}
+
+.alp__proof-prose p:not(:first-child) {
+  font-size: clamp(1.04rem, 1.15vw, 1.18rem);
+  color: rgba(245, 245, 244, 0.74);
+  line-height: 1.72;
+}
+
 @media (max-width: 860px) {
   .alp__hero {
     min-height: min(760px, 92svh);
@@ -378,7 +444,8 @@
   }
 
   .alp__asset-grid,
-  .alp__platform-grid {
+  .alp__platform-grid,
+  .alp__what-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -389,6 +456,12 @@
   .alp__image {
     aspect-ratio: 16 / 11;
     min-height: 260px;
+  }
+}
+
+@media (max-width: 620px) {
+  .alp__what-grid {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -9,7 +9,7 @@ These are the canonical service pages reachable from the homepage grid.
 | Concerts & Live Events | [/services/concerts-events](https://expose-u.com/services/concerts-events) | [/de/services/concerts-events](https://expose-u.com/de/services/concerts-events) |
 | Exhibition & Gallery | [/services/exhibition-gallery](https://expose-u.com/services/exhibition-gallery) | [/de/services/exhibition-gallery](https://expose-u.com/de/services/exhibition-gallery) |
 | Artist Sessions & Portraits | [/services/artist-sessions](https://expose-u.com/services/artist-sessions) | [/de/services/artist-sessions](https://expose-u.com/de/services/artist-sessions) |
-| Brand & Agency Events | [/services/brand-agency](https://expose-u.com/services/brand-agency) | [/de/services/brand-agency](https://expose-u.com/de/services/brand-agency) |
+| Brand & Agency | [/services/brand-agency](https://expose-u.com/services/brand-agency) | [/de/services/brand-agency](https://expose-u.com/de/services/brand-agency) |
 
 ## Ad Landing Pages
 
@@ -25,10 +25,11 @@ Standalone pages for paid campaigns. Not linked from the homepage grid.
 
 ## Notes
 
+- **Brand & Agency** is now visible on the homepage service cards (was hidden prior to Week 7 revamp).
 - **Exhibition & Gallery** has both a service page (`/services/exhibition-gallery`) and an ad landing page (`/exhibition-gallery`). The homepage card was incorrectly pointing to the landing page — fixed 2026-05-31.
-- **Brand & Agency Events** similarly has both a service page and a landing page.
+- **Brand & Agency** similarly has both a service page and a landing page. The landing page (`/brand-agency`) content is pending a full copy rewrite per brief_06 to match the new agency/design positioning.
 - Legacy slugs (`/gallery-stories`, `/documentation`, `/exhibitions`, `/performance`, `/services/fashion-show`, etc.) redirect to the appropriate service pages.
 
 ---
 
-*Updated 2026-05-31.*
+*Updated 2026-06-08. See `services_revamp_status.md` for full Week 7 progress.*

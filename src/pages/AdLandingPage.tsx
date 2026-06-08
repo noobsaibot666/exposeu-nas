@@ -19,10 +19,13 @@ export type AdLandingPageConfig = {
   description: string
   canonical: string
   ogImage?: string
+  ogTitle?: string
+  ogDescription?: string
   heroImage: string
   supportImage: string
   h1Line1: string
   h1Line2: string
+  h1?: string
   subheadline: string
   cta: string
   ctaSecondary: string
@@ -30,6 +33,7 @@ export type AdLandingPageConfig = {
   audienceHeading: string
   audienceBody?: string[]
   audienceGroups: Array<{ title: string; items: string[] }>
+  audienceItems?: Array<{ title: string; body: string }>
   includedLabel: string
   includedHeading: string
   includedLede: string
@@ -37,6 +41,10 @@ export type AdLandingPageConfig = {
   includedCta: string
   proofLabel: string
   proofItems: Array<{ title: string; body: string }>
+  proofProse?: string[]
+  whatItDoesLabel?: string
+  whatItDoesHeading?: string
+  whatItDoesItems?: Array<{ title: string; body: string }>
   usageLabel: string
   usageHeading: string
   usageIntro: string
@@ -126,7 +134,7 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
 
       gsap.utils.toArray<HTMLElement>('.alp .section').forEach((section) => {
         const items = gsap.utils.toArray<HTMLElement>(
-          '.alp__label, h2, .alp__copy > *, .alp__lede, .alp__usage-intro, .alp__tag-grid span, .alp__asset-card, .alp__proof-item, .alp__platform-item, .alp__section-cta, .alp__final-inner > *',
+          '.alp__label, h2, .alp__copy > *, .alp__lede, .alp__usage-intro, .alp__tag-grid span, .alp__asset-card, .alp__proof-item, .alp__proof-prose p, .alp__audience-item, .alp__what-item, .alp__platform-item, .alp__section-cta, .alp__final-inner > *',
           section,
         )
 
@@ -229,8 +237,8 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
       <SEOMeta
         title={config.title}
         description={config.description}
-        ogTitle={config.title}
-        ogDescription={config.description}
+        ogTitle={config.ogTitle ?? config.title}
+        ogDescription={config.ogDescription ?? config.description}
         ogImage={config.ogImage}
         canonical={config.canonical}
         lang={locale}
@@ -249,7 +257,7 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
 
       <section className="alp__hero" style={{ backgroundImage: `linear-gradient(90deg, rgba(5, 7, 11, 0.88), rgba(5, 7, 11, 0.5)), url(${config.heroImage})` }}>
         <div className="content alp__hero-inner">
-          <h1>{config.h1Line1}<br />{config.h1Line2}</h1>
+          {config.h1 ? <h1>{config.h1}</h1> : <h1>{config.h1Line1}<br />{config.h1Line2}</h1>}
           <p className="alp__subheadline">{config.subheadline}</p>
           <div className="alp__actions">
             <a className="alp__button alp__button--primary" href={contactHref} onClick={() => trackCta('hero_primary')}>
@@ -274,17 +282,45 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
             ) : null}
           </div>
           <div className="alp__copy">
-            {config.audienceGroups.map((group) => (
-              <div className="alp__tag-group" key={group.title}>
-                <h3>{group.title}</h3>
-                <div className="alp__tag-grid" aria-label={group.title}>
-                  {group.items.map((item) => <span key={item}>{item}</span>)}
-                </div>
+            {config.audienceItems ? (
+              <div className="alp__audience-items">
+                {config.audienceItems.map(({ title, body }) => (
+                  <div className="alp__audience-item" key={title}>
+                    <h3>{title}</h3>
+                    <p>{body}</p>
+                  </div>
+                ))}
               </div>
-            ))}
+            ) : (
+              config.audienceGroups.map((group) => (
+                <div className="alp__tag-group" key={group.title}>
+                  <h3>{group.title}</h3>
+                  <div className="alp__tag-grid" aria-label={group.title}>
+                    {group.items.map((item) => <span key={item}>{item}</span>)}
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </section>
+
+      {config.whatItDoesHeading && config.whatItDoesItems && (
+        <section className="section alp__what">
+          <div className="content">
+            {config.whatItDoesLabel && <p className="alp__label">{config.whatItDoesLabel}</p>}
+            <h2>{config.whatItDoesHeading}</h2>
+            <div className="alp__what-grid">
+              {config.whatItDoesItems.map(({ title, body }) => (
+                <div className="alp__what-item" key={title}>
+                  <h3>{title}</h3>
+                  <p>{body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="section alp__included" id="included">
         <div className="content alp__media-split">
@@ -321,14 +357,20 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
       <section className="section alp__proof">
         <div className="content">
           <p className="alp__label">{config.proofLabel}</p>
-          <div className="alp__proof-grid">
-            {config.proofItems.map(({ title, body }) => (
-              <div className="alp__proof-item" key={title}>
-                <h3>{title}</h3>
-                <p>{body}</p>
-              </div>
-            ))}
-          </div>
+          {config.proofProse ? (
+            <div className="alp__proof-prose">
+              {config.proofProse.map((para, i) => <p key={i}>{para}</p>)}
+            </div>
+          ) : (
+            <div className="alp__proof-grid">
+              {config.proofItems.map(({ title, body }) => (
+                <div className="alp__proof-item" key={title}>
+                  <h3>{title}</h3>
+                  <p>{body}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -355,7 +397,7 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
       <section className="section alp__final">
         <div className="content alp__final-inner">
           <h2>{config.finalHeading}</h2>
-          <p>{config.finalBody}</p>
+          {config.finalBody.split('\n\n').filter(Boolean).map((para, i) => <p key={i}>{para}</p>)}
           <a className="alp__button alp__button--primary" href={contactHref} onClick={() => trackCta('final')}>
             {config.finalCta}
           </a>
