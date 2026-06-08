@@ -469,7 +469,7 @@ function Contact() {
 
               <div className="contact__whatsapp">
                 <a
-                  href="https://wa.me/4917622132950"
+                  href="https://wa.me/48786696765"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
