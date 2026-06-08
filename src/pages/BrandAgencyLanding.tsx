@@ -107,6 +107,10 @@ const configs: Record<'en' | 'de', AdLandingPageConfig> = {
     ctaSecondary: 'Sieh, was dabei ist',
     audienceLabel: 'Mit wem wir arbeiten',
     audienceHeading: 'Für Agenturen und kreative Teams',
+    audienceBody: [
+      'Experience-Design-Agenturen. Kreativstudios. Markenteams. Produktionshäuser. Ausstellungsgestalter.',
+      'Wenn Sie etwas bauen, das es wert ist gesehen zu werden, dokumentieren wir es richtig.',
+    ],
     audienceGroups: [],
     audienceItems: [
       {
@@ -143,17 +147,17 @@ const configs: Record<'en' | 'de', AdLandingPageConfig> = {
       { slug: 'spatial-documentation', title: 'Räumliche Dokumentationssequenzen', body: 'Sequenzielle Abdeckung des fertigen Environments, Raum für Raum.' },
       { slug: 'vertical-social', title: 'Vertikaler Social-Content', body: 'Assets, die über Formate hinweg funktionieren — von Editorial bis Vertikal.' },
       { slug: 'bts', title: 'Behind-the-Scenes', body: 'Prozess- und Build-Dokumentation für Fallstudien und Portfolio.' },
-      { slug: 'award-submission', title: 'Award-Einreichungsbilder', body: 'Hero-Aufnahmen und Raumsequenzen für Wettbewerbsformate.' },
-      { slug: 'case-study', title: 'Case-Study-Material für die Website', body: 'Fallstudien-Material in der Qualität, die Ihr Portfolio braucht.' },
+      { slug: 'award-submission', title: 'Award-Dokumentation', body: 'Hero-Aufnahmen und Raumsequenzen für Wettbewerbsformate.' },
+      { slug: 'case-study', title: 'Website-Fallstudien-Material', body: 'Fallstudien-Material in der Qualität, die Ihr Portfolio braucht.' },
       { slug: 'presentation', title: 'Präsentationsfertige Assets', body: 'Visueller Nachweis, dass Ihre Arbeit im Pitch funktioniert.' },
-      { slug: 'organized-delivery', title: 'Strukturierte Übergabe', body: 'Klare Dateistruktur für die Übergabe an Kunden und Teams.' },
+      { slug: 'organized-delivery', title: 'Organisierte Lieferung', body: 'Klare Dateistruktur für die Übergabe an Kunden und Teams.' },
     ],
     includedCta: 'Verfügbarkeit anfragen',
     proofLabel: 'So arbeiten wir',
     proofItems: [],
     proofProse: [
       'Kleines Team. Ruhige Produktion.',
-      'Wir arbeiten so, wie Designer arbeiten — geplant, präzise, unaufdringlich. Wir verstehen, wie Agenturen fertige Arbeit präsentieren und was die Dokumentation aussagen muss. Foto und Video aus einer Hand. Berlin-based.',
+      'Wir arbeiten so, wie Designer arbeiten — geplant, präzise, unaufdringlich. Wir verstehen, wie Agenturen fertige Arbeit präsentieren und was die Dokumentation dafür leisten muss. Foto und Video aus einer Hand. Berlin-basiert.',
     ],
     usageLabel: 'Wo es funktioniert',
     usageHeading: 'Deine Dokumentation muss überall funktionieren.',
