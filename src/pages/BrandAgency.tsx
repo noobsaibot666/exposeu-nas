@@ -4,15 +4,15 @@ import { useLocale, useTranslation } from '../i18n/LocaleProvider'
 import { SEOMeta } from '../components/SEOMeta'
 
 const heroCards = [
-  { image: resolveImagePath('/src/assets/images/services/6_brand_agency/_thumb/9_16/6_BA_001.svg'), title: 'Activation Space' },
-  { image: resolveImagePath('/src/assets/images/services/6_brand_agency/_thumb/9_16/6_BA_002.svg'), title: 'Installation Detail' },
-  { image: resolveImagePath('/src/assets/images/services/6_brand_agency/_thumb/9_16/6_BA_003.svg'), title: 'Spatial Documentation' },
-  { image: resolveImagePath('/src/assets/images/services/6_brand_agency/_thumb/9_16/6_BA_004.svg'), title: 'Agency Environment' },
+  { image: resolveImagePath('/src/assets/images/services/6_brand_agency/_thumb/9_16/6_BA_001.jpg'), title: 'Activation Space' },
+  { image: resolveImagePath('/src/assets/images/services/6_brand_agency/_thumb/9_16/6_BA_002.png'), title: 'Installation Detail' },
+  { image: resolveImagePath('/src/assets/images/services/6_brand_agency/_thumb/9_16/6_BA_003.png'), title: 'Spatial Documentation' },
+  { image: resolveImagePath('/src/assets/images/services/6_brand_agency/_thumb/9_16/6_BA_004.png'), title: 'Agency Environment' },
 ]
 
 const sectionImages = {
-  gallery: resolveImagePath('/src/assets/images/services/6_brand_agency/6_BA_gallery.svg'),
-  idealFor: resolveImagePath('/src/assets/images/services/6_brand_agency/6_BA_idealFor.svg'),
+  gallery: resolveImagePath('/src/assets/images/services/6_brand_agency/6_BA_gallery.jpeg'),
+  idealFor: resolveImagePath('/src/assets/images/services/6_brand_agency/6_BA_idealFor.jpeg'),
 }
 
 function BrandAgency() {
