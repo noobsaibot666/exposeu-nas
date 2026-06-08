@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 800" width="450" height="800">
+  <rect width="450" height="800" fill="#1c1c1e"/>
+  <rect x="1" y="1" width="448" height="798" fill="none" stroke="#2a2a2e" stroke-width="2"/>
+  <line x1="0" y1="0" x2="450" y2="800" stroke="#222" stroke-width="1"/>
+  <line x1="450" y1="0" x2="0" y2="800" stroke="#222" stroke-width="1"/>
+  <text x="225" y="385" text-anchor="middle" font-family="system-ui, sans-serif" font-size="16" fill="#555">Brand &amp; Agency — Hero 2</text>
+  <text x="225" y="410" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#3a3a3e">replace with photo · 9:16</text>
+</svg>
