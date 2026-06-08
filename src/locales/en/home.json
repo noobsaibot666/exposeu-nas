@@ -18,24 +18,24 @@
     "subcopy": "I need content for my:",
     "cards": {
       "concerts-events": {
-        "title": "Concert & Live Events",
-        "subtext": "For venues, promoters, bands, and festival producers",
-        "cta": "See pricing →"
+        "title": "Concerts & Live Events",
+        "subtext": "Live event documentation for venues, labels and promoters. The assets you need for the next booking, the next announcement, the next campaign.",
+        "cta": "How we work →"
       },
       "exhibition-gallery": {
         "title": "Exhibition & Gallery",
-        "subtext": "For galleries, curators, and cultural institutions",
-        "cta": "See pricing →"
+        "subtext": "Your exhibition lives longer than its run. Photo and video documentation for galleries, museums and cultural institutions.",
+        "cta": "How we work →"
       },
       "artist-sessions": {
-        "title": "Artist Sessions & Portraits",
-        "subtext": "For musicians, visual artists, and photographers",
-        "cta": "See pricing →"
+        "title": "Artist Sessions",
+        "subtext": "New work deserves images that match it. Sessions built for press kits, release campaigns and booking profiles.",
+        "cta": "How we work →"
       },
       "brand-agency": {
         "title": "Brand & Agency",
-        "subtext": "For agencies, brand teams and experience designers",
-        "cta": "Explore →"
+        "subtext": "Documentation for designed experiences. Photo and video built for agencies, brand teams and creative studios.",
+        "cta": "How we work →"
       }
     },
     "seeDetails": "See documentation details",

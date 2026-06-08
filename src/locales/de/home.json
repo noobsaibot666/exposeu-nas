@@ -19,23 +19,23 @@
     "cards": {
       "concerts-events": {
         "title": "Konzerte & Live-Events",
-        "subtext": "Für Venues, Promoter, Bands und Festival-Teams",
-        "cta": "Preise ansehen →"
+        "subtext": "Live-Event-Dokumentation für Venues, Labels und Veranstalter. Die Assets, die Sie für die nächste Buchung, die nächste Ankündigung, die nächste Kampagne brauchen.",
+        "cta": "So arbeiten wir →"
       },
       "exhibition-gallery": {
         "title": "Ausstellungen & Galerien",
-        "subtext": "Für Galerien, Kurator:innen und Kulturinstitutionen",
-        "cta": "Preise ansehen →"
+        "subtext": "Ihre Ausstellung lebt länger als ihre Laufzeit. Foto- und Videodokumentation für Galerien, Museen und Kulturinstitutionen.",
+        "cta": "So arbeiten wir →"
       },
       "artist-sessions": {
-        "title": "Artist Sessions & Portraits",
-        "subtext": "Für Musiker:innen, visuelle Künstler:innen und Fotograf:innen",
-        "cta": "Preise ansehen →"
+        "title": "Artist Sessions",
+        "subtext": "Neue Arbeit verdient Bilder, die dazu passen. Sessions für Pressesets, Release-Kampagnen und Booking-Profile.",
+        "cta": "So arbeiten wir →"
       },
       "brand-agency": {
         "title": "Brand & Agency",
-        "subtext": "Für Agenturen, Brand-Teams und Experience Designer",
-        "cta": "Entdecken →"
+        "subtext": "Dokumentation für gestaltete Erfahrungen. Foto und Video für Agenturen, Markenteams und kreative Studios.",
+        "cta": "So arbeiten wir →"
       }
     },
     "seeDetails": "Dokumentation ansehen",
