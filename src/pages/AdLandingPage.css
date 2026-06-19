@@ -484,3 +484,11 @@
     width: 100%;
   }
 }
+
+@media (max-width: 480px) {
+  .alp__asset-grid,
+  .alp__platform-grid,
+  .alp__what-grid {
+    grid-template-columns: 1fr;
+  }
+}

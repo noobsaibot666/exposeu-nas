@@ -28,7 +28,7 @@ const configs: Record<'en' | 'de', AdLandingPageConfig> = {
     audienceGroups: [
       {
         title: 'For',
-        items: ['Galleries', 'Artists', 'Curators', 'Art spaces', 'PR teams', 'Cultural venues'],
+        items: ['Galleries', 'Artists', 'Curators', 'Art spaces', 'PR teams', 'Cultural venues', 'Museums and foundations'],
       },
       {
         title: 'Made for',
@@ -83,7 +83,7 @@ const configs: Record<'en' | 'de', AdLandingPageConfig> = {
     audienceGroups: [
       {
         title: 'Für',
-        items: ['Galerien', 'Artists', 'Kurator:innen', 'Art Spaces', 'PR Teams', 'Kulturorte'],
+        items: ['Galerien', 'Artists', 'Kurator:innen', 'Art Spaces', 'PR Teams', 'Kulturorte', 'Museen und Stiftungen'],
       },
       {
         title: 'Gemacht für',

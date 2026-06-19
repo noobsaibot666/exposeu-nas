@@ -11,15 +11,6 @@ import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/
 
 const projects = [
   {
-    slug: serviceMeta['concerts-events'].slug,
-    title: 'Concert & Live Event Documentation',
-    location: 'Live Programs',
-    year: '2024',
-    image: resolveImagePath('/src/assets/images/website/performances/thumb_3_086.jpg'),
-    copy: 'Fast selects, recap films, and hero frames for concerts, venues, and live teams.',
-    link: serviceMeta['concerts-events'].href,
-  },
-  {
     slug: serviceMeta['exhibition-gallery'].slug,
     title: 'Exhibition & Gallery Documentation',
     location: 'Galleries',
@@ -29,6 +20,24 @@ const projects = [
     link: serviceMeta['exhibition-gallery'].href,
   },
   {
+    slug: serviceMeta['brand-agency'].slug,
+    title: 'Brand & Agency Documentation',
+    location: 'Activations',
+    year: '2024',
+    image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
+    copy: 'Documentation for designed experiences — activations, installations, and agency-built environments.',
+    link: serviceMeta['brand-agency'].href,
+  },
+  {
+    slug: serviceMeta['concerts-events'].slug,
+    title: 'Concert & Live Event Documentation',
+    location: 'Live Programs',
+    year: '2024',
+    image: resolveImagePath('/src/assets/images/website/performances/thumb_3_086.jpg'),
+    copy: 'Fast selects, recap films, and hero frames for concerts, venues, and live teams.',
+    link: serviceMeta['concerts-events'].href,
+  },
+  {
     slug: serviceMeta['artist-sessions'].slug,
     title: 'Artist Sessions & Portraits',
     location: 'Venues & Studios',
@@ -36,15 +45,6 @@ const projects = [
     image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
     copy: 'Portraits and process assets for artists, studios, and press kits.',
     link: serviceMeta['artist-sessions'].href,
-  },
-  {
-    slug: serviceMeta['brand-agency'].slug,
-    title: 'Brand & Agency Events',
-    location: 'Launches',
-    year: '2023',
-    image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
-    copy: 'Event, activation, runway, and backstage assets for brands, agencies, and sponsors.',
-    link: serviceMeta['brand-agency'].href,
   },
 ]
 
@@ -552,7 +552,7 @@ function Home() {
 
       <section className="home__section home__cases" id="cases" ref={casesRef}>
         <div className="home__section-header">
-          <p>Coverage types</p>
+          <p>Documentation types</p>
           <h2>Choose the format for your show, release, or space.</h2>
           <p className="home__section-subcopy">I need content for my:</p>
         </div>

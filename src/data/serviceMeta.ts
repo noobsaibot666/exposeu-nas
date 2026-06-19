@@ -60,8 +60,8 @@ export const serviceMeta: Record<ServiceSlug, ServiceMeta> = {
 }
 
 export const serviceList: ServiceMeta[] = [
-  serviceMeta['concerts-events'],
   serviceMeta['exhibition-gallery'],
-  serviceMeta['artist-sessions'],
   serviceMeta['brand-agency'],
+  serviceMeta['concerts-events'],
+  serviceMeta['artist-sessions'],
 ]

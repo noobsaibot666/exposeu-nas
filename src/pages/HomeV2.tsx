@@ -65,27 +65,27 @@ const hiddenHomeServiceSlugs = new Set<string>()
 
 const heroGalleryBase = [
   {
-    id: 'thumb-concerts',
-    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/concerts-events/DSC_4346.jpg'),
-    slug: 'concerts-events',
-    rotation: -4,
-  },
-  {
     id: 'thumb-exhibition',
     image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/exhibition-gallery/004.jpg'),
     slug: 'exhibition-gallery',
-    rotation: -2,
-  },
-  {
-    id: 'thumb-artist',
-    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/artist-sessions/001.jpg'),
-    slug: 'artist-sessions',
-    rotation: 2,
+    rotation: -4,
   },
   {
     id: 'thumb-brand',
     image: resolveImagePath('src/assets/images/landing/agency_hero_01.jpeg'),
     slug: 'brand-agency',
+    rotation: -2,
+  },
+  {
+    id: 'thumb-concerts',
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/concerts-events/DSC_4346.jpg'),
+    slug: 'concerts-events',
+    rotation: 2,
+  },
+  {
+    id: 'thumb-artist',
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/artist-sessions/001.jpg'),
+    slug: 'artist-sessions',
     rotation: 4,
   },
 ]

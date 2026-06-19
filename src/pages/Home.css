@@ -890,6 +890,10 @@
   .home__pricing-card {
     padding: 24px;
   }
+
+  .home__pricing-card.is-popular {
+    transform: none;
+  }
 }
 
 @media (max-width: 640px) {

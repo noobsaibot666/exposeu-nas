@@ -524,3 +524,10 @@ a.rck__testimonial-handle:hover {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+@media (max-width: 480px) {
+  .rck__asset-grid,
+  .rck__platform-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -414,6 +414,7 @@ export default function ReleaseContentKit() {
         <div className="content rck__final-inner">
           <h2>{t('services.pages.release-content-kit.final.h2')}</h2>
           <p>{t('services.pages.release-content-kit.final.body')}</p>
+          <p className="rck__pricing-note">{t('services.pages.release-content-kit.final.pricingNote')}</p>
           <a className="rck__button rck__button--primary" href={contactHref} onClick={() => trackCta('final')}>
             {t('services.pages.release-content-kit.final.cta')}
           </a>

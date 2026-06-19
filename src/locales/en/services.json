@@ -1,7 +1,7 @@
 {
   "labels": {
     "concerts-events": "Live Event Documentation",
-    "concerts-events-short": "Concert & Live Events",
+    "concerts-events-short": "Concerts & Live Events",
     "exhibition-gallery": "Exhibition & Gallery Documentation",
     "exhibition-gallery-short": "Exhibition & Gallery",
     "artist-sessions": "Artist Sessions & Portraits",
@@ -208,6 +208,7 @@
       "final": {
         "h2": "Let's build your release kit.",
         "body": "Tell us what you are releasing and when. We'll help shape the right photo and video setup around it.",
+        "pricingNote": "Most independent release kits fall between €400 and €700, depending on concept, location and what you need the content for. If you're working with a label or a bigger campaign, we're happy to talk about a custom scope.",
         "cta": "Tell us about your release"
       }
     }

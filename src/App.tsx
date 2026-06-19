@@ -20,6 +20,9 @@ import PricingRequest from './pages/PricingRequest'
 import PricingRequestSuccess from './pages/PricingRequestSuccess'
 import ReleaseContentKit from './pages/ReleaseContentKit'
 import PopupsLanding from './pages/PopupsLanding'
+import Privacy from './pages/Privacy'
+import Terms from './pages/Terms'
+import DataDeletion from './pages/DataDeletion'
 import { ThemeProvider } from './ThemeContext'
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
@@ -185,6 +188,9 @@ function App() {
             <Route path="/de/exhibitions" element={<Navigate to="/de/services/exhibition-gallery" replace />} />
             <Route path="/impressum" element={<Impressum />} />
             <Route path="/de/impressum" element={<Impressum />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/data-deletion" element={<DataDeletion />} />
             <Route path="/artist-sessions" element={<Navigate to="/services/artist-sessions" replace />} />
             <Route path="/de/artist-sessions" element={<Navigate to="/de/services/artist-sessions" replace />} />
             <Route path="/portfolio" element={<Portfolio />} />

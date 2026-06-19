@@ -1,7 +1,7 @@
 {
   "hero": {
     "headline": "Documentation for concerts, exhibitions, and creative events.",
-    "subhead": "Berlin-based photo and video studio. Press-ready delivery.",
+    "subhead": "Berlin-based visual documentation studio. Press-ready delivery.",
     "primaryCta": "Tell us about your project",
     "secondaryCta": "View our work",
     "scroll": "Scroll",
@@ -13,7 +13,7 @@
     "copy": "Strong visuals need timing, context, and intent. We build assets that already understand the room, the release, and how your audience will see them."
   },
   "services": {
-    "label": "Coverage types",
+    "label": "Documentation types",
     "headline": "Choose the format for your show, release, or space.",
     "subcopy": "I need content for my:",
     "cards": {
