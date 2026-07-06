@@ -20,6 +20,8 @@ import PricingRequest from './pages/PricingRequest'
 import PricingRequestSuccess from './pages/PricingRequestSuccess'
 import ReleaseContentKit from './pages/ReleaseContentKit'
 import PopupsLanding from './pages/PopupsLanding'
+import GalleryMuseumLanding from './pages/GalleryMuseumLanding'
+import ArtistMusicianLanding from './pages/ArtistMusicianLanding'
 import Privacy from './pages/Privacy'
 import Terms from './pages/Terms'
 import DataDeletion from './pages/DataDeletion'
@@ -154,6 +156,10 @@ function App() {
             <Route path="/de/brand-agency" element={<BrandAgencyLanding />} />
             <Route path="/popups" element={<PopupsLanding />} />
             <Route path="/de/popups" element={<PopupsLanding />} />
+            <Route path="/gallery-museum-documentation" element={<GalleryMuseumLanding />} />
+            <Route path="/de/gallery-museum-documentation" element={<GalleryMuseumLanding />} />
+            <Route path="/artist-musician-documentation" element={<ArtistMusicianLanding />} />
+            <Route path="/de/artist-musician-documentation" element={<ArtistMusicianLanding />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/de/contact" element={<Contact />} />
             <Route path="/contact-success" element={<ContactSuccess />} />

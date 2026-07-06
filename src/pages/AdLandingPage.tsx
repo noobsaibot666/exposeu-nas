@@ -45,16 +45,17 @@ export type AdLandingPageConfig = {
   whatItDoesLabel?: string
   whatItDoesHeading?: string
   whatItDoesItems?: Array<{ title: string; body: string }>
-  usageLabel: string
-  usageHeading: string
-  usageIntro: string
-  platforms: Platform[]
-  usageCta: string
+  usageLabel?: string
+  usageHeading?: string
+  usageIntro?: string
+  platforms?: Platform[]
+  usageCta?: string
   finalHeading: string
   finalBody: string
   finalCta: string
   metaContentName: string
   customPixelEvent: string
+  ctaPackage?: string
 }
 
 const iconLabels = ['IG', 'TT', 'SP', 'YT', 'PR', 'AD']
@@ -65,7 +66,9 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
   const localizePath = useLocalePath()
   const { locale } = useLocale()
   const { t } = useTranslation()
-  const contactHref = localizePath(`/contact?service=${config.serviceSlug}`)
+  const contactHref = localizePath(
+    `/contact?service=${config.serviceSlug}${config.ctaPackage ? `&package=${encodeURIComponent(config.ctaPackage)}` : ''}`,
+  )
 
   useTrackViewEvent('landing_page_view', {
     page_slug: config.slug,
@@ -374,25 +377,29 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
         </div>
       </section>
 
-      <section className="section alp__usage">
-        <div className="content">
-          <p className="alp__label">{config.usageLabel}</p>
-          <h2>{config.usageHeading}</h2>
-          <p className="alp__usage-intro">{config.usageIntro}</p>
-          <div className="alp__platform-grid">
-            {config.platforms.map(({ name, use }, index) => (
-              <div className="alp__platform-item" key={name}>
-                <div className="alp__platform-icon">{iconLabels[index] ?? 'OK'}</div>
-                <h3>{name}</h3>
-                <p>{use}</p>
-              </div>
-            ))}
+      {config.usageHeading && config.platforms && (
+        <section className="section alp__usage">
+          <div className="content">
+            {config.usageLabel && <p className="alp__label">{config.usageLabel}</p>}
+            <h2>{config.usageHeading}</h2>
+            {config.usageIntro && <p className="alp__usage-intro">{config.usageIntro}</p>}
+            <div className="alp__platform-grid">
+              {config.platforms.map(({ name, use }, index) => (
+                <div className="alp__platform-item" key={name}>
+                  <div className="alp__platform-icon">{iconLabels[index] ?? 'OK'}</div>
+                  <h3>{name}</h3>
+                  <p>{use}</p>
+                </div>
+              ))}
+            </div>
+            {config.usageCta && (
+              <a className="alp__section-cta" href={contactHref} onClick={() => trackCta('usage')}>
+                {config.usageCta}
+              </a>
+            )}
           </div>
-          <a className="alp__section-cta" href={contactHref} onClick={() => trackCta('usage')}>
-            {config.usageCta}
-          </a>
-        </div>
-      </section>
+        </section>
+      )}
 
       <section className="section alp__final">
         <div className="content alp__final-inner">

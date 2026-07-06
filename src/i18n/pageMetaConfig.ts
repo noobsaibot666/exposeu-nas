@@ -74,5 +74,26 @@ export function getMetaForPath(pathname: string): MetaConfig {
       descriptionKey: 'common.meta.concertsBerlin.description',
     }
   }
+  if (pathname === '/gallery-museum-documentation') {
+    return {
+      titleKey: 'common.meta.galleryMuseumLanding.title',
+      descriptionKey: 'common.meta.galleryMuseumLanding.description',
+    }
+  }
+  if (pathname === '/artist-musician-documentation') {
+    return {
+      titleKey: 'common.meta.artistMusicianLanding.title',
+      descriptionKey: 'common.meta.artistMusicianLanding.description',
+    }
+  }
+  if (pathname === '/privacy') {
+    return { titleKey: 'common.meta.privacy.title', descriptionKey: 'common.meta.privacy.description' }
+  }
+  if (pathname === '/terms') {
+    return { titleKey: 'common.meta.terms.title', descriptionKey: 'common.meta.terms.description' }
+  }
+  if (pathname === '/data-deletion') {
+    return { titleKey: 'common.meta.dataDeletion.title', descriptionKey: 'common.meta.dataDeletion.description' }
+  }
   return { titleKey: 'common.meta.notFound.title', descriptionKey: 'common.meta.notFound.description' }
 }

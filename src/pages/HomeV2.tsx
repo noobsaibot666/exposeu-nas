@@ -744,7 +744,7 @@ function HomeV2() {
       <SEOMeta
         title="Berlin Photo & Video Documentation"
         description="Photo and video documentation for concerts, exhibitions, and live events in Berlin. Serving galleries, artists, venues, and agencies."
-        ogTitle="expose.u — Concert & Exhibition Documentation, Berlin"
+        ogTitle="Concert & Exhibition Documentation Berlin | expose.u"
         canonical="https://expose-u.com/"
         lang={locale}
       />

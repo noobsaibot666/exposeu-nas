@@ -27,7 +27,7 @@ function Privacy() {
   return (
     <main className="impressum" ref={rootRef} id="main">
       <SEOMeta
-        title="Privacy Policy — expose.u"
+        title="Privacy Policy"
         description="How expose.u collects, uses, and protects your personal data."
         canonical="https://expose-u.com/privacy"
         lang="en"

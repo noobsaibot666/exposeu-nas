@@ -14,6 +14,8 @@ const serviceImages: Record<ServiceSlug, string> = {
   'brand-agency': resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
   'release-content-kit': resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/0022.jpeg'),
   popups: resolveImagePath('/src/assets/images/landing/agency_hero_02.jpeg'),
+  'gallery-museum': resolveImagePath('/src/assets/images/services/1_exhibition_doc/1_ED_055.png'),
+  'artist-musician': resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
 }
 
 function PricingRequest() {

@@ -29,7 +29,7 @@ function CallSession() {
       <SEOMeta
         title="Book a call"
         description="Schedule a short call to clarify scope, timing, and the right documentation package."
-        ogTitle="Book a call — expose.u"
+        ogTitle="Book a call | expose.u"
         ogDescription="15 minutes to clarify your project scope and which package fits. No pressure."
         canonical="https://expose-u.com/call-session"
         lang={locale}

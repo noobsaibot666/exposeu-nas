@@ -290,7 +290,7 @@ function Contact() {
       <SEOMeta
         title="Contact"
         description="Get in touch with expose.u — Berlin-based concert and exhibition documentation. Fast response, no sales pressure."
-        ogTitle="Start a Project — expose.u"
+        ogTitle="Start a Project | expose.u"
         ogDescription="Tell us what you're working on. We reply within 24 hours. No sales pressure."
         canonical="https://expose-u.com/contact"
         lang={locale}

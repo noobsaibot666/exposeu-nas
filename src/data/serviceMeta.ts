@@ -5,6 +5,8 @@ export type ServiceSlug =
   | 'brand-agency'
   | 'release-content-kit'
   | 'popups'
+  | 'gallery-museum'
+  | 'artist-musician'
 
 export type ServiceMeta = {
   slug: ServiceSlug
@@ -56,6 +58,20 @@ export const serviceMeta: Record<ServiceSlug, ServiceMeta> = {
     labelKey: 'services.labels.popups',
     shortLabelKey: 'services.labels.popups-short',
     href: '/popups',
+  },
+  'gallery-museum': {
+    slug: 'gallery-museum',
+    label: 'Gallery & Museum Documentation',
+    labelKey: 'services.labels.gallery-museum',
+    shortLabelKey: 'services.labels.gallery-museum-short',
+    href: '/gallery-museum-documentation',
+  },
+  'artist-musician': {
+    slug: 'artist-musician',
+    label: 'Artist & Musician Documentation',
+    labelKey: 'services.labels.artist-musician',
+    shortLabelKey: 'services.labels.artist-musician-short',
+    href: '/artist-musician-documentation',
   },
 }
 

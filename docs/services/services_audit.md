@@ -21,13 +21,15 @@ Canonical service pages linked from the homepage grid.
 
 Standalone pages for paid campaigns. Not linked from the homepage grid or global navigation.
 
-| Page | EN | DE |
-| --- | --- | --- |
-| Release Content Kit | [/release-content-kit](https://expose-u.com/release-content-kit) | [/de/release-content-kit](https://expose-u.com/de/release-content-kit) |
-| Concerts Berlin | [/concerts-berlin](https://expose-u.com/concerts-berlin) | [/de/concerts-berlin](https://expose-u.com/de/concerts-berlin) |
-| Exhibition Gallery | [/exhibition-gallery](https://expose-u.com/exhibition-gallery) | [/de/exhibition-gallery](https://expose-u.com/de/exhibition-gallery) |
-| Brand & Agency Documentation | [/brand-agency](https://expose-u.com/brand-agency) | [/de/brand-agency](https://expose-u.com/de/brand-agency) |
-| Pop-ups | [/popups](https://expose-u.com/popups) | [/de/popups](https://expose-u.com/de/popups) |
+| Tier | Page | EN | DE |
+| --- | --- | --- | --- |
+| Tier 1 | Gallery/Museum Documentation | [/gallery-museum-documentation](https://expose-u.com/gallery-museum-documentation) | [/de/gallery-museum-documentation](https://expose-u.com/de/gallery-museum-documentation) |
+| Tier 2 *(consolidated → Brand & Agency)* | Brand & Agency Documentation | [/brand-agency](https://expose-u.com/brand-agency) | [/de/brand-agency](https://expose-u.com/de/brand-agency) |
+| Tier 3 | Artist/Musician Documentation | [/artist-musician-documentation](https://expose-u.com/artist-musician-documentation) | [/de/artist-musician-documentation](https://expose-u.com/de/artist-musician-documentation) |
+| Tier 4 *(consolidated → Pop-ups)* | Pop-ups | [/popups](https://expose-u.com/popups) | [/de/popups](https://expose-u.com/de/popups) |
+| — | Release Content Kit | [/release-content-kit](https://expose-u.com/release-content-kit) | [/de/release-content-kit](https://expose-u.com/de/release-content-kit) |
+| — | Concerts Berlin | [/concerts-berlin](https://expose-u.com/concerts-berlin) | [/de/concerts-berlin](https://expose-u.com/de/concerts-berlin) |
+| — | Exhibition Gallery | [/exhibition-gallery](https://expose-u.com/exhibition-gallery) | [/de/exhibition-gallery](https://expose-u.com/de/exhibition-gallery) |
 
 ---
 
@@ -37,6 +39,18 @@ Standalone pages for paid campaigns. Not linked from the homepage grid or global
 - **Exhibition & Gallery** has both a service page (`/services/exhibition-gallery`) and an ad landing page (`/exhibition-gallery`). The homepage card links to the service page.
 - **Brand & Agency** similarly has both a service page and an ad landing page. The landing page (`/brand-agency`) was fully rewritten in Week 7 for the agency/designed-experiences audience.
 - Legacy slugs (`/gallery-stories`, `/documentation`, `/exhibitions`, `/performance`, `/services/fashion-show`, etc.) redirect to the appropriate service pages.
+- No pages carry a visible price. Every CTA ("Request availability" / "Verfügbarkeit anfragen") is an inquiry starting point via `/contact`, not a booking commitment.
+
+---
+
+## Week 11 Changes (July 2026)
+
+Two new ad landing pages added for CEO-defined ad tiers (Tier 1 and Tier 3; Tier 2 and Tier 4 were consolidated into `/brand-agency` and `/popups` instead of new pages):
+
+- **Gallery/Museum Documentation** (`/gallery-museum-documentation`) — culture & arts audience: galleries, museums, curators, cultural institutions.
+- **Artist/Musician Documentation** (`/artist-musician-documentation`) — creative identity audience: musicians, artists, performers.
+- Both use the shared `AdLandingPage` component (same pattern as `/brand-agency`, `/popups`). DE routes follow the site's existing `/de/<same-slug>` convention.
+- Hero/support images are temporary placeholders pending real photography.
 
 ---
 
@@ -61,4 +75,4 @@ All four service pages revised:
 
 ---
 
-*Updated 2026-06-08.*
+*Updated 2026-07-06.*

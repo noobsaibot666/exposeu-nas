@@ -27,7 +27,7 @@ function DataDeletion() {
   return (
     <main className="impressum" ref={rootRef} id="main">
       <SEOMeta
-        title="Data Deletion Instructions — expose.u"
+        title="Data Deletion Instructions"
         description="How to request deletion of your data from expose.u services connected via Facebook or Instagram."
         canonical="https://expose-u.com/data-deletion"
         lang="en"

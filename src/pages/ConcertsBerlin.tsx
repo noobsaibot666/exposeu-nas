@@ -16,7 +16,7 @@ const baseConfig = {
 const configs: Record<'en' | 'de', AdLandingPageConfig> = {
   en: {
     ...baseConfig,
-    title: 'Live Event Documentation Berlin — expose.u',
+    title: 'Live Event Documentation Berlin',
     description: 'Photo and video documentation for concerts, venues, labels and promoters in Berlin. Press-ready delivery, fast turnaround, photo and video from one team.',
     h1Line1: 'Concert photo and video content',
     h1Line2: 'for your next show.',
@@ -71,7 +71,7 @@ const configs: Record<'en' | 'de', AdLandingPageConfig> = {
   },
   de: {
     ...baseConfig,
-    title: 'Live-Event-Dokumentation Berlin — expose.u',
+    title: 'Live-Event-Dokumentation Berlin',
     description: 'Foto- und Videodokumentation für Konzerte, Venues, Labels und Veranstalter in Berlin. Pressefertige Lieferung, schnelle Bearbeitung, Foto und Video aus einer Hand.',
     h1Line1: 'Konzert Foto- und Videocontent',
     h1Line2: 'für deine nächste Show.',

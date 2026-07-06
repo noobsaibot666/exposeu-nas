@@ -612,7 +612,7 @@ function Portfolio() {
       <SEOMeta
         title="Portfolio"
         description="Selected documentation work by expose.u — concerts at Silent Green, gallery exhibitions, and artist sessions in Berlin."
-        ogTitle="Portfolio — expose.u"
+        ogTitle="Portfolio | expose.u"
         ogDescription="Eight concerts at Silent Green. Gallery exhibitions. Artist sessions. Selected work from Berlin."
         canonical="https://expose-u.com/portfolio"
         lang={locale}

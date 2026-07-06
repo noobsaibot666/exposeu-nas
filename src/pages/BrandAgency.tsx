@@ -37,9 +37,9 @@ function BrandAgency() {
   return (
     <>
       <SEOMeta
-        title={locale === 'de' ? 'Brand & Agency Dokumentation Berlin — expose.u' : 'Brand & Agency Documentation Berlin — expose.u'}
+        title={locale === 'de' ? 'Brand & Agency Dokumentation Berlin' : 'Brand & Agency Documentation Berlin'}
         description={locale === 'de' ? 'Foto- und Videodokumentation für Markenaktivierungen, Agenturen und gestaltete Erfahrungen in Berlin. Award-Einreichungen, Fallstudien, Kundenpräsentationen.' : 'Photo and video documentation for brand activations, agencies and designed experiences in Berlin. Award submissions, case studies, client presentations.'}
-        ogTitle={locale === 'de' ? 'Brand & Agency Dokumentation Berlin — expose.u' : 'Brand & Agency Documentation Berlin — expose.u'}
+        ogTitle={locale === 'de' ? 'Brand & Agency Dokumentation Berlin | expose.u' : 'Brand & Agency Documentation Berlin | expose.u'}
         ogDescription={locale === 'de' ? 'Dokumentation für gestaltete Erfahrungen. Foto und Video für Agenturen, Markenaktivierungen und Installationen in Berlin.' : 'Documentation for designed experiences. Photo and video for agencies, brand activations and installations in Berlin.'}
         canonical={locale === 'de' ? 'https://expose-u.com/de/services/brand-agency' : 'https://expose-u.com/services/brand-agency'}
         lang={locale}

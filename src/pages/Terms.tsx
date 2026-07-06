@@ -27,7 +27,7 @@ function Terms() {
   return (
     <main className="impressum" ref={rootRef} id="main">
       <SEOMeta
-        title="Terms of Use — expose.u"
+        title="Terms of Use"
         description="Terms governing the use of the expose.u website and services."
         canonical="https://expose-u.com/terms"
         lang="en"

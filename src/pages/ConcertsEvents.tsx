@@ -37,9 +37,9 @@ function ConcertsEvents() {
   return (
     <>
       <SEOMeta
-        title={locale === 'de' ? 'Live-Event-Dokumentation Berlin — expose.u' : 'Live Event Documentation Berlin — expose.u'}
+        title={locale === 'de' ? 'Live-Event-Dokumentation Berlin' : 'Live Event Documentation Berlin'}
         description={locale === 'de' ? 'Foto- und Videodokumentation für Konzerte, Venues, Labels und Veranstalter in Berlin. Pressefertige Lieferung. Foto und Video aus einer Hand.' : 'Photo and video documentation for concerts, venues, labels and promoters in Berlin. Press-ready delivery. One crew, photo and video.'}
-        ogTitle={locale === 'de' ? 'Live-Event-Dokumentation Berlin — expose.u' : 'Live Event Documentation Berlin — expose.u'}
+        ogTitle={locale === 'de' ? 'Live-Event-Dokumentation Berlin | expose.u' : 'Live Event Documentation Berlin | expose.u'}
         ogDescription={locale === 'de' ? 'Foto- und Videodokumentation für Konzerte, Venues, Labels und Veranstalter in Berlin. Pressefertige Lieferung. Foto und Video aus einer Hand.' : 'Multi-angle concert and live event coverage. Press-ready in 24–48h. Serving Berlin venues and promoters.'}
         canonical={locale === 'de' ? 'https://expose-u.com/de/services/concerts-events' : 'https://expose-u.com/services/concerts-events'}
         lang={locale}

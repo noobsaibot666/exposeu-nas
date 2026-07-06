@@ -16,9 +16,9 @@ const configs: Record<'en' | 'de', AdLandingPageConfig> = {
   en: {
     ...baseConfig,
     canonical: 'https://expose-u.com/brand-agency',
-    title: 'Brand & Agency Documentation Berlin — expose.u',
+    title: 'Brand & Agency Documentation Berlin',
     description: 'Photo and video documentation for brand activations, installations and agency-built environments in Berlin. Built for case studies, award submissions and client presentations.',
-    ogTitle: 'Brand & Agency Documentation Berlin — expose.u',
+    ogTitle: 'Brand & Agency Documentation Berlin | expose.u',
     ogDescription: 'Documentation for designed experiences. Photo and video for agencies, brand activations and installations in Berlin.',
     h1: 'Documentation for Designed Experiences',
     h1Line1: 'Documentation for Designed Experiences',
@@ -95,9 +95,9 @@ const configs: Record<'en' | 'de', AdLandingPageConfig> = {
   de: {
     ...baseConfig,
     canonical: 'https://expose-u.com/de/brand-agency',
-    title: 'Brand & Agency Dokumentation Berlin — expose.u',
+    title: 'Brand & Agency Dokumentation Berlin',
     description: 'Foto- und Videodokumentation für Markenaktivierungen, Agenturen und gestaltete Erfahrungen in Berlin. Für Fallstudien, Award-Einreichungen und Kundenpräsentationen.',
-    ogTitle: 'Brand & Agency Dokumentation Berlin — expose.u',
+    ogTitle: 'Brand & Agency Dokumentation Berlin | expose.u',
     ogDescription: 'Dokumentation für gestaltete Erfahrungen. Foto und Video für Agenturen, Markenaktivierungen und Installationen in Berlin.',
     h1: 'Dokumentation für gestaltete Erfahrungen',
     h1Line1: 'Dokumentation für gestaltete Erfahrungen',

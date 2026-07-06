@@ -11,7 +11,11 @@
     "release-content-kit": "Release Content Kit",
     "release-content-kit-short": "Release Content Kit",
     "popups": "Pop-ups",
-    "popups-short": "Pop-ups"
+    "popups-short": "Pop-ups",
+    "gallery-museum": "Gallery & Museum Documentation",
+    "gallery-museum-short": "Gallery & Museum",
+    "artist-musician": "Artist & Musician Documentation",
+    "artist-musician-short": "Artist & Musician"
   },
   "shared": {
     "projects": "Projects",

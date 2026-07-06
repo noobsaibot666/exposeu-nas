@@ -13,7 +13,7 @@
   },
   "meta": {
     "home": {
-      "title": "expose.u — Dokumentationsstudio Berlin",
+      "title": "Dokumentationsstudio Berlin | expose.u",
       "description": "Visuelle Dokumentation für kulturelle Projekte, kreative Menschen und gestaltete Erfahrungen in Berlin."
     },
     "about": {
@@ -37,11 +37,11 @@
       "description": "Buche einen kurzen Call, um Umfang, Timing und das passende Dokumentationspaket zu klären."
     },
     "releaseContentKit": {
-      "title": "Release Content Kit für Artists | expose.u Berlin",
+      "title": "Release Content Kit für Artists Berlin | expose.u",
       "description": "Foto- und Videocontent für Musiker:innen und Artists vor Single, Album, Show, Tour oder Kampagne. Pressefotos, kurze Videos, Social Assets und optionale Interviewclips in Berlin."
     },
     "concertsBerlin": {
-      "title": "Live-Event-Dokumentation Berlin — expose.u",
+      "title": "Live-Event-Dokumentation Berlin | expose.u",
       "description": "Foto- und Videodokumentation für Konzerte, Venues, Labels und Veranstalter in Berlin. Pressefertige Lieferung, schnelle Bearbeitung, Foto und Video aus einer Hand."
     },
     "exhibitionGalleryLanding": {
@@ -49,16 +49,36 @@
       "description": "Foto- und Videodokumentation für Galerien, Kunsthäuser, Artist Talks, Präsentationen, Releases, Art Sales und kulturelle Events in Berlin."
     },
     "brandAgencyLanding": {
-      "title": "Brand & Agency Dokumentation Berlin — expose.u",
+      "title": "Brand & Agency Dokumentation Berlin | expose.u",
       "description": "Foto- und Videodokumentation für Markenaktivierungen, Agenturen und gestaltete Erfahrungen in Berlin. Für Fallstudien, Award-Einreichungen und Kundenpräsentationen."
     },
     "popupsLanding": {
       "title": "Pop-up Foto- und Videocontent Berlin | expose.u",
       "description": "Foto- und Videocontent für Pop-ups, Launches, temporäre Retail Spaces und kulturelle Brand-Momente in Berlin."
     },
+    "galleryMuseumLanding": {
+      "title": "Galerie- & Museumsdokumentation Berlin | expose.u",
+      "description": "Pressereife, kuratorisch abgestimmte Dokumentation für Galerien, Museen und Kulturinstitutionen in Berlin. Lieferung in 24-48 Stunden."
+    },
+    "artistMusicianLanding": {
+      "title": "Künstler- und Musikerdokumentation Berlin | expose.u",
+      "description": "Editoriale Foto- und Videodokumentation für Künstler:innen, Musiker:innen und Performer in Berlin. Pressereif, schnell geliefert."
+    },
     "impressum": {
       "title": "Impressum | expose.u",
       "description": "Rechtliche Informationen und Kontaktdaten von expose.u."
+    },
+    "privacy": {
+      "title": "Datenschutz | expose.u",
+      "description": "Wie expose.u personenbezogene Daten erfasst, nutzt und schützt."
+    },
+    "terms": {
+      "title": "Nutzungsbedingungen | expose.u",
+      "description": "Bedingungen für die Nutzung der Website und Services von expose.u."
+    },
+    "dataDeletion": {
+      "title": "Anleitung zur Datenlöschung | expose.u",
+      "description": "So beantragst du die Löschung deiner über Facebook oder Instagram verbundenen Daten bei expose.u."
     },
     "pricingRequest": {
       "title": "Preis anfragen | expose.u",
