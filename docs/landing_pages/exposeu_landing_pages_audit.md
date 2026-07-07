@@ -1142,3 +1142,30 @@ Each landing page must have one buyer, one pain, one outcome, one CTA.
 - Make Pop-ups more brand/design/culture, less events.
 - Make Concerts about momentum and future promotion.
 - Decide whether Exhibition Gallery is needed or should consolidate.
+
+---
+
+# SPRINT LP-01 — LANDING PAGE CONVERSION ALIGNMENT (Execution Log)
+
+Executed 2026-07-07. Frontend content/layout only — no backend, server, or deploy changes. Full plan: `AdLandingPageConfig` gained an optional `pricingNote` field (`src/pages/AdLandingPage.tsx`, `AdLandingPage.css`); each landing page below was reworked as its own config, all sharing the same component and CSS.
+
+| Page | Route | Status | What changed |
+|---|---|---|---|
+| Gallery/Museum Documentation | `/gallery-museum-documentation` | Verified — no change | Already matches audit checklist (press-ready/archive above fold, no pricing, no philosophy-first copy). |
+| Brand & Agency Documentation | `/brand-agency` | Verified — no change | Already matches audit checklist ("designed experiences" framing, case studies/awards/pitches above fold, no pricing). |
+| Artist/Musician Documentation | `/artist-musician-documentation` | Done | Added the missing `pricingNote` (€400–700 range + note for smaller/long-term projects), EN + DE. No other structural change needed. |
+| Release Content Kit | `/release-content-kit` | Verified — no change | Bespoke component + `locales/{en,de}/services.json`; already has urgency framing, concrete deliverables and a pricing note. Left as-is. |
+| Concerts Berlin | `/concerts-berlin` | Done | Full restructure onto the `audienceItems`/`whatItDoesItems` pattern. Hero now leads with "artists, venues and promoters" + Berlin; replaced the generic platform-icon grid with concrete outcomes (booking, press, venue marketing, sponsor reporting, social). No public pricing. |
+| Pop-ups | `/popups` | Done | Full restructure onto the same pattern. Narrowed to brand/culinary/design/fashion pop-ups explicitly; fixed the EN/DE CTA mismatch (EN said "Book Now", DE said "Tell us about your pop-up" — both now aligned on "Request/Verfügbarkeit anfragen"); added recap + future-campaign-asset framing. No public pricing. |
+| Exhibition Gallery | `/exhibition-gallery` | Done | Differentiated (not consolidated) toward smaller/independent/artist-run galleries and project spaces, with explicit Berlin local-SEO framing, kept shorter than Gallery/Museum to avoid duplication. Stays live at its own URL, no redirect. |
+
+## QA performed
+
+- `npm run lint` and a targeted `tsc -b` build: all edited files pass clean (one pre-existing, unrelated lint error remains in `Contact.tsx` — not touched by this sprint).
+- Full `npm run build` / `npm run dev` / `npm run verify:routes` could not be run locally this session — this machine's `node_modules` hit a pre-existing, unrelated npm optional-dependency bug (missing `@rollup/rollup-darwin-arm64`), and the sandboxed shell used to execute this sprint didn't have write permission to repair it on this network volume (`/Volumes/Gaia/...`). `package-lock.json` (git-tracked) was restored via `git checkout` after a failed repair attempt; `node_modules` is gitignored and untracked, so this has no effect on the repo or on deploys (which run `npm ci` fresh in Docker).
+- **Follow-up for the user**: run `npm install` locally (outside any sandbox) to repair `node_modules`, then `npm run dev` to do a visual/responsive pass on the 4 changed pages (Concerts Berlin, Pop-ups, Exhibition Gallery, Artist/Musician) in both locales before deploying. Per explicit instruction, no deploy has been run or will be run until that local review is done.
+
+## Deferred / out of scope for this sprint
+
+- Paid-traffic testing and Meta ad copy variants for the 3 strongest pages (Gallery/Museum, Brand & Agency, Release Content Kit) per the audit's ranking.
+- Any SEO crawl/schema work beyond the copy changes above.

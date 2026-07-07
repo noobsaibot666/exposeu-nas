@@ -26,11 +26,11 @@ Run these on the TrueNAS host over SSH. The host does not need `npm` installed; 
 ```sh
 cd /mnt/Gaia/04_DEV/web/www/exposeu
 sudo docker run --rm \
-  -p 192.168.178.146:5183:5183 \
+  -p 192.168.178.146:2222:2222 \
   -v "$PWD:/app" \
   -w /app \
   node:20-alpine \
-  sh -lc "npm ci && npm run dev -- --host 0.0.0.0 --port 5183"
+  sh -lc "npm ci && npm run dev -- --host 0.0.0.0 --port 2222"
 ```
 
 Open:

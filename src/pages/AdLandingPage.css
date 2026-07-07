@@ -366,6 +366,13 @@
   font-size: clamp(1.08rem, 1.3vw, 1.28rem);
 }
 
+.alp__final p.alp__pricing-note {
+  max-width: 620px;
+  font-size: 0.92rem;
+  opacity: 0.68;
+  line-height: 1.5;
+}
+
 /* audience descriptive items */
 .alp__audience-items {
   display: grid;

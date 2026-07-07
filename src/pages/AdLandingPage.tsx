@@ -52,6 +52,7 @@ export type AdLandingPageConfig = {
   usageCta?: string
   finalHeading: string
   finalBody: string
+  pricingNote?: string
   finalCta: string
   metaContentName: string
   customPixelEvent: string
@@ -405,6 +406,7 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
         <div className="content alp__final-inner">
           <h2>{config.finalHeading}</h2>
           {config.finalBody.split('\n\n').filter(Boolean).map((para, i) => <p key={i}>{para}</p>)}
+          {config.pricingNote && <p className="alp__pricing-note">{config.pricingNote}</p>}
           <a className="alp__button alp__button--primary" href={contactHref} onClick={() => trackCta('final')}>
             {config.finalCta}
           </a>

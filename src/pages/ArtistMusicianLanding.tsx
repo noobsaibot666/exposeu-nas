@@ -125,6 +125,8 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     finalHeading: "Tell us about your show — let's start your archive.",
     finalBody:
       "Every project gets a proposal built around scope, timeline and budget.",
+    pricingNote:
+      "Most independent artist productions fall between €400 and €700, depending on concept, location and deliverables. Smaller projects and long-term collaborations are welcome to reach out.",
     finalCta: "Request availability",
   },
   de: {
@@ -235,6 +237,8 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
       "Erzählen Sie uns von Ihrem Auftritt — starten wir Ihr Archiv.",
     finalBody:
       "Jedes Projekt bekommt ein Angebot, abgestimmt auf Umfang, Zeitplan und Budget.",
+    pricingNote:
+      "Die meisten unabhängigen Artist-Produktionen liegen zwischen 400 € und 700 €, je nach Konzept, Location und Deliverables. Kleinere Projekte und langfristige Zusammenarbeiten sind ausdrücklich willkommen.",
     finalCta: "Verfügbarkeit anfragen",
   },
 };
