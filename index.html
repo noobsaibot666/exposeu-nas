@@ -78,7 +78,10 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       if ('%VITE_GA_MEASUREMENT_ID%') {
-        gtag('config', '%VITE_GA_MEASUREMENT_ID%');
+        // send_page_view is disabled here: App.tsx's trackPageView() fires the
+        // real page_view on mount (with UTM/landing params attached), so this
+        // config call only bootstraps the tag and avoids a duplicate hit.
+        gtag('config', '%VITE_GA_MEASUREMENT_ID%', { send_page_view: false });
       }
     </script>
     <!-- Google AdSense -->

@@ -179,6 +179,8 @@ const sendEvent = (name: string, params: AnalyticsParams = {}) => {
 }
 
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'] as const
+const CLICK_ID_KEYS = ['gclid', 'gbraid', 'wbraid', 'fbclid'] as const
+const LANDING_PARAMS_STORAGE_KEY = '__landingAttributionParams'
 
 function extractUtmParams(): AnalyticsParams {
   if (typeof window === 'undefined') return {}
@@ -191,17 +193,54 @@ function extractUtmParams(): AnalyticsParams {
   return utm
 }
 
-export const trackPageView = (path: string, params: AnalyticsParams = {}) => {
-  if (!shouldSendAnalytics()) return
+// UTM/click-id params only exist in the URL on the landing hit. SPA navigation
+// (and the delay before a consent decision) can strip them before GA4 ever
+// sees a "granted" hit, so we snapshot them into sessionStorage once per
+// session and forward them on every subsequent config call.
+function captureLandingAttributionParams(): AnalyticsParams {
+  if (typeof window === 'undefined') return {}
 
+  try {
+    const cached = window.sessionStorage.getItem(LANDING_PARAMS_STORAGE_KEY)
+    if (cached) return JSON.parse(cached) as AnalyticsParams
+  } catch {
+    // ignore storage access issues
+  }
+
+  const sp = new URLSearchParams(window.location.search)
+  const landing: AnalyticsParams = { ...extractUtmParams() }
+  for (const key of CLICK_ID_KEYS) {
+    const val = sp.get(key)
+    if (val) landing[key] = val
+  }
+
+  if (Object.keys(landing).length > 0) {
+    try {
+      window.sessionStorage.setItem(LANDING_PARAMS_STORAGE_KEY, JSON.stringify(landing))
+    } catch {
+      // ignore storage access issues
+    }
+  }
+
+  return landing
+}
+
+export const trackPageView = (path: string, params: AnalyticsParams = {}) => {
+  // Intentionally NOT gated on consent: gtag.js/Consent Mode v2 already
+  // handles this correctly (cookieless ping when denied, full hit when
+  // granted). Gating here on top of that drops the hit — and its UTM
+  // data — entirely for every visitor who hasn't yet answered the banner.
   if (typeof window.gtag === 'function' && GA_ID) {
     window.gtag('config', GA_ID, {
       page_path: path,
       page_title: typeof document !== 'undefined' ? document.title : undefined,
       source_url: typeof window !== 'undefined' ? window.location.href : undefined,
       referrer: typeof document !== 'undefined' ? document.referrer || undefined : undefined,
-      // Forward UTM params explicitly so GA4 attributes the session correctly
-      // even when gtag('config') is called multiple times during SPA navigation
+      // First-touch UTM/click-id params, persisted for the whole session,
+      // so attribution survives SPA navigation and delayed consent grants.
+      ...captureLandingAttributionParams(),
+      // Current-URL UTM params override, in case this hit is itself a new
+      // campaign entrance within the same session.
       ...extractUtmParams(),
       ...params,
     })
