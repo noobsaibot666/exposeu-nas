@@ -3,7 +3,39 @@ import express from 'express'
 import cors from 'cors'
 import nodemailer from 'nodemailer'
 import { randomUUID } from 'node:crypto'
+import { createClient } from '@supabase/supabase-js'
+import ws from 'ws'
 import { buildMetaLeadEvent, sendMetaEvents } from './metaConversions.js'
+
+// Logs contact submissions into the outreach-app's Supabase project so the ads dashboard
+// can join clicks to actual conversions via the service= tier. Optional — if unset, the
+// contact form still works, submissions just aren't logged anywhere.
+//
+// createClient() always constructs a RealtimeClient, which throws synchronously on
+// Node <22 without a WebSocket polyfill (we only ever call .from().insert(), never
+// realtime) — pass the `ws` package as the transport to satisfy that constructor check.
+// Wrapped in try/catch too: this is a best-effort side log and must never be able to
+// take the whole contact API down the way an unguarded throw here did once already.
+let supabase = null
+if (process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) {
+  try {
+    supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY, {
+      realtime: { transport: ws },
+    })
+  } catch (err) {
+    console.error('SUPABASE CLIENT INIT FAILED (contact logging disabled):', err instanceof Error ? err.message : err)
+  }
+}
+
+async function logContactSubmission(fields) {
+  if (!supabase) return
+  try {
+    const { error } = await supabase.from('contact_submissions').insert(fields)
+    if (error) console.error('CONTACT SUPABASE LOG FAILED:', error.message)
+  } catch (error) {
+    console.error('CONTACT SUPABASE LOG FAILED:', serializeError(error))
+  }
+}
 
 const app = express()
 // Trust exactly 1 proxy hop (Traefik). 'true' would trust all hops and allow
@@ -429,6 +461,19 @@ app.post('/contact', async (req, res) => {
       accepted: info.accepted,
       rejected: info.rejected,
       response: info.response,
+    })
+
+    await logContactSubmission({
+      name: senderName,
+      email: trimmedEmail,
+      project_type: trimmedProjectType || null,
+      service: trimmedService || null,
+      service_label: trimmedServiceLabel || null,
+      package: trimmedPackage || null,
+      package_label: trimmedPackageLabel || null,
+      source_url: trimmedSourceUrl || null,
+      referrer: trimmedReferrer || null,
+      message: trimmedMessage || null,
     })
 
     return res.json({ ok: true })
