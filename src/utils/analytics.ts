@@ -87,6 +87,15 @@ export const updateGoogleConsentMode = (granted: boolean) => {
     ad_personalization: state,
     analytics_storage: state,
   })
+
+  // Consent update alone doesn't make gtag.js send a new hit. The first hit
+  // sent after this point is the one that actually becomes a real, cookied,
+  // Realtime-countable session — re-fire the page view here (carrying the
+  // persisted landing UTM/click-id params) so that session is attributed
+  // correctly even if the visitor has since navigated off the tagged URL.
+  if (granted) {
+    trackPageView(window.location.pathname + window.location.search)
+  }
 }
 
 export const initializeAnalyticsConsent = () => {
