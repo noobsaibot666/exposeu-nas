@@ -6,6 +6,8 @@ Project paths:
 - TrueNAS / SSH: `/mnt/Gaia/04_DEV/web/www/exposeu`
 - Finder / local mount: `/Volumes/Gaia/04_DEV/web/www/exposeu`
 
+Connect: `ssh alan@192.168.178.146`
+
 Containers:
 - frontend: `exposeu-nginx`
 - contact API: `exposeu-contact`
@@ -34,7 +36,7 @@ sudo docker run --rm \
 Open:
 
 ```text
-http://192.168.178.146:5173
+http://192.168.178.146:5183
 ```
 
 ### Production build preview
@@ -53,9 +55,6 @@ Open:
 
 ```text
 http://192.168.178.146:4173
-
-Connect
-ssh alan@192.168.178.146
 ```
 
 ## Production Deploy
@@ -89,6 +88,7 @@ sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu
 ## Smoke Checks
 
 ```sh
+sudo docker compose -f docker-compose.traefik.yml ps
 curl -kI https://localhost/ -H "Host: expose-u.com" | head -n 12
 curl -kI https://localhost/api/contact -H "Host: expose-u.com" | head -n 12
 ```
@@ -101,18 +101,3 @@ curl -k https://localhost/api/contact \
   -H "Content-Type: application/json" \
   --data '{"email":"test@example.com","message":"smoke"}'
 ```
--- Deploy All ---
-
-cd /mnt/Gaia/04_DEV/web/www/exposeu
-
-sudo rm -rf node_modules/.tmp .tmp-tests
-
-sudo docker run --rm -u 0 \
-  -v "$PWD:/app" \
-  -w /app \
-  node:20-alpine \
-  sh -lc "npm ci && npm run build"
-
-sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-nginx exposeu-contact
-
-sudo docker compose -f docker-compose.traefik.yml ps
