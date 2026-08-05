@@ -27,7 +27,10 @@ const SignaturePad = forwardRef<SignaturePadHandle, SignaturePadProps>(function 
     if (!canvas) return
 
     const resize = () => {
-      const ratio = Math.max(window.devicePixelRatio || 1, 1)
+      // Floor of 3x regardless of the screen's actual DPR: the saved record
+      // gets printed, so the signature needs to hold up well past the
+      // resolution a plain 1x/2x display capture would give it.
+      const ratio = Math.max(window.devicePixelRatio || 1, 3)
       const { width, height } = canvas.getBoundingClientRect()
       if (width === 0 || height === 0) return
 

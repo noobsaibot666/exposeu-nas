@@ -242,7 +242,7 @@ app.use(cors({
     callback(new Error(`CORS: origin ${origin} not allowed`))
   },
 }))
-app.use(express.json({ limit: '3mb' }))
+app.use(express.json({ limit: '8mb' }))
 app.use((req, _res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`)
   next()

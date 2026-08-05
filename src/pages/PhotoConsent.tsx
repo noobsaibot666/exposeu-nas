@@ -1,12 +1,36 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Moon, Sun } from 'lucide-react'
 import SignaturePad, { type SignaturePadHandle } from '../components/SignaturePad'
+import LocationAutocomplete from '../components/LocationAutocomplete'
 import './PhotoConsent.css'
 
 type Mode = 'dark' | 'light'
 type Lang = 'en' | 'de'
 
 const PENDING_QUEUE_KEY = 'photoConsentPendingQueue'
+
+const BERLIN_LOCATION_SUGGESTIONS = [
+  'S-Bahn Alexanderplatz',
+  'U-Bahn Alexanderplatz',
+  'Warschauer Straße',
+  'Kottbusser Tor',
+  'Hermannplatz',
+  'Görlitzer Bahnhof',
+  'Görlitzer Park',
+  'Ostkreuz',
+  'Hauptbahnhof',
+  'Friedrichstraße',
+  'Hackescher Markt',
+  'Zoologischer Garten',
+  'Potsdamer Platz',
+  'Rosenthaler Platz',
+  'Mauerpark',
+  'Tempelhofer Feld',
+  'Schönhauser Allee',
+  'Boxhagener Platz',
+  'Weserstraße',
+  'Sonnenallee',
+]
 
 function resolvePhotoConsentEndpoint(): string {
   const raw = String(import.meta.env.VITE_CONTACT_API_BASE || '').trim()
@@ -174,6 +198,13 @@ function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number)
   return lines
 }
 
+// Print scale: the layout below is authored at a 1000px "design" width, then
+// multiplied by this factor so the exported PNG holds up at print size (at
+// 3000px wide, that's ~300ppi printed at 10in — comfortably print-quality)
+// instead of just the ~1000px screen-resolution export it used to be.
+const PRINT_SCALE = 3
+const s = (n: number) => n * PRINT_SCALE
+
 async function buildRecordImage(options: {
   name: string
   location: string
@@ -186,79 +217,80 @@ async function buildRecordImage(options: {
 
   return new Promise((resolve, reject) => {
     const colors = PALETTE[options.mode]
-    const width = 1000
+    const width = s(1000)
     const canvas = document.createElement('canvas')
     canvas.width = width
-    canvas.height = 1400 // provisional, cropped below
+    canvas.height = s(1400) // provisional, cropped below
     const ctx = canvas.getContext('2d')
     if (!ctx) {
       reject(new Error('Canvas not supported'))
       return
     }
 
-    const marginX = 64
+    const marginX = s(64)
     const contentWidth = width - marginX * 2
-    let y = 90
+    let y = s(90)
 
     ctx.fillStyle = colors.bg
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     ctx.fillStyle = colors.text
-    ctx.font = '700 40px Satoshi, "Helvetica Neue", Arial, sans-serif'
+    ctx.font = `700 ${s(40)}px Satoshi, "Helvetica Neue", Arial, sans-serif`
     ctx.fillText(copy.heading, marginX, y)
-    y += 70
+    y += s(70)
 
     ctx.strokeStyle = colors.border
+    ctx.lineWidth = s(1)
     ctx.beginPath()
     ctx.moveTo(marginX, y)
     ctx.lineTo(width - marginX, y)
     ctx.stroke()
-    y += 56
+    y += s(56)
 
     ctx.fillStyle = colors.text
-    ctx.font = '400 26px Satoshi, "Helvetica Neue", Arial, sans-serif'
+    ctx.font = `400 ${s(26)}px Satoshi, "Helvetica Neue", Arial, sans-serif`
     const lines = wrapText(ctx, copy.consentText, contentWidth)
     for (const line of lines) {
       ctx.fillText(line, marginX, y)
-      y += 38
+      y += s(38)
     }
-    y += 40
+    y += s(40)
 
     ctx.strokeStyle = colors.border
     ctx.beginPath()
     ctx.moveTo(marginX, y)
     ctx.lineTo(width - marginX, y)
     ctx.stroke()
-    y += 56
+    y += s(56)
 
     ctx.fillStyle = colors.textMuted
-    ctx.font = '400 20px Satoshi, "Helvetica Neue", Arial, sans-serif'
+    ctx.font = `400 ${s(20)}px Satoshi, "Helvetica Neue", Arial, sans-serif`
     const now = new Date()
     const dateLabel = now.toLocaleString(undefined, {
       dateStyle: 'medium',
       timeStyle: 'short',
     })
     ctx.fillText(`${copy.fieldDate}: ${dateLabel}`, marginX, y)
-    y += 34
+    y += s(34)
     ctx.fillText(`${copy.fieldLocation}: ${options.location || '—'}`, marginX, y)
-    y += 34
+    y += s(34)
     ctx.fillText(`${copy.fieldName}: ${options.name || copy.fieldNameEmpty}`, marginX, y)
-    y += 60
+    y += s(60)
 
     ctx.fillStyle = colors.textMuted
-    ctx.font = '400 20px Satoshi, "Helvetica Neue", Arial, sans-serif'
+    ctx.font = `400 ${s(20)}px Satoshi, "Helvetica Neue", Arial, sans-serif`
     ctx.fillText(copy.fieldSignature, marginX, y)
-    y += 24
+    y += s(24)
 
-    const sigBoxHeight = 260
+    const sigBoxHeight = s(260)
     const sigBoxTop = y
     ctx.strokeStyle = colors.border
-    ctx.lineWidth = 1.5
+    ctx.lineWidth = s(1.5)
     ctx.strokeRect(marginX, sigBoxTop, contentWidth, sigBoxHeight)
 
     const sigImg = new Image()
     sigImg.onload = () => {
-      const padding = 16
+      const padding = s(16)
       const boxW = contentWidth - padding * 2
       const boxH = sigBoxHeight - padding * 2
       const scale = Math.min(boxW / sigImg.width, boxH / sigImg.height)
@@ -266,9 +298,11 @@ async function buildRecordImage(options: {
       const drawH = sigImg.height * scale
       const drawX = marginX + (contentWidth - drawW) / 2
       const drawY = sigBoxTop + (sigBoxHeight - drawH) / 2
+      ctx.imageSmoothingEnabled = true
+      ctx.imageSmoothingQuality = 'high'
       ctx.drawImage(sigImg, drawX, drawY, drawW, drawH)
 
-      const finalHeight = sigBoxTop + sigBoxHeight + 60
+      const finalHeight = sigBoxTop + sigBoxHeight + s(60)
       const finalCanvas = document.createElement('canvas')
       finalCanvas.width = width
       finalCanvas.height = finalHeight
@@ -557,17 +591,14 @@ function PhotoConsent() {
 
         <details className="photo-consent__log">
           <summary>{copy.logSummary}</summary>
-          <label className="photo-consent__field">
-            <span>{copy.locationLabel}</span>
-            <input
-              type="text"
-              inputMode="text"
-              placeholder={copy.locationPlaceholder}
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              autoComplete="off"
-            />
-          </label>
+          <LocationAutocomplete
+            label={copy.locationLabel}
+            placeholder={copy.locationPlaceholder}
+            value={location}
+            onChange={setLocation}
+            seedOptions={BERLIN_LOCATION_SUGGESTIONS}
+            storageKey="photoConsentKnownLocations"
+          />
           <p className="photo-consent__log-date">
             {copy.loggedAutomatically}: {dateLabel} &middot;{' '}
             {geo.status === 'granted' ? copy.gpsCaptured : copy.gpsUnavailable}
