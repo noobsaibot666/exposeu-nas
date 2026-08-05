@@ -48,6 +48,7 @@ const contactRequestStore = new Map()
 const metaEventRequestStore = new Map()
 const smtpTestRequestStore = new Map()
 const photoConsentRequestStore = new Map()
+const reverseGeocodeRequestStore = new Map()
 
 const buildSmtpConfig = () => {
   const host = process.env.SMTP_HOST
@@ -551,6 +552,129 @@ app.post('/photo-consent', async (req, res) => {
   } catch (error) {
     console.error('PHOTO CONSENT ERROR:', serializeError(error))
     return sendApiError(res, 500, 'DB_INSERT_FAILED', 'Could not save the signature.')
+  }
+})
+
+// Reverse-geocode proxy for the consent page's location auto-fill. Proxied
+// server-side (rather than called from the browser) so we can set the
+// identifying User-Agent Nominatim's usage policy requires, and keep the
+// request volume/rate limited from one place.
+//
+// This project shoots mostly at transit stations, and Nominatim's plain
+// reverse lookup usually snaps to the nearest *street*, not the station
+// (e.g. Alexanderplatz's own coordinates resolve to "Mitte", the borough).
+// So we first ask Overpass for the nearest actual station/halt within a
+// short radius and prefer its name; only if that comes back empty do we
+// fall back to Nominatim's address components.
+const NOMINATIM_UA = 'expose-u-consent/1.0 (contact: alanxalves@me.com)'
+const GEOCODE_TIMEOUT_MS = 4500
+const STATION_SEARCH_RADIUS_M = 250
+
+const withTimeout = async (url, options) => {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), GEOCODE_TIMEOUT_MS)
+  try {
+    return await fetch(url, { ...options, signal: controller.signal })
+  } finally {
+    clearTimeout(timer)
+  }
+}
+
+const haversineMeters = (lat1, lon1, lat2, lon2) => {
+  const R = 6371000
+  const toRad = (deg) => (deg * Math.PI) / 180
+  const dLat = toRad(lat2 - lat1)
+  const dLon = toRad(lon2 - lon1)
+  const a =
+    Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2
+  return 2 * R * Math.asin(Math.sqrt(a))
+}
+
+const findNearestStationName = async (lat, lon, lang) => {
+  const query = `[out:json][timeout:4];(node(around:${STATION_SEARCH_RADIUS_M},${lat},${lon})["railway"~"^(station|halt)$"];node(around:${STATION_SEARCH_RADIUS_M},${lat},${lon})["public_transport"="station"];);out body 10;`
+
+  const response = await withTimeout('https://overpass-api.de/api/interpreter', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': NOMINATIM_UA },
+    body: `data=${encodeURIComponent(query)}`,
+  })
+  if (!response.ok) return null
+
+  const data = await response.json()
+  const elements = Array.isArray(data?.elements) ? data.elements : []
+  if (elements.length === 0) return null
+
+  let nearest = null
+  let nearestDistance = Infinity
+  for (const el of elements) {
+    const name = el.tags?.[`name:${lang}`] || el.tags?.name
+    if (!name || typeof el.lat !== 'number' || typeof el.lon !== 'number') continue
+    const distance = haversineMeters(lat, lon, el.lat, el.lon)
+    if (distance < nearestDistance) {
+      nearestDistance = distance
+      nearest = name
+    }
+  }
+  return nearest
+}
+
+const pickAddressLabel = (data) => {
+  const address = data?.address || {}
+  return (
+    address.station ||
+    address.railway ||
+    data?.name ||
+    address.road ||
+    address.quarter ||
+    address.neighbourhood ||
+    address.suburb ||
+    address.borough ||
+    address.city_district ||
+    null
+  )
+}
+
+const findAddressLabel = async (lat, lon, lang) => {
+  const url = new URL('https://nominatim.openstreetmap.org/reverse')
+  url.searchParams.set('format', 'jsonv2')
+  url.searchParams.set('lat', String(lat))
+  url.searchParams.set('lon', String(lon))
+  url.searchParams.set('zoom', '17')
+  url.searchParams.set('addressdetails', '1')
+  url.searchParams.set('accept-language', lang)
+
+  const response = await withTimeout(url, { headers: { 'User-Agent': NOMINATIM_UA } })
+  if (!response.ok) return null
+
+  const data = await response.json()
+  return pickAddressLabel(data)
+}
+
+app.get('/reverse-geocode', async (req, res) => {
+  const ip = getClientIp(req)
+  if (isStoreRateLimited(reverseGeocodeRequestStore, ip, 15)) {
+    return sendApiError(res, 429, 'RATE_LIMITED', 'Too many requests. Please wait a minute and try again.')
+  }
+
+  const lat = Number(req.query.lat)
+  const lon = Number(req.query.lon)
+  if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+    return sendApiError(res, 400, 'INVALID_PAYLOAD', 'lat and lon query params are required.')
+  }
+
+  const lang = trimValue(req.query.lang) === 'de' ? 'de' : 'en'
+
+  try {
+    const stationName = await findNearestStationName(lat, lon, lang).catch(() => null)
+    if (stationName) {
+      return res.json({ ok: true, label: stationName })
+    }
+
+    const addressLabel = await findAddressLabel(lat, lon, lang).catch(() => null)
+    return res.json({ ok: true, label: addressLabel || null })
+  } catch (error) {
+    console.error('REVERSE GEOCODE ERROR:', serializeError(error))
+    return sendApiError(res, 500, 'GEOCODE_ERROR', 'Reverse geocode lookup failed.')
   }
 })
 

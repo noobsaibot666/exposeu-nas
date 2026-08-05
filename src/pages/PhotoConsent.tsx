@@ -32,11 +32,23 @@ const BERLIN_LOCATION_SUGGESTIONS = [
   'Sonnenallee',
 ]
 
-function resolvePhotoConsentEndpoint(): string {
+function apiUrl(path: string): string {
   const raw = String(import.meta.env.VITE_CONTACT_API_BASE || '').trim()
-  if (!raw) return '/api/photo-consent'
+  if (!raw) return `/api${path}`
   const base = raw.startsWith('http://') || raw.startsWith('https://') ? raw : `https://${raw}`
-  return `${base.replace(/\/+$/, '')}/api/photo-consent`
+  return `${base.replace(/\/+$/, '')}/api${path}`
+}
+
+async function lookupLocationLabel(lat: number, lon: number, lang: Lang): Promise<string | null> {
+  try {
+    const url = `${apiUrl('/reverse-geocode')}?lat=${lat}&lon=${lon}&lang=${lang}`
+    const res = await fetch(url)
+    if (!res.ok) return null
+    const data = await res.json()
+    return typeof data?.label === 'string' ? data.label : null
+  } catch {
+    return null
+  }
 }
 
 const PALETTE: Record<Mode, { bg: string; text: string; textMuted: string; border: string; ink: string }> = {
@@ -352,7 +364,7 @@ function writeQueue(queue: PendingSignature[]) {
 }
 
 async function submitSignature(payload: PendingSignature): Promise<boolean> {
-  const res = await fetch(resolvePhotoConsentEndpoint(), {
+  const res = await fetch(apiUrl('/photo-consent'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -386,6 +398,10 @@ function PhotoConsent() {
   const [errorMessage, setErrorMessage] = useState('')
   const [mode, setMode] = useState<Mode>(getPreferredMode)
   const [lang, setLang] = useState<Lang>(getPreferredLang)
+  const langRef = useRef(lang)
+  useEffect(() => {
+    langRef.current = lang
+  }, [lang])
   const [geo, setGeo] = useState<GeoState>(() => ({
     latitude: null,
     longitude: null,
@@ -412,11 +428,11 @@ function PhotoConsent() {
     if (!navigator.geolocation) return
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        setGeo({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          accuracy: position.coords.accuracy,
-          status: 'granted',
+        const { latitude, longitude, accuracy } = position.coords
+        setGeo({ latitude, longitude, accuracy, status: 'granted' })
+        void lookupLocationLabel(latitude, longitude, langRef.current).then((label) => {
+          if (!label) return
+          setLocation((current) => (current.trim() ? current : label))
         })
       },
       () => {
