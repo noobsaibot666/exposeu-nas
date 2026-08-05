@@ -47,6 +47,7 @@ const RATE_LIMIT_MAX_REQUESTS = 5
 const contactRequestStore = new Map()
 const metaEventRequestStore = new Map()
 const smtpTestRequestStore = new Map()
+const photoConsentRequestStore = new Map()
 
 const buildSmtpConfig = () => {
   const host = process.env.SMTP_HOST
@@ -241,7 +242,7 @@ app.use(cors({
     callback(new Error(`CORS: origin ${origin} not allowed`))
   },
 }))
-app.use(express.json({ limit: '1mb' }))
+app.use(express.json({ limit: '3mb' }))
 app.use((req, _res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`)
   next()
@@ -480,6 +481,76 @@ app.post('/contact', async (req, res) => {
   } catch (error) {
     console.error('Contact form error', serializeError(error))
     return sendApiError(res, 500, 'EMAIL_SEND_FAILED', 'Failed to send email.')
+  }
+})
+
+// Health checks (so HEAD/GET /photo-consent doesn't show 404)
+app.get('/photo-consent', (_req, res) => res.status(200).send('OK'))
+app.head('/photo-consent', (_req, res) => res.status(200).end())
+
+// Photo consent signature endpoint — unlike the contact form's best-effort Supabase
+// logging, storage here is the whole point of the endpoint: if Supabase isn't
+// configured or the insert fails, the client needs to know so it can queue the
+// signature locally and retry, rather than believing it was saved.
+const DATA_URL_PREFIX = 'data:image/png;base64,'
+
+app.post('/photo-consent', async (req, res) => {
+  const ip = getClientIp(req)
+  if (isStoreRateLimited(photoConsentRequestStore, ip, 20)) {
+    return sendApiError(res, 429, 'RATE_LIMITED', 'Too many requests. Please wait a minute and try again.')
+  }
+
+  if (!supabase) {
+    console.error('PHOTO CONSENT DB UNAVAILABLE: Supabase not configured.')
+    return sendApiError(res, 500, 'DB_UNAVAILABLE', 'Signature storage is not configured.')
+  }
+
+  const { name, locationText, latitude, longitude, locationAccuracy, capturedAt, language, signatureImage } =
+    req.body || {}
+
+  const trimmedSignature = typeof signatureImage === 'string' ? signatureImage : ''
+  if (!trimmedSignature.startsWith(DATA_URL_PREFIX) || trimmedSignature.length <= DATA_URL_PREFIX.length) {
+    return sendApiError(res, 400, 'INVALID_PAYLOAD', 'A signature image is required.')
+  }
+
+  const toFiniteOrNull = (value) => {
+    const num = Number(value)
+    return Number.isFinite(num) ? num : null
+  }
+
+  const trimmedLanguage = trimValue(language) === 'de' ? 'de' : 'en'
+  const clientCapturedAt = (() => {
+    const date = new Date(capturedAt)
+    return Number.isNaN(date.getTime()) ? new Date().toISOString() : date.toISOString()
+  })()
+
+  try {
+    // No .select() after insert: the anon role only has an INSERT policy (write-only,
+    // by design, so subject signatures can't be browsed via the API). Requesting the
+    // row back would implicitly require SELECT and fail RLS.
+    const { error } = await supabase.from('photo_consent_signatures').insert({
+      name: trimValue(name) || null,
+      location_text: trimValue(locationText) || null,
+      latitude: toFiniteOrNull(latitude),
+      longitude: toFiniteOrNull(longitude),
+      location_accuracy_m: toFiniteOrNull(locationAccuracy),
+      signature_image: trimmedSignature,
+      language: trimmedLanguage,
+      client_captured_at: clientCapturedAt,
+      ip,
+      user_agent: req.get('user-agent') || null,
+    })
+
+    if (error) {
+      console.error('PHOTO CONSENT INSERT FAILED:', error.message)
+      return sendApiError(res, 500, 'DB_INSERT_FAILED', 'Could not save the signature.')
+    }
+
+    console.log('PHOTO CONSENT SAVED:', { ts: new Date().toISOString(), ip })
+    return res.json({ ok: true })
+  } catch (error) {
+    console.error('PHOTO CONSENT ERROR:', serializeError(error))
+    return sendApiError(res, 500, 'DB_INSERT_FAILED', 'Could not save the signature.')
   }
 })
 

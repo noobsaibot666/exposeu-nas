@@ -23,6 +23,7 @@ import PopupsLanding from './pages/PopupsLanding'
 import GalleryMuseumLanding from './pages/GalleryMuseumLanding'
 import ArtistMusicianLanding from './pages/ArtistMusicianLanding'
 import Privacy from './pages/Privacy'
+import PhotoConsent from './pages/PhotoConsent'
 import Terms from './pages/Terms'
 import DataDeletion from './pages/DataDeletion'
 import { ThemeProvider } from './ThemeContext'
@@ -197,6 +198,7 @@ function App() {
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/data-deletion" element={<DataDeletion />} />
+            <Route path="/consent" element={<PhotoConsent />} />
             <Route path="/artist-sessions" element={<Navigate to="/services/artist-sessions" replace />} />
             <Route path="/de/artist-sessions" element={<Navigate to="/de/services/artist-sessions" replace />} />
             <Route path="/portfolio" element={<Portfolio />} />
