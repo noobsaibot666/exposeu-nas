@@ -136,7 +136,7 @@ function App() {
       <div className="page">
         <a className="skip-link" href="#main">{t('common.skipToContent')}</a>
         <AnalyticsConsentBanner />
-        <LocaleSwitcher />
+        {location.pathname !== '/consent' && <LocaleSwitcher />}
         <div className="page__content" ref={contentRef}>
           <Routes>
             <Route path="/" element={<HomeV2 />} />
