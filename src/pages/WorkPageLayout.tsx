@@ -7,8 +7,8 @@ import TestimonialsStrip from '../components/TestimonialsStrip'
 import FAQSection from '../components/FAQSection'
 import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
 import './WorkPage.css'
-import { useTranslation } from '../i18n/LocaleProvider'
-import { useLocalePath } from '../i18n/LocaleProvider'
+import { useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
+import LocalizedLink from '../i18n/LocalizedLink'
 import { serviceList } from '../data/serviceMeta'
 
 export type WorkCard = {
@@ -80,7 +80,7 @@ function WorkPageLayout({
   const stackRef = useRef<HTMLDivElement | null>(null)
   const { t, tm } = useTranslation()
   const processSteps = tm<Array<{ title: string; body: string }>>('services.shared.process')
-  const localizePath = useLocalePath()
+  const navigate = useLocaleNavigate()
 
   useTrackViewEvent('service_view', {
     service_slug: serviceSlug,
@@ -301,7 +301,9 @@ function WorkPageLayout({
           </ol>
         </div>
         <div className="work-gallery__media">
-          <div className="work-gallery__image" style={image ? { backgroundImage: `url(${image})` } : undefined} />
+          {image && (
+            <img className="work-gallery__image" src={image} alt={heading} loading="lazy" decoding="async" />
+          )}
         </div>
       </div>
     </section>
@@ -319,6 +321,7 @@ function WorkPageLayout({
             { id: 'about', label: t('nav.about'), href: '/about' },
             { id: 'contact', label: t('nav.contact'), href: '/contact' },
           ]}
+          onBrandClick={() => navigate('/')}
           className="top-nav--page"
           activeId="services"
         />
@@ -331,9 +334,9 @@ function WorkPageLayout({
             <h1>{renderSentenceBreaks(heroCopy)}</h1>
             {detail && <p className="work-hero__detail">{detail}</p>}
             {socialProof && <p className="work-hero__social-proof">{socialProof}</p>}
-            <a
+            <LocalizedLink
               className="work-hero__cta"
-              href={localizePath(finalCtaHref)}
+              to={finalCtaHref}
               onClick={() =>
                 setTimeout(() => trackEvent('service_cta_click', {
                   service_slug: serviceSlug,
@@ -344,7 +347,7 @@ function WorkPageLayout({
               }
             >
               {ctaLabel ?? t('services.shared.requestAvailability')}
-            </a>
+            </LocalizedLink>
           </div>
           <div className="work-hero__stack-shell">
             <p className="work-hero__label">{t('services.shared.projects')}</p>
@@ -371,7 +374,9 @@ function WorkPageLayout({
                       } as CSSProperties
                     }
                   >
-                    <div className="work-hero__card-media" style={{ backgroundImage: `url(${card.image})` }} />
+                    {card.image && (
+                      <img className="work-hero__card-media" src={card.image} alt={card.title} decoding="async" />
+                    )}
                   </div>
                 )
               })}
@@ -440,8 +445,8 @@ function WorkPageLayout({
                 <p key={i} className="work-editorial-pricing__body">{para}</p>
               ))}
               {editorialPricingCta && (
-                <a
-                  href={localizePath(editorialPricingCtaHref ?? finalCtaHref)}
+                <LocalizedLink
+                  to={editorialPricingCtaHref ?? finalCtaHref}
                   className="work-editorial-pricing__cta"
                   onClick={() =>
                     setTimeout(() => trackEvent('service_cta_click', {
@@ -453,7 +458,7 @@ function WorkPageLayout({
                   }
                 >
                   {editorialPricingCta} →
-                </a>
+                </LocalizedLink>
               )}
             </div>
           </div>
@@ -477,9 +482,9 @@ function WorkPageLayout({
               {serviceList
                 .filter((s) => s.slug !== serviceSlug)
                 .map((service) => (
-                  <a
+                  <LocalizedLink
                     key={service.slug}
-                    href={localizePath(service.href)}
+                    to={service.href}
                     className="work-more-services__card"
                     onClick={() =>
                       setTimeout(() => trackEvent('service_related_click', {
@@ -490,7 +495,7 @@ function WorkPageLayout({
                   >
                     <span className="work-more-services__name">{t(service.shortLabelKey)}</span>
                     <span className="work-more-services__arrow" aria-hidden="true">→</span>
-                  </a>
+                  </LocalizedLink>
                 ))}
             </div>
           </div>
@@ -504,9 +509,9 @@ function WorkPageLayout({
             <h2>{ctaText}</h2>
             {ctaDetail ? <p>{ctaDetail}</p> : null}
           </div>
-          <a
+          <LocalizedLink
             className="work-cta__link"
-            href={localizePath(finalCtaHref)}
+            to={finalCtaHref}
             onClick={() =>
               setTimeout(() => trackEvent('service_cta_click', {
                 service_slug: serviceSlug,
@@ -516,7 +521,7 @@ function WorkPageLayout({
               }), 0)}
           >
             {ctaLabel ?? t('services.shared.requestAvailability')}
-          </a>
+          </LocalizedLink>
         </div>
       </section>
     </main>
