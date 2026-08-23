@@ -4,15 +4,25 @@ services:
     container_name: traefik
     restart: always
     command:
+      - "--log.level=INFO"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.network=webnet"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
-      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      # Switched from HTTP-01 to DNS-01 (2026-07-09): the Cloudflare Tunnel in
+      # front of this box only forwards to Traefik on 443, so Let's Encrypt's
+      # HTTP-01 requests to port 80 could never reach the ACME challenge
+      # handler here — cert renewal had been silently failing for expose-u.com
+      # and alan-design.com for weeks (still serving on their last-good certs).
+      # DNS-01 proves ownership via a Cloudflare TXT record instead, so it
+      # doesn't depend on inbound traffic reaching this box at all.
+      - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare"
       - "--certificatesresolvers.myresolver.acme.email=alanxalves@me.com"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    env_file:
+      - .env.traefik
     ports:
       - "80:80"
       - "443:443"
