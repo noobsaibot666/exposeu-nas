@@ -4,7 +4,7 @@ import './Contact.css'
 import gsap from 'gsap'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
-import { trackEvent } from '../utils/analytics'
+import { hasAnalyticsConsent, trackEvent } from '../utils/analytics'
 import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
 import { SEOMeta } from '../components/SEOMeta'
 import AvailabilityBadge from '../components/AvailabilityBadge'
@@ -36,7 +36,7 @@ function Contact() {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSelectOpen, setIsSelectOpen] = useState(false)
-  const [messageValue, setMessageValue] = useState<string | null>(null)
+  const [messageValue, setMessageValue] = useState('')
   const hasStartedRef = useRef(false)
   const hasSubmittedRef = useRef(false)
   const hasAbandonFiredRef = useRef(false)
@@ -169,39 +169,49 @@ function Contact() {
         package_slug: packageParam,
       })
 
-      if (typeof window.gtag === 'function') {
-        window.gtag('event', 'form_submit_contact', {
-          event_category: 'contact',
-          event_label: projectType,
-          service_slug: selectedService?.slug,
-          package_slug: packageParam,
-        })
-      }
-      if (typeof window.fbq === 'function') {
-        window.fbq('track', 'Lead', {
-          content_name: projectType,
-          content_category: selectedService?.slug,
-          content_type: packageParam || undefined,
-        }, { eventID: metaEventId })
+      // gtag/fbq are called directly here (not via trackEvent) because this
+      // needs fbq's track/eventID shape for Meta CAPI dedup — but that means
+      // it must gate on consent itself, the same way trackEvent does.
+      if (hasAnalyticsConsent()) {
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'form_submit_contact', {
+            event_category: 'contact',
+            event_label: projectType,
+            service_slug: selectedService?.slug,
+            package_slug: packageParam,
+          })
+        }
+        if (typeof window.fbq === 'function') {
+          window.fbq('track', 'Lead', {
+            content_name: projectType,
+            content_category: selectedService?.slug,
+            content_type: packageParam || undefined,
+          }, { eventID: metaEventId })
+        }
       }
 
-      fetch(resolveTrackLeadEndpoint(), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          eventName: 'Lead',
-          email,
-          sourceUrl: window.location.href,
-          eventId: metaEventId,
-          projectType,
-          service: selectedService?.slug,
-          package: packageParam,
-        }),
-      }).then((r) => {
-        if (!r.ok) console.warn('Meta CAPI Lead tracking returned non-ok status', r.status)
-      }).catch((error) => {
-        console.warn('Meta CAPI Lead tracking request failed', error)
-      })
+      // Server-side Meta CAPI mirrors the client-side fbq call above (same
+      // eventID, for dedup) — gate it the same way so a rejected consent
+      // banner can't be bypassed by just moving the same tracking server-side.
+      if (hasAnalyticsConsent()) {
+        fetch(resolveTrackLeadEndpoint(), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            eventName: 'Lead',
+            email,
+            sourceUrl: window.location.href,
+            eventId: metaEventId,
+            projectType,
+            service: selectedService?.slug,
+            package: packageParam,
+          }),
+        }).then((r) => {
+          if (!r.ok) console.warn('Meta CAPI Lead tracking returned non-ok status', r.status)
+        }).catch((error) => {
+          console.warn('Meta CAPI Lead tracking request failed', error)
+        })
+      }
     } catch (err: unknown) {
       const msg =
         err instanceof Error
@@ -330,7 +340,7 @@ function Contact() {
               </div>
               <div>
                 <p className="contact__label">{t('contact.labels.instagram')}</p>
-                <a href="https://instagram.com/xposeu_official" target="_blank" rel="noreferrer">
+                <a href="https://instagram.com/xposeu_official" target="_blank" rel="noopener noreferrer">
                   xposeu_official
                 </a>
               </div>
@@ -436,9 +446,8 @@ function Contact() {
                   id="message"
                   name="message"
                   rows={4}
-                  className={messageValue === null ? 'isStarterMessage' : undefined}
-                  value={messageValue ?? t('forms.contact.fields.starterMessage')}
-                  onFocus={() => { if (messageValue === null) setMessageValue('') }}
+                  placeholder={t('forms.contact.fields.starterMessage')}
+                  value={messageValue}
                   onChange={(e) => { setMessageValue(e.target.value); handleFieldInput('message') }}
                 />
               </div>

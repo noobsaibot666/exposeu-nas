@@ -2,7 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import nodemailer from 'nodemailer'
-import { randomUUID } from 'node:crypto'
+import { randomUUID, timingSafeEqual } from 'node:crypto'
 import { createClient } from '@supabase/supabase-js'
 import ws from 'ws'
 import { buildMetaLeadEvent, sendMetaEvents } from './metaConversions.js'
@@ -124,6 +124,16 @@ const serializeError = (error) => ({
 })
 
 const trimValue = (value) => (typeof value === 'string' ? value.trim() : '')
+
+const tokensMatch = (a, b) => {
+  const bufA = Buffer.from(a)
+  const bufB = Buffer.from(b)
+  // Length differs -> definitely not a match. Safe to return early: token
+  // length isn't secret, only its content is, so this doesn't reintroduce
+  // a timing side-channel.
+  if (bufA.length !== bufB.length) return false
+  return timingSafeEqual(bufA, bufB)
+}
 
 const sendApiError = (res, status, code, message) =>
   res.status(status).json({
@@ -696,7 +706,7 @@ app.get('/smtp-test', async (req, res) => {
     if (!config.testToken) {
       return res.status(403).json({ ok: false, error: 'SMTP test disabled.' })
     }
-    if (!token || token !== config.testToken) {
+    if (!token || !tokensMatch(token, config.testToken)) {
       return res.status(401).json({ ok: false, error: 'Unauthorized.' })
     }
   }
@@ -750,6 +760,28 @@ app.get('/smtp-test', async (req, res) => {
       details: serializeError(error),
     })
   }
+})
+
+// Catch-all error handler. Without this, Express falls back to its built-in
+// handler, which — unless NODE_ENV is exactly 'production' — renders the
+// full stack trace (internal file paths, module tree) straight into the
+// HTTP response. That's reachable by anyone: a disallowed CORS Origin or a
+// malformed JSON body both land here via next(err) before ever reaching a
+// route handler's own try/catch, so relying on env config alone isn't
+// enough — this must exist regardless of how NODE_ENV is set.
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, _next) => {
+  console.error('UNHANDLED ERROR:', serializeError(err))
+
+  if (typeof err?.message === 'string' && err.message.startsWith('CORS:')) {
+    return sendApiError(res, 403, 'ORIGIN_NOT_ALLOWED', 'Origin not allowed.')
+  }
+
+  if (err?.type === 'entity.parse.failed') {
+    return sendApiError(res, 400, 'INVALID_JSON', 'Malformed request body.')
+  }
+
+  return sendApiError(res, 500, 'INTERNAL_ERROR', 'Something went wrong.')
 })
 
 app.listen(port, () => {
