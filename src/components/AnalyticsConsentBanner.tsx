@@ -24,7 +24,6 @@ function AnalyticsConsentBanner() {
 
   return (
     <aside className={styles.consent__banner} aria-label={t('common.analytics.ariaLabel')} role="dialog">
-      <p className={styles.consent__title}>{t('common.analytics.title')}</p>
       <p className={styles.consent__copy}>
         {t('common.analytics.copy')}
       </p>

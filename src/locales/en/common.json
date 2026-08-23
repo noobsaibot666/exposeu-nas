@@ -7,7 +7,7 @@
   "analytics": {
     "ariaLabel": "Analytics consent",
     "title": "Analytics consent",
-    "copy": "Help us improve Expose.u with anonymous usage insights. We do not collect personal data through analytics.",
+    "copy": "We don't collect personal data — only anonymous data to improve our service.",
     "accept": "Accept",
     "reject": "Reject"
   },

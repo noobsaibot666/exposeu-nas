@@ -17,17 +17,10 @@
   gap: 16px;
 }
 
-.consent__title {
-  margin: 0 0 4px;
-  font-size: 0.88rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
 .consent__copy {
   margin: 0;
   color: var(--text-secondary);
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   line-height: 1.4;
   max-width: 72ch;
 }
@@ -71,17 +64,22 @@
 
 @media (max-width: 640px) {
   .consent__banner {
-    padding: 12px 14px;
-    align-items: flex-start;
-    flex-direction: column;
+    padding: 10px 14px;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .consent__copy {
+    font-size: 0.76rem;
   }
 
   .consent__actions {
-    width: 100%;
-    justify-content: stretch;
+    flex: 0 0 auto;
+    gap: 6px;
   }
 
   .consent__button {
-    flex: 1 1 0;
+    padding: 7px 12px;
+    font-size: 0.78rem;
   }
 }
