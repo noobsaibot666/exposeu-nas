@@ -6,7 +6,8 @@ import gsap from 'gsap'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
 import { serviceMeta } from '../data/serviceMeta'
-import { useLocale, useLocaleNavigate, useLocalePath, useTranslation } from '../i18n/LocaleProvider'
+import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
+import LocalizedLink from '../i18n/LocalizedLink'
 import { SchemaOrg, SEOMeta } from '../components/SEOMeta'
 
 type VideoItem = {
@@ -212,7 +213,6 @@ const offers: OfferItem[] = [
 function Portfolio() {
   const navigate = useLocaleNavigate()
   const { locale } = useLocale()
-  const localizePath = useLocalePath()
   const { t, tm } = useTranslation()
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null)
   const [slideIndex, setSlideIndex] = useState(0)
@@ -601,9 +601,8 @@ function Portfolio() {
 
   const displayVideos = useMemo(() => {
     if (!isMobile) return localizedVideos
-    const filtered = localizedVideos.filter((video) => video.id !== 'v4')
-    const boogarins = filtered.find((video) => video.id === 'v5')
-    const rest = filtered.filter((video) => video.id !== 'v5')
+    const boogarins = localizedVideos.find((video) => video.id === 'v5')
+    const rest = localizedVideos.filter((video) => video.id !== 'v5')
     return boogarins ? [...rest, boogarins] : rest
   }, [isMobile, localizedVideos])
 
@@ -657,6 +656,7 @@ function Portfolio() {
                   id={video.id}
                   type="button"
                   className="portfolio__card"
+                  aria-label={video.title}
                   onClick={() => {
                     if (dragState.current.moved) {
                       dragState.current.moved = false
@@ -723,10 +723,10 @@ function Portfolio() {
           </div>
           <div className="portfolio__offers-grid">
             {localizedOffers.map((offer) => (
-              <a
+              <LocalizedLink
                 key={offer.id}
                 className="portfolio__offer-card"
-                href={localizePath(offer.link)}
+                to={offer.link}
               >
                 <div className="portfolio__offer-image-wrap">
                   <img className="portfolio__offer-image" src={offer.background} alt="" decoding="async" />
@@ -738,7 +738,7 @@ function Portfolio() {
                     {offer.cta}
                   </span>
                 </div>
-              </a>
+              </LocalizedLink>
             ))}
           </div>
         </div>
