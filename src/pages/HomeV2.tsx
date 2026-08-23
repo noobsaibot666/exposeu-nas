@@ -16,13 +16,13 @@ import { SchemaOrg, SEOMeta } from '../components/SEOMeta'
 // Set type to 'vimeo' or 'youtube' and replace id with the actual video ID
 const HERO_VIDEO = {
   type: 'vimeo' as 'vimeo' | 'youtube',
-  id: '1191974727',
+  id: '1220567424',
   hash: '',
 }
 
 const MOBILE_HERO_VIDEO = {
   type: 'vimeo' as 'vimeo' | 'youtube',
-  id: '1192614730',
+  id: '1220568256',
   hash: '',
 }
 
