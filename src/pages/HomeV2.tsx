@@ -135,6 +135,13 @@ function HomeV2() {
   const [videoReady, setVideoReady] = useState(false)
   const [mobileVideoReady, setMobileVideoReady] = useState(false)
   const [isMuted, setIsMuted] = useState(true)
+  // Mirrors the CSS breakpoint that swaps --desktop/--mobile video sections
+  // (HomeV2.css, max-width: 900px). CSS alone hides the inactive iframe but
+  // doesn't reliably stop the browser from fetching its src, so gate mounting
+  // in JS too — otherwise every visitor downloads both hero videos.
+  const [isMobileViewport, setIsMobileViewport] = useState(
+    () => window.matchMedia('(max-width: 900px)').matches,
+  )
   const location = useLocation()
   const [mobileLayout, setMobileLayout] = useState({
     card: 160,
@@ -151,6 +158,7 @@ function HomeV2() {
   const tiltY = useRef<((value: number) => void) | null>(null)
   const videoIframeRef = useRef<HTMLIFrameElement | null>(null)
   const mobileVideoIframeRef = useRef<HTMLIFrameElement | null>(null)
+  const earlyLoopUnsubscribeRef = useRef<(() => void) | null>(null)
 
   useTrackViewEvent('home_view')
   useScrollDepthTracking('home', [25, 50, 75, 90])
@@ -204,6 +212,15 @@ function HomeV2() {
     ]
   }, [heroGallery, heroServices])
 
+  useEffect(() => {
+    const mql = window.matchMedia('(max-width: 900px)')
+    const handleChange = (event: MediaQueryListEvent) => setIsMobileViewport(event.matches)
+    mql.addEventListener('change', handleChange)
+    return () => mql.removeEventListener('change', handleChange)
+  }, [])
+
+  useEffect(() => () => earlyLoopUnsubscribeRef.current?.(), [])
+
   // Reveal video: fires on iframe load + 600ms buffer, with 3s absolute fallback
   useEffect(() => {
     const fallback = setTimeout(() => setVideoReady(true), 3000)
@@ -249,10 +266,14 @@ function HomeV2() {
     const iframe = videoIframeRef.current
     if (!iframe) return
 
+    // Guards against handleVideoLoad firing more than once (e.g. the iframe
+    // reloading after a network hiccup) leaving stale listeners attached.
+    earlyLoopUnsubscribeRef.current?.()
+
     let seeking = false
 
     const onMessage = (event: MessageEvent) => {
-      if (!event.origin.includes('vimeo.com')) return
+      if (event.origin !== 'https://player.vimeo.com') return
 
       let data: Record<string, unknown>
       try {
@@ -285,23 +306,11 @@ function HomeV2() {
     }
 
     window.addEventListener('message', onMessage)
-    // Cleanup is intentionally not returned here because handleVideoLoad
-    // is called once; the listener is cheap and lives for the page lifetime.
+    earlyLoopUnsubscribeRef.current = () => window.removeEventListener('message', onMessage)
   }
 
   const handleScroll = (id: string) => {
     smoothScrollTo(id, 500, 72)
-  }
-
-  const handleHeroCardClick = () => {
-    handleScroll('#cases')
-  }
-
-  const handleHeroCardKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault()
-      handleScroll('#cases')
-    }
   }
 
   const navLinks = useMemo(
@@ -755,16 +764,18 @@ function HomeV2() {
       {/* Fullscreen video hero — desktop only */}
       <section className="home__video-hero home__video-hero--desktop" aria-label="Background video">
         <div className="home__video-iframe-wrap" aria-hidden="true">
-          <iframe
-            ref={videoIframeRef}
-            src={buildHeroVideoSrc(HERO_VIDEO)}
-            frameBorder="0"
-            allow="autoplay; fullscreen"
-            allowFullScreen
-            title="Hero background video"
-            tabIndex={-1}
-            onLoad={handleVideoLoad}
-          />
+          {!isMobileViewport && (
+            <iframe
+              ref={videoIframeRef}
+              src={buildHeroVideoSrc(HERO_VIDEO)}
+              frameBorder="0"
+              allow="autoplay; fullscreen"
+              allowFullScreen
+              title="Hero background video"
+              tabIndex={-1}
+              onLoad={handleVideoLoad}
+            />
+          )}
         </div>
         <div className="home__video-overlay" />
         <div className={`home__video-blind${videoReady ? ' home__video-blind--gone' : ''}`} aria-hidden="true" />
@@ -776,7 +787,7 @@ function HomeV2() {
         >
           <span>{t('home.hero.scroll')}</span>
         </button>
-        {HERO_VIDEO.type === 'vimeo' && (
+        {!isMobileViewport && HERO_VIDEO.type === 'vimeo' && (
           <button
             className="home__video-mute-btn"
             type="button"
@@ -803,16 +814,18 @@ function HomeV2() {
       {/* Fullscreen video hero — mobile only */}
       <section className="home__video-hero home__video-hero--mobile" aria-label="Background video">
         <div className="home__video-iframe-wrap home__video-iframe-wrap--mobile" aria-hidden="true">
-          <iframe
-            ref={mobileVideoIframeRef}
-            src={buildHeroVideoSrc(MOBILE_HERO_VIDEO)}
-            frameBorder="0"
-            allow="autoplay; fullscreen"
-            allowFullScreen
-            title="Mobile hero background video"
-            tabIndex={-1}
-            onLoad={handleMobileVideoLoad}
-          />
+          {isMobileViewport && (
+            <iframe
+              ref={mobileVideoIframeRef}
+              src={buildHeroVideoSrc(MOBILE_HERO_VIDEO)}
+              frameBorder="0"
+              allow="autoplay; fullscreen"
+              allowFullScreen
+              title="Mobile hero background video"
+              tabIndex={-1}
+              onLoad={handleMobileVideoLoad}
+            />
+          )}
         </div>
         <div className="home__video-overlay" />
         <div className={`home__video-blind${mobileVideoReady ? ' home__video-blind--gone' : ''}`} aria-hidden="true" />
@@ -850,15 +863,13 @@ function HomeV2() {
             onMouseLeave={resetTilt}
           >
             {heroGallery.map((thumb) => (
-              <figure
+              <LocalizedLink
                 key={thumb.id}
+                to={serviceMeta[thumb.slug as keyof typeof serviceMeta].href}
                 className="home__hero-thumb"
                 data-rotation={thumb.rotation}
                 style={{ '--thumb-rotation': `${thumb.rotation}deg` } as CSSProperties}
-                role="button"
-                tabIndex={0}
-                onClick={handleHeroCardClick}
-                onKeyDown={handleHeroCardKeyDown}
+                onClick={() => trackHomeCta(thumb.label, 'hero_gallery_thumb')}
               >
                 <div className="home__hero-thumb-image">
                   <img src={thumb.image} alt={thumb.label} />
@@ -866,7 +877,7 @@ function HomeV2() {
                 <figcaption>
                   <strong>{thumb.label}</strong>
                 </figcaption>
-              </figure>
+              </LocalizedLink>
             ))}
           </div>
           <div
@@ -901,13 +912,9 @@ function HomeV2() {
                   className="home__hero-thumb"
                   data-rotation={thumb.rotation}
                   style={style}
-                  role="button"
-                  tabIndex={0}
-                  onClick={handleHeroCardClick}
-                  onKeyDown={handleHeroCardKeyDown}
                 >
                   <div className="home__hero-thumb-image">
-                    <img src={thumb.image} alt={thumb.label} />
+                    <img src={thumb.image} alt="" />
                   </div>
                   <figcaption>
                     <strong>{thumb.label}</strong>
@@ -1032,9 +1039,9 @@ function HomeV2() {
           <LocalizedLink
             to="/portfolio"
             className="home__process-secondary"
-            onClick={() => trackHomeCta('Latest Jobs', 'process_secondary')}
+            onClick={() => trackHomeCta(t('home.project.seeLatestWork'), 'process_secondary')}
           >
-            Latest Jobs
+            {t('home.project.seeLatestWork')}
           </LocalizedLink>
         </div>
       </section>
