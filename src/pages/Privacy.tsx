@@ -75,6 +75,16 @@ function Privacy() {
           </div>
 
           <div className="impressum__block">
+            <h2>Business outreach emails</h2>
+            <p>
+              We may contact venues, galleries, and other organisations directly by email about our services, based on our legitimate interest in B2B business development (GDPR Art. 6(1)(f)). We use publicly available business contact details for this purpose — we do not purchase contact lists.
+            </p>
+            <p>
+              Every outreach email includes a one-click unsubscribe link. You can also object to this processing at any time by emailing <a href="mailto:hello@expose-u.com">hello@expose-u.com</a>. Once you unsubscribe or object, we stop emailing you and retain only your email address on a suppression list, so we don't contact you again.
+            </p>
+          </div>
+
+          <div className="impressum__block">
             <h2>Third-party services</h2>
             <p><strong>Meta (Facebook & Instagram)</strong> — Meta Pixel is used to track website visits and conversions from Meta ads. Meta may use this data according to their own privacy policy.</p>
             <p><strong>Google Analytics (GA4)</strong> — used to analyse website traffic and user behaviour.</p>
