@@ -4,8 +4,9 @@ import './ReleaseContentKit.css'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
 import { SEOMeta } from '../components/SEOMeta'
-import { useLocale, useLocaleNavigate, useLocalePath, useTranslation } from '../i18n/LocaleProvider'
-import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
+import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
+import LocalizedLink from '../i18n/LocalizedLink'
+import { hasAnalyticsConsent, trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
 import { resolveImagePath } from '../utils/resolveImagePath'
 
 const SERVICE_SLUG = 'release-content-kit'
@@ -90,7 +91,6 @@ function IconPoster() {
 export default function ReleaseContentKit() {
   const rootRef = useRef<HTMLElement | null>(null)
   const navigate = useLocaleNavigate()
-  const localizePath = useLocalePath()
   const { locale } = useLocale()
   const { t, tm } = useTranslation()
 
@@ -112,7 +112,7 @@ export default function ReleaseContentKit() {
   }))
 
   useEffect(() => {
-    if (typeof window.fbq !== 'function') return
+    if (typeof window.fbq !== 'function' || !hasAnalyticsConsent()) return
     window.fbq('track', 'ViewContent', {
       content_name: 'Release Content Kit',
       content_category: 'photography_service',
@@ -249,7 +249,7 @@ export default function ReleaseContentKit() {
     [navigate, t],
   )
 
-  const contactHref = localizePath(`/contact?service=${SERVICE_SLUG}`)
+  const contactPath = `/contact?service=${SERVICE_SLUG}`
 
   const trackCta = (location: string, packageSlug?: string) => {
     setTimeout(() => trackEvent('landing_page_cta_click', {
@@ -259,18 +259,20 @@ export default function ReleaseContentKit() {
       package_slug: packageSlug,
     }), 0)
 
-    if (typeof window.fbq === 'function') {
-      window.fbq('trackCustom', 'LandingPageCtaClick', {
-        content_name: 'Release Content Kit',
-        content_category: SERVICE_SLUG,
-        page_slug: SERVICE_SLUG,
-        cta_location: location,
-        package_slug: packageSlug,
-      })
-    }
+    if (hasAnalyticsConsent()) {
+      if (typeof window.fbq === 'function') {
+        window.fbq('trackCustom', 'LandingPageCtaClick', {
+          content_name: 'Release Content Kit',
+          content_category: SERVICE_SLUG,
+          page_slug: SERVICE_SLUG,
+          cta_location: location,
+          package_slug: packageSlug,
+        })
+      }
 
-    if (typeof window.clarity === 'function') {
-      window.clarity('event', `landing_page_cta_click_${SERVICE_SLUG}_${location}`)
+      if (typeof window.clarity === 'function') {
+        window.clarity('event', `landing_page_cta_click_${SERVICE_SLUG}_${location}`)
+      }
     }
   }
 
@@ -304,9 +306,9 @@ export default function ReleaseContentKit() {
             {t('services.pages.release-content-kit.hero.subheadline')}
           </p>
           <div className="rck__actions">
-            <a className="rck__button rck__button--primary" href={contactHref} onClick={() => trackCta('hero_primary')}>
+            <LocalizedLink className="rck__button rck__button--primary" to={contactPath} onClick={() => trackCta('hero_primary')}>
               {t('services.pages.release-content-kit.hero.cta')}
-            </a>
+            </LocalizedLink>
             <a className="rck__button" href="#included" onClick={() => trackCta('hero_secondary')}>
               {t('services.pages.release-content-kit.hero.ctaSecondary')}
             </a>
@@ -348,20 +350,20 @@ export default function ReleaseContentKit() {
             <p className="rck__lede">{t('services.pages.release-content-kit.included.lede')}</p>
             <div className="rck__asset-grid">
               {cards.map(({ title, body }) => (
-                <a
+                <LocalizedLink
                   className="rck__asset-card"
-                  href={localizePath(`/contact?service=${SERVICE_SLUG}&package=${encodeURIComponent(title.toLowerCase().replace(/\s+/g, '-'))}`)}
+                  to={`/contact?service=${SERVICE_SLUG}&package=${encodeURIComponent(title.toLowerCase().replace(/\s+/g, '-'))}`}
                   key={title}
                   onClick={() => trackCta('offer_card', title.toLowerCase().replace(/\s+/g, '-'))}
                 >
                   <h3>{title}</h3>
                   <p>{body}</p>
-                </a>
+                </LocalizedLink>
               ))}
             </div>
-            <a className="rck__section-cta" href={contactHref} onClick={() => trackCta('included')}>
+            <LocalizedLink className="rck__section-cta" to={contactPath} onClick={() => trackCta('included')}>
               {t('services.pages.release-content-kit.included.cta')}
-            </a>
+            </LocalizedLink>
           </div>
         </div>
       </section>
@@ -404,9 +406,9 @@ export default function ReleaseContentKit() {
               </div>
             ))}
           </div>
-          <a className="rck__section-cta" href={contactHref} onClick={() => trackCta('usage')}>
+          <LocalizedLink className="rck__section-cta" to={contactPath} onClick={() => trackCta('usage')}>
             {t('services.pages.release-content-kit.usage.cta')}
-          </a>
+          </LocalizedLink>
         </div>
       </section>
 
@@ -415,9 +417,9 @@ export default function ReleaseContentKit() {
           <h2>{t('services.pages.release-content-kit.final.h2')}</h2>
           <p>{t('services.pages.release-content-kit.final.body')}</p>
           <p className="rck__pricing-note">{t('services.pages.release-content-kit.final.pricingNote')}</p>
-          <a className="rck__button rck__button--primary" href={contactHref} onClick={() => trackCta('final')}>
+          <LocalizedLink className="rck__button rck__button--primary" to={contactPath} onClick={() => trackCta('final')}>
             {t('services.pages.release-content-kit.final.cta')}
-          </a>
+          </LocalizedLink>
         </div>
       </section>
 

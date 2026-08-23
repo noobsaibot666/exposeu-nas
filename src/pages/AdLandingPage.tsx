@@ -3,8 +3,9 @@ import gsap from 'gsap'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
 import { SEOMeta } from '../components/SEOMeta'
-import { useLocale, useLocaleNavigate, useLocalePath, useTranslation } from '../i18n/LocaleProvider'
-import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
+import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
+import LocalizedLink from '../i18n/LocalizedLink'
+import { hasAnalyticsConsent, trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
 import './AdLandingPage.css'
 
 type Platform = {
@@ -64,12 +65,9 @@ const iconLabels = ['IG', 'TT', 'SP', 'YT', 'PR', 'AD']
 export default function AdLandingPage({ config }: { config: AdLandingPageConfig }) {
   const rootRef = useRef<HTMLElement | null>(null)
   const navigate = useLocaleNavigate()
-  const localizePath = useLocalePath()
   const { locale } = useLocale()
   const { t } = useTranslation()
-  const contactHref = localizePath(
-    `/contact?service=${config.serviceSlug}${config.ctaPackage ? `&package=${encodeURIComponent(config.ctaPackage)}` : ''}`,
-  )
+  const contactPath = `/contact?service=${config.serviceSlug}${config.ctaPackage ? `&package=${encodeURIComponent(config.ctaPackage)}` : ''}`
 
   useTrackViewEvent('landing_page_view', {
     page_slug: config.slug,
@@ -84,7 +82,7 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
   }))
 
   useEffect(() => {
-    if (typeof window.fbq !== 'function') return
+    if (typeof window.fbq !== 'function' || !hasAnalyticsConsent()) return
     window.fbq('track', 'ViewContent', {
       content_name: config.metaContentName,
       content_category: 'photography_service',
@@ -221,18 +219,20 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
       package_slug: packageSlug,
     }), 0)
 
-    if (typeof window.fbq === 'function') {
-      window.fbq('trackCustom', 'LandingPageCtaClick', {
-        content_name: config.metaContentName,
-        content_category: config.serviceSlug,
-        page_slug: config.slug,
-        cta_location: location,
-        package_slug: packageSlug,
-      })
-    }
+    if (hasAnalyticsConsent()) {
+      if (typeof window.fbq === 'function') {
+        window.fbq('trackCustom', 'LandingPageCtaClick', {
+          content_name: config.metaContentName,
+          content_category: config.serviceSlug,
+          page_slug: config.slug,
+          cta_location: location,
+          package_slug: packageSlug,
+        })
+      }
 
-    if (typeof window.clarity === 'function') {
-      window.clarity('event', `landing_page_cta_click_${config.slug}_${location}`)
+      if (typeof window.clarity === 'function') {
+        window.clarity('event', `landing_page_cta_click_${config.slug}_${location}`)
+      }
     }
   }
 
@@ -264,9 +264,9 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
           {config.h1 ? <h1>{config.h1}</h1> : <h1>{config.h1Line1}<br />{config.h1Line2}</h1>}
           <p className="alp__subheadline">{config.subheadline}</p>
           <div className="alp__actions">
-            <a className="alp__button alp__button--primary" href={contactHref} onClick={() => trackCta('hero_primary')}>
+            <LocalizedLink className="alp__button alp__button--primary" to={contactPath} onClick={() => trackCta('hero_primary')}>
               {config.cta}
-            </a>
+            </LocalizedLink>
             <a className="alp__button" href="#included" onClick={() => trackCta('hero_secondary')}>
               {config.ctaSecondary}
             </a>
@@ -339,21 +339,21 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
               {config.includedCards.map(({ title, body, slug }) => {
                 const packageSlug = slug ?? title.toLowerCase().replace(/\s+/g, '-')
                 return (
-                  <a
+                  <LocalizedLink
                     className="alp__asset-card"
-                    href={localizePath(`/contact?service=${config.serviceSlug}&package=${encodeURIComponent(packageSlug)}`)}
+                    to={`/contact?service=${config.serviceSlug}&package=${encodeURIComponent(packageSlug)}`}
                     key={title}
                     onClick={() => trackCta('offer_card', packageSlug)}
                   >
                     <h3>{title}</h3>
                     <p>{body}</p>
-                  </a>
+                  </LocalizedLink>
                 )
               })}
             </div>
-            <a className="alp__section-cta" href={contactHref} onClick={() => trackCta('included')}>
+            <LocalizedLink className="alp__section-cta" to={contactPath} onClick={() => trackCta('included')}>
               {config.includedCta}
-            </a>
+            </LocalizedLink>
           </div>
         </div>
       </section>
@@ -394,9 +394,9 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
               ))}
             </div>
             {config.usageCta && (
-              <a className="alp__section-cta" href={contactHref} onClick={() => trackCta('usage')}>
+              <LocalizedLink className="alp__section-cta" to={contactPath} onClick={() => trackCta('usage')}>
                 {config.usageCta}
-              </a>
+              </LocalizedLink>
             )}
           </div>
         </section>
@@ -407,9 +407,9 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
           <h2>{config.finalHeading}</h2>
           {config.finalBody.split('\n\n').filter(Boolean).map((para, i) => <p key={i}>{para}</p>)}
           {config.pricingNote && <p className="alp__pricing-note">{config.pricingNote}</p>}
-          <a className="alp__button alp__button--primary" href={contactHref} onClick={() => trackCta('final')}>
+          <LocalizedLink className="alp__button alp__button--primary" to={contactPath} onClick={() => trackCta('final')}>
             {config.finalCta}
-          </a>
+          </LocalizedLink>
         </div>
       </section>
 

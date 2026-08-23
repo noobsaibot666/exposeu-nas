@@ -4,7 +4,8 @@ import './About.css'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
 import { resolveImagePath } from '../utils/resolveImagePath'
-import { useLocale, useLocaleNavigate, useLocalePath, useTranslation } from '../i18n/LocaleProvider'
+import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
+import LocalizedLink from '../i18n/LocalizedLink'
 import { SEOMeta } from '../components/SEOMeta'
 
 function About() {
@@ -12,7 +13,6 @@ function About() {
   const { locale } = useLocale()
   const rootRef = useRef<HTMLElement | null>(null)
   const { t, tm } = useTranslation()
-  const localizePath = useLocalePath()
   const sections = tm<Array<{ label: string; body: string; cta?: string }>>('about.sections')
 
   const navLinks = useMemo(
@@ -130,9 +130,9 @@ function About() {
                 <div>
                   <p className="about__body">{section.body}</p>
                   {section.cta && (
-                    <a className="about__cta-link" href={localizePath('/contact')}>
+                    <LocalizedLink className="about__cta-link" to="/contact">
                       {section.cta}
-                    </a>
+                    </LocalizedLink>
                   )}
                 </div>
               </div>
