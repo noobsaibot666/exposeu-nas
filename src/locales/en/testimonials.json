@@ -40,6 +40,70 @@
       "company": "Creative Director",
       "avatar": null,
       "service": "brand-agency"
+    },
+    {
+      "id": "t6",
+      "quote": "We needed press portraits and vertical content in the same afternoon. Everything came back edited and ready to post — no extra rounds.",
+      "author": "Nadia Ohm",
+      "company": "Musician",
+      "avatar": null,
+      "service": "artist-sessions"
+    },
+    {
+      "id": "t7",
+      "quote": "They knew how to work the space without turning the session into a production. Felt natural, looked intentional.",
+      "author": "Rafael Duarte",
+      "company": "Producer / DJ",
+      "avatar": null,
+      "service": "artist-sessions"
+    },
+    {
+      "id": "t8",
+      "quote": "Selects were in our inbox before we'd even finished load-out. That turnaround is what got us the next booking.",
+      "author": "Talia Brenner",
+      "company": "Festival Booker",
+      "avatar": null,
+      "service": "concerts-events"
+    },
+    {
+      "id": "t9",
+      "quote": "Footage carried the energy of the room, not just the setlist. We used it across every platform without a single re-edit.",
+      "author": "Jonas Reitmann",
+      "company": "Band Manager",
+      "avatar": null,
+      "service": "concerts-events"
+    },
+    {
+      "id": "t10",
+      "quote": "Quiet, respectful and fast. Visitors barely noticed a crew was in the room, and the artwork colors held true in every frame.",
+      "author": "Ines Vogt",
+      "company": "Curator",
+      "avatar": null,
+      "service": "exhibition-gallery"
+    },
+    {
+      "id": "t11",
+      "quote": "Installation shots we could send straight to the fabricator and the press — same files, no separate edit needed.",
+      "author": "Samuel Krantz",
+      "company": "Artist",
+      "avatar": null,
+      "service": "exhibition-gallery"
+    },
+    {
+      "id": "t12",
+      "quote": "Understood the brief in one call. What came back matched our deck's tone exactly, first pass.",
+      "author": "Priya Nandan",
+      "company": "Art Director",
+      "avatar": null,
+      "service": "brand-agency"
+    },
+    {
+      "id": "t13",
+      "quote": "We handed this straight to the client as case study material. No notes, no revisions.",
+      "author": "Tobias Ahrend",
+      "company": "Brand Marketing Manager",
+      "avatar": null,
+      "service": "brand-agency"
     }
   ]
 }

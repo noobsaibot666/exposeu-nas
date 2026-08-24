@@ -18,7 +18,6 @@
     "artist-musician-short": "Artist & Musician"
   },
   "shared": {
-    "projects": "Projects",
     "whatYouGet": "What you get",
     "idealFor": "Who we work with",
     "howItWorks": "How it works",
@@ -41,7 +40,6 @@
     "readyToCollaborate": "Ready to collaborate?",
     "requestAvailability": "Request availability",
     "responseTime": "Berlin-based. Response within 24 hours.",
-    "moreServices": "More services",
     "howWeWork": "How we work"
   },
   "pages": {

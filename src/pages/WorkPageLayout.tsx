@@ -10,7 +10,6 @@ import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/
 import './WorkPage.css'
 import { useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
-import { serviceList } from '../data/serviceMeta'
 
 export type WorkCard = {
   image?: string
@@ -351,7 +350,6 @@ function WorkPageLayout({
             </LocalizedLink>
           </div>
           <div className="work-hero__stack-shell">
-            <p className="work-hero__label">{t('services.shared.projects')}</p>
             <div className="work-hero__stack" ref={stackRef}>
               {cards.map((card, index) => {
                 const scales = [0.98, 1.08, 1.2, 1.32]
@@ -475,34 +473,6 @@ function WorkPageLayout({
       {serviceSlug && <TestimonialsStrip service={serviceSlug} />}
 
       {serviceSlug && <FAQSection service={serviceSlug} />}
-
-      {serviceSlug && (
-        <section className="work-more-services">
-          <div className="content work-more-services__inner">
-            <p className="work-gallery__label">{t('services.shared.moreServices')}</p>
-            <div className="work-more-services__grid">
-              {serviceList
-                .filter((s) => s.slug !== serviceSlug)
-                .map((service) => (
-                  <LocalizedLink
-                    key={service.slug}
-                    to={service.href}
-                    className="work-more-services__card"
-                    onClick={() =>
-                      setTimeout(() => trackEvent('service_related_click', {
-                        from_service: serviceSlug,
-                        to_service: service.slug,
-                      }), 0)
-                    }
-                  >
-                    <span className="work-more-services__name">{t(service.shortLabelKey)}</span>
-                    <span className="work-more-services__arrow" aria-hidden="true">→</span>
-                  </LocalizedLink>
-                ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       <section className="section work-cta">
         <div className="content work-cta__content">

@@ -40,6 +40,70 @@
       "company": "Creative Director",
       "avatar": null,
       "service": "brand-agency"
+    },
+    {
+      "id": "t6",
+      "quote": "Wir brauchten Presseportraits und vertikale Inhalte am selben Nachmittag. Alles kam fertig geschnitten und einsatzbereit zurück — ohne weitere Runden.",
+      "author": "Nadia Ohm",
+      "company": "Musikerin",
+      "avatar": null,
+      "service": "artist-sessions"
+    },
+    {
+      "id": "t7",
+      "quote": "Sie wussten, wie man den Raum nutzt, ohne die Session zu einer großen Produktion zu machen. Es fühlte sich natürlich an und wirkte trotzdem bewusst gestaltet.",
+      "author": "Rafael Duarte",
+      "company": "Produzent / DJ",
+      "avatar": null,
+      "service": "artist-sessions"
+    },
+    {
+      "id": "t8",
+      "quote": "Die Auswahl war in unserem Postfach, bevor wir überhaupt fertig abgebaut hatten. Dieses Tempo hat uns die nächste Buchung eingebracht.",
+      "author": "Talia Brenner",
+      "company": "Festival-Booking",
+      "avatar": null,
+      "service": "concerts-events"
+    },
+    {
+      "id": "t9",
+      "quote": "Das Material hat die Energie des Raums eingefangen, nicht nur die Setlist. Wir haben es auf jeder Plattform verwendet, ohne einen einzigen Nachschnitt.",
+      "author": "Jonas Reitmann",
+      "company": "Bandmanager",
+      "avatar": null,
+      "service": "concerts-events"
+    },
+    {
+      "id": "t10",
+      "quote": "Ruhig, respektvoll und schnell. Besucher:innen haben kaum bemerkt, dass ein Team im Raum war, und die Farben der Werke stimmten in jedem Bild.",
+      "author": "Ines Vogt",
+      "company": "Kuratorin",
+      "avatar": null,
+      "service": "exhibition-gallery"
+    },
+    {
+      "id": "t11",
+      "quote": "Installationsaufnahmen, die wir direkt an die Werkstatt und die Presse schicken konnten — gleiche Dateien, kein separater Schnitt nötig.",
+      "author": "Samuel Krantz",
+      "company": "Künstler",
+      "avatar": null,
+      "service": "exhibition-gallery"
+    },
+    {
+      "id": "t12",
+      "quote": "Hat das Briefing in einem einzigen Call verstanden. Was zurückkam, passte auf Anhieb genau zum Ton unseres Decks.",
+      "author": "Priya Nandan",
+      "company": "Art Director",
+      "avatar": null,
+      "service": "brand-agency"
+    },
+    {
+      "id": "t13",
+      "quote": "Wir haben das direkt als Case-Study-Material an den Kunden weitergegeben. Keine Anmerkungen, keine Überarbeitungen.",
+      "author": "Tobias Ahrend",
+      "company": "Brand Marketing Manager",
+      "avatar": null,
+      "service": "brand-agency"
     }
   ]
 }

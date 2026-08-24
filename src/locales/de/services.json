@@ -18,7 +18,6 @@
     "artist-musician-short": "Künstler & Musiker"
   },
   "shared": {
-    "projects": "Projekte",
     "whatYouGet": "Was du bekommst",
     "idealFor": "Mit wem wir arbeiten",
     "howItWorks": "So funktioniert's",
@@ -40,7 +39,6 @@
     "pricingFor": "Klare Preise für {{service}}.",
     "readyToCollaborate": "Bereit für die Zusammenarbeit?",
     "requestAvailability": "Verfügbarkeit anfragen",
-    "moreServices": "Weitere Services",
     "responseTime": "Based in Berlin. Antwort innerhalb von 24 Stunden.",
     "howWeWork": "Wie wir arbeiten"
   },
