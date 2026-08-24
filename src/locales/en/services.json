@@ -44,8 +44,8 @@
   "pages": {
     "concerts-events": {
       "title": "Concert & Live Events",
-      "heroCopy": "Live event documentation for venues, labels and promoters. The assets you need for the next booking, the next announcement, the next campaign.",
-      "detail": "Photo and video coverage for concerts, shows and cultural events in Berlin. Fast delivery. One crew. Everything organized for immediate use.",
+      "heroCopy": "Live event documentation for venues, labels and promoters.",
+      "detail": "The assets you need for the next booking, announcement, or campaign.",
       "socialProof": "",
       "ctaText": "Let's cover your next show.",
       "footerCtaLabel": "Tell us about your show",
@@ -101,8 +101,8 @@
     "artist-sessions": {
       "title": "Artist Sessions & Portraits",
       "heroCopy": "New work deserves images that match it.",
-      "detail": "Portrait and studio sessions built for press kits, release campaigns and booking profiles. One session, everything you need.",
-      "socialProof": "Working with artists, labels, managers and creative studios in Berlin.",
+      "detail": "Portrait and studio sessions for press kits and release campaigns.",
+      "socialProof": "Trusted by artists, labels, and creative studios in Berlin.",
       "ctaText": "Let's plan your session.",
       "footerCtaLabel": "Tell us about your project",
       "cards": ["Portrait", "In Studio", "Process", "Live Moment"],
@@ -123,7 +123,7 @@
       ],
       "pricing": {
         "title": "Artist Sessions",
-        "body": "Editorial photo and video sessions for artists, releases and creative projects.\n\nWe are artists working for artists.\n\nOur sessions are built around art direction, storytelling and real collaboration — which means they often go further than a standard photo shoot.\n\nMost independent artist productions fall between €400 and €700, depending on concept, location and what you need the session for.\n\nIf you are working on something smaller, or building something meaningful with a limited budget, we are always happy to talk.",
+        "body": "We're artists working for artists — every session is shaped around your concept, timing and budget.\n\nTell us what you're working on and we'll send over a proposal.",
         "cta": "Check availability"
       }
     },

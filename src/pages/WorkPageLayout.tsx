@@ -128,7 +128,7 @@ function WorkPageLayout({
       gallerySections.forEach((section) => {
         const header = section.querySelector<HTMLElement>('.work-gallery__header')
         const sequenceItems = section.querySelectorAll<HTMLElement>('.work-gallery__sequence-item')
-        const media = section.querySelector<HTMLElement>('.work-gallery__image')
+        const media = section.querySelector<HTMLImageElement>('.work-gallery__image')
 
         if (header) {
           gsap.fromTo(
@@ -159,20 +159,31 @@ function WorkPageLayout({
         )
 
         if (media && media.offsetParent !== null) {
-          gsap.fromTo(
-            media,
-            { opacity: 0, scale: 1.04, y: 16, filter: 'blur(10px)' },
-            {
-              opacity: 1,
-              scale: 1,
-              y: 0,
-              filter: 'blur(0px)',
-              duration: 0.9,
-              ease: 'power2.out',
-              force3D: true,
-              scrollTrigger: { trigger: section, start: 'top 74%' },
-            },
-          )
+          const revealMedia = () => {
+            gsap.fromTo(
+              media,
+              { opacity: 0, scale: 1.04, y: 16, filter: 'blur(10px)' },
+              {
+                opacity: 1,
+                scale: 1,
+                y: 0,
+                filter: 'blur(0px)',
+                duration: 0.9,
+                ease: 'power2.out',
+                force3D: true,
+                scrollTrigger: { trigger: section, start: 'top 74%' },
+              },
+            )
+          }
+
+          // Gate the reveal on the image actually being loaded — otherwise the
+          // scroll-triggered animation can finish before the bytes arrive,
+          // showing an empty frame that then pops in late once loaded.
+          if (media.complete) {
+            revealMedia()
+          } else {
+            media.addEventListener('load', revealMedia, { once: true })
+          }
         }
       })
 
@@ -274,7 +285,7 @@ function WorkPageLayout({
         </div>
         <div className="work-gallery__media">
           {image && (
-            <img className="work-gallery__image" src={image} alt={heading} loading="lazy" decoding="async" />
+            <img className="work-gallery__image" src={image} alt={heading} loading="eager" decoding="async" />
           )}
         </div>
       </div>
