@@ -52,6 +52,8 @@ The script does **not** run `npm ci`/`npm run build` directly against this worki
 
 **Local tooling rule:** never run `npm install`, `npm ci`, or `npm run build` against this working directory from a local machine — that's the exact operation that corrupts the shared `node_modules`. Local verification should be read-only (`tsc --noEmit`, `eslint`) against whatever is already installed; if that's missing or broken, report it rather than reinstalling. `npm run dev`/`npm run build` locally on macOS depend on the `node_modules/.darwin-native/node_modules` fallback described in `docs/nas-dependency-repair.md` — it's gitignored and not recreated by `npm ci`, so it can go missing after any clean install on either side.
 
+**If a git command fails with a confusing error on this mount** (`unable to write loose object file: Is a directory`, `couldn't write '...refs/heads/X.lock'`, or similar) — this is the same shared-SMB-mount issue, hitting `.git` itself rather than `node_modules`. It's leftover junk blocking the next write, not lost work; `git status`/`git diff` come back clean every time this has happened. Run `scripts/git-nas-doctor.sh` to see what it found, or `scripts/git-nas-doctor.sh --fix` to clear it, then retry the git command.
+
 Guardrails:
 - never recreate `traefik`
 - never run compose without explicit service names
