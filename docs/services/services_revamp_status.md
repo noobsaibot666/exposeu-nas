@@ -27,11 +27,16 @@
 
 **Artist Sessions** `/services/artist-sessions`
 - [x] Pricing replaced with editorial block — includes €400–700 range, artist-to-artist framing, 5 paragraphs
+  - **Superseded 2026-08-24**: the €400–700 range and 5-paragraph body were flagged as
+    inconsistent with the page's own "no visible price" pattern and read as an
+    undesigned wall of text. Rewritten to 2 short paragraphs, no price, CTA-focused —
+    see `services_audit.md` Week 12 entry. SEO description/ogDescription (below) had
+    the same €400–700 mention and were updated to match.
 - [x] Audience line updated: labels and managers added
 - [x] "Ideal for" → "Who we work with" — Labels and management added as 2nd item
 - [x] Hero subhead updated → "One session, everything you need."
 - [x] SEO title → "Artist Sessions Berlin — Editorial Content for Artists — expose.u"
-- [x] SEO description updated (includes €400–700)
+- [x] SEO description updated (includes €400–700) — *see superseded note above*
 
 **Brand & Agency** `/services/brand-agency`
 - [x] Hero headline → "Documentation for designed experiences."

@@ -43,6 +43,22 @@ Standalone pages for paid campaigns. Not linked from the homepage grid or global
 
 ---
 
+## Week 12 Changes (August 2026)
+
+Mobile-responsiveness and consistency fixes across all four service pages:
+
+- Fixed destructive image cropping — first on mobile (gallery split images), then a follow-up on desktop where images stopped filling their grid cell (gap above/below when the paired text column ran taller). Images now fill their container exactly, no crop, no gaps, on every breakpoint.
+- All site images converted from JPEG/PNG to WebP (~78MB → ~9MB total, no visible quality loss). Gallery image reveal animation is now gated on the image actually finishing its load, fixing a blank-then-pop-in delay on slower connections.
+- Artist-sessions editorial pricing rewrote to drop a €400–700 price mention that had been inconsistent with the "no visible price" policy noted above — now CTA-focused like the other three service pages.
+- "How we work" mid-section note and "More services" cross-link section both removed from all four service pages.
+- Testimonials: added 2 more quotes per service page (EN + DE); brand-agency trimmed back to 3 to avoid an orphaned card in the grid.
+- FAQ section widened to full content width, color de-emphasized to read as secondary/reference content, and a left-alignment bug fixed (the block wasn't sharing the page's shared left edge).
+- Concerts-events hero heading shortened — was the only service page with a 2-sentence H1, made it visually much heavier than its siblings.
+- Footer restored to all four service pages (had been missing).
+- Hero/detail copy trimmed for brevity across exhibition-gallery, artist-sessions, brand-agency, and concerts-events.
+
+---
+
 ## Week 11 Changes (July 2026)
 
 Two new ad landing pages added for CEO-defined ad tiers (Tier 1 and Tier 3; Tier 2 and Tier 4 were consolidated into `/brand-agency` and `/popups` instead of new pages):
@@ -75,4 +91,4 @@ All four service pages revised:
 
 ---
 
-*Updated 2026-07-06.*
+*Updated 2026-08-24.*

@@ -21,7 +21,7 @@ npx cypress run      # Headless Cypress e2e
 
 **Routing** — `src/App.tsx` owns all client-side routes via `react-router-dom`. Every route change triggers scroll-to-top and a CSS micro-transition via `is-entering` class on `.page__content`. Analytics (GA4 + Clarity) fire on every route change from `App.tsx`.
 
-**Service pages** — all six service pages (`/documentation`, `/gallery-stories`, `/artist-sessions`, `/performance`, `/fashion-show`, `/atmospheric`) are thin wrappers that pass data into `src/pages/WorkPageLayout.tsx`. `WorkPageLayout` renders the hero card stack, gallery sections, `PricingSection`, and the CTA. GSAP + ScrollTrigger handle all animations inside this layout; always check `prefers-reduced-motion` before adding new ones.
+**Service pages** — four live service pages at `/services/concerts-events`, `/services/exhibition-gallery`, `/services/artist-sessions`, `/services/brand-agency` (`ConcertsEvents.tsx`, `ExhibitionGallery.tsx`, `ArtistSessions.tsx`, `BrandAgency.tsx`). Every other service-shaped path (`/documentation`, `/gallery-stories`, `/performance`, `/fashion-show`, `/atmospheric`, `/services/performance`, etc.) is a legacy `<Navigate>` redirect onto one of these four — see the redirect block in `src/App.tsx`. All four are thin wrappers that pass data into `src/pages/WorkPageLayout.tsx`, which renders the hero card stack, gallery sections, `PricingSection`, and the CTA. GSAP + ScrollTrigger handle all animations inside this layout; always check `prefers-reduced-motion` before adding new ones.
 
 **Pricing data** — `src/data/pricingTiers.ts` defines the base three tiers. `src/data/pricingByService.ts` holds per-service price overrides. `PricingSection` merges them at render time. Clicking a tier navigates to `/contact?package=<slug>&service=<slug>`.
 
@@ -64,3 +64,7 @@ Guardrails:
 ## Assets
 
 Service images live under `src/assets/images/services/<number>_<slug>/`. Thumbnails are in `_thumb/1_1/` (square) and `_thumb/9_16/` (portrait). The `src/utils/resolveImagePath.ts` helper resolves image paths at runtime.
+
+**Format:** every image is WebP (converted 2026-08-24, ~78MB → ~9MB). Add new images as WebP too (`cwebp -q 85 -m 6 input.png -o output.webp` is what was used — a strong quality/size balance, verified visually against source). WebP has full support across every browser this site targets, so no `<picture>`/fallback needed. The `og:image`/`twitter:image` meta tags are the one exception — those are separate static files outside `src/assets/images/`, kept as JPEG/PNG since social-platform unfurl bots have historically had spottier WebP support than real browsers.
+
+**Everything under `src/assets/images/` ships to production, referenced or not.** `resolveImagePath.ts` uses `import.meta.glob('../assets/images/**/*', { eager: true })`, which bundles every file in that tree into the build regardless of whether any component actually renders it — there's no dead-code elimination for unused images. Don't drop large or working-file images in there without converting/removing them; check with `grep -rn "resolveImagePath(" src/` (both quote styles — it's been called with single *and* double quotes) plus the 4 CSS `background-image: url(...)` references in `Home.css`/`HomeV2.css` before assuming something is unused.
