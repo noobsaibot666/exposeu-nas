@@ -40,28 +40,17 @@ The production server is TrueNAS running Docker with Traefik v3 as the reverse p
 - `exposeu-contact` — runs `server/index.js` (contact API)
 - `traefik` — TLS termination + routing; `/api/*` → contact container
 
-**Deploy sequence:** run the build on the TrueNAS host through Dockerized Node, then recreate only the changed containers.
+**Deploy sequence:** run `scripts/deploy.sh {frontend|api|all}` on the TrueNAS host (SSH in first, no need to `cd` — the script locates the repo from its own path).
 
-Frontend only:
 ```sh
-cd /mnt/Gaia/04_DEV/web/www/exposeu
-sudo docker run --rm -u 0 -v "$PWD:/app" -w /app node:20-alpine sh -lc "npm ci && npm run build"
-sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-nginx
+scripts/deploy.sh frontend   # build + recreate exposeu-nginx
+scripts/deploy.sh api        # build + recreate exposeu-contact
+scripts/deploy.sh all        # build + recreate both
 ```
 
-API only:
-```sh
-cd /mnt/Gaia/04_DEV/web/www/exposeu
-sudo docker run --rm -u 0 -v "$PWD:/app" -w /app node:20-alpine sh -lc "npm ci"
-sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-contact
-```
+The script does **not** run `npm ci`/`npm run build` directly against this working copy. This directory's `node_modules` is shared, physical storage — this repo lives on the TrueNAS host's own disk at `/mnt/Gaia/...`, and a dev machine mounts the *same files* over SMB as `/Volumes/Gaia/...`. A plain `npm ci` here writes thousands of small files straight onto that shared path; if anything on the other side (a local `tsc`/`eslint`/dev-server run) touches `node_modules` at the same moment, files corrupt (this happened 2026-08-24 — `tsc`'s own `package.json` came back with unrelated content). Instead the script copies source into the deploy container's own private filesystem, builds entirely there, and copies back only the finished `node_modules`/`dist` in one bounded operation — plus a `flock` so two deploys can't overlap. See the comment block at the top of `scripts/deploy.sh` for the full rationale, and `docs/nas-dependency-repair.md` for an earlier, related incident (missing Darwin-arm64 native binaries — different symptom, same shared-mount root cause).
 
-Frontend + API:
-```sh
-cd /mnt/Gaia/04_DEV/web/www/exposeu
-sudo docker run --rm -u 0 -v "$PWD:/app" -w /app node:20-alpine sh -lc "npm ci && npm run build"
-sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-nginx exposeu-contact
-```
+**Local tooling rule:** never run `npm install`, `npm ci`, or `npm run build` against this working directory from a local machine — that's the exact operation that corrupts the shared `node_modules`. Local verification should be read-only (`tsc --noEmit`, `eslint`) against whatever is already installed; if that's missing or broken, report it rather than reinstalling. `npm run dev`/`npm run build` locally on macOS depend on the `node_modules/.darwin-native/node_modules` fallback described in `docs/nas-dependency-repair.md` — it's gitignored and not recreated by `npm ci`, so it can go missing after any clean install on either side.
 
 Guardrails:
 - never recreate `traefik`
