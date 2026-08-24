@@ -21,6 +21,11 @@ Rule:
 
 Run these on the TrueNAS host over SSH. The host does not need `npm` installed; Node runs in Docker.
 
+**Note:** these two commands still run `npm ci` directly against the shared mount, same
+as the old deploy commands did — they carry the same corruption risk described in
+Production Deploy below. Fine for an occasional one-off preview; avoid running one of
+these at the same time as a deploy or local dev-machine tooling.
+
 ### Vite dev preview
 
 ```sh
@@ -59,31 +64,24 @@ http://192.168.178.146:4173
 
 ## Production Deploy
 
-Run these on the TrueNAS host.
-
-### Frontend only
-
-```sh
-cd /mnt/Gaia/04_DEV/web/www/exposeu
-sudo docker run --rm -u 0 -v "$PWD:/app" -w /app node:20-alpine sh -lc "npm ci && npm run build"
-sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-nginx
-```
-
-### API only
+**Run this on the TrueNAS host, over SSH — never from a local machine.** The old inline
+`npm ci` commands below are gone: running `npm ci` straight against
+`/mnt/Gaia/...`/`/Volumes/Gaia/...` writes thousands of small files onto storage that's
+also mounted by dev machines over SMB, and that raced badly enough on 2026-08-24 to
+corrupt `node_modules` (see `CLAUDE.md` → Deployment for the full incident).
 
 ```sh
-cd /mnt/Gaia/04_DEV/web/www/exposeu
-sudo docker run --rm -u 0 -v "$PWD:/app" -w /app node:20-alpine sh -lc "npm ci"
-sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-contact
+scripts/deploy.sh frontend   # build + recreate exposeu-nginx
+scripts/deploy.sh api        # build + recreate exposeu-contact
+scripts/deploy.sh all        # build + recreate both
 ```
 
-### Frontend + API
-
-```sh
-cd /mnt/Gaia/04_DEV/web/www/exposeu
-sudo docker run --rm -u 0 -v "$PWD:/app" -w /app node:20-alpine sh -lc "npm ci && npm run build"
-sudo docker compose -f docker-compose.traefik.yml up -d --force-recreate exposeu-nginx exposeu-contact
-```
+The script builds inside the deploy container's own private filesystem and copies back
+only the finished `node_modules`/`dist` in one bounded operation, plus a `flock` so two
+deploys can't overlap. It also checks up front that it's actually running against the
+TrueNAS Docker daemon and refuses with a clear message otherwise — if you see a
+`flock: command not found` or "can't reach the Docker daemon" error, you ran it from a
+local machine; SSH in first (see Connect, above) and run it from there.
 
 ## Smoke Checks
 
