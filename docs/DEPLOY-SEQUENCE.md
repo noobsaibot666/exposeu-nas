@@ -85,6 +85,14 @@ local machine; SSH in first (see Connect, above) and run it from there.
 
 ## Smoke Checks
 
+`scripts/deploy.sh` runs this automatically now (curls `/` for `frontend` and
+`/api/health` for `api`, with retries, through localhost with the production Host
+header) and fails loudly — non-zero exit, a log-tail hint printed — if the deployed
+containers aren't actually answering. A "Deploy complete" message means the smoke
+check passed, not just that the container reported "Started".
+
+For a manual look beyond what the script checks:
+
 ```sh
 sudo docker compose -f docker-compose.traefik.yml ps
 curl -kI https://localhost/ -H "Host: expose-u.com" | head -n 12

@@ -96,4 +96,45 @@ case "$target" in
     ;;
 esac
 
+# Smoke check: a container reporting "Started" only means the process launched,
+# not that it's actually serving traffic through Traefik correctly. Hit it the
+# same way a real request would (through localhost with the production Host
+# header, matching docs/DEPLOY-SEQUENCE.md's manual checks) and fail loudly if
+# it isn't answering, rather than reporting success on a broken deploy.
+smoke_check() {
+  local path="$1" label="$2" attempt status
+  for attempt in 1 2 3 4 5; do
+    status=$(curl -k -s -o /dev/null -w '%{http_code}' --max-time 5 \
+      -H "Host: expose-u.com" "https://localhost$path" || echo "000")
+    if [ "$status" = "200" ]; then
+      echo "    $label ($path): OK (200)"
+      return 0
+    fi
+    sleep 1
+  done
+  echo "    $label ($path): FAILED (last status: $status)" >&2
+  return 1
+}
+
+echo "==> Smoke check..."
+smoke_ok=true
+case "$target" in
+  frontend)
+    smoke_check "/" "frontend" || smoke_ok=false
+    ;;
+  api)
+    smoke_check "/api/health" "api" || smoke_ok=false
+    ;;
+  all)
+    smoke_check "/" "frontend" || smoke_ok=false
+    smoke_check "/api/health" "api" || smoke_ok=false
+    ;;
+esac
+
+if ! $smoke_ok; then
+  echo "==> Deploy ($target) finished but the smoke check failed — check container logs:" >&2
+  echo "    sudo docker compose -f $COMPOSE_FILE logs --tail 50 exposeu-nginx exposeu-contact" >&2
+  exit 1
+fi
+
 echo "==> Deploy ($target) complete."
