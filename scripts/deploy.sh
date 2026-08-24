@@ -48,6 +48,19 @@ case "$target" in
   *) usage ;;
 esac
 
+if ! command -v flock >/dev/null 2>&1; then
+  echo "flock not found. This script must run on the TrueNAS host, not locally." >&2
+  echo "SSH into TrueNAS first, then run: $(basename "$0") $target" >&2
+  exit 1
+fi
+
+if ! sudo docker info >/dev/null 2>&1; then
+  echo "Can't reach the Docker daemon this script targets (exposeu-nginx/exposeu-contact" >&2
+  echo "live there). This script must run on the TrueNAS host, not locally." >&2
+  echo "SSH into TrueNAS first, then run: $(basename "$0") $target" >&2
+  exit 1
+fi
+
 exec 200>"$LOCK_FILE"
 if ! flock -n 200; then
   echo "Another deploy is already running (lock: $LOCK_FILE). Aborting." >&2

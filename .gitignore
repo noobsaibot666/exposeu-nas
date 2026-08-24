@@ -48,6 +48,7 @@ lerna-debug.log*
 # ======================
 letsencrypt/
 **/cloudflare-updater.log
+.deploy.lock
 
 
 .env
