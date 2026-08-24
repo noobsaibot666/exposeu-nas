@@ -11,8 +11,8 @@ import { resolveImagePath } from '../utils/resolveImagePath'
 
 const SERVICE_SLUG = 'release-content-kit'
 
-const heroImage = resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/021.jpeg')
-const studioImage = resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/023.jpeg')
+const heroImage = resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/021.webp')
+const studioImage = resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/023.webp')
 
 const PLATFORM_ICONS = [IconInstagram, IconTikTok, IconSpotify, IconYouTube, IconPress, IconPoster]
 

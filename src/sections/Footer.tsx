@@ -20,7 +20,7 @@ function Footer() {
     <footer className="footer">
       <div className="footer__media">
         <img
-          src={resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_033.png')}
+          src={resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_033.webp')}
           alt={t('footer.imageAlt')}
           loading="lazy"
           decoding="async"

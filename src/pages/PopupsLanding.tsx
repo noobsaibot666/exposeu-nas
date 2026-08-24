@@ -6,8 +6,8 @@ const baseConfig = {
   slug: 'popups',
   serviceSlug: 'popups',
   ogImage: 'https://expose-u.com/og-popups.jpg',
-  heroImage: resolveImagePath('src/assets/images/landing/popup_hero.jpeg'),
-  supportImage: resolveImagePath('src/assets/images/landing/popup_02.jpeg'),
+  heroImage: resolveImagePath('src/assets/images/landing/popup_hero.webp'),
+  supportImage: resolveImagePath('src/assets/images/landing/popup_02.webp'),
   metaContentName: 'Popups Landing Page',
   customPixelEvent: 'PopupsLandingView',
 }

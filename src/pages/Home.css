@@ -11,7 +11,7 @@
   position: fixed;
   inset: 0;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.95)),
-    url('/src/assets/images/services/7_Hero/7_HERO_030.png') center/cover no-repeat;
+    url('/src/assets/images/services/7_Hero/7_HERO_030.webp') center/cover no-repeat;
   opacity: 0.3;
   filter: blur(3px);
   transform: scale(1.05);
@@ -1061,7 +1061,7 @@
 
 [data-theme='light'] .home__background {
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.6)),
-    url('/src/assets/images/services/7_Hero/7_HERO_030.png') center/cover no-repeat;
+    url('/src/assets/images/services/7_Hero/7_HERO_030.webp') center/cover no-repeat;
   opacity: 0.12;
   filter: blur(2px);
 }

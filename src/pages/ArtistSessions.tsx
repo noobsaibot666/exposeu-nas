@@ -4,15 +4,15 @@ import { useLocale, useTranslation } from '../i18n/LocaleProvider'
 import { SEOMeta } from '../components/SEOMeta'
 
 const heroCards = [
-  { image: resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/0022.jpeg'), title: 'Portrait' },
-  { image: resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/024.jpg'), title: 'In Studio' },
-  { image: resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/0016.jpg'), title: 'Process' },
-  { image: resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/0014.jpg'), title: 'Live Moment' },
+  { image: resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/0022.webp'), title: 'Portrait' },
+  { image: resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/024.webp'), title: 'In Studio' },
+  { image: resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/0016.webp'), title: 'Process' },
+  { image: resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/0014.webp'), title: 'Live Moment' },
 ]
 
 const sectionImages = {
-  gallery: resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/0021.jpeg'),
-  idealFor: resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/DSC_4950.jpg'),
+  gallery: resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/0021.webp'),
+  idealFor: resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/DSC_4950.webp'),
 }
 
 function ArtistSessions() {

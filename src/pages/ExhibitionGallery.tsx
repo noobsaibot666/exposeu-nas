@@ -4,15 +4,15 @@ import { useLocale, useTranslation } from '../i18n/LocaleProvider'
 import { SEOMeta } from '../components/SEOMeta'
 
 const heroCards = [
-  { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/0002.jpg'), title: 'Opening Night' },
-  { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/001.png'), title: 'Light Studies' },
-  { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/009.jpg'), title: 'Curated Flow' },
-  { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/012.jpg'), title: 'Install Detail' },
+  { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/0002.webp'), title: 'Opening Night' },
+  { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/001.webp'), title: 'Light Studies' },
+  { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/009.webp'), title: 'Curated Flow' },
+  { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/012.webp'), title: 'Install Detail' },
 ]
 
 const sectionImages = {
-  gallery: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/008.jpg'),
-  idealFor: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/003.jpg'),
+  gallery: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/008.webp'),
+  idealFor: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/003.webp'),
 }
 
 function ExhibitionGallery() {

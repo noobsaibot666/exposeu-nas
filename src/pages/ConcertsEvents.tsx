@@ -4,15 +4,15 @@ import { useLocale, useTranslation } from '../i18n/LocaleProvider'
 import { SEOMeta } from '../components/SEOMeta'
 
 const heroCards = [
-  { image: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4018.jpg'), title: 'Live Set' },
-  { image: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4012.jpg'), title: 'Stage Glow' },
-  { image: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4038.jpg'), title: 'Energy Capture' },
-  { image: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4340.jpg'), title: 'Motion Freeze' },
+  { image: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4018.webp'), title: 'Live Set' },
+  { image: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4012.webp'), title: 'Stage Glow' },
+  { image: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4038.webp'), title: 'Energy Capture' },
+  { image: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4340.webp'), title: 'Motion Freeze' },
 ]
 
 const sectionImages = {
-  gallery: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4263.jpg'),
-  idealFor: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4210.jpg'),
+  gallery: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4263.webp'),
+  idealFor: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4210.webp'),
 }
 
 function ConcertsEvents() {

@@ -6,8 +6,8 @@ const baseConfig = {
   slug: 'concerts-berlin',
   serviceSlug: 'concerts-events',
   ogImage: 'https://expose-u.com/og-concerts-berlin.jpg',
-  heroImage: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4340.jpg'),
-  supportImage: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4263.jpg'),
+  heroImage: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4340.webp'),
+  supportImage: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4263.webp'),
   metaContentName: 'Concerts Berlin Landing Page',
   customPixelEvent: 'ConcertsBerlinView',
 }

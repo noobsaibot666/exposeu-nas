@@ -41,22 +41,22 @@ function buildHeroVideoSrc(video: typeof HERO_VIDEO | typeof MOBILE_HERO_VIDEO):
 const projectVisuals = [
   {
     slug: serviceMeta['exhibition-gallery'].slug,
-    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/services/exhibition-gallery/001.jpg'),
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/services/exhibition-gallery/001.webp'),
     link: serviceMeta['exhibition-gallery'].href,
   },
   {
     slug: serviceMeta['brand-agency'].slug,
-    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/brand-agency/033.jpeg'),
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/brand-agency/033.webp'),
     link: serviceMeta['brand-agency'].href,
   },
   {
     slug: serviceMeta['concerts-events'].slug,
-    image: resolveImagePath('/src/assets/images/website/artists/002.jpg'),
+    image: resolveImagePath('/src/assets/images/website/artists/002.webp'),
     link: serviceMeta['concerts-events'].href,
   },
   {
     slug: serviceMeta['artist-sessions'].slug,
-    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/services/artist-sessions/0015.jpeg'),
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/services/artist-sessions/0015.webp'),
     link: serviceMeta['artist-sessions'].href,
   },
 ]
@@ -66,35 +66,35 @@ const hiddenHomeServiceSlugs = new Set<string>()
 const heroGalleryBase = [
   {
     id: 'thumb-exhibition',
-    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/exhibition-gallery/004.jpg'),
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/exhibition-gallery/004.webp'),
     slug: 'exhibition-gallery',
     rotation: -4,
   },
   {
     id: 'thumb-brand',
-    image: resolveImagePath('src/assets/images/landing/agency_hero_01.jpeg'),
+    image: resolveImagePath('src/assets/images/landing/agency_hero_01.webp'),
     slug: 'brand-agency',
     rotation: -2,
   },
   {
     id: 'thumb-concerts',
-    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/concerts-events/DSC_4346.jpg'),
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/concerts-events/DSC_4346.webp'),
     slug: 'concerts-events',
     rotation: 2,
   },
   {
     id: 'thumb-artist',
-    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/artist-sessions/001.jpg'),
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/artist-sessions/001.webp'),
     slug: 'artist-sessions',
     rotation: 4,
   },
 ]
 
 const proofAvatars = [
-  resolveImagePath('/src/assets/images/website/artists/thumb_3_052.jpg'),
-  resolveImagePath('/src/assets/images/website/fashion/thumb_3_033.jpg'),
-  resolveImagePath('/src/assets/images/website/fashion/thumb_3_057.jpg'),
-  resolveImagePath('/src/assets/images/website/performances/thumb_3_086.jpg'),
+  resolveImagePath('/src/assets/images/website/artists/thumb_3_052.webp'),
+  resolveImagePath('/src/assets/images/website/fashion/thumb_3_033.webp'),
+  resolveImagePath('/src/assets/images/website/fashion/thumb_3_057.webp'),
+  resolveImagePath('/src/assets/images/website/performances/thumb_3_086.webp'),
 ]
 
 const HOME_SCHEMA = [

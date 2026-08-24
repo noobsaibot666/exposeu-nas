@@ -119,7 +119,7 @@ function About() {
 
           <div className="about__portrait-block">
             <div className="about__portrait">
-              <img src={resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_024.png')} alt={t('about.portraitAlt')} />
+              <img src={resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_024.webp')} alt={t('about.portraitAlt')} />
             </div>
           </div>
 

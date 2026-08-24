@@ -15,7 +15,7 @@ const projects = [
     title: 'Exhibition & Gallery Documentation',
     location: 'Galleries',
     year: '2024',
-    image: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
+    image: resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.webp'),
     copy: 'Press-ready photo and film for galleries, curators, openings, and archives.',
     link: serviceMeta['exhibition-gallery'].href,
   },
@@ -24,7 +24,7 @@ const projects = [
     title: 'Brand & Agency Documentation',
     location: 'Activations',
     year: '2024',
-    image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
+    image: resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.webp'),
     copy: 'Documentation for designed experiences — activations, installations, and agency-built environments.',
     link: serviceMeta['brand-agency'].href,
   },
@@ -33,7 +33,7 @@ const projects = [
     title: 'Concert & Live Event Documentation',
     location: 'Live Programs',
     year: '2024',
-    image: resolveImagePath('/src/assets/images/website/performances/thumb_3_086.jpg'),
+    image: resolveImagePath('/src/assets/images/website/performances/thumb_3_086.webp'),
     copy: 'Fast selects, recap films, and hero frames for concerts, venues, and live teams.',
     link: serviceMeta['concerts-events'].href,
   },
@@ -42,7 +42,7 @@ const projects = [
     title: 'Artist Sessions & Portraits',
     location: 'Venues & Studios',
     year: '2024',
-    image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
+    image: resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.webp'),
     copy: 'Portraits and process assets for artists, studios, and press kits.',
     link: serviceMeta['artist-sessions'].href,
   },
@@ -53,31 +53,31 @@ const projectRows = [projects.slice(0, 2), projects.slice(2, 4)]
 const heroGallery = [
   {
     id: 'thumb-5',
-    image: resolveImagePath('/src/assets/images/website/fashion/thumb_3_081.jpg'),
+    image: resolveImagePath('/src/assets/images/website/fashion/thumb_3_081.webp'),
     label: serviceMeta['brand-agency'].label,
     rotation: -4,
   },
   {
     id: 'thumb-1',
-    image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/1_ED_055.png'),
+    image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/1_ED_055.webp'),
     label: serviceMeta['exhibition-gallery'].label,
     rotation: -3,
   },
   {
     id: 'thumb-2',
-    image: resolveImagePath('/src/assets/images/website/performances/thumb_3_033.jpg'),
+    image: resolveImagePath('/src/assets/images/website/performances/thumb_3_033.webp'),
     label: serviceMeta['concerts-events'].label,
     rotation: 2,
   },
   {
     id: 'thumb-4',
-    image: resolveImagePath('/src/assets/images/website/performances/thumb_3_027.jpg'),
+    image: resolveImagePath('/src/assets/images/website/performances/thumb_3_027.webp'),
     label: serviceMeta['concerts-events'].label,
     rotation: 4,
   },
   {
     id: 'thumb-3',
-    image: resolveImagePath('/src/assets/images/website/exhibitions/thumb_3_031.jpg'),
+    image: resolveImagePath('/src/assets/images/website/exhibitions/thumb_3_031.webp'),
     label: serviceMeta['exhibition-gallery'].label,
     rotation: -1,
   },
@@ -94,10 +94,10 @@ const heroServices = projects.map((project, index) => ({
 const mobileHeroStack = heroServices.slice(0, 5)
 
 const proofAvatars = [
-  resolveImagePath('/src/assets/images/website/artists/thumb_3_052.jpg'),
-  resolveImagePath('/src/assets/images/website/artists/thumb_3_060.jpg'),
-  resolveImagePath('/src/assets/images/website/fashion/thumb_3_057.jpg'),
-  resolveImagePath('/src/assets/images/website/performances/thumb_3_086.jpg'),
+  resolveImagePath('/src/assets/images/website/artists/thumb_3_052.webp'),
+  resolveImagePath('/src/assets/images/website/artists/thumb_3_060.webp'),
+  resolveImagePath('/src/assets/images/website/fashion/thumb_3_057.webp'),
+  resolveImagePath('/src/assets/images/website/performances/thumb_3_086.webp'),
 ]
 
 function Home() {

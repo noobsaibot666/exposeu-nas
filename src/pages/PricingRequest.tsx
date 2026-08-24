@@ -8,14 +8,14 @@ import './PricingRequest.css'
 import { useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
 
 const serviceImages: Record<ServiceSlug, string> = {
-  'concerts-events': resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_004.png'),
-  'exhibition-gallery': resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.png'),
-  'artist-sessions': resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
-  'brand-agency': resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.jpeg'),
-  'release-content-kit': resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/0022.jpeg'),
-  popups: resolveImagePath('/src/assets/images/landing/agency_hero_02.jpeg'),
-  'gallery-museum': resolveImagePath('/src/assets/images/services/1_exhibition_doc/1_ED_055.png'),
-  'artist-musician': resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.png'),
+  'concerts-events': resolveImagePath('/src/assets/images/services/4_performance_doc/4_PD_004.webp'),
+  'exhibition-gallery': resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.webp'),
+  'artist-sessions': resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.webp'),
+  'brand-agency': resolveImagePath('/src/assets/images/services/5_fashion_show/5_FS_011.webp'),
+  'release-content-kit': resolveImagePath('/src/assets/images/services/3_artist_sessions/_incoming/gallery/0022.webp'),
+  popups: resolveImagePath('/src/assets/images/landing/agency_hero_02.webp'),
+  'gallery-museum': resolveImagePath('/src/assets/images/services/1_exhibition_doc/1_ED_055.webp'),
+  'artist-musician': resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.webp'),
 }
 
 function PricingRequest() {
@@ -55,7 +55,7 @@ function PricingRequest() {
     return t('forms.pricing.defaultDescription')
   }, [planInfo, serviceInfo, t])
 
-  const heroImage = serviceInfo?.image ?? resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_004.png')
+  const heroImage = serviceInfo?.image ?? resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_004.webp')
 
   useEffect(() => {
     trackEvent('pricing_request_view', {

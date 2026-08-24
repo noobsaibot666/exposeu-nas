@@ -6,8 +6,8 @@ const baseConfig = {
   slug: 'brand-agency',
   serviceSlug: 'brand-agency',
   ogImage: 'https://expose-u.com/og-brand-agency.jpg',
-  heroImage: resolveImagePath('src/assets/images/landing/agency_hero_01.jpeg'),
-  supportImage: resolveImagePath('src/assets/images/landing/agency_hero.jpeg'),
+  heroImage: resolveImagePath('src/assets/images/landing/agency_hero_01.webp'),
+  supportImage: resolveImagePath('src/assets/images/landing/agency_hero.webp'),
   metaContentName: 'Brand Agency Landing Page',
   customPixelEvent: 'BrandAgencyLandingView',
 }
