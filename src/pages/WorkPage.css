@@ -413,10 +413,15 @@
 
 .work-mid-note__inner {
   max-width: 680px;
+  margin: 0 auto;
   padding: clamp(20px, 2.5vw, 28px) clamp(20px, 3vw, 32px);
   border-radius: 20px;
   border: 1px solid var(--border-soft);
   background: var(--surface-base);
+}
+
+.work-mid-note__label {
+  margin: 0 0 14px;
 }
 
 .work-mid-note__text {
@@ -618,7 +623,8 @@
   }
 
   .work-gallery__media {
-    min-height: 280px;
+    aspect-ratio: 4 / 5;
+    min-height: 0;
     order: 1;
     border-radius: 18px;
   }
@@ -674,7 +680,7 @@
   }
 
   .work-gallery__media {
-    min-height: 240px;
+    aspect-ratio: 3 / 4;
   }
 
   .work-gallery__sequence-item {

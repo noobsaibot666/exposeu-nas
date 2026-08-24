@@ -5,6 +5,7 @@ import TopNav from '../components/TopNav'
 import PricingSection from '../sections/PricingSection'
 import TestimonialsStrip from '../components/TestimonialsStrip'
 import FAQSection from '../components/FAQSection'
+import Footer from '../sections/Footer'
 import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
 import './WorkPage.css'
 import { useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
@@ -398,6 +399,7 @@ function WorkPageLayout({
         <div className="work-mid-note">
           <div className="content">
             <div className="work-mid-note__inner">
+              <p className="work-gallery__label work-mid-note__label">{t('services.shared.howWeWork')}</p>
               {midSectionNote.split('\n').filter(Boolean).map((line, i) => (
                 <p key={i} className="work-mid-note__text">{line}</p>
               ))}
@@ -524,6 +526,8 @@ function WorkPageLayout({
           </LocalizedLink>
         </div>
       </section>
+
+      <Footer />
     </main>
   )
 }
