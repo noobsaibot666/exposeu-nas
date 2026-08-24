@@ -357,15 +357,15 @@
 
 .work-editorial-pricing {
   padding-block: clamp(52px, 8vh, 80px);
-  text-align: left;
+  text-align: center;
 }
 
 .work-page .work-editorial-pricing__inner {
   max-width: 640px;
-  margin: 0;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 16px;
 }
 

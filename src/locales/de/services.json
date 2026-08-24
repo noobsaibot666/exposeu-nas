@@ -73,8 +73,8 @@
     "exhibition-gallery": {
       "title": "Ausstellungen & Galerien",
       "heroCopy": "Deine Ausstellung wirkt über ihre Laufzeit hinaus.",
-      "detail": "Vollständige räumliche Dokumentation für Presse, Förderanträge und Langzeitarchiv – sauber organisiert und direkt bereit zur Weitergabe.",
-      "socialProof": "Zusammenarbeit mit Galerien, Kurator:innen und Kulturinstitutionen in Berlin.",
+      "detail": "Vollständige Dokumentation für Presse, Förderanträge und Langzeitarchiv.",
+      "socialProof": "Vertrauen von Berliner Galerien, Kurator:innen und Institutionen.",
       "ctaText": "Lass uns deine Ausstellung dokumentieren.",
       "footerCtaLabel": "Erzähl uns von deiner Ausstellung",
       "cards": ["Opening Night", "Lichtstudien", "Kuratorischer Flow", "Installationsdetail"],

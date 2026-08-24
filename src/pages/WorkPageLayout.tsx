@@ -161,15 +161,16 @@ function WorkPageLayout({
         if (media && media.offsetParent !== null) {
           gsap.fromTo(
             media,
-            { opacity: 0, scale: 1.03, y: 12 },
+            { opacity: 0, scale: 1.04, y: 16, filter: 'blur(10px)' },
             {
               opacity: 1,
               scale: 1,
               y: 0,
-              duration: 0.75,
-              ease: 'sine.inOut',
+              filter: 'blur(0px)',
+              duration: 0.9,
+              ease: 'power2.out',
               force3D: true,
-              scrollTrigger: { trigger: section, start: 'top 78%' },
+              scrollTrigger: { trigger: section, start: 'top 74%' },
             },
           )
         }

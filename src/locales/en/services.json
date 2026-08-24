@@ -73,8 +73,8 @@
     "exhibition-gallery": {
       "title": "Exhibition & Gallery",
       "heroCopy": "Your exhibition lives longer than its run.",
-      "detail": "Full spatial coverage for press, funding applications, and long-term archive, delivered organized and ready to distribute.",
-      "socialProof": "Working with galleries, curators, and cultural institutions in Berlin.",
+      "detail": "Full coverage for press, funding, and long-term archive.",
+      "socialProof": "Trusted by Berlin's galleries, curators, and institutions.",
       "ctaText": "Let's document your exhibition.",
       "footerCtaLabel": "Tell us about your exhibition",
       "cards": ["Opening Night", "Light Studies", "Curated Flow", "Install Detail"],
