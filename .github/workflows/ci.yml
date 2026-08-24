@@ -1,0 +1,39 @@
+name: CI
+
+# Runs on GitHub's own runners, not the NAS. This repo's working copy is shared
+# physical storage with the TrueNAS deploy host (see CLAUDE.md -> Deployment), so
+# local tsc/eslint checks are exposed to SMB corruption right when they matter
+# most. This workflow gives a signal that's never subject to that.
+
+on:
+  push:
+  pull_request:
+
+# Least-privilege default: this workflow only reads the repo and runs checks,
+# it never needs to write anything back.
+permissions:
+  contents: read
+
+# Cancel a still-running check for a branch/PR once a newer push supersedes it,
+# instead of burning CI minutes on a result nobody will look at.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - run: npm run lint

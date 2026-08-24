@@ -15,6 +15,8 @@ npx cypress open     # Interactive Cypress e2e runner
 npx cypress run      # Headless Cypress e2e
 ```
 
+**CI:** `.github/workflows/ci.yml` runs `npm ci && npm run build && npm run lint` on GitHub's own runners for every push/PR — not the NAS, so it's unaffected by the shared-mount corruption described below. Treat it as the authoritative build/lint signal when local tooling is acting up.
+
 ## Architecture
 
 **Stack:** React 19 + TypeScript + Vite SPA. No backend framework for the frontend; the only server-side code is `server/index.js` (Node/Express contact form API).
