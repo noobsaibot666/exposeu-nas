@@ -8,10 +8,10 @@ const baseConfig = {
   ctaPackage: "project",
   ogImage: "https://expose-u.com/og-artist-musician-documentation.jpg",
   heroImage: resolveImagePath(
-    "src/assets/images/landing/artistMusician_hero_01.jpg",
+    "src/assets/images/landing/artistMusician_hero_01.webp",
   ),
   supportImage: resolveImagePath(
-    "src/assets/images/landing/artistMusician_hero.jpg",
+    "src/assets/images/landing/artistMusician_hero.webp",
   ),
   metaContentName: "Artist Musician Documentation Landing Page",
   customPixelEvent: "ArtistMusicianLandingView",

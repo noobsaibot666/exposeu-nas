@@ -7,8 +7,8 @@ const baseConfig = {
   serviceSlug: "gallery-museum",
   ctaPackage: "project",
   ogImage: "https://expose-u.com/og-gallery-museum-documentation.jpg",
-  heroImage: resolveImagePath("src/assets/images/landing/gallery_hero_05.jpeg"),
-  supportImage: resolveImagePath("src/assets/images/landing/gallery_hero.jpeg"),
+  heroImage: resolveImagePath("src/assets/images/landing/gallery_hero_05.webp"),
+  supportImage: resolveImagePath("src/assets/images/landing/gallery_hero.webp"),
   metaContentName: "Gallery Museum Documentation Landing Page",
   customPixelEvent: "GalleryMuseumLandingView",
 };
