@@ -50,10 +50,16 @@ function Contact() {
   const selectedServiceLabel = selectedService ? t(selectedService.labelKey) : ''
   const defaultProjectType = selectedServiceLabel || (typeParam ? (TYPE_MAP[typeParam] ?? '') : '')
   const [selectedType, setSelectedType] = useState(defaultProjectType)
+  const [lastDefaultProjectType, setLastDefaultProjectType] = useState(defaultProjectType)
 
-  useEffect(() => {
+  // Re-sync selectedType when the URL-derived default changes (service/type
+  // param or locale switch), without clobbering it on every render — adjusted
+  // during render per https://react.dev/learn/you-might-not-need-an-effect,
+  // not in an effect (which triggers an extra commit and cascading renders).
+  if (defaultProjectType !== lastDefaultProjectType) {
+    setLastDefaultProjectType(defaultProjectType)
     if (defaultProjectType) setSelectedType(defaultProjectType)
-  }, [defaultProjectType])
+  }
 
   const navLinks = useMemo(
     () => ({
