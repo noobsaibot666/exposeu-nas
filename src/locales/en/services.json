@@ -39,8 +39,7 @@
     "pricingFor": "Clear {{service}} pricing.",
     "readyToCollaborate": "Ready to collaborate?",
     "requestAvailability": "Request availability",
-    "responseTime": "Berlin-based. Response within 24 hours.",
-    "howWeWork": "How we work"
+    "responseTime": "Berlin-based. Response within 24 hours."
   },
   "pages": {
     "concerts-events": {
@@ -59,7 +58,6 @@
         { "title": "Fast selects", "subtitle": "Priority frames for press and social, timed to the project." },
         { "title": "Full organized set", "subtitle": "Named files ready for publishing and archive." }
       ],
-      "midNote": "Good documentation doesn't just record a show. It becomes the press material for the next booking, the visual pitch for sponsors, the social content for the following month. We cover the event so you walk away with assets that actually do something.",
       "extraGalleryCopy": "Press campaigns, season recaps, and content for labels, venues and promoters.",
       "extraGallery": [
         { "title": "Labels and artist management", "subtitle": "Press campaigns, tour content, and archive coverage." },
@@ -88,7 +86,6 @@
         { "title": "Detail frames", "subtitle": "Materials, labels, and installation close-ups." },
         { "title": "Press-ready delivery", "subtitle": "Named folders sorted for immediate distribution." }
       ],
-      "midNote": "Small crew. We work quietly around visitors, collectors and the work itself.\nPress-ready selects within 24 hours.\nExperience with installation photography, artwork distortion and gallery etiquette.\nPhoto and video from one team.",
       "extraGalleryCopy": "Teams that need the full spatial and atmospheric story, not just highlights.",
       "extraGallery": [
         { "title": "Galleries and cultural institutions", "subtitle": "Shows with press, archive, and funder requirements." },
@@ -148,7 +145,6 @@
         { "title": "Case study material", "subtitle": "Website and portfolio documentation at presentation quality." },
         { "title": "Organized full delivery", "subtitle": "Folders sorted for PR, campaign and archive." }
       ],
-      "midNote": "Built by designers.\nWe understand how agencies present finished work and what the documentation needs to do. Small crew. Quiet on set. Photo and video from one team. Berlin-based.",
       "extraGalleryCopy": "Agencies, studios and brand teams that build experiences worth documenting.",
       "extraGallery": [
         { "title": "Experience design agencies", "subtitle": "Spatial documentation for award submissions, case studies and new business." },

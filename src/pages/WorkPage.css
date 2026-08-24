@@ -269,7 +269,8 @@
 
 .work-gallery__media {
   position: relative;
-  min-height: clamp(320px, 60vh, 720px);
+  display: flex;
+  align-items: center;
   border-radius: 24px;
   overflow: hidden;
   box-shadow: none;
@@ -278,12 +279,9 @@
 }
 
 .work-gallery__image {
-  position: absolute;
-  inset: 0;
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
+  height: auto;
   backface-visibility: hidden;
   transform: translateZ(0);
 }
@@ -406,36 +404,6 @@
   transform: translateY(-2px);
   border-color: var(--border-highlight);
   background: var(--button-ghost-hover-bg);
-}
-
-/* ─── Mid-section note (trust signals / outcomes) ─── */
-
-.work-mid-note {
-  padding-block: clamp(20px, 3vh, 32px);
-}
-
-.work-mid-note__inner {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: clamp(20px, 2.5vw, 28px) clamp(20px, 3vw, 32px);
-  border-radius: 20px;
-  border: 1px solid var(--border-soft);
-  background: var(--surface-base);
-}
-
-.work-mid-note__label {
-  margin: 0 0 14px;
-}
-
-.work-mid-note__text {
-  margin: 0 0 8px;
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  line-height: 1.65;
-}
-
-.work-mid-note__text:last-child {
-  margin-bottom: 0;
 }
 
 /* ─── CTA section ─── */
@@ -562,8 +530,6 @@
   }
 
   .work-gallery__media {
-    aspect-ratio: 4 / 5;
-    min-height: 0;
     order: 1;
     border-radius: 18px;
   }
@@ -616,10 +582,6 @@
 
   .work-gallery {
     padding: 28px 0;
-  }
-
-  .work-gallery__media {
-    aspect-ratio: 3 / 4;
   }
 
   .work-gallery__sequence-item {

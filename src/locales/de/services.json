@@ -39,8 +39,7 @@
     "pricingFor": "Klare Preise für {{service}}.",
     "readyToCollaborate": "Bereit für die Zusammenarbeit?",
     "requestAvailability": "Verfügbarkeit anfragen",
-    "responseTime": "Based in Berlin. Antwort innerhalb von 24 Stunden.",
-    "howWeWork": "Wie wir arbeiten"
+    "responseTime": "Based in Berlin. Antwort innerhalb von 24 Stunden."
   },
   "pages": {
     "concerts-events": {
@@ -59,7 +58,6 @@
         { "title": "Schnelle Selects", "subtitle": "Priorisierte Motive für Presse und Socials, abgestimmt auf das Projekt." },
         { "title": "Vollständiges Set", "subtitle": "Benannte Dateien, direkt bereit für Publishing und Archiv." }
       ],
-      "midNote": "Gute Dokumentation hält nicht nur einen Abend fest. Sie wird zum Pressematerial für die nächste Buchung, zur visuellen Grundlage für Sponsorgespräche, zum Social-Content der nächsten Wochen. Wir dokumentieren das Event so, dass Sie danach mit Assets arbeiten können, die wirklich etwas leisten.",
       "extraGalleryCopy": "Pressekampagnen, Season Recaps und Content für Labels, Venues und Veranstalter.",
       "extraGallery": [
         { "title": "Labels und Artist Management", "subtitle": "Pressearbeit, Tour-Content und Archiv-Dokumentation." },
@@ -88,7 +86,6 @@
         { "title": "Detailaufnahmen", "subtitle": "Materialien, Labels und Installationsnahaufnahmen." },
         { "title": "Pressefähige Delivery", "subtitle": "Benannte Ordner für direkte Weitergabe." }
       ],
-      "midNote": "Kleines Team. Wir arbeiten ruhig — rund um Besucher:innen, Sammler:innen und die Werke selbst.\nPressefertige Auswahl innerhalb von 24 Stunden.\nErfahrung mit Installationsfotografie, Bildverzerrung und Galerie-Etikette.\nFoto und Video aus einer Hand.",
       "extraGalleryCopy": "Für Teams, die die ganze räumliche und atmosphärische Geschichte brauchen – nicht nur Highlights.",
       "extraGallery": [
         { "title": "Galerien und Kulturinstitutionen", "subtitle": "Ausstellungen mit Anforderungen aus Presse, Archiv und Förderung." },
@@ -148,7 +145,6 @@
         { "title": "Fallstudien-Material", "subtitle": "Website- und Portfolio-Dokumentation in Präsentationsqualität." },
         { "title": "Organisierte Lieferung", "subtitle": "Ordner sortiert nach PR, Kampagne und Archiv." }
       ],
-      "midNote": "Von Designern gebaut.\n\nWir verstehen, wie Agenturen fertige Arbeit präsentieren und was die Dokumentation leisten muss. Kleines Team. Ruhige Produktion. Foto und Video aus einer Hand. Berlin-basiert.",
       "extraGalleryCopy": "Agenturen, Studios und Brand-Teams, die Erfahrungen bauen, die dokumentiert werden sollten.",
       "extraGallery": [
         { "title": "Experience-Design-Agenturen", "subtitle": "Raumdokumentation für Award-Einreichungen, Fallstudien und Neukundengewinnung." },

@@ -29,7 +29,6 @@ function ConcertsEvents() {
     galleryTitle: string
     galleryCopy: string
     gallery: Array<{ title: string; subtitle: string }>
-    midNote: string
     extraGalleryCopy: string
     extraGallery: Array<{ title: string; subtitle: string }>
     pricing: { body: string; cta: string }
@@ -54,7 +53,6 @@ function ConcertsEvents() {
         galleryCopy={page.galleryCopy}
         gallery={page.gallery}
         galleryImage={sectionImages.gallery}
-        midSectionNote={page.midNote}
         extraGalleryTitle={t('services.shared.idealFor')}
         extraGalleryCopy={page.extraGalleryCopy}
         extraGallery={page.extraGallery}

@@ -40,7 +40,6 @@ type WorkPageLayoutProps = {
   editorialPricingBody?: string
   editorialPricingCta?: string
   editorialPricingCtaHref?: string
-  midSectionNote?: string
 }
 
 const renderSentenceBreaks = (text: string) =>
@@ -74,7 +73,6 @@ function WorkPageLayout({
   editorialPricingBody,
   editorialPricingCta,
   editorialPricingCtaHref,
-  midSectionNote,
 }: WorkPageLayoutProps) {
   const rootRef = useRef<HTMLElement | null>(null)
   const stackRef = useRef<HTMLDivElement | null>(null)
@@ -190,17 +188,6 @@ function WorkPageLayout({
               scrollTrigger: { trigger: section, start: 'top 78%' },
             },
           )
-
-          gsap.to(media, {
-            y: -60,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: true,
-            },
-          })
         }
       })
 
@@ -391,19 +378,6 @@ function WorkPageLayout({
         gallery,
         galleryImage,
         'gallery-primary',
-      )}
-
-      {midSectionNote && (
-        <div className="work-mid-note">
-          <div className="content">
-            <div className="work-mid-note__inner">
-              <p className="work-gallery__label work-mid-note__label">{t('services.shared.howWeWork')}</p>
-              {midSectionNote.split('\n').filter(Boolean).map((line, i) => (
-                <p key={i} className="work-mid-note__text">{line}</p>
-              ))}
-            </div>
-          </div>
-        </div>
       )}
 
       {extraGallery && extraGallery.length > 0 &&
