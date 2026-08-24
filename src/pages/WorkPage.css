@@ -507,6 +507,10 @@
     gap: 10px;
   }
 
+  .work-gallery__label {
+    align-self: center;
+  }
+
   .work-gallery__sequence {
     gap: 2px;
   }
@@ -530,12 +534,10 @@
   }
 
   .work-gallery__media {
-    order: 1;
-    border-radius: 18px;
+    display: none;
   }
 
   .work-gallery__text {
-    order: 2;
     gap: 20px;
   }
 

@@ -25,11 +25,6 @@
   margin-bottom: 28px;
 }
 
-.contact__heading .availability-badge {
-  justify-self: end;
-  text-align: right;
-}
-
 .contact__heading h1 {
   margin: 0;
   font-size: clamp(2.6rem, 4vw + 1rem, 4rem);

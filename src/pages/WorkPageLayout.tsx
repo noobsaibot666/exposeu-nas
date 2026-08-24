@@ -126,10 +126,23 @@ function WorkPageLayout({
       // Gallery sections
       const gallerySections = gsap.utils.toArray<HTMLElement>('.work-gallery')
       gallerySections.forEach((section) => {
+        const header = section.querySelector<HTMLElement>('.work-gallery__header')
         const sequenceItems = section.querySelectorAll<HTMLElement>('.work-gallery__sequence-item')
         const media = section.querySelector<HTMLElement>('.work-gallery__image')
-        const split = section.querySelector<HTMLElement>('.work-gallery__split')
-        const textItems = section.querySelectorAll<HTMLElement>('.work-gallery__text > *')
+
+        if (header) {
+          gsap.fromTo(
+            header,
+            { opacity: 0, y: 16 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.65,
+              ease: 'sine.inOut',
+              scrollTrigger: { trigger: section, start: 'top 80%' },
+            },
+          )
+        }
 
         gsap.fromTo(
           sequenceItems,
@@ -145,36 +158,7 @@ function WorkPageLayout({
           },
         )
 
-        if (split) {
-          gsap.fromTo(
-            split,
-            { opacity: 0, y: 20 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.7,
-              ease: 'sine.inOut',
-              scrollTrigger: { trigger: section, start: 'top 82%' },
-            },
-          )
-        }
-
-        if (textItems.length) {
-          gsap.fromTo(
-            textItems,
-            { opacity: 0, y: 16 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.65,
-              stagger: 0.08,
-              ease: 'sine.inOut',
-              scrollTrigger: { trigger: section, start: 'top 80%' },
-            },
-          )
-        }
-
-        if (media) {
+        if (media && media.offsetParent !== null) {
           gsap.fromTo(
             media,
             { opacity: 0, scale: 1.03, y: 12 },

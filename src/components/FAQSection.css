@@ -2,12 +2,10 @@
   padding-block: clamp(32px, 5vh, 56px);
 }
 
-.faq-section .faq-section__inner {
+.faq-section__inner {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  max-width: 720px;
-  margin: 0;
 }
 
 .faq-section__list {
@@ -15,6 +13,7 @@
   flex-direction: column;
   gap: 4px;
   margin: 0;
+  max-width: 720px;
 }
 
 .faq-section__item {
