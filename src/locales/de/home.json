@@ -42,6 +42,25 @@
     "needHelp": "Nicht sicher, was passt?",
     "contactUs": "Lass uns reden"
   },
+  "lastProjects": {
+    "label": "Neueste Arbeiten",
+    "headline": "Unsere letzten Projekte.",
+    "cta": "Projekt ansehen →",
+    "items": {
+      "v1": {
+        "title": "Lick the walls to understand echoes",
+        "subtext": "Soundinstallation sichtbar gemacht."
+      },
+      "sanam": {
+        "title": "SANAM — Silent Green Berlin",
+        "subtext": "Bühne, Publikum und Atmosphäre für Presse und Social."
+      },
+      "v2": {
+        "title": "Abigail Toll - IDOL - Silent Green",
+        "subtext": "Ein Abend mit mehreren Künstler:innen, vollständig dokumentiert."
+      }
+    }
+  },
   "project": {
     "headline": "Projekt starten.",
     "copy": "Mach aus deinem Projekt pressefähige Assets – mit klarem Plan und klaren Deliverables.",

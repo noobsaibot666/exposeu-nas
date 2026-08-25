@@ -969,6 +969,35 @@
   perspective: 1200px;
 }
 
+.home__cases-row--triple {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.home__last-projects .home__cases-grid {
+  max-width: min(1160px, calc(100vw - 48px));
+}
+
+/* Matches .portfolio__offer-* sizing (Portfolio.css) — "What we offer" cards */
+.home__last-projects .home__case-media img {
+  height: clamp(240px, 24vw, 330px);
+  aspect-ratio: 16 / 9;
+}
+
+.home__last-projects .home__case-meta {
+  padding: 16px 22px 18px;
+  gap: 10px;
+}
+
+.home__last-projects .home__case-copy {
+  font-size: 0.96rem;
+  margin-bottom: 6px;
+}
+
+.home__last-projects .home__case-cta {
+  padding: 9px 18px;
+  font-size: 0.9rem;
+}
+
 .home__case-card {
   border-radius: 16px;
   border: 1px solid var(--border-soft);
@@ -1308,7 +1337,8 @@
   }
 
   /* Service cards — single column */
-  .home__cases-row {
+  .home__cases-row,
+  .home__cases-row--triple {
     grid-template-columns: 1fr;
   }
 

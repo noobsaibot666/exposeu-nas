@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom'
 import gsap from 'gsap'
 import TopNav from '../components/TopNav'
 import './HomeV2.css'
+import '../pages/Portfolio.css'
 import styles from './HomeRedesign.module.css'
 import Footer from '../sections/Footer'
 import { resolveImagePath } from '../utils/resolveImagePath'
@@ -12,6 +13,7 @@ import { smoothScrollTo } from '../utils/smoothScroll'
 import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { SchemaOrg, SEOMeta } from '../components/SEOMeta'
+import { useVideoLightbox } from '../hooks/useVideoLightbox'
 
 // Set type to 'vimeo' or 'youtube' and replace id with the actual video ID
 const HERO_VIDEO = {
@@ -62,6 +64,40 @@ const projectVisuals = [
 ]
 
 const hiddenHomeServiceSlugs = new Set<string>()
+
+const lastProjectsBase = [
+  {
+    id: 'v1',
+    image: resolveImagePath('/src/assets/images/thumbs/portfolio/01/thumb_0.webp'),
+    videoSrc: 'https://youtu.be/00OZBQL4W3Q',
+  },
+  {
+    id: 'sanam',
+    image: resolveImagePath('/src/assets/images/thumbs/portfolio/03/thumb_0.webp'),
+    slideshowImages: [
+      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_001.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_002.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_003.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_004.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_005.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_006.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_007.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_008.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_009.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_010.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_011.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_012.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_013.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_014.webp'),
+    ],
+  },
+  {
+    id: 'v2',
+    image: resolveImagePath('/src/assets/images/thumbs/portfolio/02/thumb_0.webp'),
+    videoSrc:
+      'https://www.youtube-nocookie.com/embed/DkruqulWupw?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0',
+  },
+]
 
 const heroGalleryBase = [
   {
@@ -163,6 +199,8 @@ function HomeV2() {
   useTrackViewEvent('home_view')
   useScrollDepthTracking('home', [25, 50, 75, 90])
 
+  const { openVideo, modal: videoModal } = useVideoLightbox(rootRef)
+
   const projects = useMemo(
     () =>
       projectVisuals
@@ -173,6 +211,24 @@ function HomeV2() {
           subtext: t(`home.services.cards.${project.slug}.subtext`),
           cta: t(`home.services.cards.${project.slug}.cta`),
         })),
+    [t],
+  )
+
+  const lastProjects = useMemo(
+    () =>
+      lastProjectsBase.map((project) => {
+        const title = t(`home.lastProjects.items.${project.id}.title`)
+        const subtext = t(`home.lastProjects.items.${project.id}.subtext`)
+        return {
+          ...project,
+          title,
+          subtext,
+          thumb: project.image,
+          description: subtext,
+          year: '2025',
+          location: 'Berlin',
+        }
+      }),
     [t],
   )
 
@@ -489,79 +545,92 @@ function HomeV2() {
           )
       }
 
-      // Cases — quick staged entrance.
+      // Cases — quick staged entrance. Two sections share these classnames for
+      // styling (Documentation Types + Last Projects), so every selector here
+      // is scoped per-section rather than page-wide — a ScrollTrigger `trigger`
+      // string only ever resolves to the FIRST DOM match, so a single shared
+      // trigger would silently drive both sections off the first one's scroll
+      // position (second section snapping fully visible/hidden off-screen).
       const cards = gsap.utils.toArray<HTMLElement>('.home__case-card')
-      const casesHeaderItems = gsap.utils.toArray<HTMLElement>('.home__cases .home__section-header > *')
-      const casesNote = document.querySelector('.home__section-note')
-
-      gsap.fromTo(
-        casesHeaderItems,
-        { opacity: 0, y: 22 },
-        {
-          opacity: 1,
-          y: 0,
-          stagger: 0.08,
-          ease: 'sine.inOut',
-          scrollTrigger: {
-            trigger: '.home__cases',
-            start: 'top 88%',
-            end: 'top 62%',
-            scrub: 0.7,
-          },
-        },
-      )
-
       const cardMotion = [
         { y: 52, x: -16, rotate: -2.5 },
         { y: 52, x: 16, rotate: 2.5 },
         { y: 64, x: -10, rotate: -1.8 },
         { y: 64, x: 10, rotate: 1.8 },
       ]
-      const casesTimeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: '.home__cases-row',
-          start: 'top 86%',
-          toggleActions: 'play none none reverse',
-        },
-      })
 
-      cards.forEach((card, i) => {
-        const { y, x, rotate } = cardMotion[i % cardMotion.length]
-        casesTimeline.fromTo(
-          card,
-          { opacity: 0, y, x, scale: 0.94, rotate, filter: 'blur(6px)' },
-          {
-            opacity: 1,
-            y: 0,
-            x: 0,
-            scale: 1,
-            rotate: 0,
-            filter: 'blur(0px)',
-            duration: 0.5,
-            ease: 'sine.out',
-          },
-          i * 0.08,
-        )
-      })
+      const casesSections = gsap.utils.toArray<HTMLElement>('.home__cases')
+      casesSections.forEach((section) => {
+        const headerItems = gsap.utils.toArray<HTMLElement>('.home__section-header > *', section)
+        const sectionCards = gsap.utils.toArray<HTMLElement>('.home__case-card', section)
+        const row = section.querySelector<HTMLElement>('.home__cases-row')
+        const note = section.querySelector<HTMLElement>('.home__section-note')
 
-      // Note fades in below the cards
-      if (casesNote) {
         gsap.fromTo(
-          casesNote,
-          { opacity: 0, y: 16 },
+          headerItems,
+          { opacity: 0, y: 22 },
           {
             opacity: 1,
             y: 0,
+            stagger: 0.08,
             ease: 'sine.inOut',
             scrollTrigger: {
-              trigger: casesNote,
-              start: 'top 94%',
-              end: 'top 72%',
-              scrub: 0.55,
+              trigger: section,
+              start: 'top 88%',
+              end: 'top 62%',
+              scrub: 0.7,
             },
           },
         )
-      }
+
+        if (row) {
+          const sectionTimeline = gsap.timeline({
+            scrollTrigger: {
+              trigger: row,
+              start: 'top 86%',
+              toggleActions: 'play none none reverse',
+            },
+          })
+
+          sectionCards.forEach((card, i) => {
+            const { y, x, rotate } = cardMotion[i % cardMotion.length]
+            sectionTimeline.fromTo(
+              card,
+              { opacity: 0, y, x, scale: 0.94, rotate, filter: 'blur(6px)' },
+              {
+                opacity: 1,
+                y: 0,
+                x: 0,
+                scale: 1,
+                rotate: 0,
+                filter: 'blur(0px)',
+                duration: 0.5,
+                ease: 'sine.out',
+              },
+              i * 0.08,
+            )
+          })
+        }
+
+        // Note fades in below the cards
+        if (note) {
+          gsap.fromTo(
+            note,
+            { opacity: 0, y: 16 },
+            {
+              opacity: 1,
+              y: 0,
+              ease: 'sine.inOut',
+              scrollTrigger: {
+                trigger: note,
+                start: 'top 94%',
+                end: 'top 72%',
+                scrub: 0.55,
+              },
+            },
+          )
+        }
+      })
 
       // Proof sections — gentle fade + lift with scrub
       const proofSections = gsap.utils.toArray<HTMLElement>('.home__proof')
@@ -863,13 +932,11 @@ function HomeV2() {
             onMouseLeave={resetTilt}
           >
             {heroGallery.map((thumb) => (
-              <LocalizedLink
+              <figure
                 key={thumb.id}
-                to={serviceMeta[thumb.slug as keyof typeof serviceMeta].href}
                 className="home__hero-thumb"
                 data-rotation={thumb.rotation}
                 style={{ '--thumb-rotation': `${thumb.rotation}deg` } as CSSProperties}
-                onClick={() => trackHomeCta(thumb.label, 'hero_gallery_thumb')}
               >
                 <div className="home__hero-thumb-image">
                   <img src={thumb.image} alt={thumb.label} />
@@ -877,7 +944,7 @@ function HomeV2() {
                 <figcaption>
                   <strong>{thumb.label}</strong>
                 </figcaption>
-              </LocalizedLink>
+              </figure>
             ))}
           </div>
           <div
@@ -1005,6 +1072,40 @@ function HomeV2() {
         </p>
       </section>
 
+      <section className="home__section home__cases home__last-projects" id="last-projects">
+        <div className="home__section-header">
+          <p>{t('home.lastProjects.label')}</p>
+          <h2>{t('home.lastProjects.headline')}</h2>
+        </div>
+        <div className="home__cases-grid">
+          <div className="home__cases-row home__cases-row--triple">
+            {lastProjects.map((project, index) => (
+              <button
+                key={project.id}
+                type="button"
+                className="home__case-card"
+                onClick={() => {
+                  trackEvent('home_last_project_click', {
+                    project_id: project.id,
+                    card_position: index + 1,
+                  })
+                  openVideo(project)
+                }}
+              >
+                <div className="home__case-media">
+                  <img src={project.image} alt={project.title} loading="lazy" decoding="async" />
+                </div>
+                <div className="home__case-meta">
+                  <h3>{project.title}</h3>
+                  <p className={`home__case-copy ${styles.homeRedesign__cardCopy}`}>{project.subtext}</p>
+                  <span className="home__case-cta">{t('home.lastProjects.cta')}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="home__section home__process" id="process">
         <div className="home__process-header">
           <h2>{t('home.process.headline')}</h2>
@@ -1047,6 +1148,7 @@ function HomeV2() {
       </section>
 
       <Footer />
+      {videoModal}
     </main>
   )
 }
