@@ -19,10 +19,10 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     canonical: "https://expose-u.com/gallery-museum-documentation",
     title: "Gallery & Museum Documentation Berlin",
     description:
-      "Press-ready, curator-aligned documentation for galleries, museums and cultural institutions in Berlin. Delivered in 24-48 hours.",
+      "Press-ready, curator-aligned documentation for galleries and museums in Berlin.",
     ogTitle: "Gallery & Museum Documentation Berlin | expose.u",
     ogDescription:
-      "Documentation that outlasts the opening. Photo and video for galleries, museums and cultural institutions in Berlin.",
+      "Documentation that outlasts the opening. Photo and video for galleries and museums in Berlin.",
     h1: "Documentation That Outlasts the Opening",
     h1Line1: "Documentation That Outlasts the Opening",
     h1Line2: "",
@@ -36,19 +36,19 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     audienceItems: [
       {
         title: "Contemporary art galleries",
-        body: "Installation views and opening documentation, ready for press, website and archive.",
+        body: "Installation and opening images for press, web and archive.",
       },
       {
         title: "Museums and cultural institutions",
-        body: "Archive-quality documentation for grant applications, funding reports and collections.",
+        body: "Archive-grade documentation for grants, reports and collections.",
       },
       {
-        title: "Curators and independent project spaces",
-        body: "Portfolio and catalogue-ready material for every show.",
+        title: "Curators and project spaces",
+        body: "Portfolio- and catalogue-ready material, every show.",
       },
       {
         title: "Exhibition design studios",
-        body: "Spatial documentation of the installation itself, not just the artwork on the walls.",
+        body: "The installation itself documented, not just the works.",
       },
     ],
     whatItDoesLabel: "What it does",
@@ -56,44 +56,44 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     whatItDoesItems: [
       {
         title: "Archive & institutional memory",
-        body: "A permanent record of the exhibition, independent of what happened to be photographed at the opening.",
+        body: "A permanent record of the show, not just the opening.",
       },
       {
         title: "Press & catalogues",
-        body: "Artwork detail and installation images ready for publications and exhibition catalogues.",
+        body: "Detail and installation shots, ready for print.",
       },
       {
         title: "Grant & funding applications",
-        body: "Professional documentation supporting applications and institutional reporting.",
+        body: "Documentation that supports applications and reporting.",
       },
       {
         title: "Collector communication",
-        body: "Opening and artwork imagery ready for direct collector follow-up.",
+        body: "Opening and artwork images for collector follow-up.",
       },
       {
         title: "Social & vertical content",
-        body: "Reels/Stories-ready assets that keep the exhibition visible after it closes.",
+        body: "Vertical assets that keep the show visible after it closes.",
       },
     ],
     includedLabel: "What you get",
     includedHeading: "What you receive",
     includedLede:
-      "Delivered organized and ready to use — for press, catalogues, funders and the archive.",
+      "Organised and ready to use — for press, catalogues, funders and the archive.",
     includedCards: [
       {
         slug: "installation-views",
         title: "Installation views",
-        body: "Wide, clean views of the show, laid out for press and archive.",
+        body: "Wide, clean views, laid out for press and archive.",
       },
       {
         slug: "artwork-detail",
         title: "Artwork detail images",
-        body: "Close-up frames of individual works and materials.",
+        body: "Close-ups of individual works and materials.",
       },
       {
         slug: "opening-documentation",
         title: "Opening documentation",
-        body: "Guests and atmosphere on opening night, without staged scenes.",
+        body: "Opening night, unstaged.",
       },
       {
         slug: "vertical-social",
@@ -103,17 +103,17 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
       {
         slug: "press-ready-selects",
         title: "Press-ready selects",
-        body: "A curated set, organized and named, ready to hand to press and partners.",
+        body: "A curated, named set to hand to press and partners.",
       },
       {
         slug: "24-48h-delivery",
-        title: "24-48 hour delivery",
-        body: "Fast enough to matter while the show is still news.",
+        title: "Fast delivery",
+        body: "Delivered while the show is still on.",
       },
     ],
     finalHeading: "Let's document your exhibition.",
     finalBody:
-      "Every exhibition is different. We build the brief around your show, your timeline and what you need the documentation for.",
+      "Every show is different. We build the brief around yours.",
     finalCta: "Request availability",
   },
   de: {
@@ -121,10 +121,10 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     canonical: "https://expose-u.com/de/gallery-museum-documentation",
     title: "Galerie- & Museumsdokumentation Berlin",
     description:
-      "Pressereife, kuratorisch abgestimmte Dokumentation für Galerien, Museen und Kulturinstitutionen in Berlin. Lieferung in 24-48 Stunden.",
+      "Pressereife, kuratorisch abgestimmte Dokumentation für Galerien und Museen in Berlin.",
     ogTitle: "Galerie- & Museumsdokumentation Berlin | expose.u",
     ogDescription:
-      "Dokumentation, die die Vernissage überdauert. Foto und Video für Galerien, Museen und Kulturinstitutionen in Berlin.",
+      "Dokumentation, die die Vernissage überdauert. Foto und Video für Galerien und Museen in Berlin.",
     h1: "Dokumentation, die die Vernissage überdauert",
     h1Line1: "Dokumentation, die die Vernissage überdauert",
     h1Line2: "",
@@ -138,19 +138,19 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     audienceItems: [
       {
         title: "Zeitgenössische Kunstgalerien",
-        body: "Installationsansichten und Eröffnungsdokumentation, einsatzbereit für Presse, Website und Archiv.",
+        body: "Installations- und Eröffnungsbilder für Presse, Web und Archiv.",
       },
       {
         title: "Museen und Kulturinstitutionen",
-        body: "Archivfähige Dokumentation für Förderanträge, Berichte und Sammlungen.",
+        body: "Archivfähige Dokumentation für Förderung, Berichte und Sammlung.",
       },
       {
-        title: "Kurator:innen und unabhängige Projekträume",
-        body: "Portfolio- und katalogfertiges Material für jede Ausstellung.",
+        title: "Kurator:innen und Projekträume",
+        body: "Portfolio- und katalogfertiges Material, jede Ausstellung.",
       },
       {
         title: "Ausstellungsgestalter:innen",
-        body: "Räumliche Dokumentation der Installation selbst, nicht nur der Werke an der Wand.",
+        body: "Die Installation selbst dokumentiert, nicht nur die Werke.",
       },
     ],
     whatItDoesLabel: "Wofür es genutzt wird",
@@ -158,34 +158,34 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     whatItDoesItems: [
       {
         title: "Archiv & institutionelles Gedächtnis",
-        body: "Ein dauerhafter Nachweis der Ausstellung, unabhängig davon, was am Eröffnungsabend zufällig fotografiert wurde.",
+        body: "Ein dauerhafter Nachweis der Ausstellung, nicht nur der Eröffnung.",
       },
       {
         title: "Presse & Kataloge",
-        body: "Werk- und Installationsdetails, einsatzbereit für Publikationen und Ausstellungskataloge.",
+        body: "Detail- und Installationsaufnahmen, druckfertig.",
       },
       {
         title: "Förderanträge",
-        body: "Professionelle Dokumentation zur Unterstützung von Anträgen und institutionellen Berichten.",
+        body: "Dokumentation, die Anträge und Berichte stützt.",
       },
       {
         title: "Sammlerkommunikation",
-        body: "Eröffnungs- und Werkbilder, direkt einsetzbar in der Sammlerkommunikation.",
+        body: "Eröffnungs- und Werkbilder für die Sammleransprache.",
       },
       {
         title: "Social & vertikaler Content",
-        body: "Reels-/Stories-fertige Assets, die die Ausstellung über die Laufzeit hinaus sichtbar halten.",
+        body: "Vertikale Assets, die die Ausstellung nach Schluss sichtbar halten.",
       },
     ],
     includedLabel: "Was Sie bekommen",
     includedHeading: "Was Sie erhalten",
     includedLede:
-      "Organisiert geliefert und direkt einsatzbereit — für Presse, Kataloge, Förderer und das Archiv.",
+      "Organisiert und einsatzbereit — für Presse, Kataloge, Förderer und Archiv.",
     includedCards: [
       {
         slug: "installation-views",
         title: "Installationsansichten",
-        body: "Weite, klare Ansichten der Ausstellung, aufbereitet für Presse und Archiv.",
+        body: "Weite, klare Ansichten, aufbereitet für Presse und Archiv.",
       },
       {
         slug: "artwork-detail",
@@ -195,7 +195,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
       {
         slug: "opening-documentation",
         title: "Eröffnungsdokumentation",
-        body: "Gäste und Atmosphäre am Eröffnungsabend, ohne inszenierte Szenen.",
+        body: "Eröffnungsabend, uninszeniert.",
       },
       {
         slug: "vertical-social",
@@ -205,17 +205,17 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
       {
         slug: "press-ready-selects",
         title: "Pressereife Auswahl",
-        body: "Eine kuratierte, benannte Auswahl, bereit für Presse und Partner.",
+        body: "Eine kuratierte, benannte Auswahl für Presse und Partner.",
       },
       {
         slug: "24-48h-delivery",
-        title: "Lieferung in 24-48 Stunden",
-        body: "Schnell genug, um zu zählen, solange die Ausstellung noch aktuell ist.",
+        title: "Schnelle Lieferung",
+        body: "Geliefert, solange die Ausstellung läuft.",
       },
     ],
     finalHeading: "Lassen Sie uns Ihre Ausstellung dokumentieren.",
     finalBody:
-      "Jede Ausstellung ist anders. Wir entwickeln das Briefing gemeinsam — abgestimmt auf Ihre Ausstellung, Ihren Zeitplan und den Zweck der Dokumentation.",
+      "Jede Ausstellung ist anders. Wir bauen das Briefing um Ihre herum.",
     finalCta: "Verfügbarkeit anfragen",
   },
 };
