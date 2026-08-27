@@ -29,7 +29,7 @@ export type AdLandingPageConfig = {
   h1?: string
   subheadline: string
   cta: string
-  ctaSecondary: string
+  ctaSecondary?: string
   audienceLabel: string
   audienceHeading: string
   audienceBody?: string[]
@@ -263,13 +263,15 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
         <div className="content alp__hero-inner">
           {config.h1 ? <h1>{config.h1}</h1> : <h1>{config.h1Line1}<br />{config.h1Line2}</h1>}
           <p className="alp__subheadline">{config.subheadline}</p>
-          <div className="alp__actions">
+          <div className={`alp__actions${config.ctaSecondary ? '' : ' alp__actions--single'}`}>
             <LocalizedLink className="alp__button alp__button--primary" to={contactPath} onClick={() => trackCta('hero_primary')}>
               {config.cta}
             </LocalizedLink>
-            <a className="alp__button" href="#included" onClick={() => trackCta('hero_secondary')}>
-              {config.ctaSecondary}
-            </a>
+            {config.ctaSecondary && (
+              <a className="alp__button" href="#included" onClick={() => trackCta('hero_secondary')}>
+                {config.ctaSecondary}
+              </a>
+            )}
           </div>
         </div>
       </section>

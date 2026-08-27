@@ -29,7 +29,6 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     subheadline:
       "We document your exhibition with press-ready, curator-aligned images.",
     cta: "Request availability",
-    ctaSecondary: "See what's included",
     audienceLabel: "Who this is for",
     audienceHeading: "For galleries, curators and institutions",
     audienceGroups: [],
@@ -129,7 +128,6 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     subheadline:
       "Wir dokumentieren Ihre Ausstellung mit pressereifen, kuratorisch abgestimmten Bildern.",
     cta: "Verfügbarkeit anfragen",
-    ctaSecondary: "Sehen Sie, was enthalten ist",
     audienceLabel: "Für wen das ist",
     audienceHeading: "Für Galerien, Kurator:innen und Institutionen",
     audienceGroups: [],
