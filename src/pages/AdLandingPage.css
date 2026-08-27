@@ -47,21 +47,24 @@
 
 .alp__hero h1 {
   max-width: 1060px;
-  font-size: clamp(3.1rem, 7vw, 6.8rem);
-  line-height: 1.1;
+  font-size: clamp(2.35rem, 6.4vw, 6.8rem);
+  line-height: 1.12;
   font-weight: 700;
   letter-spacing: 0;
   text-wrap: pretty;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .alp__subheadline {
   max-width: 840px;
   color: var(--text-strong);
-  font-size: clamp(1.18rem, 1.5vw, 1.52rem);
-  line-height: 1.48;
+  font-size: clamp(1.05rem, 1.5vw, 1.52rem);
+  line-height: 1.5;
   font-weight: 500;
   text-wrap: pretty;
   white-space: pre-line;
+  overflow-wrap: break-word;
 }
 
 .alp__actions {
@@ -162,11 +165,12 @@
 .alp h2 {
   max-width: 760px;
   margin-top: 10px;
-  font-size: clamp(2rem, 3.2vw, 3.35rem);
+  font-size: clamp(1.75rem, 3.2vw, 3.35rem);
   line-height: 1.16;
   font-weight: 600;
   letter-spacing: 0;
   text-wrap: balance;
+  overflow-wrap: break-word;
 }
 
 .alp h3 {
@@ -440,9 +444,13 @@
 
 @media (max-width: 860px) {
   .alp__hero {
-    min-height: min(760px, 92svh);
-    padding-top: 112px;
+    min-height: min(600px, 82svh);
+    padding-top: 104px;
     padding-bottom: 18px;
+  }
+
+  .alp__hero-inner {
+    gap: 18px;
   }
 
   .alp__split,
@@ -473,22 +481,38 @@
 }
 
 @media (max-width: 560px) {
+  .alp__hero {
+    min-height: min(520px, 76svh);
+    padding-top: 92px;
+  }
+
   .alp__hero h1 {
-    font-size: clamp(2.7rem, 16vw, 4.3rem);
+    font-size: clamp(1.85rem, 8.4vw, 2.7rem);
+    line-height: 1.16;
   }
 
   .alp__subheadline {
-    font-size: 1.08rem;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .alp h2 {
+    font-size: clamp(1.6rem, 6.8vw, 2.1rem);
   }
 
   .alp__actions {
     align-items: stretch;
     flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
   }
 
   .alp__button,
   .alp__section-cta {
     width: 100%;
+    min-height: 44px;
+    padding: 11px 18px;
+    font-size: 0.95rem;
   }
 }
 
