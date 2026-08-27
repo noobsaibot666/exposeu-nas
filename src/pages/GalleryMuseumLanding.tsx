@@ -52,7 +52,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
       },
     ],
     whatItDoesLabel: "What it does",
-    whatItDoesHeading: "What the documentation does",
+    whatItDoesHeading: "Where the documentation gets used",
     whatItDoesItems: [
       {
         title: "Archive & institutional memory",
@@ -154,7 +154,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
       },
     ],
     whatItDoesLabel: "Wofür es genutzt wird",
-    whatItDoesHeading: "Wofür die Dokumentation genutzt wird",
+    whatItDoesHeading: "Wo die Dokumentation zum Einsatz kommt",
     whatItDoesItems: [
       {
         title: "Archiv & institutionelles Gedächtnis",
@@ -177,7 +177,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
         body: "Reels-/Stories-fertige Assets, die die Ausstellung über die Laufzeit hinaus sichtbar halten.",
       },
     ],
-    includedLabel: "Was Sie erhalten",
+    includedLabel: "Was Sie bekommen",
     includedHeading: "Was Sie erhalten",
     includedLede:
       "Organisiert geliefert und direkt einsatzbereit — für Presse, Kataloge, Förderer und das Archiv.",
