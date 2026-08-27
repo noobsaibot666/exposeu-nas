@@ -524,6 +524,15 @@
     padding: 11px 20px;
     font-size: 0.95rem;
   }
+
+  .alp__final-inner {
+    text-align: center;
+    justify-items: center;
+  }
+
+  .alp__final-inner p {
+    margin-inline: auto;
+  }
 }
 
 @media (max-width: 480px) {
