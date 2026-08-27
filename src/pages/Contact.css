@@ -312,9 +312,7 @@
 
 .contact__whatsapp {
   grid-column: 1 / -1;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border-soft);
+  margin-top: 16px;
 }
 
 .contact__whatsapp a {
