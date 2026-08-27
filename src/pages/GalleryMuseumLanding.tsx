@@ -75,7 +75,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
         body: "Vertical assets that keep the show visible after it closes.",
       },
     ],
-    includedLabel: "What you get",
+    includedLabel: "Deliverables",
     includedHeading: "What you receive",
     includedLede:
       "Organised and ready to use — for press, catalogues, funders and the archive.",
@@ -177,7 +177,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
         body: "Vertikale Assets, die die Ausstellung nach Schluss sichtbar halten.",
       },
     ],
-    includedLabel: "Was Sie bekommen",
+    includedLabel: "Leistungen",
     includedHeading: "Was Sie erhalten",
     includedLede:
       "Organisiert und einsatzbereit — für Presse, Kataloge, Förderer und Archiv.",
