@@ -30,7 +30,6 @@
       "projectType": "Projektart",
       "projectTypePlaceholder": "Typ auswählen…",
       "message": "Erzähl uns von deiner Show, Ausstellung oder deinem Projekt.",
-      "starterMessage": "Hallo — erzähl uns von deinem Projekt. Was ist es, wann findet es statt, wo, und was soll dokumentiert werden?",
       "companyWebsite": "Unternehmenswebsite"
     },
     "submit": {

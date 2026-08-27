@@ -452,7 +452,6 @@ function Contact() {
                   id="message"
                   name="message"
                   rows={4}
-                  placeholder={t('forms.contact.fields.starterMessage')}
                   value={messageValue}
                   onChange={(e) => { setMessageValue(e.target.value); handleFieldInput('message') }}
                 />
