@@ -501,7 +501,7 @@
   }
 
   .alp__actions {
-    align-items: stretch;
+    align-items: flex-start;
     flex-direction: column;
     gap: 12px;
     margin-top: 24px;
@@ -509,9 +509,9 @@
 
   .alp__button,
   .alp__section-cta {
-    width: 100%;
+    width: auto;
     min-height: 44px;
-    padding: 11px 18px;
+    padding: 11px 20px;
     font-size: 0.95rem;
   }
 }
