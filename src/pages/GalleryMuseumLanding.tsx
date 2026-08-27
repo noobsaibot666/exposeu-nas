@@ -77,8 +77,6 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     ],
     includedLabel: "What you get",
     includedHeading: "Installation views, details and opening night",
-    includedLede:
-      "Organised and ready to use — for press, catalogues, funders and the archive.",
     includedCards: [
       {
         slug: "installation-views",
@@ -179,8 +177,6 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     ],
     includedLabel: "Was Sie bekommen",
     includedHeading: "Installationsansichten, Details und Eröffnung",
-    includedLede:
-      "Organisiert und einsatzbereit — für Presse, Kataloge, Förderer und Archiv.",
     includedCards: [
       {
         slug: "installation-views",
