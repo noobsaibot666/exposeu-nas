@@ -27,7 +27,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     h1Line1: "Documentation That Outlasts the Opening",
     h1Line2: "",
     subheadline:
-      "expose.u documents exhibitions and openings with curator-aligned, press-ready images — delivered in 24-48 hours.",
+      "We document exhibitions and openings with curator-aligned, press-ready images — from the installation view to the opening night.",
     cta: "Request availability",
     ctaSecondary: "See what's included",
     audienceLabel: "Who this is for",
@@ -129,7 +129,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     h1Line1: "Dokumentation, die die Vernissage überdauert",
     h1Line2: "",
     subheadline:
-      "expose.u dokumentiert Ausstellungen und Eröffnungen mit kuratorisch abgestimmten, pressereifen Bildern — geliefert in 24-48 Stunden.",
+      "Wir dokumentieren Ausstellungen und Eröffnungen mit kuratorisch abgestimmten, pressereifen Bildern — von der Installationsansicht bis zum Eröffnungsabend.",
     cta: "Verfügbarkeit anfragen",
     ctaSecondary: "Sehen Sie, was enthalten ist",
     audienceLabel: "Für wen das ist",
