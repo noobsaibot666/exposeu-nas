@@ -366,11 +366,37 @@
   .contact__nav {
     padding: 16px 0 12px;
   }
+
+  /* Form first, contact details after it, once the grid is stacked */
+  .contact__form,
+  .contact__success--standalone {
+    order: 1;
+  }
+
+  .contact__info {
+    order: 2;
+    margin-top: 8px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-soft);
+  }
 }
 
 @media (max-width: 600px) {
   .contact {
     min-height: 100svh;
+  }
+
+  .contact__heading h1 {
+    font-size: clamp(1.85rem, 7vw, 2.3rem);
+  }
+
+  .contact__lede {
+    font-size: 1.05rem;
+  }
+
+  /* One clear status line is enough on a phone */
+  .contact__heading .availability-badge {
+    display: none;
   }
 }
 
