@@ -27,7 +27,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     h1Line1: "Documentation That Outlasts the Opening",
     h1Line2: "",
     subheadline:
-      "We document exhibitions and openings with curator-aligned, press-ready images — from the installation view to the opening night.",
+      "We document your exhibition with press-ready, curator-aligned images.",
     cta: "Request availability",
     ctaSecondary: "See what's included",
     audienceLabel: "Who this is for",
@@ -129,7 +129,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     h1Line1: "Dokumentation, die die Vernissage überdauert",
     h1Line2: "",
     subheadline:
-      "Wir dokumentieren Ausstellungen und Eröffnungen mit kuratorisch abgestimmten, pressereifen Bildern — von der Installationsansicht bis zum Eröffnungsabend.",
+      "Wir dokumentieren Ihre Ausstellung mit pressereifen, kuratorisch abgestimmten Bildern.",
     cta: "Verfügbarkeit anfragen",
     ctaSecondary: "Sehen Sie, was enthalten ist",
     audienceLabel: "Für wen das ist",
