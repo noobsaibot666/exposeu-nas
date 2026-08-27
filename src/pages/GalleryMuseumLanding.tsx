@@ -51,8 +51,8 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
         body: "The installation itself documented, not just the works.",
       },
     ],
-    whatItDoesLabel: "What it does",
-    whatItDoesHeading: "Where the documentation gets used",
+    whatItDoesLabel: "What it's for",
+    whatItDoesHeading: "Archive, press, funding and collectors",
     whatItDoesItems: [
       {
         title: "Archive & institutional memory",
@@ -75,8 +75,8 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
         body: "Vertical assets that keep the show visible after it closes.",
       },
     ],
-    includedLabel: "Deliverables",
-    includedHeading: "What you receive",
+    includedLabel: "What you get",
+    includedHeading: "Installation views, details and opening night",
     includedLede:
       "Organised and ready to use — for press, catalogues, funders and the archive.",
     includedCards: [
@@ -153,8 +153,8 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
         body: "Die Installation selbst dokumentiert, nicht nur die Werke.",
       },
     ],
-    whatItDoesLabel: "Wofür es genutzt wird",
-    whatItDoesHeading: "Wo die Dokumentation zum Einsatz kommt",
+    whatItDoesLabel: "Wofür es ist",
+    whatItDoesHeading: "Archiv, Presse, Förderung und Sammler",
     whatItDoesItems: [
       {
         title: "Archiv & institutionelles Gedächtnis",
@@ -177,8 +177,8 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
         body: "Vertikale Assets, die die Ausstellung nach Schluss sichtbar halten.",
       },
     ],
-    includedLabel: "Leistungen",
-    includedHeading: "Was Sie erhalten",
+    includedLabel: "Was Sie bekommen",
+    includedHeading: "Installationsansichten, Details und Eröffnung",
     includedLede:
       "Organisiert und einsatzbereit — für Presse, Kataloge, Förderer und Archiv.",
     includedCards: [
