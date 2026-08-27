@@ -111,13 +111,6 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
         body: "Fast enough to matter while the show is still news.",
       },
     ],
-    includedCta: "Request availability",
-    proofLabel: "How we work",
-    proofItems: [],
-    proofProse: [
-      "Quiet on set. Curator-aligned.",
-      "We read the exhibition before we shoot it — the sightlines, the sequencing, what the curator meant to anchor the room. One or two people on site, never disrupting the opening or the work. Photo and video from one team, delivered press-ready within 24-48 hours.",
-    ],
     finalHeading: "Let's document your exhibition.",
     finalBody:
       "Every exhibition is different. We build the brief around your show, your timeline and what you need the documentation for.",
@@ -219,13 +212,6 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
         title: "Lieferung in 24-48 Stunden",
         body: "Schnell genug, um zu zählen, solange die Ausstellung noch aktuell ist.",
       },
-    ],
-    includedCta: "Verfügbarkeit anfragen",
-    proofLabel: "Wie wir arbeiten",
-    proofItems: [],
-    proofProse: [
-      "Kleines Team. Kuratorisch abgestimmt.",
-      "Wir lesen die Ausstellung, bevor wir sie dokumentieren — die Blickführung, die Abfolge, was im Raum verankert werden sollte. Ein bis zwei Personen vor Ort, ohne die Eröffnung oder die Arbeit zu stören. Foto und Video aus einer Hand, pressereif geliefert innerhalb von 24-48 Stunden.",
     ],
     finalHeading: "Lassen Sie uns Ihre Ausstellung dokumentieren.",
     finalBody:

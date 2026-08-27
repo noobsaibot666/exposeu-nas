@@ -39,9 +39,9 @@ export type AdLandingPageConfig = {
   includedHeading: string
   includedLede: string
   includedCards: Array<{ title: string; body: string; slug?: string }>
-  includedCta: string
-  proofLabel: string
-  proofItems: Array<{ title: string; body: string }>
+  includedCta?: string
+  proofLabel?: string
+  proofItems?: Array<{ title: string; body: string }>
   proofProse?: string[]
   whatItDoesLabel?: string
   whatItDoesHeading?: string
@@ -351,32 +351,36 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
                 )
               })}
             </div>
-            <LocalizedLink className="alp__section-cta" to={contactPath} onClick={() => trackCta('included')}>
-              {config.includedCta}
-            </LocalizedLink>
+            {config.includedCta && (
+              <LocalizedLink className="alp__section-cta" to={contactPath} onClick={() => trackCta('included')}>
+                {config.includedCta}
+              </LocalizedLink>
+            )}
           </div>
         </div>
       </section>
 
-      <section className="section alp__proof">
-        <div className="content">
-          <p className="alp__label">{config.proofLabel}</p>
-          {config.proofProse ? (
-            <div className="alp__proof-prose">
-              {config.proofProse.map((para, i) => <p key={i}>{para}</p>)}
-            </div>
-          ) : (
-            <div className="alp__proof-grid">
-              {config.proofItems.map(({ title, body }) => (
-                <div className="alp__proof-item" key={title}>
-                  <h3>{title}</h3>
-                  <p>{body}</p>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+      {Boolean(config.proofProse?.length || config.proofItems?.length) && (
+        <section className="section alp__proof">
+          <div className="content">
+            {config.proofLabel && <p className="alp__label">{config.proofLabel}</p>}
+            {config.proofProse ? (
+              <div className="alp__proof-prose">
+                {config.proofProse.map((para, i) => <p key={i}>{para}</p>)}
+              </div>
+            ) : (
+              <div className="alp__proof-grid">
+                {config.proofItems?.map(({ title, body }) => (
+                  <div className="alp__proof-item" key={title}>
+                    <h3>{title}</h3>
+                    <p>{body}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       {config.usageHeading && config.platforms && (
         <section className="section alp__usage">
