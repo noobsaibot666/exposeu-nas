@@ -501,13 +501,23 @@
   }
 
   .alp__actions {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
+    align-items: stretch;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 10px;
     margin-top: 24px;
   }
 
-  .alp__button,
+  .alp__actions .alp__button {
+    flex: 1 1 0;
+    min-width: 0;
+    width: auto;
+    min-height: 44px;
+    padding: 11px 12px;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
   .alp__section-cta {
     width: auto;
     min-height: 44px;
