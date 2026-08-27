@@ -341,14 +341,14 @@ function Contact() {
                 <a href="tel:+4917622132950">+49 176 2213 2950</a>
               </div>
               <div>
-                <p className="contact__label">{t('contact.labels.studio')}</p>
-                <p className="contact__address">{t('contact.studioAddress')}</p>
-              </div>
-              <div>
                 <p className="contact__label">{t('contact.labels.instagram')}</p>
                 <a href="https://instagram.com/xposeu_official" target="_blank" rel="noopener noreferrer">
                   xposeu_official
                 </a>
+              </div>
+              <div>
+                <p className="contact__label">{t('contact.labels.studio')}</p>
+                <p className="contact__address">{t('contact.studioAddress')}</p>
               </div>
             </div>
           </div>
