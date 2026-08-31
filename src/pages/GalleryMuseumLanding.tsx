@@ -15,7 +15,7 @@ const baseConfig = {
   heroOverlay: "linear-gradient(90deg, rgba(5, 7, 11, 0.82), rgba(5, 7, 11, 0.34))",
 };
 
-// Concrete deliverables first, then how we work, then who it's for.
+// The offer first, then how we shoot, then who it's for.
 const SECTION_ORDER: AdLandingPageConfig["sectionOrder"] = ["included", "proof", "audience"];
 
 const configs: Record<"en" | "de", AdLandingPageConfig> = {
@@ -25,87 +25,85 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     canonical: "https://expose-u.com/gallery-museum-documentation",
     title: "Gallery & Museum Documentation Berlin",
     description:
-      "Considered photo and video documentation for galleries and museums in Berlin — press- and archive-ready.",
-    ogTitle: "Gallery & Museum Documentation Berlin | expose.u",
+      "Photo and video for exhibitions in Berlin — galleries, artists and independent spaces. Content worth sharing long after opening night.",
+    ogTitle: "Exhibition Photo & Video Berlin | expose.u",
     ogDescription:
-      "Installation views, artwork details and opening night, documented to archive standard. For Berlin galleries and museums.",
+      "We photograph and film your exhibition and give you photo and video that keeps it alive long after it closes.",
     heroKicker: "Berlin Art Week & Gallery Night 2026",
-    h1: "Your exhibition, documented to archive standard.",
-    h1Line1: "Your exhibition, documented to archive standard.",
+    h1: "Give your exhibition a longer life.",
+    h1Line1: "Give your exhibition a longer life.",
     h1Line2: "",
     subheadline:
-      "Installation views, artwork details and opening night — for Berlin galleries and museums.",
+      "We photograph and film your exhibition — the art, the space, the opening, the mood — and give you photo and video worth sharing long after the doors close.",
     cta: "Book your date",
-    ctaSecondary: "See sample work",
     stickyCta: "Book your date",
     stickyCtaNote: "Limited Art Week slots",
     audienceLabel: "Who this is for",
-    audienceHeading: "For galleries, curators and institutions",
+    audienceHeading: "For galleries, artists and independent spaces",
     audienceGroups: [],
     audienceItems: [
       {
-        title: "Contemporary art galleries",
-        body: "Installation and opening images for press, web and archive.",
+        title: "Galleries",
+        body: "Solo and group shows, back-to-back openings through the fair.",
       },
       {
-        title: "Museums and cultural institutions",
-        body: "Archive-grade documentation for grants, reports and collections.",
+        title: "Artists with a show on",
+        body: "Your exhibition, performance or installation — documented properly.",
       },
       {
         title: "Curators and project spaces",
-        body: "Portfolio- and catalogue-ready material, every show.",
+        body: "Independent programmes that deserve the coverage the big institutions get.",
       },
     ],
     includedLabel: "What you get",
-    includedHeading: "Installation views, details and opening night",
+    includedHeading: "Photo and video you'll actually use.",
     includedLede:
-      "Delivered as a named, press-ready set — organised the way your team will use it.",
+      "Everything shot, edited and delivered ready to post, print and pitch.",
     includedCards: [
       {
         slug: "installation-views",
-        title: "Installation views",
-        body: "Wide, clean, press-ready.",
+        title: "The art, shown at its best",
+        body: "Every key work photographed the way it's meant to be seen.",
       },
       {
         slug: "artwork-detail",
-        title: "Artwork detail images",
-        body: "Close-ups of individual works and materials.",
+        title: "Close-up detail",
+        body: "Texture, material, the things people miss walking past.",
       },
       {
         slug: "opening-documentation",
-        title: "Opening documentation",
-        body: "Opening night, unstaged.",
+        title: "The opening, as it felt",
+        body: "The crowd, the faces, the energy — real, not posed.",
       },
       {
         slug: "vertical-social",
-        title: "Vertical social assets",
-        body: "Reels- and Stories-ready clips and images.",
+        title: "Ready to post",
+        body: "Vertical video and stills to share while your show is the talk of the week.",
       },
       {
         slug: "press-ready-selects",
-        title: "Press-ready selects",
-        body: "A curated, named set to hand to press and partners.",
-      },
-      {
-        slug: "24-48h-delivery",
-        title: "Delivered before the show closes",
-        body: "Named selects in hand while the exhibition is still up.",
+        title: "A set worth keeping",
+        body: "Named, edited selects for press, collectors and your archive.",
       },
     ],
     includedCta: "Book your documentation",
     proofLabel: "How we work",
     proofItems: [
       {
-        title: "Shot for the archive",
-        body: "Wide, corrected installation views and artwork details, built to outlast the show.",
+        title: "We shoot what matters to you",
+        body: "Your artists, your key works, your priorities — agreed before we arrive.",
       },
       {
-        title: "In hand before it closes",
-        body: "Selects delivered within days of the shoot — in time for press and catalogue deadlines, every exhibition.",
+        title: "Photo and video, one team",
+        body: "Stills and motion covered together, so nothing about the day slips past.",
       },
       {
-        title: "Made for Berlin's galleries",
-        body: "Documentation aligned to how galleries, curators and institutions actually use it: press, web, grants, collectors.",
+        title: "Close to the art, light on our feet",
+        body: "We move quietly through the room and catch how it actually feels.",
+      },
+      {
+        title: "Back to you fast",
+        body: "Edited selects while people are still talking about the show.",
       },
     ],
     finalHeading: "Book before your opening.",
@@ -119,87 +117,85 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     canonical: "https://expose-u.com/de/gallery-museum-documentation",
     title: "Galerie- & Museumsdokumentation Berlin",
     description:
-      "Durchdachte Foto- und Videodokumentation für Galerien und Museen in Berlin — presse- und archivfertig.",
-    ogTitle: "Galerie- & Museumsdokumentation Berlin | expose.u",
+      "Foto und Video für Ausstellungen in Berlin — Galerien, Künstler:innen und unabhängige Räume. Inhalte, die weit über die Eröffnung hinaus wirken.",
+    ogTitle: "Ausstellungs-Foto & -Video Berlin | expose.u",
     ogDescription:
-      "Installationsansichten, Werkdetails und Eröffnungsabend, dokumentiert auf Archivniveau. Für Galerien und Museen in Berlin.",
+      "Wir fotografieren und filmen Ihre Ausstellung und geben Ihnen Foto- und Videomaterial, das sie lange nach dem letzten Tag lebendig hält.",
     heroKicker: "Berlin Art Week & Gallery Night 2026",
-    h1: "Ihre Ausstellung, dokumentiert auf Archivniveau.",
-    h1Line1: "Ihre Ausstellung, dokumentiert auf Archivniveau.",
+    h1: "Geben Sie Ihrer Ausstellung ein längeres Leben.",
+    h1Line1: "Geben Sie Ihrer Ausstellung ein längeres Leben.",
     h1Line2: "",
     subheadline:
-      "Installationsansichten, Werkdetails und Eröffnungsabend — für Galerien und Museen in Berlin.",
+      "Wir fotografieren und filmen Ihre Ausstellung — die Werke, den Raum, die Eröffnung, die Stimmung — und geben Ihnen Foto- und Videomaterial, das noch lange nach dem letzten Tag wirkt.",
     cta: "Termin sichern",
-    ctaSecondary: "Arbeiten ansehen",
     stickyCta: "Termin sichern",
     stickyCtaNote: "Begrenzte Art-Week-Plätze",
     audienceLabel: "Für wen das ist",
-    audienceHeading: "Für Galerien, Kurator:innen und Institutionen",
+    audienceHeading: "Für Galerien, Künstler:innen und unabhängige Räume",
     audienceGroups: [],
     audienceItems: [
       {
-        title: "Zeitgenössische Kunstgalerien",
-        body: "Installations- und Eröffnungsbilder für Presse, Web und Archiv.",
+        title: "Galerien",
+        body: "Einzel- und Gruppenausstellungen, Eröffnung auf Eröffnung während der Art Week.",
       },
       {
-        title: "Museen und Kulturinstitutionen",
-        body: "Archivfähige Dokumentation für Förderung, Berichte und Sammlung.",
+        title: "Künstler:innen mit einer laufenden Ausstellung",
+        body: "Ihre Ausstellung, Performance oder Installation — richtig dokumentiert.",
       },
       {
         title: "Kurator:innen und Projekträume",
-        body: "Portfolio- und katalogfertiges Material, jede Ausstellung.",
+        body: "Unabhängige Programme, die dieselbe Aufmerksamkeit verdienen wie die großen Häuser.",
       },
     ],
     includedLabel: "Was Sie bekommen",
-    includedHeading: "Installationsansichten, Details und Eröffnung",
+    includedHeading: "Foto und Video, das Sie wirklich nutzen.",
     includedLede:
-      "Geliefert als benannte, pressefertige Auswahl — so geordnet, wie Ihr Team sie nutzt.",
+      "Alles aufgenommen, bearbeitet und geliefert — bereit zum Posten, Drucken und Vorstellen.",
     includedCards: [
       {
         slug: "installation-views",
-        title: "Installationsansichten",
-        body: "Weit, klar, pressefertig.",
+        title: "Die Kunst im besten Licht",
+        body: "Jedes wichtige Werk so fotografiert, wie es gesehen werden soll.",
       },
       {
         slug: "artwork-detail",
-        title: "Werkdetailaufnahmen",
-        body: "Nahaufnahmen einzelner Werke und Materialien.",
+        title: "Detailaufnahmen",
+        body: "Textur, Material — das, was im Vorbeigehen übersehen wird.",
       },
       {
         slug: "opening-documentation",
-        title: "Eröffnungsdokumentation",
-        body: "Eröffnungsabend, uninszeniert.",
+        title: "Die Eröffnung, wie sie sich anfühlte",
+        body: "Das Publikum, die Gesichter, die Energie — echt, nicht gestellt.",
       },
       {
         slug: "vertical-social",
-        title: "Vertikale Social-Assets",
-        body: "Reels- und Stories-fertige Clips und Bilder.",
+        title: "Bereit zum Posten",
+        body: "Vertikales Video und Stills, solange über Ihre Show gesprochen wird.",
       },
       {
         slug: "press-ready-selects",
-        title: "Pressereife Auswahl",
-        body: "Eine kuratierte, benannte Auswahl für Presse und Partner.",
-      },
-      {
-        slug: "24-48h-delivery",
-        title: "Lieferung vor Ausstellungsende",
-        body: "Benannte Auswahl in der Hand, solange die Ausstellung noch läuft.",
+        title: "Eine Auswahl, die bleibt",
+        body: "Benannte, bearbeitete Selects für Presse, Sammler und Ihr Archiv.",
       },
     ],
     includedCta: "Dokumentation buchen",
     proofLabel: "Wie wir arbeiten",
     proofItems: [
       {
-        title: "Fürs Archiv fotografiert",
-        body: "Weite, entzerrte Installationsansichten und Werkdetails, die die Ausstellung überdauern.",
+        title: "Wir fotografieren, worauf es Ihnen ankommt",
+        body: "Ihre Künstler:innen, Ihre Schlüsselwerke, Ihre Prioritäten — vorab abgestimmt.",
       },
       {
-        title: "In der Hand, bevor sie schließt",
-        body: "Auswahl innerhalb weniger Tage nach dem Shooting — rechtzeitig für Presse- und Katalogtermine, jede Ausstellung.",
+        title: "Foto und Video, ein Team",
+        body: "Stills und Bewegtbild zusammen abgedeckt, damit nichts vom Tag verloren geht.",
       },
       {
-        title: "Für Berlins Galerien gemacht",
-        body: "Dokumentation, ausgerichtet daran, wie Galerien, Kurator:innen und Institutionen sie wirklich nutzen: Presse, Web, Förderung, Sammler.",
+        title: "Nah an der Kunst, leicht auf den Beinen",
+        body: "Wir bewegen uns leise durch den Raum und fangen ein, wie es sich wirklich anfühlt.",
+      },
+      {
+        title: "Schnell zurück bei Ihnen",
+        body: "Bearbeitete Auswahl, solange noch über die Show gesprochen wird.",
       },
     ],
     finalHeading: "Buchen Sie vor Ihrer Eröffnung.",
