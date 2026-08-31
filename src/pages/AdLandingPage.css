@@ -67,6 +67,40 @@
   overflow-wrap: break-word;
 }
 
+.alp__hero-kicker {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  align-self: start;
+  max-width: 100%;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid rgba(245, 245, 244, 0.34);
+  border-radius: 999px;
+  color: rgba(245, 245, 244, 0.92);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: rgba(5, 5, 5, 0.32);
+  backdrop-filter: blur(4px);
+}
+
+@media (max-width: 560px) {
+  /* Drop the pill chrome on small screens so a wrapped kicker doesn't render
+     as an awkward multi-line stadium shape. */
+  .alp__hero-kicker {
+    padding: 0;
+    border: 0;
+    background: none;
+    backdrop-filter: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: rgba(245, 245, 244, 0.86);
+  }
+}
+
 .alp__actions {
   display: flex;
   flex-wrap: wrap;
@@ -442,6 +476,70 @@
   line-height: 1.72;
 }
 
+/* Fixed mobile-only CTA bar — revealed once the hero scrolls out of view
+   (see AdLandingPage.tsx). Desktop keeps the in-flow CTAs and never shows this. */
+.alp__sticky-cta {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+  background: rgba(5, 7, 11, 0.94);
+  border-top: 1px solid rgba(245, 245, 244, 0.16);
+  backdrop-filter: blur(10px);
+  transform: translateY(110%);
+  transition: transform 260ms ease;
+}
+
+.alp__sticky-cta[data-visible='true'] {
+  transform: translateY(0);
+}
+
+.alp__sticky-cta-note {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: rgba(245, 245, 244, 0.86);
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* On the narrowest phones the note crowds the button — drop it, keep the CTA. */
+@media (max-width: 360px) {
+  .alp__sticky-cta-note {
+    display: none;
+  }
+}
+
+.alp__sticky-cta .alp__button {
+  flex: 0 0 auto;
+  min-height: 42px;
+  padding: 10px 20px;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .alp__sticky-cta {
+    display: flex;
+  }
+
+  /* keep the final CTA clear of the fixed bar */
+  .alp:has(.alp__sticky-cta) .alp__final {
+    padding-bottom: 104px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .alp__sticky-cta {
+    transition: none;
+  }
+}
+
 @media (max-width: 860px) {
   .alp__hero {
     min-height: min(600px, 82svh);
@@ -500,32 +598,32 @@
     font-size: clamp(1.6rem, 6.8vw, 2.1rem);
   }
 
+  /* Stack the hero CTAs on narrow screens — the labels are full phrases
+     ("Book your date" / "See sample work"), so a side-by-side row either
+     truncates or wraps to two lines each. Full-width stacked reads cleaner
+     and gives a bigger tap target. */
   .alp__actions {
     align-items: stretch;
-    flex-direction: row;
-    flex-wrap: nowrap;
+    flex-direction: column;
     gap: 10px;
     margin-top: 24px;
   }
 
   .alp__actions .alp__button {
-    flex: 1 1 0;
-    min-width: 0;
-    width: auto;
-    min-height: 44px;
-    padding: 11px 12px;
-    font-size: 0.9rem;
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 18px;
+    font-size: 0.95rem;
     text-align: center;
   }
 
   .alp__actions--single {
-    justify-content: center;
+    align-items: center;
   }
 
   .alp__actions--single .alp__button {
-    flex: 0 1 auto;
+    width: auto;
     padding: 12px 26px;
-    font-size: 0.95rem;
   }
 
   .alp__section-cta {

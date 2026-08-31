@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
+import { type ReactNode, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import gsap from 'gsap'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
@@ -13,6 +13,13 @@ type Platform = {
   use: string
 }
 
+// Middle sections between the hero and the final CTA. Order is configurable
+// per-page via `sectionOrder`; when unset the historical order is used so
+// the other landing pages built on this component are unaffected.
+export type SectionKey = 'audience' | 'whatItDoes' | 'included' | 'proof' | 'usage'
+
+const DEFAULT_SECTION_ORDER: SectionKey[] = ['audience', 'whatItDoes', 'included', 'proof', 'usage']
+
 export type AdLandingPageConfig = {
   slug: string
   serviceSlug: string
@@ -24,12 +31,22 @@ export type AdLandingPageConfig = {
   ogDescription?: string
   heroImage: string
   supportImage: string
+  /** Optional CSS gradient placed over the hero image. Defaults to the shared dark wash. */
+  heroOverlay?: string
   h1Line1: string
   h1Line2: string
   h1?: string
+  /** Small uppercase line above the H1 — used for campaign / urgency framing. */
+  heroKicker?: string
   subheadline: string
   cta: string
   ctaSecondary?: string
+  /** When set, renders a fixed mobile-only CTA bar once the hero scrolls away. */
+  stickyCta?: string
+  /** Short reminder text shown beside the sticky CTA button. */
+  stickyCtaNote?: string
+  /** Explicit order (and inclusion) of the middle sections. Defaults to DEFAULT_SECTION_ORDER. */
+  sectionOrder?: SectionKey[]
   audienceLabel: string
   audienceHeading: string
   audienceBody?: string[]
@@ -67,7 +84,11 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
   const navigate = useLocaleNavigate()
   const { locale } = useLocale()
   const { t } = useTranslation()
+  const heroRef = useRef<HTMLElement | null>(null)
+  const [stickyVisible, setStickyVisible] = useState(false)
   const contactPath = `/contact?service=${config.serviceSlug}${config.ctaPackage ? `&package=${encodeURIComponent(config.ctaPackage)}` : ''}`
+  const heroOverlay = config.heroOverlay ?? 'linear-gradient(90deg, rgba(5, 7, 11, 0.88), rgba(5, 7, 11, 0.5))'
+  const sectionOrder = config.sectionOrder ?? DEFAULT_SECTION_ORDER
 
   useTrackViewEvent('landing_page_view', {
     page_slug: config.slug,
@@ -75,7 +96,7 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
     offer_type: config.slug,
   })
 
-  useScrollDepthTracking(config.slug.replace(/-/g, '_'), [50, 75], (threshold) => ({
+  useScrollDepthTracking(config.slug.replace(/-/g, '_'), [25, 50, 75], (threshold) => ({
     page_slug: config.slug,
     service_slug: config.serviceSlug,
     threshold,
@@ -94,6 +115,20 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
     })
   }, [config.customPixelEvent, config.metaContentName, config.serviceSlug])
 
+  // Sticky mobile CTA: show it only once the hero has scrolled out of view,
+  // so a visitor who never scrolls past the hero isn't shown a redundant bar.
+  useEffect(() => {
+    if (!config.stickyCta) return
+    const hero = heroRef.current
+    if (!hero || typeof IntersectionObserver === 'undefined') return
+    const observer = new IntersectionObserver(
+      ([entry]) => setStickyVisible(!entry.isIntersecting),
+      { rootMargin: '-40px 0px 0px 0px' },
+    )
+    observer.observe(hero)
+    return () => observer.disconnect()
+  }, [config.stickyCta])
+
   useLayoutEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
@@ -106,8 +141,8 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
 
       gsap.fromTo(
         '.alp__hero-inner > *',
-        { opacity: 0, y: 36, filter: 'blur(10px)' },
-        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.1, stagger: 0.12, ease: 'power3.out', delay: 0.18 },
+        { opacity: 0, y: 30, filter: 'blur(8px)' },
+        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.8, stagger: 0.08, ease: 'power3.out', delay: 0.12 },
       )
 
       gsap.to('.alp__hero', {
@@ -121,18 +156,8 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
         },
       })
 
-      gsap.to('.alp__hero-inner', {
-        opacity: 0,
-        y: -40,
-        filter: 'blur(6px)',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '.alp__hero',
-          start: 'center top',
-          end: 'bottom top',
-          scrub: 0.5,
-        },
-      })
+      // NB: the hero content is intentionally NOT faded out on scroll — the
+      // primary CTA lives here and must stay reachable as the user scrolls.
 
       gsap.utils.toArray<HTMLElement>('.alp .section').forEach((section) => {
         const items = gsap.utils.toArray<HTMLElement>(
@@ -140,45 +165,45 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
           section,
         )
 
+        // One-shot reveal (no scrub): content animates in once when the section
+        // is reached and then stays put. `immediateRender: false` leaves the
+        // natural (visible) state in place if ScrollTrigger never fires — e.g.
+        // an in-app WebView that stalls JS — so nothing can get stuck hidden.
         if (items.length) {
-          gsap.fromTo(
-            items,
-            { opacity: 0, y: 30, filter: 'blur(7px)' },
-            {
-              opacity: 1,
-              y: 0,
-              filter: 'blur(0px)',
-              stagger: 0.07,
-              ease: 'power2.out',
-              scrollTrigger: {
-                trigger: section,
-                start: 'top 92%',
-                end: 'top 52%',
-                scrub: 0.5,
-              },
+          gsap.from(items, {
+            opacity: 0,
+            y: 28,
+            filter: 'blur(6px)',
+            stagger: 0.06,
+            ease: 'power2.out',
+            duration: 0.7,
+            immediateRender: false,
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 88%',
+              toggleActions: 'play none none none',
+              once: true,
             },
-          )
+          })
         }
 
         const media = section.querySelector<HTMLElement>('.alp__image')
         if (media) {
-          gsap.fromTo(
-            media,
-            { opacity: 0, y: 30, scale: 0.96, filter: 'blur(8px)' },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              filter: 'blur(0px)',
-              ease: 'power2.out',
-              scrollTrigger: {
-                trigger: section,
-                start: 'top 85%',
-                end: 'top 45%',
-                scrub: 0.5,
-              },
+          gsap.from(media, {
+            opacity: 0,
+            y: 28,
+            scale: 0.97,
+            filter: 'blur(7px)',
+            ease: 'power2.out',
+            duration: 0.8,
+            immediateRender: false,
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+              once: true,
             },
-          )
+          })
 
           gsap.to(media, {
             y: -52,
@@ -236,47 +261,9 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
     }
   }
 
-  return (
-    <main className="alp" id="main" ref={rootRef}>
-      <SEOMeta
-        title={config.title}
-        description={config.description}
-        ogTitle={config.ogTitle ?? config.title}
-        ogDescription={config.ogDescription ?? config.description}
-        ogImage={config.ogImage}
-        canonical={config.canonical}
-        lang={locale}
-      />
-
-      <div className="home__nav alp__nav">
-        <TopNav
-          leftLinks={navLinks.left}
-          rightLinks={navLinks.right}
-          onBrandClick={() => navigate('/')}
-          brandLabel={t('nav.brand')}
-          className="top-nav--page"
-          activeId="services"
-        />
-      </div>
-
-      <section className="alp__hero" style={{ backgroundImage: `linear-gradient(90deg, rgba(5, 7, 11, 0.88), rgba(5, 7, 11, 0.5)), url(${config.heroImage})` }}>
-        <div className="content alp__hero-inner">
-          {config.h1 ? <h1>{config.h1}</h1> : <h1>{config.h1Line1}<br />{config.h1Line2}</h1>}
-          <p className="alp__subheadline">{config.subheadline}</p>
-          <div className={`alp__actions${config.ctaSecondary ? '' : ' alp__actions--single'}`}>
-            <LocalizedLink className="alp__button alp__button--primary" to={contactPath} onClick={() => trackCta('hero_primary')}>
-              {config.cta}
-            </LocalizedLink>
-            {config.ctaSecondary && (
-              <a className="alp__button" href="#included" onClick={() => trackCta('hero_secondary')}>
-                {config.ctaSecondary}
-              </a>
-            )}
-          </div>
-        </div>
-      </section>
-
-      <section className="section alp__audience">
+  const middleSections: Record<SectionKey, ReactNode> = {
+    audience: (
+      <section className="section alp__audience" key="audience">
         <div className="content alp__split">
           <div>
             <p className="alp__label">{config.audienceLabel}</p>
@@ -310,25 +297,25 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
           </div>
         </div>
       </section>
-
-      {config.whatItDoesHeading && config.whatItDoesItems && (
-        <section className="section alp__what">
-          <div className="content">
-            {config.whatItDoesLabel && <p className="alp__label">{config.whatItDoesLabel}</p>}
-            <h2>{config.whatItDoesHeading}</h2>
-            <div className="alp__what-grid">
-              {config.whatItDoesItems.map(({ title, body }) => (
-                <div className="alp__what-item" key={title}>
-                  <h3>{title}</h3>
-                  <p>{body}</p>
-                </div>
-              ))}
-            </div>
+    ),
+    whatItDoes: config.whatItDoesHeading && config.whatItDoesItems ? (
+      <section className="section alp__what" key="whatItDoes">
+        <div className="content">
+          {config.whatItDoesLabel && <p className="alp__label">{config.whatItDoesLabel}</p>}
+          <h2>{config.whatItDoesHeading}</h2>
+          <div className="alp__what-grid">
+            {config.whatItDoesItems.map(({ title, body }) => (
+              <div className="alp__what-item" key={title}>
+                <h3>{title}</h3>
+                <p>{body}</p>
+              </div>
+            ))}
           </div>
-        </section>
-      )}
-
-      <section className="section alp__included" id="included">
+        </div>
+      </section>
+    ) : null,
+    included: (
+      <section className="section alp__included" id="included" key="included">
         <div className="content alp__media-split">
           <div className="alp__image-wrap">
             <div className="alp__image" style={{ backgroundImage: `url(${config.supportImage})` }} />
@@ -361,52 +348,99 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
           </div>
         </div>
       </section>
-
-      {Boolean(config.proofProse?.length || config.proofItems?.length) && (
-        <section className="section alp__proof">
-          <div className="content">
-            {config.proofLabel && <p className="alp__label">{config.proofLabel}</p>}
-            {config.proofProse ? (
-              <div className="alp__proof-prose">
-                {config.proofProse.map((para, i) => <p key={i}>{para}</p>)}
-              </div>
-            ) : (
-              <div className="alp__proof-grid">
-                {config.proofItems?.map(({ title, body }) => (
-                  <div className="alp__proof-item" key={title}>
-                    <h3>{title}</h3>
-                    <p>{body}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
-      )}
-
-      {config.usageHeading && config.platforms && (
-        <section className="section alp__usage">
-          <div className="content">
-            {config.usageLabel && <p className="alp__label">{config.usageLabel}</p>}
-            <h2>{config.usageHeading}</h2>
-            {config.usageIntro && <p className="alp__usage-intro">{config.usageIntro}</p>}
-            <div className="alp__platform-grid">
-              {config.platforms.map(({ name, use }, index) => (
-                <div className="alp__platform-item" key={name}>
-                  <div className="alp__platform-icon">{iconLabels[index] ?? 'OK'}</div>
-                  <h3>{name}</h3>
-                  <p>{use}</p>
+    ),
+    proof: (config.proofProse?.length || config.proofItems?.length) ? (
+      <section className="section alp__proof" key="proof">
+        <div className="content">
+          {config.proofLabel && <p className="alp__label">{config.proofLabel}</p>}
+          {config.proofProse ? (
+            <div className="alp__proof-prose">
+              {config.proofProse.map((para, i) => <p key={i}>{para}</p>)}
+            </div>
+          ) : (
+            <div className="alp__proof-grid">
+              {config.proofItems?.map(({ title, body }) => (
+                <div className="alp__proof-item" key={title}>
+                  <h3>{title}</h3>
+                  <p>{body}</p>
                 </div>
               ))}
             </div>
-            {config.usageCta && (
-              <LocalizedLink className="alp__section-cta" to={contactPath} onClick={() => trackCta('usage')}>
-                {config.usageCta}
-              </LocalizedLink>
+          )}
+        </div>
+      </section>
+    ) : null,
+    usage: config.usageHeading && config.platforms ? (
+      <section className="section alp__usage" key="usage">
+        <div className="content">
+          {config.usageLabel && <p className="alp__label">{config.usageLabel}</p>}
+          <h2>{config.usageHeading}</h2>
+          {config.usageIntro && <p className="alp__usage-intro">{config.usageIntro}</p>}
+          <div className="alp__platform-grid">
+            {config.platforms.map(({ name, use }, index) => (
+              <div className="alp__platform-item" key={name}>
+                <div className="alp__platform-icon">{iconLabels[index] ?? 'OK'}</div>
+                <h3>{name}</h3>
+                <p>{use}</p>
+              </div>
+            ))}
+          </div>
+          {config.usageCta && (
+            <LocalizedLink className="alp__section-cta" to={contactPath} onClick={() => trackCta('usage')}>
+              {config.usageCta}
+            </LocalizedLink>
+          )}
+        </div>
+      </section>
+    ) : null,
+  }
+
+  return (
+    <main className="alp" id="main" ref={rootRef}>
+      <SEOMeta
+        title={config.title}
+        description={config.description}
+        ogTitle={config.ogTitle ?? config.title}
+        ogDescription={config.ogDescription ?? config.description}
+        ogImage={config.ogImage}
+        canonical={config.canonical}
+        lang={locale}
+      />
+
+      <div className="home__nav alp__nav">
+        <TopNav
+          leftLinks={navLinks.left}
+          rightLinks={navLinks.right}
+          onBrandClick={() => navigate('/')}
+          brandLabel={t('nav.brand')}
+          className="top-nav--page"
+          activeId="services"
+        />
+      </div>
+
+      <section
+        className="alp__hero"
+        ref={heroRef}
+        style={{ backgroundImage: `${heroOverlay}, url(${config.heroImage})` }}
+      >
+        <div className="content alp__hero-inner">
+          {config.heroKicker && <p className="alp__hero-kicker">{config.heroKicker}</p>}
+          {config.h1 ? <h1>{config.h1}</h1> : <h1>{config.h1Line1}<br />{config.h1Line2}</h1>}
+          <p className="alp__subheadline">{config.subheadline}</p>
+          <div className={`alp__actions${config.ctaSecondary ? '' : ' alp__actions--single'}`}>
+            <LocalizedLink className="alp__button alp__button--primary" to={contactPath} onClick={() => trackCta('hero_primary')}>
+              {config.cta}
+            </LocalizedLink>
+            {config.ctaSecondary && (
+              <a className="alp__button" href="#included" onClick={() => trackCta('hero_secondary')}>
+                {config.ctaSecondary}
+              </a>
             )}
           </div>
-        </section>
-      )}
+        </div>
+      </section>
+
+      {sectionOrder.map((key) => middleSections[key])}
 
       <section className="section alp__final">
         <div className="content alp__final-inner">
@@ -418,6 +452,20 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
           </LocalizedLink>
         </div>
       </section>
+
+      {config.stickyCta && (
+        <div className="alp__sticky-cta" data-visible={stickyVisible ? 'true' : undefined} aria-hidden={stickyVisible ? undefined : 'true'}>
+          {config.stickyCtaNote && <span className="alp__sticky-cta-note">{config.stickyCtaNote}</span>}
+          <LocalizedLink
+            className="alp__button alp__button--primary"
+            to={contactPath}
+            tabIndex={stickyVisible ? undefined : -1}
+            onClick={() => trackCta('sticky')}
+          >
+            {config.stickyCta}
+          </LocalizedLink>
+        </div>
+      )}
 
       <Footer />
     </main>

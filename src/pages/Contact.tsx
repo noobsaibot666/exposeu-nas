@@ -17,6 +17,22 @@ const TYPE_MAP: Record<string, string> = {
   'brand-event': 'Brand / Agency',
 }
 
+// A service's display label (e.g. "Ausstellungsdokumentation") is NOT one of
+// the projectTypes dropdown values, so pre-filling the field with it left the
+// select showing an unselectable value. Map each service to the index of the
+// real option it belongs to instead. Order matches forms.contact.projectTypes
+// and is identical across locales.
+const SERVICE_TYPE_INDEX: Partial<Record<ServiceSlug, number>> = {
+  'concerts-events': 0,
+  'exhibition-gallery': 1,
+  'gallery-museum': 1,
+  'artist-sessions': 2,
+  'artist-musician': 2,
+  'release-content-kit': 3,
+  'brand-agency': 4,
+  'popups': 5,
+}
+
 const createMetaEventId = () => {
   if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
     return crypto.randomUUID()
@@ -48,7 +64,10 @@ function Contact() {
   const packageParam = searchParams.get('package')
   const selectedService = serviceParam && serviceParam in serviceMeta ? serviceMeta[serviceParam as ServiceSlug] : null
   const selectedServiceLabel = selectedService ? t(selectedService.labelKey) : ''
-  const defaultProjectType = selectedServiceLabel || (typeParam ? (TYPE_MAP[typeParam] ?? '') : '')
+  const serviceProjectType = selectedService
+    ? (projectTypeOptions?.[SERVICE_TYPE_INDEX[selectedService.slug] ?? -1] ?? '')
+    : ''
+  const defaultProjectType = serviceProjectType || (typeParam ? (TYPE_MAP[typeParam] ?? '') : '')
   const [selectedType, setSelectedType] = useState(defaultProjectType)
   const [lastDefaultProjectType, setLastDefaultProjectType] = useState(defaultProjectType)
 
