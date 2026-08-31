@@ -41,6 +41,18 @@
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 800ms ease;
+}
+
+.alp__hero-media[data-ready='true'] {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .alp__hero-media {
+    transition: none;
+  }
 }
 
 /* full-bleed cover for a 16:9 iframe (same trick as the homepage hero) */

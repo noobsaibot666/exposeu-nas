@@ -104,9 +104,11 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
   const heroOverlay = config.heroOverlay ?? 'linear-gradient(90deg, rgba(5, 7, 11, 0.88), rgba(5, 7, 11, 0.5))'
   // Image and overlay are passed as custom properties so the stylesheet can
   // recompose them per breakpoint (mobile drops the wash and uses a vertical
-  // scrim instead, so the photo reads at the top of the screen).
+  // scrim instead, so the photo reads at the top of the screen). When a hero
+  // video is set there is no still photo — a flat dark pre-roll shows until the
+  // video fades in, so there's never a mismatched-image flash.
   const heroStyle = {
-    '--alp-hero-image': `url(${config.heroImage})`,
+    '--alp-hero-image': config.heroVideo ? 'linear-gradient(180deg, #0b0f16, #05070b)' : `url(${config.heroImage})`,
     '--alp-hero-overlay': heroOverlay,
   } as CSSProperties
   const sectionOrder = config.sectionOrder ?? DEFAULT_SECTION_ORDER
@@ -131,6 +133,18 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
     mq.addEventListener('change', apply)
     return () => mq.removeEventListener('change', apply)
   }, [heroVideo])
+
+  // Cross-fade the video in once it's actually rendering frames — iframe onLoad
+  // plus a short buffer, with a hard fallback so it never stays hidden.
+  const [heroVideoReady, setHeroVideoReady] = useState(false)
+  useEffect(() => {
+    if (!heroVideoId) return
+    const fallback = window.setTimeout(() => setHeroVideoReady(true), 3500)
+    return () => window.clearTimeout(fallback)
+  }, [heroVideoId])
+  const handleHeroVideoLoad = () => {
+    window.setTimeout(() => setHeroVideoReady(true), 450)
+  }
 
   useTrackViewEvent('landing_page_view', {
     page_slug: config.slug,
@@ -462,13 +476,18 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
 
       <section className="alp__hero" ref={heroRef} style={heroStyle}>
         {heroVideoId && (
-          <div className="alp__hero-media" aria-hidden="true">
+          <div
+            className="alp__hero-media"
+            data-ready={heroVideoReady ? 'true' : undefined}
+            aria-hidden="true"
+          >
             <iframe
               src={buildHeroVideoSrc({ id: heroVideoId, hash: heroVideo?.hash })}
               title=""
               frameBorder="0"
               allow="autoplay; fullscreen; picture-in-picture"
               tabIndex={-1}
+              onLoad={handleHeroVideoLoad}
             />
           </div>
         )}
