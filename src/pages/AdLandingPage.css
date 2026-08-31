@@ -28,13 +28,44 @@
   position: absolute;
   inset: auto 0 -1px;
   height: 44%;
+  z-index: 1;
   background: linear-gradient(to bottom, transparent, var(--bg-base, #05070b));
   pointer-events: none;
 }
 
+/* Optional Vimeo background video (see AdLandingPage.tsx heroVideo). The
+   still image on .alp__hero stays as the instant poster behind it. */
+.alp__hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* full-bleed cover for a 16:9 iframe (same trick as the homepage hero) */
+.alp__hero-media iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, 177.78vh);
+  height: max(100%, 56.25vw);
+  transform: translate(-50%, -50%);
+  border: 0;
+  pointer-events: none;
+}
+
+/* keep the wash on top of the video so the copy stays legible (desktop) */
+.alp__hero-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--alp-hero-overlay, linear-gradient(90deg, rgba(5, 7, 11, 0.88), rgba(5, 7, 11, 0.5)));
+}
+
 .alp__hero-inner {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: grid;
   gap: 22px;
 }
@@ -588,8 +619,8 @@
     background-image: var(--alp-hero-image);
   }
 
-  /* vertical scrim: the photo reads at the top of the screen, the copy stays
-     legible where it sits low. */
+  /* vertical scrim: the photo/video reads at the top of the screen, the copy
+     stays legible where it sits low. */
   .alp__hero::before {
     content: '';
     position: absolute;
@@ -602,7 +633,18 @@
       rgba(5, 7, 11, 0) 66%
     );
     pointer-events: none;
-    z-index: 0;
+    z-index: 1;
+  }
+
+  /* portrait-cover for the mobile video cut; the desktop wash is off here —
+     the vertical ::before scrim does the legibility work. */
+  .alp__hero-media iframe {
+    width: max(100%, 56.25vh);
+    height: max(100%, 177.78vw);
+  }
+
+  .alp__hero-media::after {
+    background: none;
   }
 
   .alp__hero-inner {

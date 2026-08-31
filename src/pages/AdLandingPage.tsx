@@ -33,6 +33,9 @@ export type AdLandingPageConfig = {
   supportImage: string
   /** Optional CSS gradient placed over the hero image. Defaults to the shared dark wash. */
   heroOverlay?: string
+  /** Vimeo background video for the hero. When set it replaces the still image
+   *  (which stays as the instant poster). `mobileId` is a portrait-framed cut. */
+  heroVideo?: { id: string; mobileId?: string; hash?: string }
   h1Line1: string
   h1Line2: string
   h1?: string
@@ -79,6 +82,17 @@ export type AdLandingPageConfig = {
 
 const iconLabels = ['IG', 'TT', 'SP', 'YT', 'PR', 'AD']
 
+// Vimeo "background" embed: muted, looping, autoplaying, no chrome. Kept in
+// sync with the homepage hero (HomeV2.tsx). Preconnects to player.vimeo.com /
+// *.vimeocdn.com already live in index.html, so this loads as fast as a Vimeo
+// embed can.
+const buildHeroVideoSrc = ({ id, hash }: { id: string; hash?: string }): string => {
+  const h = hash ? `h=${hash}&` : ''
+  return `https://player.vimeo.com/video/${id}?${h}background=1&autoplay=1&loop=1&muted=1&byline=0&title=0&api=1`
+}
+
+const MOBILE_VIDEO_QUERY = '(max-width: 600px)'
+
 export default function AdLandingPage({ config }: { config: AdLandingPageConfig }) {
   const rootRef = useRef<HTMLElement | null>(null)
   const navigate = useLocaleNavigate()
@@ -96,6 +110,27 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
     '--alp-hero-overlay': heroOverlay,
   } as CSSProperties
   const sectionOrder = config.sectionOrder ?? DEFAULT_SECTION_ORDER
+
+  // Pick the portrait cut on phones. Resolved before first paint so the iframe
+  // renders immediately (no lazy/viewport gating) — fastest possible start.
+  const { heroVideo } = config
+  const [heroVideoId, setHeroVideoId] = useState<string | null>(() => {
+    if (!heroVideo) return null
+    if (heroVideo.mobileId && typeof window !== 'undefined' && window.matchMedia(MOBILE_VIDEO_QUERY).matches) {
+      return heroVideo.mobileId
+    }
+    return heroVideo.id
+  })
+  useEffect(() => {
+    const mobileId = heroVideo?.mobileId
+    const desktopId = heroVideo?.id
+    if (!mobileId || !desktopId) return
+    const mq = window.matchMedia(MOBILE_VIDEO_QUERY)
+    const apply = () => setHeroVideoId(mq.matches ? mobileId : desktopId)
+    apply()
+    mq.addEventListener('change', apply)
+    return () => mq.removeEventListener('change', apply)
+  }, [heroVideo])
 
   useTrackViewEvent('landing_page_view', {
     page_slug: config.slug,
@@ -426,6 +461,17 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
       </div>
 
       <section className="alp__hero" ref={heroRef} style={heroStyle}>
+        {heroVideoId && (
+          <div className="alp__hero-media" aria-hidden="true">
+            <iframe
+              src={buildHeroVideoSrc({ id: heroVideoId, hash: heroVideo?.hash })}
+              title=""
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture"
+              tabIndex={-1}
+            />
+          </div>
+        )}
         <div className="content alp__hero-inner">
           {config.heroKicker && <p className="alp__hero-kicker">{config.heroKicker}</p>}
           {config.h1 ? <h1>{config.h1}</h1> : <h1>{config.h1Line1}<br />{config.h1Line2}</h1>}

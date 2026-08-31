@@ -11,8 +11,10 @@ const baseConfig = {
   supportImage: resolveImagePath("src/assets/images/landing/gallery_hero.webp"),
   metaContentName: "Gallery Museum Documentation Landing Page",
   customPixelEvent: "GalleryMuseumLandingView",
-  // Lighter than the shared hero wash so the installation shot actually reads.
+  // Lighter than the shared hero wash so the footage actually reads.
   heroOverlay: "linear-gradient(90deg, rgba(5, 7, 11, 0.82), rgba(5, 7, 11, 0.34))",
+  // Same background film as the homepage hero (desktop + portrait cut).
+  heroVideo: { id: "1220567424", mobileId: "1220568256" },
 };
 
 // The offer first, then how we shoot, then who it's for.
