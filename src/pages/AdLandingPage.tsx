@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { type CSSProperties, type ReactNode, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import gsap from 'gsap'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
@@ -88,6 +88,13 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
   const [stickyVisible, setStickyVisible] = useState(false)
   const contactPath = `/contact?service=${config.serviceSlug}${config.ctaPackage ? `&package=${encodeURIComponent(config.ctaPackage)}` : ''}`
   const heroOverlay = config.heroOverlay ?? 'linear-gradient(90deg, rgba(5, 7, 11, 0.88), rgba(5, 7, 11, 0.5))'
+  // Image and overlay are passed as custom properties so the stylesheet can
+  // recompose them per breakpoint (mobile drops the wash and uses a vertical
+  // scrim instead, so the photo reads at the top of the screen).
+  const heroStyle = {
+    '--alp-hero-image': `url(${config.heroImage})`,
+    '--alp-hero-overlay': heroOverlay,
+  } as CSSProperties
   const sectionOrder = config.sectionOrder ?? DEFAULT_SECTION_ORDER
 
   useTrackViewEvent('landing_page_view', {
@@ -396,7 +403,7 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
   }
 
   return (
-    <main className="alp" id="main" ref={rootRef}>
+    <main className={`alp alp--${config.slug}`} id="main" ref={rootRef}>
       <SEOMeta
         title={config.title}
         description={config.description}
@@ -418,11 +425,7 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
         />
       </div>
 
-      <section
-        className="alp__hero"
-        ref={heroRef}
-        style={{ backgroundImage: `${heroOverlay}, url(${config.heroImage})` }}
-      >
+      <section className="alp__hero" ref={heroRef} style={heroStyle}>
         <div className="content alp__hero-inner">
           {config.heroKicker && <p className="alp__hero-kicker">{config.heroKicker}</p>}
           {config.h1 ? <h1>{config.h1}</h1> : <h1>{config.h1Line1}<br />{config.h1Line2}</h1>}

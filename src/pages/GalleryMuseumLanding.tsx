@@ -29,12 +29,12 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     ogTitle: "Gallery & Museum Documentation Berlin | expose.u",
     ogDescription:
       "Installation views, artwork details and opening night, documented to archive standard. For Berlin galleries and museums.",
-    heroKicker: "Berlin Art Week & Gallery Night 2026 · limited slots",
+    heroKicker: "Berlin Art Week & Gallery Night 2026",
     h1: "Your exhibition, documented to archive standard.",
     h1Line1: "Your exhibition, documented to archive standard.",
     h1Line2: "",
     subheadline:
-      "Installation views, artwork details and opening night — considered photography and video for Berlin galleries and museums. Press-ready files in hand before the show closes.",
+      "Installation views, artwork details and opening night — for Berlin galleries and museums.",
     cta: "Book your date",
     ctaSecondary: "See sample work",
     stickyCta: "Book your date",
@@ -123,12 +123,12 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     ogTitle: "Galerie- & Museumsdokumentation Berlin | expose.u",
     ogDescription:
       "Installationsansichten, Werkdetails und Eröffnungsabend, dokumentiert auf Archivniveau. Für Galerien und Museen in Berlin.",
-    heroKicker: "Berlin Art Week & Gallery Night 2026 · begrenzte Plätze",
+    heroKicker: "Berlin Art Week & Gallery Night 2026",
     h1: "Ihre Ausstellung, dokumentiert auf Archivniveau.",
     h1Line1: "Ihre Ausstellung, dokumentiert auf Archivniveau.",
     h1Line2: "",
     subheadline:
-      "Installationsansichten, Werkdetails und Eröffnungsabend — durchdachte Foto- und Videoarbeit für Galerien und Museen in Berlin. Pressefertige Dateien in der Hand, bevor die Ausstellung schließt.",
+      "Installationsansichten, Werkdetails und Eröffnungsabend — für Galerien und Museen in Berlin.",
     cta: "Termin sichern",
     ctaSecondary: "Arbeiten ansehen",
     stickyCta: "Termin sichern",

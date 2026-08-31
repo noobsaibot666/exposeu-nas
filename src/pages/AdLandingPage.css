@@ -17,6 +17,7 @@
   display: flex;
   align-items: end;
   padding: clamp(120px, 18vh, 170px) 0 clamp(24px, 4vh, 44px);
+  background-image: var(--alp-hero-overlay, linear-gradient(90deg, rgba(5, 7, 11, 0.88), rgba(5, 7, 11, 0.5))), var(--alp-hero-image);
   background-position: center;
   background-size: cover;
   will-change: background-position;
@@ -580,18 +581,44 @@
 
 @media (max-width: 560px) {
   .alp__hero {
-    min-height: min(520px, 76svh);
-    padding-top: 92px;
+    min-height: min(680px, 88svh);
+    padding-top: 96px;
+    padding-bottom: 22px;
+    /* drop the horizontal wash on mobile — show the photo cleanly up top */
+    background-image: var(--alp-hero-image);
+  }
+
+  /* vertical scrim: the photo reads at the top of the screen, the copy stays
+     legible where it sits low. */
+  .alp__hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(5, 7, 11, 0.95) 0%,
+      rgba(5, 7, 11, 0.72) 20%,
+      rgba(5, 7, 11, 0.12) 46%,
+      rgba(5, 7, 11, 0) 66%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .alp__hero-inner {
+    gap: 12px;
   }
 
   .alp__hero h1 {
-    font-size: clamp(1.85rem, 8.4vw, 2.7rem);
-    line-height: 1.16;
+    font-size: clamp(1.55rem, 6.4vw, 1.95rem);
+    line-height: 1.2;
+    hyphens: none;
+    -webkit-hyphens: none;
   }
 
   .alp__subheadline {
-    font-size: 1rem;
-    line-height: 1.55;
+    font-size: 0.98rem;
+    line-height: 1.5;
   }
 
   .alp h2 {
@@ -640,6 +667,59 @@
 
   .alp__final-inner p {
     margin-inline: auto;
+  }
+
+  /* "What you get" — a compact ruled list instead of six tall, near-empty
+     boxes. Titles carry the meaning on mobile; descriptions stay on desktop.
+     Scoped to this landing page only. */
+  .alp--gallery-museum-documentation .alp__asset-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-top: 18px;
+    border: 1px solid rgba(245, 245, 244, 0.14);
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(245, 245, 244, 0.03);
+  }
+
+  .alp--gallery-museum-documentation .alp__asset-card {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    min-height: 0;
+    padding: 15px 16px;
+    border: 0;
+    border-top: 1px solid rgba(245, 245, 244, 0.1);
+    border-radius: 0;
+    background: transparent;
+    gap: 0 12px;
+  }
+
+  .alp--gallery-museum-documentation .alp__asset-grid .alp__asset-card:first-child {
+    border-top: 0;
+  }
+
+  .alp--gallery-museum-documentation .alp__asset-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .alp--gallery-museum-documentation .alp__asset-card p {
+    display: none;
+  }
+
+  .alp--gallery-museum-documentation .alp__asset-card::after {
+    content: '\203A';
+    grid-column: 2;
+    color: rgba(245, 245, 244, 0.4);
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+
+  .alp--gallery-museum-documentation .alp__asset-card:hover {
+    transform: none;
+    border-color: transparent;
+    border-top-color: rgba(245, 245, 244, 0.1);
+    background: rgba(245, 245, 244, 0.06);
   }
 }
 
