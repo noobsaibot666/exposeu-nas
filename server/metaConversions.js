@@ -1,6 +1,9 @@
 import { createHash } from 'node:crypto'
 
-const GRAPH_API_VERSION = 'v18.0'
+// v18.0 reached end-of-life and Graph rejects calls to it (the cause of the
+// 502s from /track-lead). Keep this within ~1 year of current; the rest of the
+// stack (outreach-app meta-api) is on v21.0.
+const GRAPH_API_VERSION = process.env.META_GRAPH_VERSION || 'v21.0'
 
 const trimValue = (value) => (typeof value === 'string' ? value.trim() : '')
 
