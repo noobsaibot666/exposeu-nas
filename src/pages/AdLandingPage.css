@@ -145,11 +145,94 @@
   }
 }
 
+.alp__hero-urgency {
+  margin: 0;
+  max-width: 640px;
+  color: rgba(245, 245, 244, 0.94);
+  font-size: clamp(0.92rem, 1.05vw, 1.02rem);
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.alp__hero-price {
+  margin: 0;
+  color: rgba(245, 245, 244, 0.66);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.alp__hero-proof {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 2px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.alp__hero-proof li {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 5px 13px;
+  border: 1px solid rgba(245, 245, 244, 0.28);
+  border-radius: 999px;
+  background: rgba(245, 245, 244, 0.07);
+  color: rgba(245, 245, 244, 0.88);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
 .alp__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 18px;
   margin-top: clamp(22px, 4vh, 44px);
+}
+
+/* Mobile-only quick-contact row (WhatsApp / call / email) — the full contact
+   page carries the same options, but below the fold on mobile. Surfacing
+   them here next to the hero CTA gives an urgent Art Week booking a lower-
+   friction path than filling in the lead form. Desktop already has these one
+   nav click away via Contact, so this stays hidden there. */
+.alp__hero-contact {
+  display: none;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.alp__hero-contact-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 245, 244, 0.34);
+  background: rgba(5, 5, 5, 0.34);
+  color: #f5f5f4;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 160ms ease, background-color 160ms ease;
+}
+
+.alp__hero-contact-link:hover {
+  transform: translateY(-2px);
+}
+
+.alp__hero-contact-link--whatsapp {
+  background: #25d366;
+  border-color: #25d366;
+  color: #05170c;
+}
+
+@media (max-width: 768px) {
+  .alp__hero-contact {
+    display: flex;
+  }
 }
 
 .alp__button,

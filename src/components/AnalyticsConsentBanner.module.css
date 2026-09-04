@@ -1,20 +1,27 @@
+/* Compact floating card (not a full-width bar): a bottom-left toast so it
+   stops covering whatever sits at the bottom of the viewport — most
+   importantly the first form area on landing pages where the hero + a
+   quick-book form can both fit on one screen. See docs/CLAUDE.md-referenced
+   fix: the previous full-width bar also visually stacked on top of the
+   fixed mobile sticky-CTA bar some landing pages render (.alp__sticky-cta) —
+   the mobile media query below raises this card above that bar instead of
+   overlapping it. */
 .consent__banner {
   position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  left: 16px;
+  bottom: 16px;
   z-index: 60;
-  width: 100%;
-  padding: 14px 20px;
-  border-top: 1px solid var(--border-color);
+  width: min(420px, calc(100vw - 32px));
+  padding: 16px 18px;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
   background: rgba(9, 10, 12, 0.96);
-  box-shadow: 0 -12px 30px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.32);
   color: var(--text-strong);
   backdrop-filter: blur(10px);
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .consent__copy {
@@ -22,13 +29,12 @@
   color: var(--text-secondary);
   font-size: 0.82rem;
   line-height: 1.4;
-  max-width: 72ch;
 }
 
 .consent__actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
-  flex: 0 0 auto;
 }
 
 .consent__button {
@@ -64,22 +70,31 @@
 
 @media (max-width: 640px) {
   .consent__banner {
-    padding: 10px 14px;
+    left: 12px;
+    bottom: 12px;
+    width: calc(100vw - 24px);
+    padding: 12px 14px;
     gap: 10px;
-    align-items: center;
   }
 
   .consent__copy {
     font-size: 0.76rem;
   }
 
-  .consent__actions {
-    flex: 0 0 auto;
-    gap: 6px;
-  }
-
   .consent__button {
     padding: 7px 12px;
     font-size: 0.78rem;
+  }
+}
+
+/* Clear the fixed mobile sticky-CTA bar (see AdLandingPage.tsx/.css,
+   .alp__sticky-cta) instead of stacking on top of it — both are otherwise
+   independent fixed-to-viewport-bottom elements. Scoped to the same
+   max-width the sticky bar itself uses, and only while it's actually
+   showing (data-visible='true'), so this doesn't add dead space under the
+   banner on pages/breakpoints where no sticky bar exists. */
+@media (max-width: 768px) {
+  :global(.page):has(:global(.alp__sticky-cta)[data-visible='true']) .consent__banner {
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
   }
 }

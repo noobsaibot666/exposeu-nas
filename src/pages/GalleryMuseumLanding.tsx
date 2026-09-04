@@ -37,9 +37,18 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     h1Line1: "Give your exhibition a longer life.",
     h1Line2: "",
     subheadline:
-      "We photograph and film your exhibition — the art, the space, the opening, the mood — and give you photo and video worth sharing long after the doors close.",
-    cta: "Book your date",
-    stickyCta: "Book your date",
+      "Photo, video, and social-ready edits for Berlin galleries during Art Week. Limited dates, 24h reply.",
+    heroUrgency:
+      "Berlin Art Week: 9–13 September 2026. We take on a limited number of openings per night.",
+    heroPriceLine: "Photo & video coverage from €300 · Berlin · 24h reply",
+    heroProofItems: ["Edited selects", "Vertical reels", "Opening night coverage", "Fast delivery"],
+    heroContact: {
+      whatsapp: { href: "https://wa.me/48786696765", label: "WhatsApp us" },
+      phone: { href: "tel:+4917622132950", label: "Call" },
+      email: { href: "mailto:hello@expose-u.com", label: "Email" },
+    },
+    cta: "Request availability",
+    stickyCta: "Request availability",
     stickyCtaNote: "Limited Art Week slots",
     leadForm: {
       serviceLabel: "Exhibition / Gallery",
@@ -106,7 +115,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
         body: "Named, edited selects for press, collectors and your archive.",
       },
     ],
-    includedCta: "Book your documentation",
+    includedCta: "Request availability",
     proofLabel: "How we work",
     proofItems: [
       {
@@ -129,7 +138,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     finalHeading: "Book before your opening.",
     finalBody:
       "Berlin Art Week is one week and we take on a limited number of exhibitions. Send us your install and opening dates — we'll hold a slot.",
-    finalCta: "Book your date",
+    finalCta: "Request availability",
   },
   de: {
     ...baseConfig,
@@ -146,9 +155,18 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     h1Line1: "Geben Sie Ihrer Ausstellung ein längeres Leben.",
     h1Line2: "",
     subheadline:
-      "Wir fotografieren und filmen Ihre Ausstellung — die Werke, den Raum, die Eröffnung, die Stimmung — und geben Ihnen Foto- und Videomaterial, das noch lange nach dem letzten Tag wirkt.",
-    cta: "Termin sichern",
-    stickyCta: "Termin sichern",
+      "Foto, Video und social-ready Edits für Berliner Galerien während der Art Week. Begrenzte Termine, Antwort in 24 Std.",
+    heroUrgency:
+      "Berlin Art Week: 9.–13. September 2026. Wir übernehmen nur eine begrenzte Anzahl an Eröffnungen pro Abend.",
+    heroPriceLine: "Foto & Video ab 300 € · Berlin · Antwort in 24 Std.",
+    heroProofItems: ["Bearbeitete Auswahl", "Vertikale Reels", "Eröffnungsdokumentation", "Schnelle Lieferung"],
+    heroContact: {
+      whatsapp: { href: "https://wa.me/48786696765", label: "WhatsApp schreiben" },
+      phone: { href: "tel:+4917622132950", label: "Anrufen" },
+      email: { href: "mailto:hello@expose-u.com", label: "E-Mail" },
+    },
+    cta: "Verfügbarkeit anfragen",
+    stickyCta: "Verfügbarkeit anfragen",
     stickyCtaNote: "Begrenzte Art-Week-Plätze",
     leadForm: {
       serviceLabel: "Ausstellung / Galerie",
@@ -215,7 +233,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
         body: "Benannte, bearbeitete Selects für Presse, Sammler und Ihr Archiv.",
       },
     ],
-    includedCta: "Dokumentation buchen",
+    includedCta: "Verfügbarkeit anfragen",
     proofLabel: "Wie wir arbeiten",
     proofItems: [
       {
@@ -238,7 +256,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     finalHeading: "Buchen Sie vor Ihrer Eröffnung.",
     finalBody:
       "Berlin Art Week ist nur eine Woche, und wir übernehmen eine begrenzte Anzahl an Ausstellungen. Schicken Sie uns Aufbau- und Eröffnungstermine — wir halten einen Platz frei.",
-    finalCta: "Termin sichern",
+    finalCta: "Verfügbarkeit anfragen",
   },
 };
 
