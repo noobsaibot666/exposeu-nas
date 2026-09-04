@@ -93,7 +93,9 @@ const iconLabels = ['IG', 'TT', 'SP', 'YT', 'PR', 'AD']
 // embed can.
 const buildHeroVideoSrc = ({ id, hash }: { id: string; hash?: string }): string => {
   const h = hash ? `h=${hash}&` : ''
-  return `https://player.vimeo.com/video/${id}?${h}background=1&autoplay=1&loop=1&muted=1&byline=0&title=0&api=1`
+  // dnt=1 skips Vimeo's own tracking/cookie setup on init — one less thing
+  // blocking first frame, and it's a no-consent visitor anyway.
+  return `https://player.vimeo.com/video/${id}?${h}background=1&autoplay=1&loop=1&muted=1&byline=0&title=0&api=1&dnt=1`
 }
 
 const MOBILE_VIDEO_QUERY = '(max-width: 600px)'
@@ -109,11 +111,13 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
   const heroOverlay = config.heroOverlay ?? 'linear-gradient(90deg, rgba(5, 7, 11, 0.88), rgba(5, 7, 11, 0.5))'
   // Image and overlay are passed as custom properties so the stylesheet can
   // recompose them per breakpoint (mobile drops the wash and uses a vertical
-  // scrim instead, so the photo reads at the top of the screen). When a hero
-  // video is set there is no still photo — a flat dark pre-roll shows until the
-  // video fades in, so there's never a mismatched-image flash.
+  // scrim instead, so the photo reads at the top of the screen). The still
+  // heroImage stays the background even when a video is set — it's the same
+  // shoot, so it's a real frame, not a mismatch — so there's a meaningful
+  // paint from the first frame instead of a dark screen while Vimeo loads;
+  // the video then cross-fades in on top of it once it's actually playing.
   const heroStyle = {
-    '--alp-hero-image': config.heroVideo ? 'linear-gradient(180deg, #0b0f16, #05070b)' : `url(${config.heroImage})`,
+    '--alp-hero-image': `url(${config.heroImage})`,
     '--alp-hero-overlay': heroOverlay,
   } as CSSProperties
   const sectionOrder = config.sectionOrder ?? DEFAULT_SECTION_ORDER
@@ -140,15 +144,19 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
   }, [heroVideo])
 
   // Cross-fade the video in once it's actually rendering frames — iframe onLoad
-  // plus a short buffer, with a hard fallback so it never stays hidden.
+  // plus a short buffer, with a hard fallback so it never stays hidden. Both
+  // are short: the still photo is already the visible background (see
+  // heroStyle above), so there's nothing dark to sit through either way —
+  // this is just picking the moment the video looks ready, not gating the
+  // first paint.
   const [heroVideoReady, setHeroVideoReady] = useState(false)
   useEffect(() => {
     if (!heroVideoId) return
-    const fallback = window.setTimeout(() => setHeroVideoReady(true), 3500)
+    const fallback = window.setTimeout(() => setHeroVideoReady(true), 1800)
     return () => window.clearTimeout(fallback)
   }, [heroVideoId])
   const handleHeroVideoLoad = () => {
-    window.setTimeout(() => setHeroVideoReady(true), 450)
+    window.setTimeout(() => setHeroVideoReady(true), 120)
   }
 
   useTrackViewEvent('landing_page_view', {
