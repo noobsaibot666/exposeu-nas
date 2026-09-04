@@ -42,7 +42,7 @@
   overflow: hidden;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 350ms ease;
+  transition: opacity 150ms ease;
 }
 
 .alp__hero-media[data-ready='true'] {
@@ -922,5 +922,35 @@
   .alp__quick-book-inner {
     grid-template-columns: 1fr;
     gap: 22px;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Desktop-only layout tweaks, scoped to this page only.               *
+ * ------------------------------------------------------------------ */
+@media (min-width: 861px) {
+  /* "How we work" — 4 cards read as 3-top/1-bottom in the shared 3-col
+     grid; force 2x2 for this page's item count without touching the
+     other landing pages that also use .alp__proof-grid. */
+  .alp--gallery-museum-documentation .alp__proof-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 720px;
+  }
+
+  /* Hero CTA: centre and widen the single "Book your date" button
+     (it was left-aligned, auto-width). */
+  .alp--gallery-museum-documentation .alp__actions--single {
+    justify-content: center;
+  }
+
+  .alp--gallery-museum-documentation .alp__actions--single .alp__button--primary {
+    min-width: 320px;
+    padding: 18px 48px;
+  }
+
+  /* Hero copy is bottom-anchored (align-items: end) — less bottom padding
+     sits it closer to the section's bottom edge, i.e. a bit lower. */
+  .alp--gallery-museum-documentation .alp__hero {
+    padding-bottom: clamp(8px, 1.5vh, 16px);
   }
 }

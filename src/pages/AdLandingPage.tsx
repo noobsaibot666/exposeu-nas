@@ -118,13 +118,13 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
   const heroOverlay = config.heroOverlay ?? 'linear-gradient(90deg, rgba(5, 7, 11, 0.88), rgba(5, 7, 11, 0.5))'
   // Image and overlay are passed as custom properties so the stylesheet can
   // recompose them per breakpoint (mobile drops the wash and uses a vertical
-  // scrim instead, so the photo reads at the top of the screen). The still
-  // heroImage stays the background even when a video is set — it's the same
-  // shoot, so it's a real frame, not a mismatch — so there's a meaningful
-  // paint from the first frame instead of a dark screen while Vimeo loads;
-  // the video then cross-fades in on top of it once it's actually playing.
+  // scrim instead, so the photo reads at the top of the screen). When a hero
+  // video is set there's no still photo behind it — the video is a different
+  // clip from the still, so showing one and popping to the other reads as a
+  // mismatch/jump. A flat dark base instead, kept brief by the near-instant
+  // reveal below (no fade choreography to sit through).
   const heroStyle = {
-    '--alp-hero-image': `url(${config.heroImage})`,
+    '--alp-hero-image': config.heroVideo ? 'linear-gradient(180deg, #0b0f16, #05070b)' : `url(${config.heroImage})`,
     '--alp-hero-overlay': heroOverlay,
   } as CSSProperties
   const sectionOrder = config.sectionOrder ?? DEFAULT_SECTION_ORDER
@@ -150,21 +150,16 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
     return () => mq.removeEventListener('change', apply)
   }, [heroVideo])
 
-  // Cross-fade the video in once it's actually rendering frames — iframe onLoad
-  // plus a short buffer, with a hard fallback so it never stays hidden. Both
-  // are short: the still photo is already the visible background (see
-  // heroStyle above), so there's nothing dark to sit through either way —
-  // this is just picking the moment the video looks ready, not gating the
-  // first paint.
+  // Reveal the video as soon as the iframe itself has loaded — no artificial
+  // buffer on top. A hard fallback still covers the case where onLoad never
+  // fires (e.g. a stalled in-app WebView) so it never stays hidden.
   const [heroVideoReady, setHeroVideoReady] = useState(false)
   useEffect(() => {
     if (!heroVideoId) return
-    const fallback = window.setTimeout(() => setHeroVideoReady(true), 1800)
+    const fallback = window.setTimeout(() => setHeroVideoReady(true), 1200)
     return () => window.clearTimeout(fallback)
   }, [heroVideoId])
-  const handleHeroVideoLoad = () => {
-    window.setTimeout(() => setHeroVideoReady(true), 120)
-  }
+  const handleHeroVideoLoad = () => setHeroVideoReady(true)
 
   useTrackViewEvent('landing_page_view', {
     page_slug: config.slug,
