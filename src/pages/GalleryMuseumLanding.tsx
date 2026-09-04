@@ -14,7 +14,8 @@ const baseConfig = {
   // Lighter than the shared hero wash so the footage actually reads.
   heroOverlay: "linear-gradient(90deg, rgba(5, 7, 11, 0.82), rgba(5, 7, 11, 0.34))",
   // Same background film as the homepage hero (desktop + portrait cut).
-  heroVideo: { id: "1220567424", mobileId: "1220568256" },
+  // startAt skips the source's first second on first play (loop restarts at 0).
+  heroVideo: { id: "1220567424", mobileId: "1220568256", startAt: 1 },
 };
 
 // The offer first, then how we shoot, then who it's for.

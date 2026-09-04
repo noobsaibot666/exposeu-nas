@@ -35,8 +35,11 @@ export type AdLandingPageConfig = {
   /** Optional CSS gradient placed over the hero image. Defaults to the shared dark wash. */
   heroOverlay?: string
   /** Vimeo background video for the hero. When set it replaces the still image
-   *  (which stays as the instant poster). `mobileId` is a portrait-framed cut. */
-  heroVideo?: { id: string; mobileId?: string; hash?: string }
+   *  (which stays as the instant poster). `mobileId` is a portrait-framed cut.
+   *  `startAt` (seconds) skips into the source before playing — useful when the
+   *  file opens on a slow/dark frame. Applies to the first play only; looping
+   *  restarts from the true beginning (a Vimeo player behaviour, not ours). */
+  heroVideo?: { id: string; mobileId?: string; hash?: string; startAt?: number }
   h1Line1: string
   h1Line2: string
   h1?: string
@@ -91,11 +94,15 @@ const iconLabels = ['IG', 'TT', 'SP', 'YT', 'PR', 'AD']
 // sync with the homepage hero (HomeV2.tsx). Preconnects to player.vimeo.com /
 // *.vimeocdn.com already live in index.html, so this loads as fast as a Vimeo
 // embed can.
-const buildHeroVideoSrc = ({ id, hash }: { id: string; hash?: string }): string => {
+const buildHeroVideoSrc = ({ id, hash, startAt }: { id: string; hash?: string; startAt?: number }): string => {
   const h = hash ? `h=${hash}&` : ''
   // dnt=1 skips Vimeo's own tracking/cookie setup on init — one less thing
-  // blocking first frame, and it's a no-consent visitor anyway.
-  return `https://player.vimeo.com/video/${id}?${h}background=1&autoplay=1&loop=1&muted=1&byline=0&title=0&api=1&dnt=1`
+  // blocking first frame, and it's a no-consent visitor anyway. #t=Ns (a URL
+  // fragment, must stay last) starts the first play N seconds into the
+  // source instead of at 0 — skips a slow/dark opening frame if the file has
+  // one; looping afterwards restarts from the true beginning regardless.
+  const t = startAt && startAt > 0 ? `#t=${startAt}s` : ''
+  return `https://player.vimeo.com/video/${id}?${h}background=1&autoplay=1&loop=1&muted=1&byline=0&title=0&api=1&dnt=1${t}`
 }
 
 const MOBILE_VIDEO_QUERY = '(max-width: 600px)'
@@ -514,7 +521,7 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
             aria-hidden="true"
           >
             <iframe
-              src={buildHeroVideoSrc({ id: heroVideoId, hash: heroVideo?.hash })}
+              src={buildHeroVideoSrc({ id: heroVideoId, hash: heroVideo?.hash, startAt: heroVideo?.startAt })}
               title=""
               frameBorder="0"
               allow="autoplay; fullscreen; picture-in-picture"
