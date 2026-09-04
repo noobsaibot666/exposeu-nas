@@ -6,6 +6,7 @@ import { SEOMeta } from '../components/SEOMeta'
 import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { hasAnalyticsConsent, trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
+import AdLeadForm, { type AdLeadFormCopy } from '../components/AdLeadForm'
 import './AdLandingPage.css'
 
 type Platform = {
@@ -48,6 +49,10 @@ export type AdLandingPageConfig = {
   stickyCta?: string
   /** Short reminder text shown beside the sticky CTA button. */
   stickyCtaNote?: string
+  /** When set, renders an inline lead form (id="quick-book") right after the
+   *  hero and points the hero / sticky / final / included CTAs at it instead of
+   *  routing to the /contact page. Other landing pages omit it and are unchanged. */
+  leadForm?: AdLeadFormCopy
   /** Explicit order (and inclusion) of the middle sections. Defaults to DEFAULT_SECTION_ORDER. */
   sectionOrder?: SectionKey[]
   audienceLabel: string
@@ -317,6 +322,33 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
     }
   }
 
+  // Primary CTAs: when the page has an inline lead form they scroll to it and
+  // keep the visitor on-page; otherwise they navigate to /contact as before.
+  const scrollToLeadForm = (event: React.MouseEvent, location: string) => {
+    trackCta(location)
+    if (!config.leadForm) return
+    event.preventDefault()
+    const target = document.getElementById('quick-book')
+    target?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    window.setTimeout(() => document.getElementById('quick-book-name')?.focus({ preventScroll: true }), 500)
+  }
+
+  const renderPrimaryCta = (
+    className: string,
+    location: string,
+    label: string,
+    opts?: { tabIndex?: number },
+  ) =>
+    config.leadForm ? (
+      <a className={className} href="#quick-book" onClick={(e) => scrollToLeadForm(e, location)} tabIndex={opts?.tabIndex}>
+        {label}
+      </a>
+    ) : (
+      <LocalizedLink className={className} to={contactPath} onClick={() => trackCta(location)} tabIndex={opts?.tabIndex}>
+        {label}
+      </LocalizedLink>
+    )
+
   const middleSections: Record<SectionKey, ReactNode> = {
     audience: (
       <section className="section alp__audience" key="audience">
@@ -396,11 +428,7 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
                 )
               })}
             </div>
-            {config.includedCta && (
-              <LocalizedLink className="alp__section-cta" to={contactPath} onClick={() => trackCta('included')}>
-                {config.includedCta}
-              </LocalizedLink>
-            )}
+            {config.includedCta && renderPrimaryCta('alp__section-cta', 'included', config.includedCta)}
           </div>
         </div>
       </section>
@@ -441,11 +469,7 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
               </div>
             ))}
           </div>
-          {config.usageCta && (
-            <LocalizedLink className="alp__section-cta" to={contactPath} onClick={() => trackCta('usage')}>
-              {config.usageCta}
-            </LocalizedLink>
-          )}
+          {config.usageCta && renderPrimaryCta('alp__section-cta', 'usage', config.usageCta)}
         </div>
       </section>
     ) : null,
@@ -496,9 +520,7 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
           {config.h1 ? <h1>{config.h1}</h1> : <h1>{config.h1Line1}<br />{config.h1Line2}</h1>}
           <p className="alp__subheadline">{config.subheadline}</p>
           <div className={`alp__actions${config.ctaSecondary ? '' : ' alp__actions--single'}`}>
-            <LocalizedLink className="alp__button alp__button--primary" to={contactPath} onClick={() => trackCta('hero_primary')}>
-              {config.cta}
-            </LocalizedLink>
+            {renderPrimaryCta('alp__button alp__button--primary', 'hero_primary', config.cta)}
             {config.ctaSecondary && (
               <a className="alp__button" href="#included" onClick={() => trackCta('hero_secondary')}>
                 {config.ctaSecondary}
@@ -508,6 +530,15 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
         </div>
       </section>
 
+      {config.leadForm && (
+        <AdLeadForm
+          slug={config.slug}
+          serviceSlug={config.serviceSlug}
+          packageSlug={config.ctaPackage}
+          copy={config.leadForm}
+        />
+      )}
+
       {sectionOrder.map((key) => middleSections[key])}
 
       <section className="section alp__final">
@@ -515,23 +546,16 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
           <h2>{config.finalHeading}</h2>
           {config.finalBody.split('\n\n').filter(Boolean).map((para, i) => <p key={i}>{para}</p>)}
           {config.pricingNote && <p className="alp__pricing-note">{config.pricingNote}</p>}
-          <LocalizedLink className="alp__button alp__button--primary" to={contactPath} onClick={() => trackCta('final')}>
-            {config.finalCta}
-          </LocalizedLink>
+          {renderPrimaryCta('alp__button alp__button--primary', 'final', config.finalCta)}
         </div>
       </section>
 
       {config.stickyCta && (
         <div className="alp__sticky-cta" data-visible={stickyVisible ? 'true' : undefined} aria-hidden={stickyVisible ? undefined : 'true'}>
           {config.stickyCtaNote && <span className="alp__sticky-cta-note">{config.stickyCtaNote}</span>}
-          <LocalizedLink
-            className="alp__button alp__button--primary"
-            to={contactPath}
-            tabIndex={stickyVisible ? undefined : -1}
-            onClick={() => trackCta('sticky')}
-          >
-            {config.stickyCta}
-          </LocalizedLink>
+          {renderPrimaryCta('alp__button alp__button--primary', 'sticky', config.stickyCta, {
+            tabIndex: stickyVisible ? undefined : -1,
+          })}
         </div>
       )}
 
