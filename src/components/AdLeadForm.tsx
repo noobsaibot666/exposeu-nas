@@ -12,6 +12,8 @@ export type AdLeadFormCopy = {
   emailLabel: string
   dateLabel: string
   dateHint?: string
+  /** Placeholder for the (free-text, not type="date") date field — see note below. */
+  datePlaceholder?: string
   submitLabel: string
   sendingLabel: string
   successHeading: string
@@ -182,7 +184,11 @@ export default function AdLeadForm({ slug, serviceSlug, packageSlug, copy }: AdL
                   {copy.dateLabel}
                   {copy.dateHint && <em> {copy.dateHint}</em>}
                 </span>
-                <input name="openingDate" type="date" />
+                {/* Free text, not type="date" — the Instagram/Facebook in-app
+                    WebView (100% of this campaign's traffic) doesn't
+                    reliably surface a native date picker on tap, which reads
+                    as a dead field. A plain text field always works. */}
+                <input name="openingDate" type="text" inputMode="text" placeholder={copy.datePlaceholder} autoComplete="off" />
               </label>
 
               {/* Honeypot */}

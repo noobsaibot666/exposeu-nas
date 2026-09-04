@@ -871,6 +871,10 @@
   font-family: inherit;
 }
 
+.alp__quick-book-field input::placeholder {
+  color: rgba(245, 245, 244, 0.4);
+}
+
 .alp__quick-book-field input:focus-visible {
   outline: 2px solid rgba(245, 245, 244, 0.7);
   outline-offset: 2px;
