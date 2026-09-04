@@ -68,22 +68,32 @@
   color: var(--text-strong);
 }
 
+/* A near-full-width bar here still ate a lot of the lower screen and sat
+   over whatever was at the bottom of the page before the visitor answered
+   it. Cap it as a small corner toast instead, sized to its own content
+   rather than the viewport. */
 @media (max-width: 640px) {
   .consent__banner {
     left: 12px;
     bottom: 12px;
-    width: calc(100vw - 24px);
-    padding: 12px 14px;
-    gap: 10px;
+    width: min(240px, calc(100vw - 24px));
+    padding: 10px 12px;
+    gap: 8px;
+    border-radius: 14px;
   }
 
   .consent__copy {
-    font-size: 0.76rem;
+    font-size: 0.72rem;
+    line-height: 1.35;
+  }
+
+  .consent__actions {
+    gap: 6px;
   }
 
   .consent__button {
-    padding: 7px 12px;
-    font-size: 0.78rem;
+    padding: 6px 10px;
+    font-size: 0.74rem;
   }
 }
 

@@ -680,7 +680,11 @@
 
   .alp__split,
   .alp__media-split {
-    grid-template-columns: 1fr;
+    /* minmax(0, 1fr) — see the .alp--gallery-museum-documentation
+       .alp__asset-grid comment below for why a bare 1fr here is the more
+       likely cause of prose (e.g. .alp__lede) overflowing instead of
+       wrapping on narrow screens. */
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .alp__asset-grid,
@@ -690,7 +694,7 @@
   }
 
   .alp__proof-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .alp__image {
@@ -701,7 +705,7 @@
 
 @media (max-width: 620px) {
   .alp__what-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -822,7 +826,11 @@
      Each row: value title + one supporting line + a chevron. Scoped to this
      landing page only. */
   .alp--gallery-museum-documentation .alp__asset-grid {
-    grid-template-columns: 1fr;
+    /* minmax(0, 1fr), not a bare 1fr — a bare fr track's automatic minimum
+       is its content's min-content size, which can force this column (and
+       everything above it in the single-column mobile layout) wider than
+       the viewport instead of letting the row/title text wrap. */
+    grid-template-columns: minmax(0, 1fr);
     gap: 0;
     margin-top: 18px;
     border: 1px solid rgba(245, 245, 244, 0.14);
@@ -832,7 +840,7 @@
   }
 
   .alp--gallery-museum-documentation .alp__asset-card {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
     grid-template-rows: auto auto;
     align-items: start;
     min-height: 0;
@@ -886,7 +894,7 @@
   .alp__asset-grid,
   .alp__platform-grid,
   .alp__what-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -1003,7 +1011,7 @@
 
 @media (max-width: 860px) {
   .alp__quick-book-inner {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 22px;
   }
 }
@@ -1014,10 +1022,11 @@
 @media (min-width: 861px) {
   /* "How we work" — 4 cards read as 3-top/1-bottom in the shared 3-col
      grid; force 2x2 for this page's item count without touching the
-     other landing pages that also use .alp__proof-grid. */
+     other landing pages that also use .alp__proof-grid. Full content width
+     (no max-width cap) so the two columns fill the section instead of
+     leaving empty space on the right. */
   .alp--gallery-museum-documentation .alp__proof-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    max-width: 720px;
   }
 
   /* Hero CTA: centre and widen the single "Book your date" button
