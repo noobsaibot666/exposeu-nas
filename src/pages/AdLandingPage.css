@@ -1098,6 +1098,9 @@
      up off the very bottom edge. */
   .alp--gallery-museum-documentation .alp__hero {
     min-height: min(730px, 92svh);
+    /* Taller hero than the shared mobile one, so it needs its own half-height
+       reserve to keep the copy starting below the midpoint. */
+    padding-top: clamp(96px, 46svh, 365px);
     padding-bottom: 32px;
   }
 
