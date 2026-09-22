@@ -5,9 +5,20 @@ import { resolveImagePath } from '../utils/resolveImagePath'
 const baseConfig = {
   slug: 'exhibition-gallery',
   serviceSlug: 'exhibition-gallery',
+  ctaPackage: 'project',
   ogImage: 'https://expose-u.com/og-exhibition-gallery.jpg',
   heroImage: resolveImagePath('/src/assets/images/landing/gallery_hero_01.webp'),
   supportImage: resolveImagePath('src/assets/images/landing/gallery_hero_03.webp'),
+  // Installation views, detail and opening shots, so "what you get" reads as a
+  // body of work rather than one photo. Deliberately a different selection to
+  // the one gallery-museum carries, so the two pages don't look identical.
+  supportImages: [
+    '/src/assets/images/services/1_exhibition_doc/_incoming/gallery/003.webp',
+    '/src/assets/images/services/1_exhibition_doc/_incoming/gallery/006.webp',
+    '/src/assets/images/services/1_exhibition_doc/_incoming/gallery/008.webp',
+    '/src/assets/images/services/1_exhibition_doc/_incoming/gallery/011.webp',
+    '/src/assets/images/services/1_exhibition_doc/1_ED_055.webp',
+  ].map((path) => resolveImagePath(path)),
   metaContentName: 'Exhibition Gallery Landing Page',
   customPixelEvent: 'ExhibitionGalleryLandingView',
   // Lighter than the shared hero wash so the footage actually reads.
@@ -15,21 +26,59 @@ const baseConfig = {
   // Same background film as the homepage hero (desktop + portrait cut).
   // startAt skips into the source on first play (loop restarts at 0).
   heroVideo: { id: '1228854165', mobileId: '1228856768', startAt: 0.5 },
+  // Mobile: price line / proof pills / CTA sit below the hero instead of
+  // overlaid on the video, and WhatsApp/call/email move to after the
+  // inline lead form so every contact option is grouped together.
+  heroPriceProofBelowFoldMobile: true,
+  heroContactAfterLeadFormMobile: true,
 }
+
+// The offer first, then how we shoot, then who it's for.
+const SECTION_ORDER: AdLandingPageConfig['sectionOrder'] = ['included', 'proof', 'audience']
 
 const configs: Record<'en' | 'de', AdLandingPageConfig> = {
   en: {
     ...baseConfig,
+    sectionOrder: SECTION_ORDER,
     canonical: 'https://expose-u.com/exhibition-gallery',
     title: 'Exhibition Documentation for Berlin Project Spaces',
     description: 'Press-ready photo and video documentation for independent galleries and artist-run project spaces in Berlin, sized for independent budgets.',
     ogTitle: 'Exhibition Documentation for Berlin Project Spaces | expose.u',
     ogDescription: 'The same eye, a different scale. Exhibition documentation for independent galleries and project spaces in Berlin.',
-    h1Line1: 'Exhibition documentation',
-    h1Line2: 'for galleries and project spaces.',
-    subheadline: 'Press-ready photo and video for openings, installation views and social — sized for independent and artist-run spaces, not institutional budgets.',
+    heroKicker: 'Exhibition documentation · Berlin',
+    h1: 'The same eye, at your scale.',
+    h1Line1: 'The same eye, at your scale.',
+    h1Line2: '',
+    subheadline: 'Press-ready photo and video for openings and installation views, priced for independent and artist-run spaces rather than institutional budgets.',
+    subheadlineMobile: 'Press-ready photo & video for Berlin project spaces.',
+    heroPriceLine: 'Photo & video coverage from €300 · Berlin · 24h reply',
+    heroProofItems: ['Installation views', 'Artwork detail', 'Opening night', 'Fast delivery'],
+    heroContact: {
+      whatsapp: { href: 'https://wa.me/48786696765', label: 'WhatsApp us' },
+      phone: { href: 'tel:+4917622132950', label: 'Call' },
+      email: { href: 'mailto:hello@expose-u.com', label: 'Email' },
+    },
     cta: 'Request availability',
     ctaSecondary: "See what's included",
+    stickyCta: 'Request availability',
+    stickyCtaNote: 'Photo & video from €300',
+    leadForm: {
+      serviceLabel: 'Exhibition / Project space',
+      heading: 'Tell us your opening date.',
+      body: 'Every space is different. Send us the date and what you need the documentation for, and we will come back within a day with availability.',
+      nameLabel: 'Name',
+      emailLabel: 'Email',
+      dateLabel: 'Opening or install date',
+      dateHint: '(optional)',
+      datePlaceholder: 'e.g. 12 September 2026',
+      submitLabel: 'Request availability →',
+      sendingLabel: 'Sending…',
+      successHeading: 'Got it — thank you.',
+      successBody: "We've received your dates and will get back to you within a day with availability and next steps.",
+      errorGeneric: 'Something went wrong — please email us at hello@expose-u.com',
+      fullFormLabel: 'Prefer the full form?',
+      fullFormHref: '/contact?service=exhibition-gallery&package=project',
+    },
     audienceLabel: 'Who this is for',
     audienceHeading: 'For independent Berlin galleries and project spaces',
     audienceGroups: [],
@@ -47,26 +96,10 @@ const configs: Record<'en' | 'de', AdLandingPageConfig> = {
         body: 'Portfolio-ready material for every show, even a one-week run.',
       },
     ],
-    whatItDoesLabel: 'What it does',
-    whatItDoesHeading: 'What the documentation does',
-    whatItDoesItems: [
-      {
-        title: 'Openings & installation views',
-        body: 'The record of the show, ready before press or partners ask for it.',
-      },
-      {
-        title: 'Website & social',
-        body: 'Reels/Stories-ready clips and images that keep the show visible after it closes.',
-      },
-      {
-        title: 'Berlin gallery rhythm',
-        body: 'Built around project-space realities — short runs, tight timelines, fast turnarounds.',
-      },
-    ],
     includedLabel: 'What you get',
     includedHeading: 'What you receive',
     includedLede:
-      'Delivered organized and ready to use — for the website, social and the archive.',
+      'Organized and ready to use for the website, social and the archive, before press or partners ask for it.',
     includedCards: [
       {
         slug: 'room-and-work',
@@ -86,7 +119,7 @@ const configs: Record<'en' | 'de', AdLandingPageConfig> = {
       {
         slug: 'vertical-social',
         title: 'Vertical social assets',
-        body: 'Reels- and Stories-ready clips and images.',
+        body: 'Reels- and Stories-ready clips and images that keep the show visible after it closes.',
       },
       {
         slug: 'fast-delivery',
@@ -96,10 +129,23 @@ const configs: Record<'en' | 'de', AdLandingPageConfig> = {
     ],
     includedCta: 'Request availability',
     proofLabel: 'How we work',
-    proofItems: [],
-    proofProse: [
-      'Same eye, different scale.',
-      'We document project spaces and artist-run galleries with the same care as institutional shows — quiet on site, fast to deliver, priced for independent budgets.',
+    proofItems: [
+      {
+        title: 'The same eye, a different scale',
+        body: 'Project spaces and artist-run galleries get the care we would bring to an institutional show.',
+      },
+      {
+        title: 'Built for short runs',
+        body: 'Tight timelines and one-week shows are the normal case here, not the exception.',
+      },
+      {
+        title: 'Quiet on site',
+        body: 'We move through the opening without turning it into a shoot.',
+      },
+      {
+        title: 'Back to you fast',
+        body: 'Edited selects while the show is still up.',
+      },
     ],
     finalHeading: "Let's document your show.",
     finalBody:
@@ -108,16 +154,46 @@ const configs: Record<'en' | 'de', AdLandingPageConfig> = {
   },
   de: {
     ...baseConfig,
+    sectionOrder: SECTION_ORDER,
     canonical: 'https://expose-u.com/de/exhibition-gallery',
     title: 'Ausstellungsdokumentation für Berliner Projekträume',
     description: 'Pressereife Foto- und Videodokumentation für unabhängige Galerien und Projekträume in Berlin, kalkuliert für unabhängige Budgets.',
     ogTitle: 'Ausstellungsdokumentation für Berliner Projekträume | expose.u',
     ogDescription: 'Derselbe Blick, anderer Maßstab. Ausstellungsdokumentation für unabhängige Galerien und Projekträume in Berlin.',
-    h1Line1: 'Ausstellungsdokumentation',
-    h1Line2: 'für Galerien und Projekträume.',
-    subheadline: 'Pressereife Foto- und Videoarbeit für Eröffnungen, Installationsansichten und Social Media — kalkuliert für unabhängige und selbstorganisierte Räume, nicht für Institutionsbudgets.',
+    heroKicker: 'Ausstellungsdokumentation · Berlin',
+    h1: 'Derselbe Blick, in Ihrem Maßstab.',
+    h1Line1: 'Derselbe Blick, in Ihrem Maßstab.',
+    h1Line2: '',
+    subheadline: 'Pressereife Foto- und Videoarbeit für Eröffnungen und Installationsansichten, kalkuliert für unabhängige und selbstorganisierte Räume statt für Institutionsbudgets.',
+    subheadlineMobile: 'Pressereifes Foto & Video für Berliner Projekträume.',
+    heroPriceLine: 'Foto & Video ab 300 € · Berlin · Antwort in 24 Std.',
+    heroProofItems: ['Installationsansichten', 'Werkdetails', 'Eröffnungsabend', 'Schnelle Lieferung'],
+    heroContact: {
+      whatsapp: { href: 'https://wa.me/48786696765', label: 'WhatsApp schreiben' },
+      phone: { href: 'tel:+4917622132950', label: 'Anrufen' },
+      email: { href: 'mailto:hello@expose-u.com', label: 'E-Mail' },
+    },
     cta: 'Verfügbarkeit anfragen',
     ctaSecondary: 'Sehen Sie, was enthalten ist',
+    stickyCta: 'Verfügbarkeit anfragen',
+    stickyCtaNote: 'Foto & Video ab 300 €',
+    leadForm: {
+      serviceLabel: 'Ausstellung / Projektraum',
+      heading: 'Sagen Sie uns Ihren Eröffnungstermin.',
+      body: 'Jeder Raum ist anders. Schicken Sie uns den Termin und wofür Sie die Dokumentation brauchen, und wir melden uns innerhalb eines Tages mit der Verfügbarkeit.',
+      nameLabel: 'Name',
+      emailLabel: 'E-Mail',
+      dateLabel: 'Eröffnungs- oder Aufbautermin',
+      dateHint: '(optional)',
+      datePlaceholder: 'z. B. 12. September 2026',
+      submitLabel: 'Verfügbarkeit anfragen →',
+      sendingLabel: 'Wird gesendet…',
+      successHeading: 'Erhalten — vielen Dank.',
+      successBody: 'Wir haben Ihre Termine erhalten und melden uns innerhalb eines Tages mit Verfügbarkeit und nächsten Schritten.',
+      errorGeneric: 'Etwas ist schiefgelaufen – schreiben Sie uns bitte an hello@expose-u.com',
+      fullFormLabel: 'Lieber das vollständige Formular?',
+      fullFormHref: '/de/contact?service=exhibition-gallery&package=project',
+    },
     audienceLabel: 'Für wen das ist',
     audienceHeading: 'Für unabhängige Berliner Galerien und Projekträume',
     audienceGroups: [],
@@ -135,26 +211,10 @@ const configs: Record<'en' | 'de', AdLandingPageConfig> = {
         body: 'Portfoliofertiges Material für jede Ausstellung, auch für eine einwöchige Laufzeit.',
       },
     ],
-    whatItDoesLabel: 'Wofür es genutzt wird',
-    whatItDoesHeading: 'Wofür die Dokumentation genutzt wird',
-    whatItDoesItems: [
-      {
-        title: 'Eröffnungen & Installationsansichten',
-        body: 'Der Nachweis der Ausstellung, bereit bevor Presse oder Partner danach fragen.',
-      },
-      {
-        title: 'Website & Social Media',
-        body: 'Reels- und Stories-fertige Clips und Bilder, die die Ausstellung über die Laufzeit hinaus sichtbar halten.',
-      },
-      {
-        title: 'Berliner Galerie-Rhythmus',
-        body: 'Abgestimmt auf die Realität von Projekträumen — kurze Laufzeiten, enge Zeitpläne, schnelle Umsetzung.',
-      },
-    ],
     includedLabel: 'Was Sie erhalten',
     includedHeading: 'Was Sie erhalten',
     includedLede:
-      'Organisiert geliefert und direkt einsatzbereit — für Website, Social Media und Archiv.',
+      'Organisiert geliefert und einsatzbereit für Website, Social Media und Archiv, bevor Presse oder Partner danach fragen.',
     includedCards: [
       {
         slug: 'room-and-work',
@@ -174,7 +234,7 @@ const configs: Record<'en' | 'de', AdLandingPageConfig> = {
       {
         slug: 'vertical-social',
         title: 'Vertikale Social-Assets',
-        body: 'Reels- und Stories-fertige Clips und Bilder.',
+        body: 'Reels- und Stories-fertige Clips und Bilder, die die Ausstellung über die Laufzeit hinaus sichtbar halten.',
       },
       {
         slug: 'fast-delivery',
@@ -184,10 +244,23 @@ const configs: Record<'en' | 'de', AdLandingPageConfig> = {
     ],
     includedCta: 'Verfügbarkeit anfragen',
     proofLabel: 'Wie wir arbeiten',
-    proofItems: [],
-    proofProse: [
-      'Derselbe Blick, anderer Maßstab.',
-      'Wir dokumentieren Projekträume und selbstorganisierte Galerien mit derselben Sorgfalt wie institutionelle Ausstellungen — ruhig vor Ort, schnell in der Lieferung, kalkuliert für unabhängige Budgets.',
+    proofItems: [
+      {
+        title: 'Derselbe Blick, anderer Maßstab',
+        body: 'Projekträume und selbstorganisierte Galerien bekommen die Sorgfalt, die wir einer institutionellen Ausstellung widmen würden.',
+      },
+      {
+        title: 'Auf kurze Laufzeiten ausgelegt',
+        body: 'Enge Zeitpläne und einwöchige Ausstellungen sind hier der Normalfall, nicht die Ausnahme.',
+      },
+      {
+        title: 'Ruhig vor Ort',
+        body: 'Wir bewegen uns durch die Eröffnung, ohne sie in einen Dreh zu verwandeln.',
+      },
+      {
+        title: 'Schnell zurück bei Ihnen',
+        body: 'Bearbeitete Auswahl, solange die Ausstellung noch läuft.',
+      },
     ],
     finalHeading: 'Lassen Sie uns Ihre Ausstellung dokumentieren.',
     finalBody:
