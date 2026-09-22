@@ -10,6 +10,11 @@ const baseConfig = {
   supportImage: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4263.webp'),
   metaContentName: 'Concerts Berlin Landing Page',
   customPixelEvent: 'ConcertsBerlinView',
+  // Lighter than the shared hero wash so the footage actually reads.
+  heroOverlay: 'linear-gradient(90deg, rgba(5, 7, 11, 0.82), rgba(5, 7, 11, 0.34))',
+  // Same background film as the homepage hero (desktop + portrait cut).
+  // startAt skips into the source on first play (loop restarts at 0).
+  heroVideo: { id: '1228854165', mobileId: '1228856768', startAt: 0.5 },
 }
 
 const configs: Record<'en' | 'de', AdLandingPageConfig> = {
