@@ -16,9 +16,11 @@
   min-height: min(860px, 94svh);
   display: flex;
   align-items: end;
-  /* Hero copy is bottom-anchored (align-items: end), so a smaller bottom
-     padding sits the whole block lower against the hero's bottom edge. */
-  padding: clamp(120px, 18vh, 170px) 0 clamp(4px, 0.6vh, 8px);
+  /* Reserve the top half of the hero so the copy starts below the midpoint
+     of the video. The clamp tracks half of min-height above: 47svh until the
+     860px cap takes over, then 430px. Copy is bottom-anchored into whatever
+     is left, so it fills the lower half upward from the bottom edge. */
+  padding: clamp(140px, 47svh, 430px) 0 clamp(4px, 0.6vh, 8px);
   background-image: var(--alp-hero-overlay, linear-gradient(90deg, rgba(5, 7, 11, 0.88), rgba(5, 7, 11, 0.5))), var(--alp-hero-image);
   background-position: center;
   background-size: cover;
@@ -697,7 +699,8 @@
 @media (max-width: 860px) {
   .alp__hero {
     min-height: min(600px, 82svh);
-    padding-top: 104px;
+    /* half of min-height above */
+    padding-top: clamp(104px, 41svh, 300px);
     padding-bottom: 8px;
   }
 
@@ -739,7 +742,8 @@
 @media (max-width: 560px) {
   .alp__hero {
     min-height: min(680px, 88svh);
-    padding-top: 96px;
+    /* half of min-height above */
+    padding-top: clamp(96px, 44svh, 340px);
     padding-bottom: 10px;
     /* drop the horizontal wash on mobile — show the photo cleanly up top */
     background-image: var(--alp-hero-image);
