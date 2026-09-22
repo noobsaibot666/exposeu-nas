@@ -265,7 +265,7 @@ function Portfolio() {
     return {
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',
-      name: 'Portfolio - expose.u',
+      name: 'Last Work - expose.u',
       url: 'https://expose-u.com/portfolio',
       inLanguage: locale,
       video: videoObjects,

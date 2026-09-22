@@ -22,7 +22,7 @@
       "headline": "We received your message.",
       "copy": "Our team will reach out shortly to plan next steps and confirm details.",
       "backHome": "Back to Home",
-      "viewPortfolio": "View Portfolio"
+      "viewPortfolio": "View Last Work"
     },
     "fields": {
       "name": "Name",
@@ -115,7 +115,7 @@
       "headline": "Your pricing request is in.",
       "copy": "We’ll review the details and reach out shortly with next steps, timing, and deliverables.",
       "backHome": "Back to Home",
-      "viewPortfolio": "View Portfolio"
+      "viewPortfolio": "View Last Work"
     }
   }
 }

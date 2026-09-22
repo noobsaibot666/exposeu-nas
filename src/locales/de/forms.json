@@ -22,7 +22,7 @@
       "headline": "Wir haben deine Nachricht erhalten.",
       "copy": "Unser Team meldet sich zeitnah bei dir, um die nächsten Schritte und Details abzustimmen.",
       "backHome": "Zur Startseite",
-      "viewPortfolio": "Portfolio ansehen"
+      "viewPortfolio": "Last Work ansehen"
     },
     "fields": {
       "name": "Name",
@@ -115,7 +115,7 @@
       "headline": "Deine Preisanfrage ist eingegangen.",
       "copy": "Wir prüfen die Details und melden uns zeitnah mit den nächsten Schritten, Timing und Deliverables.",
       "backHome": "Zur Startseite",
-      "viewPortfolio": "Portfolio ansehen"
+      "viewPortfolio": "Last Work ansehen"
     }
   }
 }
