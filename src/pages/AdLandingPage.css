@@ -111,6 +111,10 @@
   overflow-wrap: break-word;
 }
 
+.alp__subheadline-mobile {
+  display: none;
+}
+
 .alp__hero-kicker {
   margin: 0;
   display: inline-flex;
@@ -189,6 +193,24 @@
   flex-wrap: wrap;
   gap: 18px;
   margin-top: clamp(22px, 4vh, 44px);
+}
+
+/* Wraps price line + proof pills + CTA as one grid item (same gap as
+   .alp__hero-inner) so pages can opt into moving this group below the hero
+   on mobile (heroPriceProofBelowFoldMobile) without altering default
+   layout or breaking the hero's GSAP fade-in stagger, which targets
+   .alp__hero-inner > * — see AdLandingPage.tsx. */
+.alp__hero-lower {
+  display: grid;
+  gap: 22px;
+}
+
+.alp__hero-lower--below {
+  display: none;
+}
+
+.alp__hero-contact-wrap--below {
+  display: none;
 }
 
 /* Mobile-only quick-contact row (WhatsApp / call / email) — the full contact
@@ -1044,5 +1066,127 @@
      sits it closer to the section's bottom edge, i.e. a bit lower. */
   .alp--gallery-museum-documentation .alp__hero {
     padding-bottom: clamp(8px, 1.5vh, 16px);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Mobile-only layout tweaks, scoped to this page only.                *
+ * ------------------------------------------------------------------ */
+@media (max-width: 560px) {
+  /* Swap in the shorter mobile subheadline where one is provided
+     (see subheadlineMobile in GalleryMuseumLanding.tsx). */
+  .alp--gallery-museum-documentation .alp__subheadline-full {
+    display: none;
+  }
+
+  .alp--gallery-museum-documentation .alp__subheadline-mobile {
+    display: inline;
+  }
+
+  /* Taller hero + tighter bottom padding sits the bottom-anchored hero
+     copy lower on the screen without clipping it. A bit more bottom
+     padding than the original 10px nudges the kicker/H1/subheadline back
+     up off the very bottom edge. */
+  .alp--gallery-museum-documentation .alp__hero {
+    min-height: min(730px, 92svh);
+    padding-bottom: 56px;
+  }
+
+  /* Nudge the H1 back up slightly from the shared mobile size. */
+  .alp--gallery-museum-documentation .alp__hero h1 {
+    font-size: clamp(1.7rem, 6.8vw, 2.05rem);
+  }
+
+  /* Center the proof pills row instead of left-aligning it. */
+  .alp--gallery-museum-documentation .alp__hero-proof {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Price line / proof pills / CTA move out of the hero and into normal
+     flow right below it, instead of overlaying the video/image. */
+  .alp--gallery-museum-documentation .alp__hero-lower--inline {
+    display: none;
+  }
+
+  .alp--gallery-museum-documentation .alp__hero-lower--below {
+    display: grid;
+    gap: 22px;
+    padding-top: 28px;
+  }
+
+  /* Quick-contact row (WhatsApp / call / email) moves out of the hero
+     entirely and renders after the inline lead form instead, so every way
+     to get in touch — form, WhatsApp, call, email — sits together. */
+  .alp--gallery-museum-documentation .alp__hero-contact-wrap--inline {
+    display: none;
+  }
+
+  .alp--gallery-museum-documentation .alp__hero-contact-wrap--below {
+    display: block;
+    padding: 8px 0 32px;
+  }
+
+  .alp--gallery-museum-documentation .alp__hero-contact-wrap--below .alp__hero-contact {
+    justify-content: center;
+    gap: 18px;
+    margin-top: 0;
+  }
+
+  .alp--gallery-museum-documentation .alp__hero-contact-wrap--below .alp__hero-contact-link {
+    min-height: 32px;
+    padding: 6px 12px;
+    font-size: 0.74rem;
+  }
+
+  /* Inline lead form ("Request availability") reads oversized once it's
+     the single-column mobile layout — tighten section padding, headline,
+     field height and gaps so it doesn't dominate the screen. */
+  .alp--gallery-museum-documentation .alp__quick-book {
+    padding-top: clamp(28px, 6vw, 40px);
+    padding-bottom: clamp(28px, 6vw, 40px);
+  }
+
+  .alp--gallery-museum-documentation .alp__quick-book-inner {
+    gap: 16px;
+  }
+
+  .alp--gallery-museum-documentation .alp__quick-book-copy h2,
+  .alp--gallery-museum-documentation .alp__quick-book-success h2 {
+    font-size: 1.4rem;
+  }
+
+  .alp--gallery-museum-documentation .alp__quick-book-copy p {
+    margin-top: 8px;
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  .alp--gallery-museum-documentation .alp__quick-book-form {
+    gap: 10px;
+  }
+
+  .alp--gallery-museum-documentation .alp__quick-book-field {
+    gap: 4px;
+  }
+
+  .alp--gallery-museum-documentation .alp__quick-book-field > span {
+    font-size: 0.82rem;
+  }
+
+  .alp--gallery-museum-documentation .alp__quick-book-field input {
+    min-height: 42px;
+    padding: 9px 12px;
+    font-size: 1rem;
+  }
+
+  .alp--gallery-museum-documentation .alp__quick-book-form .alp__button--primary {
+    min-height: 42px;
+    padding: 10px 18px;
+  }
+
+  .alp--gallery-museum-documentation .alp__quick-book-fulllink {
+    font-size: 0.82rem;
   }
 }

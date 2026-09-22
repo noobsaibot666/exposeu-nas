@@ -7,6 +7,7 @@ import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProv
 import LocalizedLink from '../i18n/LocalizedLink'
 import { hasAnalyticsConsent, trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
 import AdLeadForm, { type AdLeadFormCopy } from '../components/AdLeadForm'
+import ImageCarousel from '../components/ImageCarousel'
 import './AdLandingPage.css'
 
 type Platform = {
@@ -32,6 +33,8 @@ export type AdLandingPageConfig = {
   ogDescription?: string
   heroImage: string
   supportImage: string
+  /** When set (2+ entries), the "what you get" support image renders as a swipeable carousel instead of a static image. */
+  supportImages?: string[]
   /** Optional CSS gradient placed over the hero image. Defaults to the shared dark wash. */
   heroOverlay?: string
   /** Vimeo background video for the hero. When set it replaces the still image
@@ -46,6 +49,8 @@ export type AdLandingPageConfig = {
   /** Small uppercase line above the H1 — used for campaign / urgency framing. */
   heroKicker?: string
   subheadline: string
+  /** Shorter variant of subheadline shown in its place on narrow screens (CSS-toggled). */
+  subheadlineMobile?: string
   /** Sharper urgency line (dates + scarcity) shown under the subheadline. */
   heroUrgency?: string
   /** Short "from €X · city · reply time" line shown under the urgency line. */
@@ -58,6 +63,12 @@ export type AdLandingPageConfig = {
     phone?: { href: string; label: string }
     email?: { href: string; label: string }
   }
+  /** On narrow screens, render the price line / proof pills / CTA below the hero
+   *  (in normal flow) instead of overlaid on the hero video/image (CSS-toggled). */
+  heroPriceProofBelowFoldMobile?: boolean
+  /** On narrow screens, render heroContact after the inline lead form instead of
+   *  inside the hero, so every "get in touch" option sits together (CSS-toggled). */
+  heroContactAfterLeadFormMobile?: boolean
   cta: string
   ctaSecondary?: string
   /** When set, renders a fixed mobile-only CTA bar once the hero scrolls away. */
@@ -371,6 +382,54 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
       </LocalizedLink>
     )
 
+  // Rendered inline in the hero by default; also placed after the hero (and,
+  // for heroContact, after the lead form) as CSS-toggled duplicates on pages
+  // that opt in via heroPriceProofBelowFoldMobile / heroContactAfterLeadFormMobile.
+  const heroPriceProof = (
+    <>
+      {config.heroPriceLine && <p className="alp__hero-price">{config.heroPriceLine}</p>}
+      {config.heroProofItems?.length ? (
+        <ul className="alp__hero-proof">
+          {config.heroProofItems.map((item) => <li key={item}>{item}</li>)}
+        </ul>
+      ) : null}
+      <div className={`alp__actions${config.ctaSecondary ? '' : ' alp__actions--single'}`}>
+        {renderPrimaryCta('alp__button alp__button--primary', 'hero_primary', config.cta)}
+        {config.ctaSecondary && (
+          <a className="alp__button" href="#included" onClick={() => trackCta('hero_secondary')}>
+            {config.ctaSecondary}
+          </a>
+        )}
+      </div>
+    </>
+  )
+
+  const heroContactRow = config.heroContact ? (
+    <div className="alp__hero-contact">
+      {config.heroContact.whatsapp && (
+        <a
+          className="alp__hero-contact-link alp__hero-contact-link--whatsapp"
+          href={config.heroContact.whatsapp.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => trackCta('hero_whatsapp')}
+        >
+          {config.heroContact.whatsapp.label}
+        </a>
+      )}
+      {config.heroContact.phone && (
+        <a className="alp__hero-contact-link" href={config.heroContact.phone.href} onClick={() => trackCta('hero_phone')}>
+          {config.heroContact.phone.label}
+        </a>
+      )}
+      {config.heroContact.email && (
+        <a className="alp__hero-contact-link" href={config.heroContact.email.href} onClick={() => trackCta('hero_email')}>
+          {config.heroContact.email.label}
+        </a>
+      )}
+    </div>
+  ) : null
+
   const middleSections: Record<SectionKey, ReactNode> = {
     audience: (
       <section className="section alp__audience" key="audience">
@@ -428,7 +487,11 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
       <section className="section alp__included" id="included" key="included">
         <div className="content alp__media-split">
           <div className="alp__image-wrap">
-            <div className="alp__image" style={{ backgroundImage: `url(${config.supportImage})` }} />
+            {config.supportImages && config.supportImages.length > 1 ? (
+              <ImageCarousel images={config.supportImages} alt={config.includedHeading} className="alp__image" />
+            ) : (
+              <div className="alp__image" style={{ backgroundImage: `url(${config.supportImage})` }} />
+            )}
           </div>
           <div>
             <p className="alp__label">{config.includedLabel}</p>
@@ -540,49 +603,21 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
         <div className="content alp__hero-inner">
           {config.heroKicker && <p className="alp__hero-kicker">{config.heroKicker}</p>}
           {config.h1 ? <h1>{config.h1}</h1> : <h1>{config.h1Line1}<br />{config.h1Line2}</h1>}
-          <p className="alp__subheadline">{config.subheadline}</p>
-          {config.heroUrgency && <p className="alp__hero-urgency">{config.heroUrgency}</p>}
-          {config.heroPriceLine && <p className="alp__hero-price">{config.heroPriceLine}</p>}
-          {config.heroProofItems?.length ? (
-            <ul className="alp__hero-proof">
-              {config.heroProofItems.map((item) => <li key={item}>{item}</li>)}
-            </ul>
-          ) : null}
-          <div className={`alp__actions${config.ctaSecondary ? '' : ' alp__actions--single'}`}>
-            {renderPrimaryCta('alp__button alp__button--primary', 'hero_primary', config.cta)}
-            {config.ctaSecondary && (
-              <a className="alp__button" href="#included" onClick={() => trackCta('hero_secondary')}>
-                {config.ctaSecondary}
-              </a>
+          <p className="alp__subheadline">
+            <span className="alp__subheadline-full">{config.subheadline}</span>
+            {config.subheadlineMobile && (
+              <span className="alp__subheadline-mobile">{config.subheadlineMobile}</span>
             )}
-          </div>
-          {config.heroContact && (
-            <div className="alp__hero-contact">
-              {config.heroContact.whatsapp && (
-                <a
-                  className="alp__hero-contact-link alp__hero-contact-link--whatsapp"
-                  href={config.heroContact.whatsapp.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => trackCta('hero_whatsapp')}
-                >
-                  {config.heroContact.whatsapp.label}
-                </a>
-              )}
-              {config.heroContact.phone && (
-                <a className="alp__hero-contact-link" href={config.heroContact.phone.href} onClick={() => trackCta('hero_phone')}>
-                  {config.heroContact.phone.label}
-                </a>
-              )}
-              {config.heroContact.email && (
-                <a className="alp__hero-contact-link" href={config.heroContact.email.href} onClick={() => trackCta('hero_email')}>
-                  {config.heroContact.email.label}
-                </a>
-              )}
-            </div>
-          )}
+          </p>
+          {config.heroUrgency && <p className="alp__hero-urgency">{config.heroUrgency}</p>}
+          <div className="alp__hero-lower alp__hero-lower--inline">{heroPriceProof}</div>
+          {heroContactRow && <div className="alp__hero-contact-wrap alp__hero-contact-wrap--inline">{heroContactRow}</div>}
         </div>
       </section>
+
+      {config.heroPriceProofBelowFoldMobile && (
+        <div className="content alp__hero-lower alp__hero-lower--below">{heroPriceProof}</div>
+      )}
 
       {config.leadForm && (
         <AdLeadForm
@@ -591,6 +626,10 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
           packageSlug={config.ctaPackage}
           copy={config.leadForm}
         />
+      )}
+
+      {config.heroContactAfterLeadFormMobile && heroContactRow && (
+        <div className="content alp__hero-contact-wrap alp__hero-contact-wrap--below">{heroContactRow}</div>
       )}
 
       {sectionOrder.map((key) => middleSections[key])}

@@ -9,6 +9,16 @@ const baseConfig = {
   ogImage: "https://expose-u.com/og-gallery-museum-documentation.jpg",
   heroImage: resolveImagePath("src/assets/images/landing/gallery_hero_05.webp"),
   supportImage: resolveImagePath("src/assets/images/landing/gallery_hero.webp"),
+  // A spread of exhibition documentation shots (openings, install detail,
+  // close-ups) so "what you get" reads as a body of work, not one photo.
+  supportImages: [
+    "/src/assets/images/services/1_exhibition_doc/_incoming/gallery/0002.webp",
+    "/src/assets/images/services/1_exhibition_doc/_incoming/gallery/001.webp",
+    "/src/assets/images/services/1_exhibition_doc/_incoming/gallery/004.webp",
+    "/src/assets/images/services/1_exhibition_doc/_incoming/gallery/007.webp",
+    "/src/assets/images/services/1_exhibition_doc/_incoming/gallery/009.webp",
+    "/src/assets/images/services/1_exhibition_doc/_incoming/gallery/012.webp",
+  ].map((path) => resolveImagePath(path)),
   metaContentName: "Gallery Museum Documentation Landing Page",
   customPixelEvent: "GalleryMuseumLandingView",
   // Lighter than the shared hero wash so the footage actually reads.
@@ -16,6 +26,11 @@ const baseConfig = {
   // Same background film as the homepage hero (desktop + portrait cut).
   // startAt skips into the source on first play (loop restarts at 0).
   heroVideo: { id: "1220567424", mobileId: "1220568256", startAt: 0.5 },
+  // Mobile: price line / proof pills / CTA sit below the hero instead of
+  // overlaid on the video, and WhatsApp/call/email move to after the
+  // inline lead form so every contact option is grouped together.
+  heroPriceProofBelowFoldMobile: true,
+  heroContactAfterLeadFormMobile: true,
 };
 
 // The offer first, then how we shoot, then who it's for.
@@ -38,6 +53,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     h1Line2: "",
     subheadline:
       "Photo, video, and social-ready edits for Berlin galleries during Art Week. Limited dates, 24h reply.",
+    subheadlineMobile: "Photo & video for Berlin galleries during Art Week. 24h reply.",
     heroUrgency:
       "Berlin Art Week: 9–13 September 2026. We take on a limited number of openings per night.",
     heroPriceLine: "Photo & video coverage from €300 · Berlin · 24h reply",
@@ -156,6 +172,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     h1Line2: "",
     subheadline:
       "Foto, Video und social-ready Edits für Berliner Galerien während der Art Week. Begrenzte Termine, Antwort in 24 Std.",
+    subheadlineMobile: "Foto & Video für Berliner Galerien zur Art Week. Antwort in 24 Std.",
     heroUrgency:
       "Berlin Art Week: 9.–13. September 2026. Wir übernehmen nur eine begrenzte Anzahl an Eröffnungen pro Abend.",
     heroPriceLine: "Foto & Video ab 300 € · Berlin · Antwort in 24 Std.",
