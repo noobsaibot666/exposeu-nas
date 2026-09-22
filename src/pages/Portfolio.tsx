@@ -431,9 +431,9 @@ function Portfolio() {
   return (
     <main className="portfolio" ref={rootRef} id="main">
       <SEOMeta
-        title="Portfolio"
+        title="Last Work"
         description="Selected documentation work by expose.u — concerts at Silent Green, gallery exhibitions, and artist sessions in Berlin."
-        ogTitle="Portfolio | expose.u"
+        ogTitle="Last Work | expose.u"
         ogDescription="Eight concerts at Silent Green. Gallery exhibitions. Artist sessions. Selected work from Berlin."
         canonical="https://expose-u.com/portfolio"
         lang={locale}
