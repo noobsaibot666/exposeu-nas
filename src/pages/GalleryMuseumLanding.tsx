@@ -25,7 +25,7 @@ const baseConfig = {
   heroOverlay: "linear-gradient(90deg, rgba(5, 7, 11, 0.82), rgba(5, 7, 11, 0.34))",
   // Same background film as the homepage hero (desktop + portrait cut).
   // startAt skips into the source on first play (loop restarts at 0).
-  heroVideo: { id: "1220567424", mobileId: "1220568256", startAt: 0.5 },
+  heroVideo: { id: "1228854165", mobileId: "1228856768", startAt: 0.5 },
   // Mobile: price line / proof pills / CTA sit below the hero instead of
   // overlaid on the video, and WhatsApp/call/email move to after the
   // inline lead form so every contact option is grouped together.

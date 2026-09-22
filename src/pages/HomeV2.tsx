@@ -18,13 +18,13 @@ import { useVideoLightbox } from '../hooks/useVideoLightbox'
 // Set type to 'vimeo' or 'youtube' and replace id with the actual video ID
 const HERO_VIDEO = {
   type: 'vimeo' as 'vimeo' | 'youtube',
-  id: '1220567424',
+  id: '1228854165',
   hash: '',
 }
 
 const MOBILE_HERO_VIDEO = {
   type: 'vimeo' as 'vimeo' | 'youtube',
-  id: '1220568256',
+  id: '1228856768',
   hash: '',
 }
 
