@@ -561,7 +561,19 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
   }
 
   return (
-    <main className={`alp alp--${config.slug}`} id="main" ref={rootRef}>
+    <main
+      className={[
+        'alp',
+        `alp--${config.slug}`,
+        // Drive the mobile hero reflow off the flags rather than the page
+        // slug, so any page opting in gets it (see AdLandingPage.css).
+        config.heroPriceProofBelowFoldMobile ? 'alp--hero-lower-below' : '',
+        config.heroContactAfterLeadFormMobile ? 'alp--hero-contact-below' : '',
+        config.subheadlineMobile ? 'alp--has-subheadline-mobile' : '',
+      ].filter(Boolean).join(' ')}
+      id="main"
+      ref={rootRef}
+    >
       <SEOMeta
         title={config.title}
         description={config.description}

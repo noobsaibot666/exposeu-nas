@@ -18,7 +18,7 @@
   align-items: end;
   /* Hero copy is bottom-anchored (align-items: end), so a smaller bottom
      padding sits the whole block lower against the hero's bottom edge. */
-  padding: clamp(120px, 18vh, 170px) 0 clamp(6px, 1vh, 12px);
+  padding: clamp(120px, 18vh, 170px) 0 clamp(4px, 0.6vh, 8px);
   background-image: var(--alp-hero-overlay, linear-gradient(90deg, rgba(5, 7, 11, 0.88), rgba(5, 7, 11, 0.5))), var(--alp-hero-image);
   background-position: center;
   background-size: cover;
@@ -84,7 +84,7 @@
   position: relative;
   z-index: 2;
   display: grid;
-  gap: 14px;
+  gap: 10px;
 }
 
 .alp__hero h1,
@@ -108,8 +108,8 @@
 .alp__subheadline {
   max-width: 840px;
   color: var(--text-strong);
-  font-size: clamp(1.05rem, 1.5vw, 1.52rem);
-  line-height: 1.5;
+  font-size: clamp(1rem, 1.25vw, 1.28rem);
+  line-height: 1.45;
   font-weight: 500;
   text-wrap: pretty;
   white-space: pre-line;
@@ -196,8 +196,8 @@
 .alp__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 18px;
-  margin-top: clamp(12px, 2vh, 22px);
+  gap: 14px;
+  margin-top: clamp(8px, 1.2vh, 14px);
 }
 
 /* Wraps price line + proof pills + CTA as one grid item (same gap as
@@ -207,7 +207,7 @@
    .alp__hero-inner > * — see AdLandingPage.tsx. */
 .alp__hero-lower {
   display: grid;
-  gap: 14px;
+  gap: 10px;
 }
 
 .alp__hero-lower--below {
@@ -1080,11 +1080,11 @@
 @media (max-width: 560px) {
   /* Swap in the shorter mobile subheadline where one is provided
      (see subheadlineMobile in GalleryMuseumLanding.tsx). */
-  .alp--gallery-museum-documentation .alp__subheadline-full {
+  .alp--has-subheadline-mobile .alp__subheadline-full {
     display: none;
   }
 
-  .alp--gallery-museum-documentation .alp__subheadline-mobile {
+  .alp--has-subheadline-mobile .alp__subheadline-mobile {
     display: inline;
   }
 
@@ -1111,11 +1111,11 @@
 @media (max-width: 768px) {
   /* Price line / proof pills / CTA move out of the hero and into normal
      flow right below it, instead of overlaying the video/image. */
-  .alp--gallery-museum-documentation .alp__hero-lower--inline {
+  .alp--hero-lower-below .alp__hero-lower--inline {
     display: none;
   }
 
-  .alp--gallery-museum-documentation .alp__hero-lower--below {
+  .alp--hero-lower-below .alp__hero-lower--below {
     display: grid;
     gap: 22px;
     padding-top: 28px;
@@ -1124,22 +1124,22 @@
   /* Quick-contact row (WhatsApp / call / email) moves out of the hero
      entirely and renders after the inline lead form instead, so every way
      to get in touch — form, WhatsApp, call, email — sits together. */
-  .alp--gallery-museum-documentation .alp__hero-contact-wrap--inline {
+  .alp--hero-contact-below .alp__hero-contact-wrap--inline {
     display: none;
   }
 
-  .alp--gallery-museum-documentation .alp__hero-contact-wrap--below {
+  .alp--hero-contact-below .alp__hero-contact-wrap--below {
     display: block;
     padding: 8px 0 32px;
   }
 
-  .alp--gallery-museum-documentation .alp__hero-contact-wrap--below .alp__hero-contact {
+  .alp--hero-contact-below .alp__hero-contact-wrap--below .alp__hero-contact {
     justify-content: center;
     gap: 18px;
     margin-top: 0;
   }
 
-  .alp--gallery-museum-documentation .alp__hero-contact-wrap--below .alp__hero-contact-link {
+  .alp--hero-contact-below .alp__hero-contact-wrap--below .alp__hero-contact-link {
     min-height: 32px;
     padding: 6px 12px;
     font-size: 0.74rem;
