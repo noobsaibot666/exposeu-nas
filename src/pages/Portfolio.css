@@ -214,7 +214,7 @@
   right: 24px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   z-index: 2;
   opacity: 1;
   transform: none;
@@ -226,8 +226,10 @@
   align-items: center;
   padding: 5px 10px;
   border-radius: 12px;
-  background: rgba(0, 0, 0, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
   color: var(--text-strong);
   font-size: 0.72rem;
   font-weight: 600;
@@ -267,17 +269,6 @@
   opacity: 1;
   transform: none;
   transition: opacity 420ms ease, transform 420ms ease;
-}
-
-.portfolio__chip {
-  display: inline-flex;
-  padding: 5px 9px;
-  border-radius: 12px;
-  background: rgba(0, 0, 0, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  color: var(--text-strong);
-  font-size: 0.7rem;
-  width: fit-content;
 }
 
 .portfolio__title {
@@ -339,7 +330,6 @@
 .portfolio__card .portfolio__title,
 .portfolio__card .portfolio__description,
 .portfolio__card .portfolio__location,
-.portfolio__card .portfolio__chip,
 .portfolio__card .portfolio__pill {
   color: var(--text-strong);
 }

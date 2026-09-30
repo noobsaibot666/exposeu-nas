@@ -475,7 +475,6 @@ function Portfolio() {
                     aria-hidden="true"
                   >
                     <div className="portfolio__topline">
-                      <span className="portfolio__chip">{video.year}</span>
                       <span className="portfolio__pill">{video.tag ?? t('portfolio.labels.feature')}</span>
                     </div>
                     <div className="portfolio__thumb-overlay" />
