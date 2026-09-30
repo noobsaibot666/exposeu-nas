@@ -21,7 +21,8 @@ function getEmbedSrc(src: string, ambient = false) {
     /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube-nocookie\.com\/embed\/)([^?&/]+)/i,
   )
   if (youTubeMatch) {
-    return `https://www.youtube-nocookie.com/embed/${youTubeMatch[1]}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0`
+    const id = youTubeMatch[1]
+    return `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&modestbranding=1&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0`
   }
 
   const vimeoMatch = src.match(/vimeo\.com\/(?:video\/)?(\d+)/i)
@@ -34,6 +35,11 @@ function getEmbedSrc(src: string, ambient = false) {
 
   return null
 }
+
+// YouTube offers no way to switch its branding off, so its films always play
+// as ambient loops (no hover/pause/end-screen UI) behind a veil that covers the
+// title overlay YouTube shows for the first few seconds.
+const isYouTube = (src?: string) => Boolean(src && /youtu\.?be/i.test(src))
 
 function renderVideo(video: LightboxVideo) {
   if (!video.videoSrc) return null
@@ -379,8 +385,13 @@ export function useVideoLightbox(scopeRef?: RefObject<HTMLElement | null>) {
         <div className={`portfolio__player ${activeVideo.videoSrc ? 'has-film' : ''} ${total ? 'has-stills' : ''}`}>
           {activeVideo.videoSrc ? (
             <>
-              <div className={`portfolio__film ${activeVideo.ambientVideo ? 'portfolio__film--ambient' : ''}`}>
+              <div
+                className={`portfolio__film ${
+                  activeVideo.ambientVideo || isYouTube(activeVideo.videoSrc) ? 'portfolio__film--ambient' : ''
+                }`}
+              >
                 {renderVideo(activeVideo)}
+                {isYouTube(activeVideo.videoSrc) && <div className="portfolio__film-veil" aria-hidden="true" />}
               </div>
               {renderMeta(activeVideo)}
               {total > 0 && renderStills(activeVideo)}

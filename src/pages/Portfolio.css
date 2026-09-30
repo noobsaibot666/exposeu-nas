@@ -421,7 +421,25 @@
 /* ─── Film ─── */
 
 .portfolio__film {
+  position: relative;
   width: 100%;
+}
+
+/* Covers the title/channel overlay YouTube shows for the first ~3s of
+   playback, then fades away so the film reads as a fade-in. */
+.portfolio__film-veil {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: #050507;
+  pointer-events: none;
+  animation: portfolio-film-veil 900ms ease 3.4s forwards;
+}
+
+@keyframes portfolio-film-veil {
+  to {
+    opacity: 0;
+  }
 }
 
 /* Ambient loops ignore the pointer, so no player overlay is ever summoned. */
@@ -993,6 +1011,10 @@
   .portfolio__player video {
     max-width: none;
     max-height: none;
+    border-radius: 0;
+  }
+
+  .portfolio__film-veil {
     border-radius: 0;
   }
 
