@@ -86,6 +86,7 @@
   "modal": {
     "close": "Close video",
     "previousSlide": "Previous slide",
-    "nextSlide": "Next slide"
+    "nextSlide": "Next slide",
+    "showSlide": "Show photo {{n}}"
   }
 }

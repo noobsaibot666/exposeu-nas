@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState, type PointerEvent, type RefObject } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent, type RefObject } from 'react'
 import gsap from 'gsap'
 import { useTranslation } from '../i18n/LocaleProvider'
 
@@ -29,14 +29,6 @@ function getEmbedSrc(src: string) {
   return null
 }
 
-// A project with both a film and stills opens on the film (slide 0) and the
-// stills follow as further slides; a stills-only project is unchanged.
-function slideCount(video: LightboxVideo | null) {
-  const images = video?.slideshowImages?.length ?? 0
-  if (!images) return 0
-  return images + (video?.videoSrc ? 1 : 0)
-}
-
 function renderVideo(video: LightboxVideo) {
   if (!video.videoSrc) return null
   const embedSrc = getEmbedSrc(video.videoSrc)
@@ -55,23 +47,31 @@ function renderVideo(video: LightboxVideo) {
   return <video key={video.id} controls autoPlay playsInline poster={video.thumb} src={video.videoSrc} />
 }
 
-// Reusable video/slideshow lightbox — shared by Portfolio.tsx (its own grid)
-// and any other page that wants to open the same popup for a project card
-// (e.g. HomeV2's "Last Projects"). Styling comes from Portfolio.css
-// (.portfolio__overlay / .portfolio__modal / .portfolio__player / ...);
-// import that stylesheet in any page that renders this modal.
+const pad = (n: number) => String(n).padStart(2, '0')
+
+// Reusable project lightbox — shared by Portfolio.tsx (its own grid) and any
+// other page that opens the same popup for a project card (e.g. HomeV2's
+// "Last Projects"). Styling comes from Portfolio.css (.portfolio__overlay /
+// .portfolio__modal / .portfolio__player / ...); import that stylesheet in any
+// page that renders this modal.
+//
+// Layout: the film (if any) on top, then the project text, then the stills as
+// a presentation — a cross-fading stage with a counter and a thumbnail strip.
+// A stills-only project leads with the stage; a film-only one is just the film.
 //
 // `scopeRef` (optional) scopes the entrance-animation's selector queries to
-// the caller's own page root, same as the original Portfolio.tsx implementation
-// did with `gsap.context(fn, rootRef)` — pass the page's root ref so this
-// hook's `.portfolio__overlay/.modal/.player` queries can't ever pick up an
+// the caller's own page root (same as `gsap.context(fn, rootRef)`), so this
+// hook's `.portfolio__overlay/.modal/.player` queries can't pick up an
 // unrelated match elsewhere in the document.
 export function useVideoLightbox(scopeRef?: RefObject<HTMLElement | null>) {
   const { t } = useTranslation()
   const [activeVideo, setActiveVideo] = useState<LightboxVideo | null>(null)
   const [slideIndex, setSlideIndex] = useState(0)
+  // The slide being faded out underneath the incoming one (null = none).
+  const [leavingIndex, setLeavingIndex] = useState<number | null>(null)
   const [slideDirection, setSlideDirection] = useState(1)
   const openerRef = useRef<HTMLElement | null>(null)
+  const stripRef = useRef<HTMLDivElement | null>(null)
   const slideSwipeState = useRef({ active: false, startX: 0, pointerId: 0 })
   const navRef = useRef<{
     activeVideo: LightboxVideo | null
@@ -79,28 +79,33 @@ export function useVideoLightbox(scopeRef?: RefObject<HTMLElement | null>) {
     goPrev: () => void
   }>({ activeVideo: null, goNext: () => {}, goPrev: () => {} })
 
+  const images = useMemo(() => activeVideo?.slideshowImages ?? [], [activeVideo])
+  const total = images.length
+
   const openVideo = useCallback((video: LightboxVideo) => {
     openerRef.current = document.activeElement as HTMLElement
     setSlideIndex(0)
+    setLeavingIndex(null)
     setSlideDirection(1)
     setActiveVideo(video)
   }, [])
 
   const closeVideo = useCallback(() => setActiveVideo(null), [])
 
-  const goToPreviousSlide = useCallback(() => {
-    const total = slideCount(activeVideo)
-    if (!total) return
-    setSlideDirection(-1)
-    setSlideIndex((prev) => (prev - 1 + total) % total)
-  }, [activeVideo])
+  const goToSlide = useCallback(
+    (next: number, direction: number) => {
+      if (!total) return
+      const target = (next + total) % total
+      if (target === slideIndex) return
+      setSlideDirection(direction)
+      setLeavingIndex(slideIndex)
+      setSlideIndex(target)
+    },
+    [slideIndex, total],
+  )
 
-  const goToNextSlide = useCallback(() => {
-    const total = slideCount(activeVideo)
-    if (!total) return
-    setSlideDirection(1)
-    setSlideIndex((prev) => (prev + 1) % total)
-  }, [activeVideo])
+  const goToPreviousSlide = useCallback(() => goToSlide(slideIndex - 1, -1), [goToSlide, slideIndex])
+  const goToNextSlide = useCallback(() => goToSlide(slideIndex + 1, 1), [goToSlide, slideIndex])
 
   useEffect(() => {
     if (!activeVideo) return
@@ -111,12 +116,14 @@ export function useVideoLightbox(scopeRef?: RefObject<HTMLElement | null>) {
       gsap.fromTo(
         '.portfolio__modal',
         { opacity: 0, y: 24, scale: 0.98 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: 'power3.out' },
+        // clearProps: a leftover transform would make this the containing block
+        // for the position:fixed close button, so it would scroll away.
+        { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: 'power3.out', clearProps: 'transform' },
       )
       gsap.fromTo(
-        '.portfolio__player',
+        '.portfolio__player > *',
         { opacity: 0, y: 16 },
-        { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out', delay: 0.05 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', delay: 0.05, stagger: 0.08, clearProps: 'transform' },
       )
     }, scopeRef)
 
@@ -137,6 +144,27 @@ export function useVideoLightbox(scopeRef?: RefObject<HTMLElement | null>) {
     }
   }, [activeVideo])
 
+  // Keep the active thumbnail centred in the strip. Scrolls the strip itself
+  // (not scrollIntoView), so the overlay never jumps vertically.
+  useEffect(() => {
+    const strip = stripRef.current
+    const thumb = strip?.children[slideIndex] as HTMLElement | undefined
+    if (!strip || !thumb) return
+    const left = thumb.offsetLeft - (strip.clientWidth - thumb.offsetWidth) / 2
+    const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    strip.scrollTo({ left, behavior: smooth ? 'smooth' : 'auto' })
+  }, [slideIndex, activeVideo])
+
+  // Warm the neighbours so the next/previous still is decoded before it's asked for.
+  useEffect(() => {
+    if (total < 2) return
+    ;[slideIndex + 1, slideIndex - 1].forEach((i) => {
+      const img = new Image()
+      img.decoding = 'async'
+      img.src = images[(i + total) % total]
+    })
+  }, [images, slideIndex, total])
+
   // Keep navRef current after every render — runs before paint so the keyboard
   // handler always reads live values without holding stale closures.
   useLayoutEffect(() => {
@@ -154,7 +182,7 @@ export function useVideoLightbox(scopeRef?: RefObject<HTMLElement | null>) {
         return
       }
 
-      if (!slideCount(av)) return
+      if (!av?.slideshowImages?.length) return
 
       if (e.key === 'ArrowLeft') {
         e.preventDefault()
@@ -195,7 +223,7 @@ export function useVideoLightbox(scopeRef?: RefObject<HTMLElement | null>) {
   }, [activeVideo])
 
   const handleSlidePointerDown = (event: PointerEvent<HTMLDivElement>) => {
-    if (slideCount(activeVideo) < 2) return
+    if (total < 2) return
     if ((event.target as HTMLElement).closest('button')) return
     slideSwipeState.current = { active: true, startX: event.clientX, pointerId: event.pointerId }
     if (!event.currentTarget.hasPointerCapture(event.pointerId)) {
@@ -227,6 +255,96 @@ export function useVideoLightbox(scopeRef?: RefObject<HTMLElement | null>) {
     }
   }
 
+  const renderStills = (video: LightboxVideo) => (
+    <section className="portfolio__stills" aria-label={video.title}>
+      <div
+        className="portfolio__stage"
+        onPointerDown={handleSlidePointerDown}
+        onPointerUp={handleSlidePointerUp}
+        onPointerCancel={handleSlidePointerCancel}
+      >
+        {leavingIndex !== null && leavingIndex !== slideIndex && (
+          <img
+            key={`${video.id}-leaving-${leavingIndex}-${slideIndex}`}
+            className="portfolio__stage-image portfolio__stage-image--leaving"
+            src={images[leavingIndex]}
+            alt=""
+            aria-hidden="true"
+          />
+        )}
+        <img
+          key={`${video.id}-slide-${slideIndex}`}
+          className={`portfolio__stage-image ${
+            leavingIndex === null
+              ? ''
+              : slideDirection === -1
+                ? 'portfolio__stage-image--from-left'
+                : 'portfolio__stage-image--from-right'
+          }`}
+          src={images[slideIndex] ?? images[0]}
+          alt={`${video.title}, ${slideIndex + 1} / ${total}`}
+          decoding="async"
+        />
+        {total > 1 && (
+          <>
+            <button
+              type="button"
+              className="portfolio__stage-arrow portfolio__stage-arrow--left"
+              aria-label={t('portfolio.modal.previousSlide')}
+              onClick={goToPreviousSlide}
+            >
+              <span aria-hidden="true">‹</span>
+            </button>
+            <button
+              type="button"
+              className="portfolio__stage-arrow portfolio__stage-arrow--right"
+              aria-label={t('portfolio.modal.nextSlide')}
+              onClick={goToNextSlide}
+            >
+              <span aria-hidden="true">›</span>
+            </button>
+          </>
+        )}
+      </div>
+
+      {total > 1 && (
+        <div className="portfolio__stills-bar">
+          <p className="portfolio__counter" aria-live="polite">
+            <span className="portfolio__counter-current">{pad(slideIndex + 1)}</span>
+            <span className="portfolio__counter-sep" aria-hidden="true" />
+            <span>{pad(total)}</span>
+          </p>
+          <div className="portfolio__strip" ref={stripRef}>
+            {images.map((src, index) => (
+              <button
+                key={`${video.id}-thumb-${index}`}
+                type="button"
+                className={`portfolio__strip-thumb ${index === slideIndex ? 'is-active' : ''}`}
+                aria-label={t('portfolio.modal.showSlide', { n: index + 1 })}
+                aria-current={index === slideIndex ? 'true' : undefined}
+                onClick={() => goToSlide(index, index > slideIndex ? 1 : -1)}
+              >
+                <img src={src} alt="" loading="lazy" decoding="async" />
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </section>
+  )
+
+  const renderMeta = (video: LightboxVideo) => (
+    <div className="portfolio__player-meta">
+      <div className="portfolio__eyebrow">
+        <span>{video.year}</span>
+        <span className="portfolio__dot">•</span>
+        <span>{video.location}</span>
+      </div>
+      <p className="portfolio__title" id="portfolio-modal-title">{video.title}</p>
+      <p className="portfolio__description">{video.description}</p>
+    </div>
+  )
+
   const modal = activeVideo && (
     <div
       className="portfolio__overlay"
@@ -252,78 +370,19 @@ export function useVideoLightbox(scopeRef?: RefObject<HTMLElement | null>) {
             <path d="m6 6 12 12" />
           </svg>
         </button>
-        <div className="portfolio__player">
-          {(() => {
-            const images = activeVideo.slideshowImages ?? []
-            const total = slideCount(activeVideo)
-            if (total > 0) {
-              const videoOffset = activeVideo.videoSrc ? 1 : 0
-              const onVideoSlide = videoOffset === 1 && slideIndex === 0
-              const current = images[slideIndex - videoOffset] ?? images[0]
-              return (
-                <div className="portfolio__slideshow">
-                  <div
-                    className="portfolio__slideshow-frame"
-                    onPointerDown={handleSlidePointerDown}
-                    onPointerUp={handleSlidePointerUp}
-                    onPointerCancel={handleSlidePointerCancel}
-                  >
-                    {total > 1 && (
-                      <>
-                        <button
-                          type="button"
-                          className="portfolio__slideshow-arrow portfolio__slideshow-arrow--left"
-                          aria-label={t('portfolio.modal.previousSlide')}
-                          onClick={goToPreviousSlide}
-                        >
-                          <span aria-hidden="true">‹</span>
-                        </button>
-                        <button
-                          type="button"
-                          className="portfolio__slideshow-arrow portfolio__slideshow-arrow--right"
-                          aria-label={t('portfolio.modal.nextSlide')}
-                          onClick={goToNextSlide}
-                        >
-                          <span aria-hidden="true">›</span>
-                        </button>
-                      </>
-                    )}
-                    {onVideoSlide ? (
-                      renderVideo(activeVideo)
-                    ) : (
-                      <img
-                        key={`${activeVideo.id}-slide-${slideIndex}`}
-                        className={`portfolio__slideshow-image ${slideDirection === -1 ? 'portfolio__slideshow-image--prev' : 'portfolio__slideshow-image--next'}`}
-                        src={current}
-                        alt={`${activeVideo.title} slide ${slideIndex + 1}`}
-                      />
-                    )}
-                  </div>
-                  {total > 1 && (
-                    <div className="portfolio__slideshow-dots" aria-hidden="true">
-                      {Array.from({ length: total }, (_, index) => (
-                        <span
-                          key={`slide-${activeVideo.id}-${index}`}
-                          className={`portfolio__slideshow-dot ${index === slideIndex ? 'is-active' : ''}`}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )
-            }
-
-            return renderVideo(activeVideo)
-          })()}
-          <div className="portfolio__player-meta">
-            <div className="portfolio__eyebrow">
-              <span>{activeVideo.year}</span>
-              <span className="portfolio__dot">•</span>
-              <span>{activeVideo.location}</span>
-            </div>
-            <p className="portfolio__title" id="portfolio-modal-title">{activeVideo.title}</p>
-            <p className="portfolio__description">{activeVideo.description}</p>
-          </div>
+        <div className={`portfolio__player ${activeVideo.videoSrc ? 'has-film' : ''} ${total ? 'has-stills' : ''}`}>
+          {activeVideo.videoSrc ? (
+            <>
+              <div className="portfolio__film">{renderVideo(activeVideo)}</div>
+              {renderMeta(activeVideo)}
+              {total > 0 && renderStills(activeVideo)}
+            </>
+          ) : (
+            <>
+              {total > 0 && renderStills(activeVideo)}
+              {renderMeta(activeVideo)}
+            </>
+          )}
         </div>
       </div>
     </div>
