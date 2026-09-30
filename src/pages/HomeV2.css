@@ -91,6 +91,14 @@
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.48), rgba(0, 0, 0, 0));
 }
 
+/* Scrolled: frosted bar instead of the hero gradient, so section text passing
+   under the fixed nav doesn't collide with the logo and links. */
+.home--v2 .home__nav .top-nav.is-scrolled .top-nav__bar {
+  background: rgba(5, 5, 7, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
 .home--v2 .home__nav .top-nav.is-hidden .top-nav__bar {
   transform: none;
   opacity: 1;

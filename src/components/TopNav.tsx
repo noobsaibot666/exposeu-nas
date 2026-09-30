@@ -35,6 +35,9 @@ function TopNav({
 }: TopNavProps) {
   const [open, setOpen] = useState(false)
   const [isHidden, setIsHidden] = useState(false)
+  // Past the very top, the bar gets a frosted backing (see TopNav.css) so page
+  // text scrolling beneath a fixed bar can't collide with the links/logo.
+  const [isScrolled, setIsScrolled] = useState(false)
 
   const lastScrollY = useRef(0)
   const ticking = useRef(false)
@@ -111,6 +114,13 @@ function TopNav({
     }
   }, [open])
 
+  useEffect(() => {
+    const update = () => setIsScrolled(window.scrollY > 8)
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    return () => window.removeEventListener('scroll', update)
+  }, [])
+
   const renderLink = (item: NavItem) => {
     const isActive = item.id ? item.id === activeId : item.label === activeLabel
     const linkClassName = ['top-nav__link', isActive ? 'top-nav__link--active' : ''].filter(Boolean).join(' ')
@@ -176,6 +186,7 @@ function TopNav({
     className ?? '',
     open ? 'is-open' : '',
     isHidden ? 'is-hidden' : '',
+    isScrolled ? 'is-scrolled' : '',
   ].filter(Boolean).join(' ')
 
   const drawer = typeof document !== 'undefined'

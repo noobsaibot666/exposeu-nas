@@ -40,6 +40,16 @@
   background: transparent;
 }
 
+.top-nav__bar {
+  transition: transform 240ms ease, opacity 200ms ease, background-color 320ms ease, backdrop-filter 320ms ease;
+}
+
+.top-nav.is-scrolled .top-nav__bar {
+  background: rgba(5, 5, 7, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
 .top-nav--page .top-nav__bar {
   padding-top: 14px;
   padding-bottom: 14px;

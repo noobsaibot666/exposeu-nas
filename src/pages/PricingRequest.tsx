@@ -4,6 +4,7 @@ import TopNav from '../components/TopNav'
 import { resolveImagePath } from '../utils/resolveImagePath'
 import { trackEvent } from '../utils/analytics'
 import { serviceMeta, type ServiceSlug } from '../data/serviceMeta'
+import { pricingTiers } from '../data/pricingTiers'
 import './PricingRequest.css'
 import { useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
 
@@ -29,7 +30,11 @@ function PricingRequest() {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const hasTrackedPlanSelect = useRef(false)
 
-  const planInfo = plan ? tm<{ name: string; intro: string }>(`forms.pricing.planIntros.${plan}`) : null
+  // Only known tiers have intro copy; tm() throws on a missing key, so an old
+  // or mistyped /pricing-request/<plan> link would otherwise blank the page.
+  // Unknown plans fall back to the generic request form.
+  const knownPlan = plan && pricingTiers.some((tier) => tier.slug === plan) ? plan : null
+  const planInfo = knownPlan ? tm<{ name: string; intro: string }>(`forms.pricing.planIntros.${knownPlan}`) : null
   const serviceInfo = useMemo(() => {
     if (!serviceParam || !(serviceParam in serviceMeta)) return null
     const serviceSlug = serviceParam as ServiceSlug

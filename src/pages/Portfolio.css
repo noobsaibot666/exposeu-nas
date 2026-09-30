@@ -353,7 +353,10 @@
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(4px);
   padding: clamp(56px, 9vh, 96px) 24px clamp(48px, 8vh, 80px);
-  z-index: 1000;
+  /* Above the nav bars (2000 / HomeV2 3000) and the locale globe (4200), so
+     the site menu can't sit on top of the popup or collide with its close
+     button; still below the skip link and the mobile drawer (9999). */
+  z-index: 5000;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   display: flex;
@@ -402,9 +405,17 @@
    edges line up. Capped so a 3:2 still never exceeds ~76% of the viewport height. */
 .portfolio__player {
   display: grid;
+  /* minmax(0, 1fr), not the default auto track: otherwise the thumbnail
+     strip's full scroll width (14–20 thumbs) leaks into the column size and
+     pushes the film/stage past the column, off-centre and scrolling sideways. */
+  grid-template-columns: minmax(0, 1fr);
   gap: clamp(20px, 3vh, 32px);
   width: min(100%, calc(76vh * 3 / 2));
   margin: 0 auto;
+}
+
+.portfolio__player > * {
+  min-width: 0;
 }
 
 /* ─── Film ─── */
@@ -443,7 +454,9 @@
 
 .portfolio__stills {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 14px;
+  min-width: 0;
 }
 
 .portfolio__stage {

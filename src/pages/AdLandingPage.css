@@ -684,9 +684,10 @@
     display: flex;
   }
 
-  /* keep the final CTA clear of the fixed bar, without a cavernous gap */
-  .alp:has(.alp__sticky-cta) .alp__final {
-    padding-bottom: 76px;
+  /* The footer is the last thing on the page, so it's what the fixed bar
+     would cover (its back-to-top button and last links): give it the room. */
+  .alp:has(.alp__sticky-cta) .footer {
+    padding-bottom: calc(60px + 72px + env(safe-area-inset-bottom, 0px));
   }
 }
 
