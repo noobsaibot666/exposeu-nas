@@ -29,6 +29,32 @@ function getEmbedSrc(src: string) {
   return null
 }
 
+// A project with both a film and stills opens on the film (slide 0) and the
+// stills follow as further slides; a stills-only project is unchanged.
+function slideCount(video: LightboxVideo | null) {
+  const images = video?.slideshowImages?.length ?? 0
+  if (!images) return 0
+  return images + (video?.videoSrc ? 1 : 0)
+}
+
+function renderVideo(video: LightboxVideo) {
+  if (!video.videoSrc) return null
+  const embedSrc = getEmbedSrc(video.videoSrc)
+  if (embedSrc) {
+    return (
+      <iframe
+        key={video.id}
+        title={video.title}
+        src={embedSrc}
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowFullScreen
+      />
+    )
+  }
+
+  return <video key={video.id} controls autoPlay playsInline poster={video.thumb} src={video.videoSrc} />
+}
+
 // Reusable video/slideshow lightbox — shared by Portfolio.tsx (its own grid)
 // and any other page that wants to open the same popup for a project card
 // (e.g. HomeV2's "Last Projects"). Styling comes from Portfolio.css
@@ -63,15 +89,15 @@ export function useVideoLightbox(scopeRef?: RefObject<HTMLElement | null>) {
   const closeVideo = useCallback(() => setActiveVideo(null), [])
 
   const goToPreviousSlide = useCallback(() => {
-    if (!activeVideo?.slideshowImages?.length) return
-    const total = activeVideo.slideshowImages.length
+    const total = slideCount(activeVideo)
+    if (!total) return
     setSlideDirection(-1)
     setSlideIndex((prev) => (prev - 1 + total) % total)
   }, [activeVideo])
 
   const goToNextSlide = useCallback(() => {
-    if (!activeVideo?.slideshowImages?.length) return
-    const total = activeVideo.slideshowImages.length
+    const total = slideCount(activeVideo)
+    if (!total) return
     setSlideDirection(1)
     setSlideIndex((prev) => (prev + 1) % total)
   }, [activeVideo])
@@ -128,7 +154,7 @@ export function useVideoLightbox(scopeRef?: RefObject<HTMLElement | null>) {
         return
       }
 
-      if (!av?.slideshowImages?.length) return
+      if (!slideCount(av)) return
 
       if (e.key === 'ArrowLeft') {
         e.preventDefault()
@@ -169,7 +195,7 @@ export function useVideoLightbox(scopeRef?: RefObject<HTMLElement | null>) {
   }, [activeVideo])
 
   const handleSlidePointerDown = (event: PointerEvent<HTMLDivElement>) => {
-    if (!activeVideo?.slideshowImages || activeVideo.slideshowImages.length < 2) return
+    if (slideCount(activeVideo) < 2) return
     if ((event.target as HTMLElement).closest('button')) return
     slideSwipeState.current = { active: true, startX: event.clientX, pointerId: event.pointerId }
     if (!event.currentTarget.hasPointerCapture(event.pointerId)) {
@@ -228,9 +254,12 @@ export function useVideoLightbox(scopeRef?: RefObject<HTMLElement | null>) {
         </button>
         <div className="portfolio__player">
           {(() => {
-            if (activeVideo.slideshowImages && activeVideo.slideshowImages.length > 0) {
-              const total = activeVideo.slideshowImages.length
-              const current = activeVideo.slideshowImages[slideIndex] ?? activeVideo.slideshowImages[0]
+            const images = activeVideo.slideshowImages ?? []
+            const total = slideCount(activeVideo)
+            if (total > 0) {
+              const videoOffset = activeVideo.videoSrc ? 1 : 0
+              const onVideoSlide = videoOffset === 1 && slideIndex === 0
+              const current = images[slideIndex - videoOffset] ?? images[0]
               return (
                 <div className="portfolio__slideshow">
                   <div
@@ -259,16 +288,20 @@ export function useVideoLightbox(scopeRef?: RefObject<HTMLElement | null>) {
                         </button>
                       </>
                     )}
-                    <img
-                      key={`${activeVideo.id}-slide-${slideIndex}`}
-                      className={`portfolio__slideshow-image ${slideDirection === -1 ? 'portfolio__slideshow-image--prev' : 'portfolio__slideshow-image--next'}`}
-                      src={current}
-                      alt={`${activeVideo.title} slide ${slideIndex + 1}`}
-                    />
+                    {onVideoSlide ? (
+                      renderVideo(activeVideo)
+                    ) : (
+                      <img
+                        key={`${activeVideo.id}-slide-${slideIndex}`}
+                        className={`portfolio__slideshow-image ${slideDirection === -1 ? 'portfolio__slideshow-image--prev' : 'portfolio__slideshow-image--next'}`}
+                        src={current}
+                        alt={`${activeVideo.title} slide ${slideIndex + 1}`}
+                      />
+                    )}
                   </div>
                   {total > 1 && (
                     <div className="portfolio__slideshow-dots" aria-hidden="true">
-                      {activeVideo.slideshowImages.map((_, index) => (
+                      {Array.from({ length: total }, (_, index) => (
                         <span
                           key={`slide-${activeVideo.id}-${index}`}
                           className={`portfolio__slideshow-dot ${index === slideIndex ? 'is-active' : ''}`}
@@ -280,23 +313,7 @@ export function useVideoLightbox(scopeRef?: RefObject<HTMLElement | null>) {
               )
             }
 
-            if (!activeVideo.videoSrc) return null
-            const embedSrc = getEmbedSrc(activeVideo.videoSrc)
-            if (embedSrc) {
-              return (
-                <iframe
-                  key={activeVideo.id}
-                  title={activeVideo.title}
-                  src={embedSrc}
-                  allow="autoplay; fullscreen; picture-in-picture"
-                  allowFullScreen
-                />
-              )
-            }
-
-            return (
-              <video key={activeVideo.id} controls autoPlay playsInline poster={activeVideo.thumb} src={activeVideo.videoSrc} />
-            )
+            return renderVideo(activeVideo)
           })()}
           <div className="portfolio__player-meta">
             <div className="portfolio__eyebrow">

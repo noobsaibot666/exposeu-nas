@@ -42,6 +42,9 @@ lerna-debug.log*
 *.mp4
 *.mov
 *.webm
+# Full-resolution photo originals: kept on the NAS, never bundled or committed
+# (everything under src/assets/images/ ships, so originals must live here).
+media-originals/
 
 # ======================
 # Certificates / Infra (NAS-only)

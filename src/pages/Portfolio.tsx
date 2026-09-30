@@ -47,14 +47,25 @@ const videos: VideoItem[] = [
     outcome: 'Performance film',
     year: '2026',
     location: 'Berlin',
-    // Vimeo's own poster frame until the cover lands in
-    // src/assets/images/thumbs/portfolio/06/ — then swap to
-    // resolveImagePath('/src/assets/images/thumbs/portfolio/06/thumb_0.webp').
-    thumb: 'https://i.vimeocdn.com/video/2206903226-a92ca0b4441b470692995d6bb36303dca1d05b11347c9c1dd53cd59ed12cafc2-d_1280x720',
+    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/06/thumb_0.webp'),
     videoSrc: 'https://vimeo.com/1231688364',
     embedUrl: 'https://player.vimeo.com/video/1231688364',
     thumbnailUrl: 'https://i.vimeocdn.com/video/2206903226-a92ca0b4441b470692995d6bb36303dca1d05b11347c9c1dd53cd59ed12cafc2-d_1280x720',
     uploadDate: '2026-09-30',
+    // With both a film and stills, the lightbox opens on the film and the
+    // stills follow as further slides.
+    slideshowImages: [
+      resolveImagePath('/src/assets/images/thumbs/portfolio/06/leonis_001.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/06/leonis_002.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/06/leonis_003.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/06/leonis_004.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/06/leonis_005.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/06/leonis_006.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/06/leonis_007.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/06/leonis_008.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/06/leonis_009.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/06/leonis_010.webp'),
+    ],
     tag: 'Performance',
   },
   {
@@ -87,27 +98,6 @@ const videos: VideoItem[] = [
     thumbnailUrl: 'https://i.ytimg.com/vi/DkruqulWupw/maxresdefault.jpg',
     uploadDate: '2025-01-01',
     tag: 'Live Event',
-  },
-  {
-    id: 'v5',
-    title: 'Boogarins Band',
-    description: 'A still-driven visual story built from live session captures.',
-    context: 'documented live session for touring band',
-    outcome: 'delivered release stills + short clips',
-    year: '2026',
-    location: 'Berlin',
-    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/band/Hero.webp'),
-    slideshowImages: [
-      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_001.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_002.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_003.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_004.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_005.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_006.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_007.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_008.webp'),
-    ],
-    tag: 'Concert',
   },
   {
     id: 'sanam',
@@ -227,7 +217,6 @@ function Portfolio() {
   const { locale } = useLocale()
   const { t, tm } = useTranslation()
   const [isDragging, setIsDragging] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
   const gridRef = useRef<HTMLDivElement | null>(null)
   const rootRef = useRef<HTMLElement | null>(null)
   const dragState = useRef({ active: false, startX: 0, scrollLeft: 0, moved: false, pointerId: 0 })
@@ -299,25 +288,6 @@ function Portfolio() {
 
 
 
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    const media = window.matchMedia('(max-width: 600px)')
-    const update = () => setIsMobile(media.matches)
-    update()
-    if (media.addEventListener) {
-      media.addEventListener('change', update)
-    } else {
-      media.addListener(update)
-    }
-    return () => {
-      if (media.removeEventListener) {
-        media.removeEventListener('change', update)
-      } else {
-        media.removeListener(update)
-      }
-    }
-  }, [])
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -432,13 +402,6 @@ function Portfolio() {
     setIsDragging(false)
   }
 
-  const displayVideos = useMemo(() => {
-    if (!isMobile) return localizedVideos
-    const boogarins = localizedVideos.find((video) => video.id === 'v5')
-    const rest = localizedVideos.filter((video) => video.id !== 'v5')
-    return boogarins ? [...rest, boogarins] : rest
-  }, [isMobile, localizedVideos])
-
   return (
     <main className="portfolio" ref={rootRef} id="main">
       <SEOMeta
@@ -483,7 +446,7 @@ function Portfolio() {
               onPointerUp={stopDragging}
               onPointerLeave={stopDragging}
             >
-              {displayVideos.map((video) => (
+              {localizedVideos.map((video) => (
                 <button
                   key={video.id}
                   id={video.id}
@@ -504,11 +467,11 @@ function Portfolio() {
                     aria-hidden="true"
                   >
                     <div className="portfolio__topline">
+                      <span className="portfolio__chip">{video.year}</span>
                       <span className="portfolio__pill">{video.tag ?? t('portfolio.labels.feature')}</span>
                     </div>
                     <div className="portfolio__thumb-overlay" />
                     <div className="portfolio__bottom">
-                      <span className="portfolio__chip">{video.year}</span>
                       <p className="portfolio__title">{video.title}</p>
                       <p className="portfolio__description">{video.description}</p>
                       <p className="portfolio__context">{video.context}</p>
