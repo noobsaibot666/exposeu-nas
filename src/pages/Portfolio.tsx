@@ -10,24 +10,9 @@ import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProv
 import LocalizedLink from '../i18n/LocalizedLink'
 import { SchemaOrg, SEOMeta } from '../components/SEOMeta'
 import { useVideoLightbox } from '../hooks/useVideoLightbox'
+import { portfolioProjects, type PortfolioProject } from '../data/portfolioProjects'
 
-type VideoItem = {
-  id: string
-  title: string
-  description: string
-  context: string
-  outcome: string
-  year: string
-  location: string
-  thumb: string
-  videoSrc?: string
-  ambientVideo?: boolean
-  embedUrl?: string
-  thumbnailUrl?: string
-  uploadDate?: string
-  slideshowImages?: string[]
-  tag?: string
-}
+type VideoItem = PortfolioProject
 
 type OfferItem = {
   id: string
@@ -39,159 +24,6 @@ type OfferItem = {
   background: string
 }
 
-const videos: VideoItem[] = [
-  {
-    id: 'leonis-liquidrom',
-    title: 'Leonis Work & Liquidrom',
-    description: 'Four dancers, two live performances at Liquidrom.',
-    context: 'DOME 36 performance, Liquidrom Berlin',
-    outcome: 'Performance film',
-    year: '2026',
-    location: 'Berlin',
-    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/06/thumb_0.webp'),
-    videoSrc: 'https://vimeo.com/1231688364',
-    embedUrl: 'https://player.vimeo.com/video/1231688364',
-    thumbnailUrl: 'https://i.vimeocdn.com/video/2206903226-a92ca0b4441b470692995d6bb36303dca1d05b11347c9c1dd53cd59ed12cafc2-d_1280x720',
-    uploadDate: '2026-09-30',
-    // With both a film and stills, the lightbox opens on the film and the
-    // stills follow as further slides.
-    slideshowImages: [
-      resolveImagePath('/src/assets/images/thumbs/portfolio/06/leonis_001.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/06/leonis_002.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/06/leonis_003.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/06/leonis_004.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/06/leonis_005.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/06/leonis_006.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/06/leonis_007.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/06/leonis_008.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/06/leonis_009.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/06/leonis_010.webp'),
-    ],
-    tag: 'Performance',
-  },
-  {
-    id: 'v1',
-    title: 'Lick the walls to understand echoes',
-    description: 'Audio-reactive installation with immersive sound and visuals.',
-    context: 'captured sound-based installation',
-    outcome: 'delivered press stills + archive set',
-    year: '2026',
-    location: 'Berlin',
-    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/01/thumb_0.webp'),
-    videoSrc: 'https://youtu.be/00OZBQL4W3Q',
-    embedUrl: 'https://www.youtube-nocookie.com/embed/00OZBQL4W3Q',
-    thumbnailUrl: 'https://i.ytimg.com/vi/00OZBQL4W3Q/maxresdefault.jpg',
-    uploadDate: '2025-01-01',
-    tag: 'Live Event',
-  },
-  {
-    id: 'v2',
-    title: 'Abigail Toll - IDOL - Silent Green',
-    description: 'Music performance captured at Silent Green, Berlin.',
-    context: 'covered venue performance night',
-    outcome: 'delivered recap film + promo stills',
-    year: '2026',
-    location: 'Berlin',
-    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/02/thumb_0.webp'),
-    videoSrc:
-      'https://www.youtube-nocookie.com/embed/DkruqulWupw?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0',
-    embedUrl: 'https://www.youtube-nocookie.com/embed/DkruqulWupw',
-    thumbnailUrl: 'https://i.ytimg.com/vi/DkruqulWupw/maxresdefault.jpg',
-    uploadDate: '2025-01-01',
-    tag: 'Live Event',
-  },
-  {
-    id: 'sanam',
-    title: 'SANAM — Silent Green Berlin',
-    description: 'Full concert documentation at the Betonhalle. Stage, crowd, atmosphere — built for press and social.',
-    context: 'press & film documentation, Betonhalle at Silent Green',
-    outcome: 'press stills + social media content — delivered',
-    year: '2026',
-    location: 'Berlin',
-    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/03/thumb_0.webp'),
-    videoSrc: 'https://vimeo.com/1231736451',
-    ambientVideo: true,
-    embedUrl: 'https://player.vimeo.com/video/1231736451',
-    thumbnailUrl: 'https://i.vimeocdn.com/video/2206964713-aa5395c3116d542260553f6a897a64c70b7a484e1b924aa782fdeb7504ea4613-d_1280x720',
-    uploadDate: '2026-09-30',
-    slideshowImages: [
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_001.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_002.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_003.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_004.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_005.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_006.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_007.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_008.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_009.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_010.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_011.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_012.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_013.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_014.webp'),
-    ],
-    tag: 'Concert',
-  },
-  {
-    id: 'seefeel',
-    title: 'Seefeel — Silent Green Berlin',
-    description: 'Concert press and film documentation at the Betonhalle. Full coverage from stage to crowd.',
-    context: 'press & film documentation, Betonhalle at Silent Green',
-    outcome: 'concert coverage — delivered',
-    year: '2026',
-    location: 'Berlin',
-    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/04/thumb_0.webp'),
-    slideshowImages: [
-      resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_001.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_002.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_003.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_004.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_005.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_006.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_007.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_008.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_009.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_010.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_011.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_012.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_013.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_014.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_015.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_016.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_017.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_018.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_019.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_020.webp'),
-    ],
-    tag: 'Concert',
-  },
-  {
-    id: 'gleo',
-    title: 'GLEO — Silent Green Berlin',
-    description: 'Video and photo documentation of GLEO live at the Betonhalle. Full concert coverage, stage to crowd.',
-    context: 'video & photo documentation, Betonhalle at Silent Green',
-    outcome: 'concert coverage — delivered',
-    year: '2026',
-    location: 'Berlin',
-    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/05/thumb_0.webp'),
-    videoSrc: 'https://vimeo.com/1231736450',
-    ambientVideo: true,
-    embedUrl: 'https://player.vimeo.com/video/1231736450',
-    thumbnailUrl: 'https://i.vimeocdn.com/video/2206964720-584f41bb88a1dfacd83791435675c537e2b13233b3cde4d870c907d085335073-d_1280x720',
-    uploadDate: '2026-09-30',
-    slideshowImages: [
-      resolveImagePath('/src/assets/images/thumbs/portfolio/05/gleo_001.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/05/gleo_002.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/05/gleo_003.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/05/gleo_004.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/05/gleo_005.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/05/gleo_006.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/05/gleo_007.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/05/gleo_008.webp'),
-    ],
-    tag: 'Concert',
-  },
-]
 
 const offers: OfferItem[] = [
   {
@@ -236,7 +68,7 @@ function Portfolio() {
   const videoTranslations = tm<Array<Pick<VideoItem, 'id' | 'title' | 'description' | 'context' | 'outcome' | 'tag'>>>('portfolio.videos')
   const proofItems = tm<string[]>('portfolio.proofStrip')
   const localizedVideos = useMemo(
-    () => videos.map((video) => ({ ...video, ...(videoTranslations.find((entry) => entry.id === video.id) ?? {}) })),
+    () => portfolioProjects.map((video) => ({ ...video, ...(videoTranslations.find((entry) => entry.id === video.id) ?? {}) })),
     [videoTranslations],
   )
 

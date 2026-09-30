@@ -7,6 +7,7 @@ import '../pages/Portfolio.css'
 import styles from './HomeRedesign.module.css'
 import Footer from '../sections/Footer'
 import { resolveImagePath } from '../utils/resolveImagePath'
+import { portfolioProjects } from '../data/portfolioProjects'
 import { serviceMeta } from '../data/serviceMeta'
 import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
 import { smoothScrollTo } from '../utils/smoothScroll'
@@ -66,37 +67,9 @@ const projectVisuals = [
 const hiddenHomeServiceSlugs = new Set<string>()
 
 const lastProjectsBase = [
-  {
-    id: 'v1',
-    image: resolveImagePath('/src/assets/images/thumbs/portfolio/01/thumb_0.webp'),
-    videoSrc: 'https://youtu.be/00OZBQL4W3Q',
-  },
-  {
-    id: 'sanam',
-    image: resolveImagePath('/src/assets/images/thumbs/portfolio/03/thumb_0.webp'),
-    slideshowImages: [
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_001.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_002.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_003.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_004.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_005.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_006.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_007.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_008.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_009.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_010.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_011.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_012.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_013.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_014.webp'),
-    ],
-  },
-  {
-    id: 'v2',
-    image: resolveImagePath('/src/assets/images/thumbs/portfolio/02/thumb_0.webp'),
-    videoSrc:
-      'https://www.youtube-nocookie.com/embed/DkruqulWupw?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0',
-  },
+  { id: 'v1', image: resolveImagePath('/src/assets/images/thumbs/portfolio/01/thumb_0.webp') },
+  { id: 'sanam', image: resolveImagePath('/src/assets/images/thumbs/portfolio/03/thumb_0.webp') },
+  { id: 'v2', image: resolveImagePath('/src/assets/images/thumbs/portfolio/02/thumb_0.webp') },
 ]
 
 const heroGalleryBase = [
@@ -219,14 +192,20 @@ function HomeV2() {
       lastProjectsBase.map((project) => {
         const title = t(`home.lastProjects.items.${project.id}.title`)
         const subtext = t(`home.lastProjects.items.${project.id}.subtext`)
+        // Film + stills come from the shared project list, so this lightbox
+        // always matches the Portfolio page's.
+        const shared = portfolioProjects.find((entry) => entry.id === project.id)
         return {
           ...project,
           title,
           subtext,
           thumb: project.image,
           description: subtext,
-          year: '2025',
-          location: 'Berlin',
+          videoSrc: shared?.videoSrc,
+          ambientVideo: shared?.ambientVideo,
+          slideshowImages: shared?.slideshowImages,
+          year: shared?.year ?? '2026',
+          location: shared?.location ?? 'Berlin',
         }
       }),
     [t],
