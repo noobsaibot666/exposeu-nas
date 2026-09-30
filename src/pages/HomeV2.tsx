@@ -75,7 +75,7 @@ const lastProjectsBase = [
 const heroGalleryBase = [
   {
     id: 'thumb-exhibition',
-    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/exhibition-gallery/004.webp'),
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/exhibition-gallery/gallery-opening.webp'),
     slug: 'exhibition-gallery',
     rotation: -4,
   },
@@ -93,7 +93,7 @@ const heroGalleryBase = [
   },
   {
     id: 'thumb-artist',
-    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/artist-sessions/001.webp'),
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/artist-sessions/artist-interview.webp'),
     slug: 'artist-sessions',
     rotation: 4,
   },
