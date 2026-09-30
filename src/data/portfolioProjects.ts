@@ -33,10 +33,11 @@ export const portfolioProjects: PortfolioProject[] = [
     location: 'Berlin',
     thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/07/thumb_0.webp'),
     slideshowImages: [
+      // mirrwal_004 is the project's main photo (also the card cover): keep it first.
+      resolveImagePath('/src/assets/images/thumbs/portfolio/07/mirrwal_004.webp'),
       resolveImagePath('/src/assets/images/thumbs/portfolio/07/mirrwal_001.webp'),
       resolveImagePath('/src/assets/images/thumbs/portfolio/07/mirrwal_002.webp'),
       resolveImagePath('/src/assets/images/thumbs/portfolio/07/mirrwal_003.webp'),
-      resolveImagePath('/src/assets/images/thumbs/portfolio/07/mirrwal_004.webp'),
       resolveImagePath('/src/assets/images/thumbs/portfolio/07/mirrwal_005.webp'),
       resolveImagePath('/src/assets/images/thumbs/portfolio/07/mirrwal_006.webp'),
       resolveImagePath('/src/assets/images/thumbs/portfolio/07/mirrwal_007.webp'),
