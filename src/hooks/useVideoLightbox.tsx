@@ -10,10 +10,13 @@ export type LightboxVideo = {
   location: string
   thumb: string
   videoSrc?: string
+  // Short loop clips: autoplay muted on repeat with every player control
+  // and Vimeo/YouTube overlay hidden.
+  ambientVideo?: boolean
   slideshowImages?: string[]
 }
 
-function getEmbedSrc(src: string) {
+function getEmbedSrc(src: string, ambient = false) {
   const youTubeMatch = src.match(
     /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube-nocookie\.com\/embed\/)([^?&/]+)/i,
   )
@@ -23,7 +26,10 @@ function getEmbedSrc(src: string) {
 
   const vimeoMatch = src.match(/vimeo\.com\/(?:video\/)?(\d+)/i)
   if (vimeoMatch) {
-    return `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1&title=0&byline=0&portrait=0`
+    const params = ambient
+      ? 'background=1&autoplay=1&muted=1&loop=1&controls=0&title=0&byline=0&portrait=0&badge=0&dnt=1&autopause=0'
+      : 'autoplay=1&title=0&byline=0&portrait=0'
+    return `https://player.vimeo.com/video/${vimeoMatch[1]}?${params}`
   }
 
   return null
@@ -31,7 +37,7 @@ function getEmbedSrc(src: string) {
 
 function renderVideo(video: LightboxVideo) {
   if (!video.videoSrc) return null
-  const embedSrc = getEmbedSrc(video.videoSrc)
+  const embedSrc = getEmbedSrc(video.videoSrc, video.ambientVideo)
   if (embedSrc) {
     return (
       <iframe
@@ -373,7 +379,9 @@ export function useVideoLightbox(scopeRef?: RefObject<HTMLElement | null>) {
         <div className={`portfolio__player ${activeVideo.videoSrc ? 'has-film' : ''} ${total ? 'has-stills' : ''}`}>
           {activeVideo.videoSrc ? (
             <>
-              <div className="portfolio__film">{renderVideo(activeVideo)}</div>
+              <div className={`portfolio__film ${activeVideo.ambientVideo ? 'portfolio__film--ambient' : ''}`}>
+                {renderVideo(activeVideo)}
+              </div>
               {renderMeta(activeVideo)}
               {total > 0 && renderStills(activeVideo)}
             </>

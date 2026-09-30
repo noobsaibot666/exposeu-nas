@@ -21,6 +21,7 @@ type VideoItem = {
   location: string
   thumb: string
   videoSrc?: string
+  ambientVideo?: boolean
   embedUrl?: string
   thumbnailUrl?: string
   uploadDate?: string
@@ -109,6 +110,7 @@ const videos: VideoItem[] = [
     location: 'Berlin',
     thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/03/thumb_0.webp'),
     videoSrc: 'https://vimeo.com/1231736451',
+    ambientVideo: true,
     embedUrl: 'https://player.vimeo.com/video/1231736451',
     thumbnailUrl: 'https://i.vimeocdn.com/video/2206964713-aa5395c3116d542260553f6a897a64c70b7a484e1b924aa782fdeb7504ea4613-d_1280x720',
     uploadDate: '2026-09-30',
@@ -173,6 +175,7 @@ const videos: VideoItem[] = [
     location: 'Berlin',
     thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/05/thumb_0.webp'),
     videoSrc: 'https://vimeo.com/1231736450',
+    ambientVideo: true,
     embedUrl: 'https://player.vimeo.com/video/1231736450',
     thumbnailUrl: 'https://i.vimeocdn.com/video/2206964720-584f41bb88a1dfacd83791435675c537e2b13233b3cde4d870c907d085335073-d_1280x720',
     uploadDate: '2026-09-30',

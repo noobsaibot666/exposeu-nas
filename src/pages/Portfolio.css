@@ -397,9 +397,13 @@
   border-color: var(--border-prominent);
 }
 
+/* One centred column shared by the film, the text and the stills, so their
+   edges line up. Capped so a 3:2 still never exceeds ~76% of the viewport height. */
 .portfolio__player {
   display: grid;
   gap: clamp(20px, 3vh, 32px);
+  width: min(100%, calc(76vh * 3 / 2));
+  margin: 0 auto;
 }
 
 /* ─── Film ─── */
@@ -408,12 +412,14 @@
   width: 100%;
 }
 
+/* Ambient loops ignore the pointer, so no player overlay is ever summoned. */
+.portfolio__film--ambient iframe {
+  pointer-events: none;
+}
+
 .portfolio__player video {
   width: 100%;
   aspect-ratio: 16 / 9;
-  max-height: 75vh;
-  max-width: calc(75vh * 16 / 9);
-  margin: 0 auto;
   border-radius: 10px;
   border: none;
   background: var(--bg-base);
@@ -425,9 +431,6 @@
 .portfolio__player iframe {
   width: 100%;
   aspect-ratio: 16 / 9;
-  max-height: 75vh;
-  max-width: calc(75vh * 16 / 9);
-  margin: 0 auto;
   border-radius: 10px;
   border: none;
   background: var(--bg-base);
@@ -446,9 +449,6 @@
   position: relative;
   width: 100%;
   aspect-ratio: 3 / 2;
-  max-height: 78vh;
-  max-width: calc(78vh * 3 / 2);
-  margin: 0 auto;
   border-radius: 10px;
   overflow: hidden;
   background: #050507;
