@@ -86,20 +86,44 @@ echo "==> Building in an isolated container filesystem (not the shared mount)...
     cd /tmp/build
     npm ci
     npm run build
-    rm -rf /app/node_modules /app/dist
-    cp -a node_modules dist /app/
+    rm -rf /app/node_modules
+    cp -a node_modules /app/
+    # dist/ is bind-mounted into exposeu-nginx, so it is updated in place (never
+    # deleted — that would detach the mount), with no moment where a file the
+    # live index.html points to is missing: new hashed assets land first, then
+    # index.html and the rest, and stale top-level files go last.
+    mkdir -p /app/dist
+    rsync -a dist/assets/ /app/dist/assets/
+    rsync -a --delete-after --exclude=/assets/ dist/ /app/dist/
+    # Keep hashed assets from earlier builds for a week so a visitor holding a
+    # slightly stale index.html never requests a deleted file (and gets a 404
+    # that Cloudflare would then cache). Current files were just rewritten.
+    find /app/dist/assets -type f -mtime +7 -delete
   '
 
-echo "==> Build complete. Recreating containers ($target)..."
+# nginx serves dist/ and its config through bind mounts, so a frontend deploy
+# never recreates it: recreating left Traefik with no backend for a few seconds,
+# and the 404s it answered with got cached by Cloudflare (broken images for
+# visitors on that edge until the cache expired). `up -d` without
+# --force-recreate is a no-op when it's already running; the graceful reload
+# picks up default.conf changes without dropping a request.
+refresh_nginx() {
+  "${DOCKER[@]}" compose -f "$COMPOSE_FILE" up -d exposeu-nginx
+  "${DOCKER[@]}" exec exposeu-nginx nginx -t -q
+  "${DOCKER[@]}" exec exposeu-nginx nginx -s reload
+}
+
+echo "==> Build complete. Updating containers ($target)..."
 case "$target" in
   frontend)
-    "${DOCKER[@]}" compose -f "$COMPOSE_FILE" up -d --force-recreate exposeu-nginx
+    refresh_nginx
     ;;
   api)
     "${DOCKER[@]}" compose -f "$COMPOSE_FILE" up -d --force-recreate exposeu-contact
     ;;
   all)
-    "${DOCKER[@]}" compose -f "$COMPOSE_FILE" up -d --force-recreate exposeu-nginx exposeu-contact
+    refresh_nginx
+    "${DOCKER[@]}" compose -f "$COMPOSE_FILE" up -d --force-recreate exposeu-contact
     ;;
 esac
 
