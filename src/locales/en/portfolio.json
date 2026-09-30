@@ -13,6 +13,14 @@
   "proofStrip": ["12+ events documented", "Concerts · Exhibitions · Sessions", "Artists, venues & agencies", "Europe"],
   "videos": [
     {
+      "id": "leonis-liquidrom",
+      "title": "Leonis Work & Liquidrom",
+      "description": "Four dancers, two live performances at Liquidrom.",
+      "context": "DOME 36 performance, Liquidrom Berlin",
+      "outcome": "Performance film",
+      "tag": "Performance"
+    },
+    {
       "id": "v1",
       "title": "Lick the walls to understand echoes",
       "description": "Sound installation made visible.",

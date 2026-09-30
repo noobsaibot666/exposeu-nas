@@ -40,6 +40,24 @@ type OfferItem = {
 
 const videos: VideoItem[] = [
   {
+    id: 'leonis-liquidrom',
+    title: 'Leonis Work & Liquidrom',
+    description: 'Four dancers, two live performances at Liquidrom.',
+    context: 'DOME 36 performance, Liquidrom Berlin',
+    outcome: 'Performance film',
+    year: '2026',
+    location: 'Berlin',
+    // Vimeo's own poster frame until the cover lands in
+    // src/assets/images/thumbs/portfolio/06/ — then swap to
+    // resolveImagePath('/src/assets/images/thumbs/portfolio/06/thumb_0.webp').
+    thumb: 'https://i.vimeocdn.com/video/2206903226-a92ca0b4441b470692995d6bb36303dca1d05b11347c9c1dd53cd59ed12cafc2-d_1280x720',
+    videoSrc: 'https://vimeo.com/1231688364',
+    embedUrl: 'https://player.vimeo.com/video/1231688364',
+    thumbnailUrl: 'https://i.vimeocdn.com/video/2206903226-a92ca0b4441b470692995d6bb36303dca1d05b11347c9c1dd53cd59ed12cafc2-d_1280x720',
+    uploadDate: '2026-09-30',
+    tag: 'Performance',
+  },
+  {
     id: 'v1',
     title: 'Lick the walls to understand echoes',
     description: 'Audio-reactive installation with immersive sound and visuals.',
