@@ -13,6 +13,14 @@
   "proofStrip": ["12+ events documented", "Concerts · Exhibitions · Sessions", "Artists, venues & agencies", "Europe"],
   "videos": [
     {
+      "id": "leonis-voo-store",
+      "title": "Leonis Work & VOO Store",
+      "description": "World premiere of AGAPE at VOO Space.",
+      "context": "Dance, fashion and art exhibition, VOO Space Berlin",
+      "outcome": "Performance stills",
+      "tag": "Performance"
+    },
+    {
       "id": "mirrwal-liquidrom",
       "title": "Mirrwal & Liquidrom",
       "description": "Live beatbox under the Liquidrom dome.",
