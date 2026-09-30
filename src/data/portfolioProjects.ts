@@ -24,6 +24,27 @@ export type PortfolioProject = {
 
 export const portfolioProjects: PortfolioProject[] = [
   {
+    id: 'mirrwal-liquidrom',
+    title: 'Mirrwal & Liquidrom',
+    description: 'Live beatbox under the Liquidrom dome.',
+    context: 'Ukrainian beatbox artist, Liquidrom Berlin',
+    outcome: 'Performance stills',
+    year: '2026',
+    location: 'Berlin',
+    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/07/thumb_0.webp'),
+    slideshowImages: [
+      resolveImagePath('/src/assets/images/thumbs/portfolio/07/mirrwal_001.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/07/mirrwal_002.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/07/mirrwal_003.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/07/mirrwal_004.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/07/mirrwal_005.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/07/mirrwal_006.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/07/mirrwal_007.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/07/mirrwal_008.webp'),
+    ],
+    tag: 'Performance',
+  },
+  {
     id: 'leonis-liquidrom',
     title: 'Leonis Work & Liquidrom',
     description: 'Four dancers, two live performances at Liquidrom.',

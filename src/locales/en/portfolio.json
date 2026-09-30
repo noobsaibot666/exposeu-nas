@@ -13,6 +13,14 @@
   "proofStrip": ["12+ events documented", "Concerts · Exhibitions · Sessions", "Artists, venues & agencies", "Europe"],
   "videos": [
     {
+      "id": "mirrwal-liquidrom",
+      "title": "Mirrwal & Liquidrom",
+      "description": "Live beatbox under the Liquidrom dome.",
+      "context": "Ukrainian beatbox artist, Liquidrom Berlin",
+      "outcome": "Performance stills",
+      "tag": "Performance"
+    },
+    {
       "id": "leonis-liquidrom",
       "title": "Leonis Work & Liquidrom",
       "description": "Four dancers, two live performances at Liquidrom.",

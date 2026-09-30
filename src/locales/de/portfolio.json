@@ -13,6 +13,14 @@
   "proofStrip": ["12+ dokumentierte Events", "Konzerte · Ausstellungen · Sessions", "Künstler, Venues & Agenturen", "Europa"],
   "videos": [
     {
+      "id": "mirrwal-liquidrom",
+      "title": "Mirrwal & Liquidrom",
+      "description": "Live-Beatbox unter der Kuppel des Liquidrom.",
+      "context": "Beatbox-Artist aus der Ukraine, Liquidrom Berlin",
+      "outcome": "Performance-Stills",
+      "tag": "Performance"
+    },
+    {
       "id": "leonis-liquidrom",
       "title": "Leonis Work & Liquidrom",
       "description": "Vier Tänzer:innen, zwei Live-Performances im Liquidrom.",
