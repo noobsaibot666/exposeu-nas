@@ -3,12 +3,7 @@ import WorkPageLayout from './WorkPageLayout'
 import { useLocale, useTranslation } from '../i18n/LocaleProvider'
 import { SEOMeta } from '../components/SEOMeta'
 
-const heroCards = [
-  { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/0002.webp'), title: 'Opening Night' },
-  { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/001.webp'), title: 'Light Studies' },
-  { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/009.webp'), title: 'Curated Flow' },
-  { image: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/012.webp'), title: 'Install Detail' },
-]
+const heroImage = resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/0002.webp')
 
 const sectionImages = {
   gallery: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/008.webp'),
@@ -25,7 +20,6 @@ function ExhibitionGallery() {
     socialProof: string
     ctaText: string
     footerCtaLabel: string
-    cards: string[]
     galleryTitle: string
     galleryCopy: string
     gallery: Array<{ title: string; subtitle: string }>
@@ -48,7 +42,7 @@ function ExhibitionGallery() {
         heroCopy={page.heroCopy}
         detail={page.detail}
         socialProof={page.socialProof}
-        cards={heroCards.map((card, index) => ({ ...card, title: page.cards[index] ?? card.title }))}
+        heroImage={heroImage}
         galleryTitle={page.galleryTitle}
         galleryCopy={page.galleryCopy}
         gallery={page.gallery}

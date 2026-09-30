@@ -29,19 +29,31 @@
   padding-block: clamp(28px, 4.5vh, 52px);
 }
 
+/* The nav floats over the top of the hero image instead of taking its own
+   row — the image's top scrim (.work-hero-banner::before) keeps it legible. */
 .work-nav {
-  margin-bottom: 24px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin: 0;
+}
+
+.work-nav .top-nav__link,
+.work-nav .top-nav__brand {
+  text-shadow: 0 1px 14px rgba(0, 0, 0, 0.35);
 }
 
 .work-hero {
-  padding-top: 30px;
+  padding-top: clamp(10px, 1.2vw, 16px);
   padding-bottom: clamp(30px, 4vh, 48px);
 }
 
 .work-hero__grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px;
+  gap: clamp(32px, 4.5vh, 48px);
 }
 
 .work-hero__copy h1 {
@@ -106,47 +118,56 @@
   border-color: var(--border-highlight);
 }
 
-.work-hero__stack {
-  display: flex;
-  gap: 0;
-  align-items: flex-end;
-  justify-content: center;
-  overflow: visible;
-  padding-bottom: 8px;
-  padding-inline: 12px;
-  width: 100%;
-}
+/* ─── Hero banner (one image, aligned to the content column) ─── */
 
-.work-hero__stack-shell {
-  display: grid;
-  gap: 0;
-}
-
-.work-hero__card {
+.work-hero-banner {
   position: relative;
-  width: min(var(--card-width, 260px), 86vw);
-  aspect-ratio: 3 / 4;
-  border-radius: 16px;
+  margin: 0;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 74svh;
+  border-radius: 24px;
   overflow: hidden;
-  border: 1px solid var(--border-soft);
   background: var(--surface-base);
-  margin-left: var(--card-overlap, 0);
-  z-index: var(--card-z, 1);
-  backface-visibility: hidden;
-  transform: translateY(var(--card-translate, 0)) scale(var(--card-scale, 1)) translateZ(0);
+  isolation: isolate;
 }
 
-.work-hero__card-media {
+/* Top scrim — a short dark fade under the floating nav so its white links
+   read cleanly over bright photographs. */
+.work-hero-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: clamp(110px, 26%, 200px);
+  background: linear-gradient(
+    180deg,
+    rgba(5, 5, 7, 0.66) 0%,
+    rgba(5, 5, 7, 0.32) 50%,
+    rgba(5, 5, 7, 0) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Hairline edge drawn above the image, so it stays crisp over both light
+   and dark photographs (a plain border would sit under the image's edge). */
+.work-hero-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--border-soft);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.work-hero-banner__image {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
   display: block;
-  transition: transform 400ms ease;
-}
-
-.work-hero__card:hover .work-hero__card-media {
-  transform: scale(1.04);
+  backface-visibility: hidden;
 }
 
 /* ─── Gallery sections ─── */
@@ -482,22 +503,10 @@
     gap: 20px;
   }
 
-  .work-hero__stack {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    justify-content: stretch;
-    overflow: visible;
-    padding: 8px 0 0;
-  }
-
-  .work-hero__card {
-    margin-left: 0;
-    width: 100%;
-    transform: none;
-    --card-overlap: 0px;
-    --card-translate: 0px;
-    --card-width: 100%;
+  .work-hero-banner {
+    margin-top: 4px;
+    aspect-ratio: 4 / 3;
+    border-radius: 18px;
   }
 
   .work-gallery {
@@ -579,17 +588,16 @@
     padding-bottom: 26px;
   }
 
-  .work-hero__stack {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-
   .work-gallery {
     padding: 28px 0;
   }
 
   .work-gallery__sequence-item {
     padding: 10px 12px;
+  }
+
+  .work-hero-banner {
+    aspect-ratio: 1 / 1;
   }
 
   .work-hero__copy h1 {
@@ -607,7 +615,6 @@
 }
 
 @media (hover: none) {
-  .work-hero__card,
   .work-gallery__image {
     pointer-events: none;
   }

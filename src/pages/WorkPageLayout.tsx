@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react'
-import type { CSSProperties } from 'react'
 import gsap from 'gsap'
 import TopNav from '../components/TopNav'
 import PricingSection from '../sections/PricingSection'
@@ -22,7 +21,8 @@ type WorkPageLayoutProps = {
   heroCopy: string
   detail?: string
   socialProof?: string
-  cards: WorkCard[]
+  heroImage: string
+  heroImageAlt?: string
   galleryTitle: string
   galleryCopy: string
   gallery: WorkCard[]
@@ -55,7 +55,8 @@ function WorkPageLayout({
   heroCopy,
   detail,
   socialProof,
-  cards,
+  heroImage,
+  heroImageAlt,
   galleryTitle,
   galleryCopy,
   gallery,
@@ -75,7 +76,6 @@ function WorkPageLayout({
   editorialPricingCtaHref,
 }: WorkPageLayoutProps) {
   const rootRef = useRef<HTMLElement | null>(null)
-  const stackRef = useRef<HTMLDivElement | null>(null)
   const { t, tm } = useTranslation()
   const processSteps = tm<Array<{ title: string; body: string }>>('services.shared.process')
   const navigate = useLocaleNavigate()
@@ -102,26 +102,23 @@ function WorkPageLayout({
         { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.65, stagger: 0.1, ease: 'sine.inOut' },
       )
 
-      // Hero card stack — cascade up from below, one by one
-      const heroCards = gsap.utils.toArray<HTMLElement>('.work-hero__card')
-      gsap.fromTo(
-        heroCards,
-        { opacity: 0, y: 64, scale: 0.93, filter: 'blur(8px)' },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          filter: 'blur(0px)',
-          stagger: 0.12,
-          duration: 0.8,
-          ease: 'sine.inOut',
-          force3D: true,
-          scrollTrigger: {
-            trigger: stackRef.current,
-            start: 'top 82%',
-          },
-        },
-      )
+      // Hero banner — settles in from a slight zoom once its bytes have
+      // arrived (same load gate as the gallery media below).
+      const banner = rootRef.current?.querySelector<HTMLImageElement>('.work-hero-banner__image')
+      if (banner) {
+        const revealBanner = () => {
+          gsap.fromTo(
+            banner,
+            { opacity: 0, scale: 1.05, filter: 'blur(8px)' },
+            { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 1.1, ease: 'power2.out', force3D: true },
+          )
+        }
+        if (banner.complete) {
+          revealBanner()
+        } else {
+          banner.addEventListener('load', revealBanner, { once: true })
+        }
+      }
 
       // Gallery sections
       const gallerySections = gsap.utils.toArray<HTMLElement>('.work-gallery')
@@ -227,25 +224,6 @@ function WorkPageLayout({
           scrollTrigger: { trigger: '.work-cta', start: 'top 82%' },
         },
       )
-
-      // Subtle hover lift on hero cards (desktop only)
-      const listeners: Array<() => void> = []
-      const hoverMedia = window.matchMedia('(hover: hover) and (pointer: fine)')
-      if (hoverMedia.matches) {
-        heroCards.forEach((card) => {
-          const base = Number(card.dataset.scale) || 1
-          const enter = () => gsap.to(card, { y: -6, scale: base * 1.025, duration: 0.35, ease: 'sine.out' })
-          const leave = () => gsap.to(card, { y: 0, scale: base, duration: 0.45, ease: 'sine.inOut' })
-          card.addEventListener('mouseenter', enter)
-          card.addEventListener('mouseleave', leave)
-          listeners.push(() => {
-            card.removeEventListener('mouseenter', enter)
-            card.removeEventListener('mouseleave', leave)
-          })
-        })
-      }
-
-      return () => listeners.forEach((off) => off())
     }, rootRef)
 
     return () => ctx.revert()
@@ -312,6 +290,16 @@ function WorkPageLayout({
 
       <section className="section work-hero">
         <div className="content work-hero__grid">
+          <figure className="work-hero-banner">
+            <img
+              className="work-hero-banner__image"
+              src={heroImage}
+              alt={heroImageAlt ?? title}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+            />
+          </figure>
           <div className="work-hero__copy">
             <p className="work-hero__eyebrow">{title}</p>
             <h1>{renderSentenceBreaks(heroCopy)}</h1>
@@ -331,38 +319,6 @@ function WorkPageLayout({
             >
               {ctaLabel ?? t('services.shared.requestAvailability')}
             </LocalizedLink>
-          </div>
-          <div className="work-hero__stack-shell">
-            <div className="work-hero__stack" ref={stackRef}>
-              {cards.map((card, index) => {
-                const scales = [0.98, 1.08, 1.2, 1.32]
-                const widths = [240, 280, 320, 360]
-                const translateY = [12, 6, 0, -6]
-                const scale = scales[index] ?? scales[scales.length - 1]
-                const width = widths[index] ?? widths[widths.length - 1]
-                const ty = translateY[index] ?? translateY[translateY.length - 1]
-                return (
-                  <div
-                    key={card.title}
-                    className="work-hero__card"
-                    data-scale={scale}
-                    style={
-                      {
-                        '--card-scale': scale,
-                        '--card-overlap': index === 0 ? '0px' : '-20px',
-                        '--card-width': `${width}px`,
-                        '--card-translate': `${ty}px`,
-                        '--card-z': 10 + index,
-                      } as CSSProperties
-                    }
-                  >
-                    {card.image && (
-                      <img className="work-hero__card-media" src={card.image} alt={card.title} decoding="async" />
-                    )}
-                  </div>
-                )
-              })}
-            </div>
           </div>
         </div>
       </section>

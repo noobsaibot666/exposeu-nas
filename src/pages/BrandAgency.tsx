@@ -3,12 +3,7 @@ import WorkPageLayout from './WorkPageLayout'
 import { useLocale, useTranslation } from '../i18n/LocaleProvider'
 import { SEOMeta } from '../components/SEOMeta'
 
-const heroCards = [
-  { image: resolveImagePath('/src/assets/images/services/6_brand_agency/_thumb/9_16/6_BA_001.webp'), title: 'Activation Space' },
-  { image: resolveImagePath('/src/assets/images/services/6_brand_agency/_thumb/9_16/6_BA_002.webp'), title: 'Installation Detail' },
-  { image: resolveImagePath('/src/assets/images/services/6_brand_agency/_thumb/9_16/6_BA_003.webp'), title: 'Spatial Documentation' },
-  { image: resolveImagePath('/src/assets/images/services/6_brand_agency/_thumb/9_16/6_BA_004.webp'), title: 'Agency Environment' },
-]
+const heroImage = resolveImagePath('/src/assets/images/landing/agency_hero_01.webp')
 
 const sectionImages = {
   gallery: resolveImagePath('/src/assets/images/services/6_brand_agency/6_BA_gallery.webp'),
@@ -25,7 +20,6 @@ function BrandAgency() {
     socialProof: string
     ctaText: string
     footerCtaLabel: string
-    cards: string[]
     galleryTitle: string
     galleryCopy: string
     gallery: Array<{ title: string; subtitle: string }>
@@ -48,7 +42,7 @@ function BrandAgency() {
         heroCopy={page.heroCopy}
         detail={page.detail}
         socialProof={page.socialProof}
-        cards={heroCards.map((card, index) => ({ ...card, title: page.cards[index] ?? card.title }))}
+        heroImage={heroImage}
         galleryTitle={page.galleryTitle}
         galleryCopy={page.galleryCopy}
         gallery={page.gallery}
