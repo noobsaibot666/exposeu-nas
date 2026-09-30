@@ -33,7 +33,13 @@ elif [ $# -gt 0 ]; then
   exit 1
 fi
 
-if ! sudo docker info >/dev/null 2>&1; then
+# Plain `docker` when this user is in the docker group (works over a
+# non-interactive SSH session, e.g. scripts/deploy-remote.sh); sudo otherwise.
+if docker info >/dev/null 2>&1; then
+  DOCKER=(docker)
+elif sudo docker info >/dev/null 2>&1; then
+  DOCKER=(sudo docker)
+else
   echo "Can't reach Docker. This script must run on the TrueNAS host, not locally." >&2
   echo "SSH into TrueNAS first, then run: $(basename "$0") ${1:-}" >&2
   exit 1
@@ -43,7 +49,7 @@ echo "==> Linting in an isolated container filesystem (source mounted read-only)
 [ "$WITH_TYPES" -eq 1 ] && echo "==> --types: will run tsc -b as well."
 echo
 
-sudo docker run --rm -u 0 \
+"${DOCKER[@]}" run --rm -u 0 \
   -e WITH_TYPES="$WITH_TYPES" \
   -v "$APP_DIR:/app:ro" \
   -w /app \

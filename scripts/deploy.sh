@@ -54,7 +54,14 @@ if ! command -v flock >/dev/null 2>&1; then
   exit 1
 fi
 
-if ! sudo docker info >/dev/null 2>&1; then
+# Plain `docker` when this user is in the docker group — that's what lets
+# scripts/deploy-remote.sh drive this over a non-interactive SSH session,
+# where sudo can't prompt for a password. Falls back to sudo otherwise.
+if docker info >/dev/null 2>&1; then
+  DOCKER=(docker)
+elif sudo docker info >/dev/null 2>&1; then
+  DOCKER=(sudo docker)
+else
   echo "Can't reach the Docker daemon this script targets (exposeu-nginx/exposeu-contact" >&2
   echo "live there). This script must run on the TrueNAS host, not locally." >&2
   echo "SSH into TrueNAS first, then run: $(basename "$0") $target" >&2
@@ -68,7 +75,7 @@ if ! flock -n 200; then
 fi
 
 echo "==> Building in an isolated container filesystem (not the shared mount)..."
-sudo docker run --rm -u 0 \
+"${DOCKER[@]}" run --rm -u 0 \
   -v "$APP_DIR:/app" \
   -w /app \
   node:20-alpine sh -lc '
@@ -86,13 +93,13 @@ sudo docker run --rm -u 0 \
 echo "==> Build complete. Recreating containers ($target)..."
 case "$target" in
   frontend)
-    sudo docker compose -f "$COMPOSE_FILE" up -d --force-recreate exposeu-nginx
+    "${DOCKER[@]}" compose -f "$COMPOSE_FILE" up -d --force-recreate exposeu-nginx
     ;;
   api)
-    sudo docker compose -f "$COMPOSE_FILE" up -d --force-recreate exposeu-contact
+    "${DOCKER[@]}" compose -f "$COMPOSE_FILE" up -d --force-recreate exposeu-contact
     ;;
   all)
-    sudo docker compose -f "$COMPOSE_FILE" up -d --force-recreate exposeu-nginx exposeu-contact
+    "${DOCKER[@]}" compose -f "$COMPOSE_FILE" up -d --force-recreate exposeu-nginx exposeu-contact
     ;;
 esac
 
