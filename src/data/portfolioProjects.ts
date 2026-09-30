@@ -25,7 +25,7 @@ export type PortfolioProject = {
 export const portfolioProjects: PortfolioProject[] = [
   {
     id: 'leonis-voo-store',
-    title: 'Leonis Work & VOO Store',
+    title: 'Leonis Work & VOO Space',
     description: 'World premiere of AGAPE at VOO Space.',
     context: 'Dance, fashion and art exhibition, VOO Space Berlin',
     outcome: 'Performance stills',
