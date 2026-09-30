@@ -78,14 +78,20 @@ confirm() {
 
 # ── 0/4  Preflight (local, read-only) ─────────────────────────────────────────
 echo "── 0/4  preflight ──────────────────────────────────────"
-branch="$(git -C "$APP_DIR" rev-parse --abbrev-ref HEAD)"
-commit="$(git -C "$APP_DIR" log -1 --format='%h %s')"
+# Git here only feeds the warnings below. Over the SMB mount the Mac can read a
+# stale/half-written .git/index ("bad signature") right after a NAS-side commit;
+# that must not abort a deploy, so a failed read warns and carries on.
+if ! branch="$(git -C "$APP_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null)" \
+  || ! commit="$(git -C "$APP_DIR" log -1 --format='%h %s' 2>/dev/null)" \
+  || ! dirty="$(git -C "$APP_DIR" status --porcelain --untracked-files=no 2>/dev/null)"; then
+  echo "  ⚠ Couldn't read git state over the SMB mount — skipping branch/changes checks."
+  branch="main" commit="(unknown)" dirty=""
+fi
 echo "  branch: $branch"
 echo "  HEAD:   $commit"
 
 # Untracked files are ignored except where they'd actually end up in the build.
-dirty="$(git -C "$APP_DIR" status --porcelain --untracked-files=no)"
-untracked_src="$(git -C "$APP_DIR" status --porcelain -- src server public index.html \
+untracked_src="$(git -C "$APP_DIR" status --porcelain -- src server public index.html 2>/dev/null \
   | grep '^??' || true)"
 if [ -n "$dirty$untracked_src" ]; then
   echo "  ⚠ Uncommitted changes — these ship as-is:"
