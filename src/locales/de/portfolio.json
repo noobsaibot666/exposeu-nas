@@ -1,8 +1,8 @@
 {
   "hero": {
-    "eyebrow": "Last Work",
-    "headline": "Jeder Abend ist einmalig. Sorg dafür, dass etwas bleibt.",
-    "copy": "Konzertdokumentation, Ausstellungsfotografie und Artist Sessions. In Berlin. Pressetauglich."
+    "eyebrow": "Last Projects",
+    "headline": "Es passiert nur einmal. Sorg dafür, dass etwas bleibt.",
+    "copy": "Foto und Video für Konzerte, Ausstellungen, Artist Sessions und Brand-Events in Berlin, pressefertig geliefert."
   },
   "labels": {
     "context": "Kontext",
@@ -17,54 +17,48 @@
       "title": "Lick the walls to understand echoes",
       "description": "Soundinstallation sichtbar gemacht.",
       "context": "Soundinstallation, Berlin",
-      "outcome": "Presse-Stills + vollständiges Archivset — geliefert",
-      "tag": "Live Event",
-      "cta": "Ansehen"
+      "outcome": "Pressestills + Archivset",
+      "tag": "Live Event"
     },
     {
       "id": "v2",
       "title": "Abigail Toll - IDOL - Silent Green",
-      "description": "Ein Abend mit mehreren Künstler:innen, vollständig dokumentiert.",
-      "context": "Live-Performanceabend, Silent Green Kulturquartier",
-      "outcome": "Recap-Film + pressetaugliche Stills — geliefert",
-      "tag": "Live Event",
-      "cta": "Ansehen"
+      "description": "Ein Abend, mehrere Acts, komplett dokumentiert.",
+      "context": "Silent Green Kulturquartier",
+      "outcome": "Recap-Film + Pressestills",
+      "tag": "Live Event"
     },
     {
       "id": "v5",
       "title": "Boogarins Band",
       "description": "Release-fertige Session-Bilder.",
-      "context": "Live-Session, internationale Tourband",
-      "outcome": "Release-Stills + Kurzclips — geliefert",
-      "tag": "Konzert",
-      "cta": "Öffnen"
+      "context": "Live-Session, Tourband",
+      "outcome": "Release-Stills + Kurzclips",
+      "tag": "Konzert"
     },
     {
       "id": "sanam",
       "title": "SANAM — Silent Green Berlin",
-      "description": "Bühne, Publikum und Atmosphäre für Presse und Social.",
-      "context": "Presse- & Filmdokumentation, Betonhalle im Silent Green",
-      "outcome": "Pressestills + Social-Media-Inhalte — geliefert",
-      "tag": "Konzert",
-      "cta": "Öffnen"
+      "description": "Bühne, Publikum und Atmosphäre.",
+      "context": "Betonhalle, Silent Green",
+      "outcome": "Pressestills + Social-Content",
+      "tag": "Konzert"
     },
     {
       "id": "seefeel",
       "title": "Seefeel — Silent Green Berlin",
-      "description": "Konzertcoverage von Bühne bis Publikum.",
-      "context": "Presse- & Filmdokumentation, Betonhalle im Silent Green",
-      "outcome": "Konzertberichterstattung — geliefert",
-      "tag": "Konzert",
-      "cta": "Öffnen"
+      "description": "Konzert von der Bühne bis ins Publikum.",
+      "context": "Betonhalle, Silent Green",
+      "outcome": "Pressestills + Film",
+      "tag": "Konzert"
     },
     {
       "id": "gleo",
       "title": "GLEO — Silent Green Berlin",
-      "description": "Live-Coverage in Foto und Video.",
-      "context": "Video- & Fotodokumentation, Betonhalle im Silent Green",
-      "outcome": "Konzertberichterstattung — geliefert",
-      "tag": "Konzert",
-      "cta": "Öffnen"
+      "description": "Live in Foto und Video.",
+      "context": "Betonhalle, Silent Green",
+      "outcome": "Konzert in Foto + Video",
+      "tag": "Konzert"
     }
   ],
   "offers": {

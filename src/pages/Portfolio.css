@@ -214,7 +214,7 @@
   right: 24px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   z-index: 2;
   opacity: 1;
   transform: none;
@@ -277,6 +277,7 @@
   color: var(--text-strong);
   font-size: 0.7rem;
   width: fit-content;
+  margin-bottom: 4px;
 }
 
 .portfolio__title {
@@ -327,6 +328,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  margin-top: 8px;
 }
 
 .portfolio__location {
@@ -334,24 +336,9 @@
   font-weight: 600;
 }
 
-.portfolio__cta-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
-  border-radius: 12px;
-  background: rgba(0, 0, 0, 0.55);
-  color: var(--text-strong);
-  font-weight: 600;
-  font-size: 0.72rem;
-  letter-spacing: 0.02em;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-}
-
 .portfolio__card .portfolio__title,
 .portfolio__card .portfolio__description,
 .portfolio__card .portfolio__location,
-.portfolio__card .portfolio__cta-chip,
 .portfolio__card .portfolio__chip,
 .portfolio__card .portfolio__pill {
   color: var(--text-strong);
@@ -627,7 +614,6 @@
   color: var(--text-secondary);
 }
 
-.portfolio__card .portfolio__cta-chip,
 .portfolio__player-meta .portfolio__eyebrow,
 .portfolio__player-meta .portfolio__title,
 .portfolio__player-meta .portfolio__description {

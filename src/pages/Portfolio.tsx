@@ -26,7 +26,6 @@ type VideoItem = {
   uploadDate?: string
   slideshowImages?: string[]
   tag?: string
-  cta?: string
 }
 
 type OfferItem = {
@@ -46,7 +45,7 @@ const videos: VideoItem[] = [
     description: 'Audio-reactive installation with immersive sound and visuals.',
     context: 'captured sound-based installation',
     outcome: 'delivered press stills + archive set',
-    year: '2025',
+    year: '2026',
     location: 'Berlin',
     thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/01/thumb_0.webp'),
     videoSrc: 'https://youtu.be/00OZBQL4W3Q',
@@ -54,7 +53,6 @@ const videos: VideoItem[] = [
     thumbnailUrl: 'https://i.ytimg.com/vi/00OZBQL4W3Q/maxresdefault.jpg',
     uploadDate: '2025-01-01',
     tag: 'Live Event',
-    cta: 'Watch',
   },
   {
     id: 'v2',
@@ -62,7 +60,7 @@ const videos: VideoItem[] = [
     description: 'Music performance captured at Silent Green, Berlin.',
     context: 'covered venue performance night',
     outcome: 'delivered recap film + promo stills',
-    year: '2025',
+    year: '2026',
     location: 'Berlin',
     thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/02/thumb_0.webp'),
     videoSrc:
@@ -71,7 +69,6 @@ const videos: VideoItem[] = [
     thumbnailUrl: 'https://i.ytimg.com/vi/DkruqulWupw/maxresdefault.jpg',
     uploadDate: '2025-01-01',
     tag: 'Live Event',
-    cta: 'Watch',
   },
   {
     id: 'v5',
@@ -79,7 +76,7 @@ const videos: VideoItem[] = [
     description: 'A still-driven visual story built from live session captures.',
     context: 'documented live session for touring band',
     outcome: 'delivered release stills + short clips',
-    year: '2025',
+    year: '2026',
     location: 'Berlin',
     thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/band/Hero.webp'),
     slideshowImages: [
@@ -93,7 +90,6 @@ const videos: VideoItem[] = [
       resolveImagePath('/src/assets/images/thumbs/portfolio/band/band_008.webp'),
     ],
     tag: 'Concert',
-    cta: 'View',
   },
   {
     id: 'sanam',
@@ -101,7 +97,7 @@ const videos: VideoItem[] = [
     description: 'Full concert documentation at the Betonhalle. Stage, crowd, atmosphere — built for press and social.',
     context: 'press & film documentation, Betonhalle at Silent Green',
     outcome: 'press stills + social media content — delivered',
-    year: '2025',
+    year: '2026',
     location: 'Berlin',
     thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/03/thumb_0.webp'),
     slideshowImages: [
@@ -121,7 +117,6 @@ const videos: VideoItem[] = [
       resolveImagePath('/src/assets/images/thumbs/portfolio/03/sanam_014.webp'),
     ],
     tag: 'Concert',
-    cta: 'View',
   },
   {
     id: 'seefeel',
@@ -129,7 +124,7 @@ const videos: VideoItem[] = [
     description: 'Concert press and film documentation at the Betonhalle. Full coverage from stage to crowd.',
     context: 'press & film documentation, Betonhalle at Silent Green',
     outcome: 'concert coverage — delivered',
-    year: '2025',
+    year: '2026',
     location: 'Berlin',
     thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/04/thumb_0.webp'),
     slideshowImages: [
@@ -155,7 +150,6 @@ const videos: VideoItem[] = [
       resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_020.webp'),
     ],
     tag: 'Concert',
-    cta: 'View',
   },
   {
     id: 'gleo',
@@ -163,7 +157,7 @@ const videos: VideoItem[] = [
     description: 'Video and photo documentation of GLEO live at the Betonhalle. Full concert coverage, stage to crowd.',
     context: 'video & photo documentation, Betonhalle at Silent Green',
     outcome: 'concert coverage — delivered',
-    year: '2025',
+    year: '2026',
     location: 'Berlin',
     thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/05/thumb_0.webp'),
     slideshowImages: [
@@ -177,7 +171,6 @@ const videos: VideoItem[] = [
       resolveImagePath('/src/assets/images/thumbs/portfolio/05/gleo_008.webp'),
     ],
     tag: 'Concert',
-    cta: 'View',
   },
 ]
 
@@ -222,7 +215,7 @@ function Portfolio() {
   const dragState = useRef({ active: false, startX: 0, scrollLeft: 0, moved: false, pointerId: 0 })
   const { openVideo, modal: videoModal } = useVideoLightbox(rootRef)
 
-  const videoTranslations = tm<Array<Pick<VideoItem, 'id' | 'title' | 'description' | 'context' | 'outcome' | 'tag' | 'cta'>>>('portfolio.videos')
+  const videoTranslations = tm<Array<Pick<VideoItem, 'id' | 'title' | 'description' | 'context' | 'outcome' | 'tag'>>>('portfolio.videos')
   const proofItems = tm<string[]>('portfolio.proofStrip')
   const localizedVideos = useMemo(
     () => videos.map((video) => ({ ...video, ...(videoTranslations.find((entry) => entry.id === video.id) ?? {}) })),
@@ -265,7 +258,7 @@ function Portfolio() {
     return {
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',
-      name: 'Last Work - expose.u',
+      name: 'Last Projects - expose.u',
       url: 'https://expose-u.com/portfolio',
       inLanguage: locale,
       video: videoObjects,
@@ -431,9 +424,9 @@ function Portfolio() {
   return (
     <main className="portfolio" ref={rootRef} id="main">
       <SEOMeta
-        title="Last Work"
+        title="Last Projects"
         description="Selected documentation work by expose.u — concerts at Silent Green, gallery exhibitions, and artist sessions in Berlin."
-        ogTitle="Last Work | expose.u"
+        ogTitle="Last Projects | expose.u"
         ogDescription="Eight concerts at Silent Green. Gallery exhibitions. Artist sessions. Selected work from Berlin."
         canonical="https://expose-u.com/portfolio"
         lang={locale}
@@ -504,17 +497,6 @@ function Portfolio() {
                       <p className="portfolio__context">{video.outcome}</p>
                       <div className="portfolio__footer-row">
                         <span className="portfolio__location">{video.location}</span>
-                        <span className="portfolio__cta-chip">
-                          {video.cta ?? t('portfolio.labels.play')}
-                          <svg width="8" height="14" viewBox="0 0 3 7" fill="none">
-                            <path
-                              d="M1 6L2.50024 4.1247C2.79242 3.75948 2.79242 3.24052 2.50024 2.87531L1 1"
-                              stroke="white"
-                              strokeWidth="0.5"
-                              strokeLinecap="round"
-                            />
-                          </svg>
-                        </span>
                       </div>
                     </div>
                   </div>
