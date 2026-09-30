@@ -300,58 +300,98 @@ function Portfolio() {
 
 
 
+  // One motion language for the whole page: a soft fade with a small rise
+  // and a light blur clearing, all on the same easing. Transforms are cleared
+  // afterwards so CSS hover states (which use the separate `translate`/`scale`
+  // properties) never fight GSAP.
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-    const ctx = gsap.context(() => {
-      gsap.from('.portfolio__nav', { opacity: 0, y: -12, duration: 0.6, ease: 'power2.out' })
+    const ease = 'power3.out'
+    const reveal = { opacity: 1, y: 0, filter: 'blur(0px)', ease, clearProps: 'transform,filter' }
 
-      const heroItems = gsap.utils.toArray<HTMLElement>('.portfolio__hero-inner > *')
-      gsap.from(heroItems, {
-        opacity: 0,
-        y: 22,
-        duration: 0.7,
-        stagger: 0.1,
-        ease: 'power2.out',
+    const ctx = gsap.context(() => {
+      gsap.fromTo('.portfolio__nav', { opacity: 0 }, { opacity: 1, duration: 0.8, ease })
+
+      // Hero: eyebrow, then the headline line by line, then the intro.
+      gsap.fromTo(
+        '.portfolio__hero .portfolio__eyebrow, .portfolio__hero h1 > span, .portfolio__hero-inner > p:last-child',
+        { opacity: 0, y: 18, filter: 'blur(6px)' },
+        { ...reveal, duration: 1, stagger: 0.1, delay: 0.1 },
+      )
+
+      // Cards: each enters as it scrolls into view (cards in the same row
+      // cascade slightly); the photo settles from a gentle zoom and the
+      // card text follows.
+      gsap.utils.toArray<HTMLElement>('.portfolio__card').forEach((card, index) => {
+        const tl = gsap.timeline({
+          delay: (index % 3) * 0.09,
+          scrollTrigger: { trigger: card, start: 'top 90%', once: true },
+        })
+        tl.fromTo(card, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 1, ease, clearProps: 'transform' })
+          .fromTo(
+            card.querySelector('.portfolio__thumb'),
+            { scale: 1.08 },
+            { scale: 1, duration: 1.4, ease, clearProps: 'transform' },
+            0,
+          )
+          .fromTo(
+            card.querySelectorAll('.portfolio__pill, .portfolio__bottom > *'),
+            { opacity: 0, y: 10 },
+            { opacity: 1, y: 0, duration: 0.7, stagger: 0.05, ease, clearProps: 'transform' },
+            0.3,
+          )
       })
 
       gsap.fromTo(
-        '.portfolio__card',
-        {
-          opacity: 0,
-          y: 56,
-          scale: 0.96,
-          rotateX: 6,
-          transformOrigin: 'center center',
-        },
+        '.portfolio__proofStrip > *',
+        { opacity: 0, y: 8 },
         {
           opacity: 1,
           y: 0,
-          scale: 1,
-          rotateX: 0,
-          duration: 0.95,
-          stagger: { each: 0.08, from: 'start' },
-          ease: 'power2.inOut',
+          duration: 0.8,
+          stagger: 0.05,
+          ease,
           clearProps: 'transform',
-          scrollTrigger: {
-            trigger: '.portfolio__gallery',
-            start: 'top 80%',
-          },
+          scrollTrigger: { trigger: '.portfolio__proofStrip', start: 'top 92%', once: true },
         },
       )
 
-      const offerItems = gsap.utils.toArray<HTMLElement>('.portfolio__offers-copy > *')
-      gsap.from(offerItems, {
-        y: 18,
-        duration: 0.6,
-        stagger: 0.08,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.portfolio__offers',
-          start: 'top 85%',
+      gsap.fromTo(
+        '.portfolio__offers-copy > *',
+        { opacity: 0, y: 16, filter: 'blur(4px)' },
+        {
+          ...reveal,
+          duration: 0.9,
+          stagger: 0.08,
+          scrollTrigger: { trigger: '.portfolio__offers', start: 'top 82%', once: true },
         },
-      })
+      )
 
+      // Offer cards stay forced visible in CSS, so animate what's inside them.
+      gsap.utils.toArray<HTMLElement>('.portfolio__offer-card').forEach((card, index) => {
+        const tl = gsap.timeline({
+          delay: index * 0.1,
+          scrollTrigger: { trigger: card, start: 'top 90%', once: true },
+        })
+        tl.fromTo(
+          card.querySelector('.portfolio__offer-image-wrap'),
+          { opacity: 0, y: 24 },
+          { opacity: 1, y: 0, duration: 1, ease, clearProps: 'transform' },
+        )
+          .fromTo(
+            card.querySelector('.portfolio__offer-image'),
+            { scale: 1.06 },
+            { scale: 1, duration: 1.4, ease, clearProps: 'transform' },
+            0,
+          )
+          .fromTo(
+            card.querySelectorAll('.portfolio__offer-content > *'),
+            { opacity: 0, y: 10 },
+            { opacity: 1, y: 0, duration: 0.7, stagger: 0.06, ease, clearProps: 'transform' },
+            0.25,
+          )
+      })
     }, rootRef)
 
     return () => ctx.revert()

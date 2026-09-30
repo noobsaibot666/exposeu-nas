@@ -132,7 +132,7 @@
   padding: 0;
   cursor: pointer;
   text-align: left;
-  transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease, filter 240ms ease;
+  transition: translate 500ms cubic-bezier(0.22, 0.61, 0.36, 1), border-color 500ms ease, filter 500ms ease;
   scroll-snap-align: start;
   border: 1px solid var(--border-soft);
   overflow: hidden;
@@ -141,13 +141,14 @@
 }
 
 .portfolio__card:hover {
-  transform: translateY(-6px) scale(1.02);
+  translate: 0 -4px;
   z-index: 2;
   box-shadow: none;
+  border-color: rgba(255, 255, 255, 0.22);
 }
 
 .portfolio__card:hover .portfolio__thumb {
-  transform: scale(1.03);
+  scale: 1.04;
 }
 
 .portfolio__card:hover .portfolio__thumb-overlay,
@@ -167,7 +168,7 @@
   background-position: center;
   position: relative;
   overflow: hidden;
-  transition: transform 300ms cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: scale 900ms cubic-bezier(0.22, 0.61, 0.36, 1);
   box-shadow: none;
   transform-origin: center;
 }
@@ -815,6 +816,23 @@
   height: clamp(240px, 24vw, 330px);
   object-fit: cover;
   aspect-ratio: 16 / 9;
+  transition: scale 900ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.portfolio__offer-card:hover .portfolio__offer-image {
+  scale: 1.03;
+}
+
+.portfolio__hero-inner h1 > span {
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio__card,
+  .portfolio__thumb,
+  .portfolio__offer-image {
+    transition: none;
+  }
 }
 
 .portfolio__offer-card:hover {
