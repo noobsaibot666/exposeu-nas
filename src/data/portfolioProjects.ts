@@ -81,6 +81,18 @@ export const portfolioProjects: PortfolioProject[] = [
     embedUrl: 'https://www.youtube-nocookie.com/embed/DkruqulWupw',
     thumbnailUrl: 'https://i.ytimg.com/vi/DkruqulWupw/maxresdefault.jpg',
     uploadDate: '2025-01-01',
+    slideshowImages: [
+      resolveImagePath('/src/assets/images/thumbs/portfolio/02/abigail_001.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/02/abigail_002.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/02/abigail_003.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/02/abigail_004.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/02/abigail_005.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/02/abigail_006.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/02/abigail_007.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/02/abigail_008.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/02/abigail_009.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/02/abigail_010.webp'),
+    ],
     tag: 'Live Event',
   },
   {
