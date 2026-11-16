@@ -193,9 +193,16 @@ Remaining: full route-by-route screenshot review at every width, 200% zoom/reflo
 
 **Acceptance:** `GET /api/reverse-geocode?lat=500&lon=0` returns 400 `INVALID_PAYLOAD`. A valid Berlin coordinate still returns a label.
 
-### [ ] V2-022 — No route-level code splitting
+### [x] V2-022 — No route-level code splitting
 
-**Status: OPEN — next step.** `App.tsx` imports every page eagerly, so the homepage downloads the JS for every campaign, legal and consent page (including SignaturePad/geolocation code). Convert non-home routes to `React.lazy` + `Suspense`, then compare bundle size from the deployment build.
+**Status: DONE IN SOURCE — bundle size to be confirmed from the deploy build.** `App.tsx` imported every page eagerly, so the homepage downloaded the JS and CSS for every campaign, legal and consent page (including SignaturePad/geolocation code). All routes except `HomeV2` now load through `lazyWithReload()` (`React.lazy` + one `Suspense` with a viewport-height placeholder). The homepage stays in the main bundle because most visits land there.
+
+- **Stale-deploy recovery:** a tab opened before a deploy requests old chunk hashes. If a chunk import fails, the page reloads once (sessionStorage guard against loops) to pick up the new `index.html`.
+- **CSS cascade:** page CSS now loads with its chunk. `HomeV2` relied on `Home.css` arriving via `WorkPageLayout → PricingSection`, so it now imports `Home.css` before `HomeV2.css`, keeping the original order. A scan of classes defined in more than one stylesheet found only scoped or higher-specificity overlaps (`.work-page .home__pricing`, `.contact .footer`, `.x.is-open`), so load order doesn't change them.
+
+**Files:** `src/App.tsx`, `src/utils/lazyWithReload.ts`, `src/pages/HomeV2.tsx`, `src/App.css`.
+
+**Acceptance:** the deploy build emits separate page chunks. Homepage, a service page, contact, portfolio and `/consent` render with unchanged styling on direct load and SPA navigation. The homepage pricing section looks unchanged.
 
 ### [ ] V2-023 — `LocationAutocomplete` lacks combobox semantics
 

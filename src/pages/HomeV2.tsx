@@ -2,6 +2,11 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperti
 import { useLocation } from 'react-router-dom'
 import gsap from 'gsap'
 import TopNav from '../components/TopNav'
+// HomeV2.css overrides many `home__*` rules from Home.css. Home.css used to
+// reach this page only via WorkPageLayout → PricingSection in the eager
+// bundle; with lazy routes it must be imported here, before HomeV2.css, to keep
+// the same cascade order.
+import './Home.css'
 import './HomeV2.css'
 import '../pages/Portfolio.css'
 import styles from './HomeRedesign.module.css'

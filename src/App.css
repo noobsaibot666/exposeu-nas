@@ -27,6 +27,13 @@
   top: 16px;
 }
 
+/* Placeholder while a lazy route chunk loads — holds the viewport so the
+   footer doesn't flash up into view. */
+.page__route-loading {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
 /* Page micro-transition */
 .page__content {
   opacity: 1;

@@ -1,38 +1,43 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
-import About from './pages/About'
-import BrandAgency from './pages/BrandAgency'
-import CallSession from './pages/CallSession'
-import ConcertsEvents from './pages/ConcertsEvents'
-import Contact from './pages/Contact'
-import ContactSuccess from './pages/ContactSuccess'
-import ExhibitionGallery from './pages/ExhibitionGallery'
-import Impressum from './pages/Impressum'
-import ArtistSessions from './pages/ArtistSessions'
-import Portfolio from './pages/Portfolio'
-import NotFound from './pages/NotFound'
-import BrandAgencyLanding from './pages/BrandAgencyLanding'
-import ConcertsBerlin from './pages/ConcertsBerlin'
-import ExhibitionGalleryLanding from './pages/ExhibitionGalleryLanding'
 import HomeV2 from './pages/HomeV2'
-import PricingRequest from './pages/PricingRequest'
-import PricingRequestSuccess from './pages/PricingRequestSuccess'
-import ReleaseContentKit from './pages/ReleaseContentKit'
-import PopupsLanding from './pages/PopupsLanding'
-import GalleryMuseumLanding from './pages/GalleryMuseumLanding'
-import ArtistMusicianLanding from './pages/ArtistMusicianLanding'
-import Privacy from './pages/Privacy'
-import PhotoConsent from './pages/PhotoConsent'
-import Terms from './pages/Terms'
-import DataDeletion from './pages/DataDeletion'
 import { ThemeProvider } from './ThemeContext'
-import { useEffect, useLayoutEffect, useRef } from 'react'
+import { Suspense, useEffect, useLayoutEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import AnalyticsConsentBanner from './components/AnalyticsConsentBanner'
 import { trackEvent, trackPageView } from './utils/analytics'
 import LocaleSwitcher from './components/LocaleSwitcher'
 import { usePageMeta } from './i18n/pageMeta'
 import { useTranslation } from './i18n/LocaleProvider'
+import { lazyWithReload } from './utils/lazyWithReload'
+
+// Home stays in the main bundle (most visits land there); every other page is
+// its own chunk, loaded on first navigation (V2-022).
+const About = lazyWithReload(() => import('./pages/About'))
+const BrandAgency = lazyWithReload(() => import('./pages/BrandAgency'))
+const CallSession = lazyWithReload(() => import('./pages/CallSession'))
+const ConcertsEvents = lazyWithReload(() => import('./pages/ConcertsEvents'))
+const Contact = lazyWithReload(() => import('./pages/Contact'))
+const ContactSuccess = lazyWithReload(() => import('./pages/ContactSuccess'))
+const ExhibitionGallery = lazyWithReload(() => import('./pages/ExhibitionGallery'))
+const Impressum = lazyWithReload(() => import('./pages/Impressum'))
+const ArtistSessions = lazyWithReload(() => import('./pages/ArtistSessions'))
+const Portfolio = lazyWithReload(() => import('./pages/Portfolio'))
+const NotFound = lazyWithReload(() => import('./pages/NotFound'))
+const BrandAgencyLanding = lazyWithReload(() => import('./pages/BrandAgencyLanding'))
+const ConcertsBerlin = lazyWithReload(() => import('./pages/ConcertsBerlin'))
+const ExhibitionGalleryLanding = lazyWithReload(() => import('./pages/ExhibitionGalleryLanding'))
+const PricingRequest = lazyWithReload(() => import('./pages/PricingRequest'))
+const PricingRequestSuccess = lazyWithReload(() => import('./pages/PricingRequestSuccess'))
+const ReleaseContentKit = lazyWithReload(() => import('./pages/ReleaseContentKit'))
+const PopupsLanding = lazyWithReload(() => import('./pages/PopupsLanding'))
+const GalleryMuseumLanding = lazyWithReload(() => import('./pages/GalleryMuseumLanding'))
+const ArtistMusicianLanding = lazyWithReload(() => import('./pages/ArtistMusicianLanding'))
+const Privacy = lazyWithReload(() => import('./pages/Privacy'))
+const PhotoConsent = lazyWithReload(() => import('./pages/PhotoConsent'))
+const Terms = lazyWithReload(() => import('./pages/Terms'))
+const DataDeletion = lazyWithReload(() => import('./pages/DataDeletion'))
+
 function App() {
   const location = useLocation()
   const isEnglishOnlyLegalPage = ['/privacy', '/terms', '/data-deletion'].some(
@@ -140,6 +145,7 @@ function App() {
         <AnalyticsConsentBanner />
         {location.pathname !== '/consent' && !isEnglishOnlyLegalPage && <LocaleSwitcher />}
         <div className="page__content" ref={contentRef}>
+          <Suspense fallback={<div className="page__route-loading" aria-busy="true" />}>
           <Routes>
             <Route path="/" element={<HomeV2 />} />
             <Route path="/de" element={<HomeV2 />} />
@@ -213,6 +219,7 @@ function App() {
             <Route path="/de/concerts-berlin" element={<ConcertsBerlin />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </Suspense>
         </div>
       </div>
     </ThemeProvider>
