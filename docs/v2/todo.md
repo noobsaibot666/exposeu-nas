@@ -4,7 +4,7 @@ Only what still needs **you**, in the order to do it. Everything Claude could do
 
 ## 1. Deploy and check your inbox
 
-- [ ] **Run `scripts/deploy.sh frontend`** for the last fixes: German homepage/Portfolio titles, the 404 hidden from search (V2-031), the photo-only lightbox fix and the ads-only `noindex`. The API is already up to date.
+- [ ] **Run `scripts/deploy.sh frontend`** for the last fix: German homepage/Portfolio titles and the 404 hidden from search (V2-031). Everything else is already live, including the API.
 - [ ] **Inbox:** you should have two emails marked "TEST — please ignore", one from the contact form and one from the pricing form (Claude's live tests). If either is missing, tell Claude.
 
 ## 2. Review by eye (production)
