@@ -30,8 +30,8 @@ function ThemeToggle({ solo = false }: { solo?: boolean }) {
       title={label}
     >
       {theme === 'dark'
-        ? <Sun aria-hidden="true" size={19} strokeWidth={1.6} />
-        : <Moon aria-hidden="true" size={19} strokeWidth={1.6} />}
+        ? <Sun aria-hidden="true" size={17} strokeWidth={1.6} />
+        : <Moon aria-hidden="true" size={17} strokeWidth={1.6} />}
     </button>
   )
 }

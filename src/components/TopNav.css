@@ -68,8 +68,8 @@
 
 .top-nav__links--right {
   justify-content: flex-end;
-  /* Room for the fixed theme toggle + language switcher (2 × 46px + gaps). */
-  padding-right: 138px;
+  /* Room for the fixed theme toggle + language switcher (2 × 40px + gaps). */
+  padding-right: 124px;
 }
 
 .top-nav__link {

@@ -15,8 +15,8 @@
 }
 
 .locale-switcher__trigger {
-  width: 46px;
-  height: 46px;
+  width: 40px;
+  height: 40px;
   border: 0;
   border-radius: 12px;
   background: rgba(8, 8, 10, 0.64);
@@ -40,8 +40,8 @@
 }
 
 .locale-switcher__trigger svg {
-  width: 19px;
-  height: 19px;
+  width: 17px;
+  height: 17px;
   stroke: currentColor;
   stroke-width: 1.45;
   stroke-linecap: round;
@@ -106,8 +106,8 @@
   }
 
   .locale-switcher__trigger {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     border: 1px solid var(--border-soft);
     border-radius: 8px;
     background: var(--surface-overlay);

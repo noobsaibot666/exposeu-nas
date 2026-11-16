@@ -1,13 +1,13 @@
 /* Mirrors .locale-switcher positioning (LocaleSwitcher.css), offset one
-   button + gap (46px + 8px = 54px) to its left. `--solo` takes the language
+   button + gap (40px + 8px = 48px) to its left. `--solo` takes the language
    switcher's own spot on pages where that switcher is hidden. */
 .theme-toggle {
   position: fixed;
   top: 18px;
-  right: 72px;
+  right: 66px;
   z-index: 4200;
-  width: 46px;
-  height: 46px;
+  width: 40px;
+  height: 40px;
   border: 0;
   border-radius: 12px;
   background: rgba(8, 8, 10, 0.64);
@@ -34,7 +34,7 @@
 .theme-toggle--page {
   position: absolute;
   top: 14px;
-  right: calc(max(18px, calc((100vw - var(--content-max)) / 2 + var(--content-gutter))) + 54px);
+  right: calc(max(18px, calc((100vw - var(--content-max)) / 2 + var(--content-gutter))) + 48px);
 }
 
 .theme-toggle--home.theme-toggle--solo {
@@ -59,9 +59,9 @@
 @media (max-width: 768px) {
   .theme-toggle {
     top: 14px;
-    right: calc(clamp(16px, 4vw, 22px) + 72px + 52px);
-    width: 44px;
-    height: 44px;
+    right: calc(clamp(16px, 4vw, 22px) + 72px + 48px);
+    width: 40px;
+    height: 40px;
     border: 1px solid var(--border-soft);
     border-radius: 8px;
     background: var(--surface-overlay);

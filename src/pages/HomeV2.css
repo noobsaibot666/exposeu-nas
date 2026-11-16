@@ -139,9 +139,9 @@
   }
 
   .home--v2 .home__nav .top-nav__links--right {
-    /* The fixed theme + language buttons occupy the rightmost 118px
-       (18 + 46 + 8 + 46); keep 16px clear of them beyond the bar padding. */
-    padding-right: max(0px, calc(134px - clamp(24px, 5vw, 84px)));
+    /* The fixed theme + language buttons occupy the rightmost 106px
+       (18 + 40 + 8 + 40); keep 16px clear of them beyond the bar padding. */
+    padding-right: max(0px, calc(122px - clamp(24px, 5vw, 84px)));
   }
 }
 

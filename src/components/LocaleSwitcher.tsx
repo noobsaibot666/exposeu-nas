@@ -49,7 +49,7 @@ function LocaleSwitcher() {
         aria-label={t('common.language.switcherLabel')}
         onClick={() => (open ? closeMenu() : setOpen(true))}
       >
-        <Globe aria-hidden="true" size={20} strokeWidth={1.8} />
+        <Globe aria-hidden="true" size={17} strokeWidth={1.8} />
       </button>
 
       <div
