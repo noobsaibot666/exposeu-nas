@@ -20,13 +20,16 @@ The static snippets were removed from `index.html`; `initializeAnalyticsVendors(
 
 ### [ ] V2-002 — Homepage background video causes heavy first-load work
 
-**Status: FRONTEND IMPLEMENTED; MEDIA PROVISIONING OPEN.** Vimeo iframe startup and adaptive-stream transfers were removed from the hero. The homepage now mounts one muted, inline native video immediately, selects a mobile or desktop MP4 at the 900 px breakpoint, retains the localized mobile headline and CTA, and includes localized pause/play/retry controls with reduced-motion support. No authorized source files, R2 objects, or configured custom domain are available in this checkout, so actual playback and performance remain unverified.
+**Status: REGRESSION FIXED (2026-11-16) — hero plays via the Vimeo fallback; first-party R2 media still open.** The native-video rewrite (`ddf557b`) rendered `<source>` elements only when `VITE_HOME_HERO_VIDEO_BASE_URL` was set. That variable is blank and no MP4s exist in the repo or `media-originals/`, so production showed an empty black hero with no video at all. The hero now has two modes chosen at build time:
 
-**Resolution:** Deferred Vimeo player code, poster images, and readiness overlays were removed; native muted autoplay starts on the first homepage render when the configured R2 MP4s are available, and pause/play/retry controls honor reduced-motion preferences.
+- **Native (target):** when `VITE_HOME_HERO_VIDEO_BASE_URL` is set, one muted, inline, looping `<video>` with media-selected mobile/desktop MP4s, pause/play/retry controls and reduced-motion support (unchanged from `ddf557b`).
+- **Vimeo fallback (current production):** when it is blank, the pre-audit Vimeo background players (desktop `1228854165`, mobile `1228856768`) are mounted — only the variant for the current viewport, swapped at 900 px. URL adds `dnt=1` so Vimeo sets no tracking cookies before consent. The iframe fades in on Vimeo's `play` event (3.5 s fallback), the early-loop seek hides Vimeo's loop-point black frame, and the same localized pause/play button and `prefers-reduced-motion` pause work through the player postMessage API.
 
-**Files:** `src/pages/HomeV2.tsx`, `src/pages/HomeV2.css`, `src/config/homeHeroVideo.ts`, `.env.example`, `src/locales/{en,de}/home.json`.
+**Files:** `src/config/homeHeroVideo.ts`, `src/pages/HomeV2.tsx`, `src/pages/HomeV2.css`, `.env.example`.
 
-**Acceptance:** TypeScript and targeted ESLint pass; source contains one native video element with responsive MP4 sources and no Vimeo/YouTube hero player, poster, or loading overlay. `VITE_HOME_HERO_VIDEO_BASE_URL` is intentionally blank until provisioned, preventing requests to missing media. Provide the authorized landscape/portrait videos, upload them to R2, configure its custom domain/cache and the build variable, then verify first-frame timing, range responses, cold/warm transfer, and mobile playback before closing this issue or deploying.
+**Acceptance (fallback):** `tsc --noEmit` and targeted ESLint pass. After deploy, verify on desktop and a phone that the video appears within a few seconds, loops without a black flash, the pause/play button works, and a desktop↔mobile resize swaps the variant. Vimeo's player can't be probed via curl (JS bot check), so playback is confirmed in a real browser only.
+
+**Acceptance (close V2-002):** export landscape/portrait MP4s (H.264, faststart, ~2–4 Mbps desktop / ~1.5–2.5 Mbps mobile, no audio), upload as `home-hero-desktop-v1.mp4` / `home-hero-mobile-v1.mp4` to R2 behind a custom domain with long cache headers, set `VITE_HOME_HERO_VIDEO_BASE_URL` in the build env, then verify first-frame timing, range responses and mobile autoplay. That switches off Vimeo automatically.
 
 ### [x] V2-003 — German language switch can navigate to missing legal routes
 

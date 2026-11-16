@@ -7,7 +7,24 @@ import '../pages/Portfolio.css'
 import styles from './HomeRedesign.module.css'
 import Footer from '../sections/Footer'
 import { resolveImagePath } from '../utils/resolveImagePath'
-import { HOME_HERO_VIDEO_URLS } from '../config/homeHeroVideo'
+import {
+  HOME_HERO_USES_NATIVE_VIDEO,
+  HOME_HERO_VIDEO_URLS,
+  HOME_HERO_VIMEO_IDS,
+  VIMEO_ORIGIN,
+  buildHeroVimeoSrc,
+} from '../config/homeHeroVideo'
+
+// Seconds before the end of the Vimeo clip to jump back to the start — hides
+// the black frame Vimeo shows at its own loop point.
+const EARLY_LOOP_SECONDS = 1
+
+function sendToVimeo(iframe: HTMLIFrameElement | null, method: string, value?: unknown) {
+  iframe?.contentWindow?.postMessage(
+    JSON.stringify(value === undefined ? { method } : { method, value }),
+    VIMEO_ORIGIN,
+  )
+}
 import { portfolioProjects } from '../data/portfolioProjects'
 import { serviceMeta } from '../data/serviceMeta'
 import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
@@ -143,6 +160,9 @@ function HomeV2() {
   const tiltX = useRef<((value: number) => void) | null>(null)
   const tiltY = useRef<((value: number) => void) | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
+  const vimeoIframeRef = useRef<HTMLIFrameElement | null>(null)
+  const prefersReducedMotionRef = useRef(prefersReducedMotion)
+  const [vimeoRevealed, setVimeoRevealed] = useState(false)
 
   useTrackViewEvent('home_view')
   useScrollDepthTracking('home', [25, 50, 75, 90])
@@ -224,7 +244,14 @@ function HomeV2() {
 
   useEffect(() => {
     const mql = window.matchMedia('(max-width: 900px)')
-    const handleChange = (event: MediaQueryListEvent) => setIsMobileViewport(event.matches)
+    const handleChange = (event: MediaQueryListEvent) => {
+      setIsMobileViewport(event.matches)
+      // The Vimeo fallback swaps to a fresh iframe: hide it until it plays again.
+      if (!HOME_HERO_USES_NATIVE_VIDEO) {
+        setVimeoRevealed(false)
+        setVideoPlaying(false)
+      }
+    }
     mql.addEventListener('change', handleChange)
     return () => mql.removeEventListener('change', handleChange)
   }, [])
@@ -236,9 +263,63 @@ function HomeV2() {
     return () => motionQuery.removeEventListener('change', handleMotionPreference)
   }, [])
 
+  const postToVimeo = (method: string, value?: unknown) => sendToVimeo(vimeoIframeRef.current, method, value)
+
+  // Vimeo fallback: listen for player events (play/pause state, early loop).
+  useEffect(() => {
+    if (HOME_HERO_USES_NATIVE_VIDEO) return
+    let seeking = false
+    const onMessage = (event: MessageEvent) => {
+      if (event.origin !== VIMEO_ORIGIN) return
+      if (event.source !== vimeoIframeRef.current?.contentWindow) return
+      let data: { event?: string; data?: { seconds?: number; duration?: number } }
+      try {
+        data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data
+      } catch {
+        return
+      }
+      if (data.event === 'ready') {
+        const iframe = vimeoIframeRef.current
+        ;['play', 'pause', 'timeupdate'].forEach((name) => sendToVimeo(iframe, 'addEventListener', name))
+        if (prefersReducedMotionRef.current) sendToVimeo(iframe, 'pause')
+      } else if (data.event === 'play') {
+        setVideoPlaying(true)
+        setPlaybackControlVisible(true)
+        setVimeoRevealed(true)
+      } else if (data.event === 'pause') {
+        setVideoPlaying(false)
+        setPlaybackControlVisible(true)
+      } else if (data.event === 'timeupdate') {
+        const { seconds, duration } = data.data ?? {}
+        if (typeof seconds !== 'number' || typeof duration !== 'number' || duration <= 0) return
+        if (!seeking && duration - seconds <= EARLY_LOOP_SECONDS) {
+          seeking = true
+          sendToVimeo(vimeoIframeRef.current, 'seekTo', 0)
+          setTimeout(() => { seeking = false }, 1000)
+        }
+      }
+    }
+    window.addEventListener('message', onMessage)
+    return () => window.removeEventListener('message', onMessage)
+  }, [])
+
+  // Vimeo fallback: never leave the hero blacked out if the player's events
+  // don't arrive (re-armed for each viewport swap / new iframe).
+  useEffect(() => {
+    if (HOME_HERO_USES_NATIVE_VIDEO) return
+    const fallback = setTimeout(() => setVimeoRevealed(true), 3500)
+    return () => clearTimeout(fallback)
+  }, [isMobileViewport])
+
+  useEffect(() => {
+    prefersReducedMotionRef.current = prefersReducedMotion
+    if (HOME_HERO_USES_NATIVE_VIDEO) return
+    sendToVimeo(vimeoIframeRef.current, prefersReducedMotion ? 'pause' : 'play')
+  }, [prefersReducedMotion])
+
   useEffect(() => {
     const video = videoRef.current
-    if (!video || !HOME_HERO_VIDEO_URLS.desktop || !HOME_HERO_VIDEO_URLS.mobile) return
+    if (!video || !HOME_HERO_USES_NATIVE_VIDEO) return
     video.autoplay = !prefersReducedMotion
     setVideoPlaying(false)
     setVideoError(false)
@@ -251,6 +332,10 @@ function HomeV2() {
   }, [isMobileViewport, prefersReducedMotion])
 
   const toggleHeroPlayback = () => {
+    if (!HOME_HERO_USES_NATIVE_VIDEO) {
+      postToVimeo(videoPlaying ? 'pause' : 'play')
+      return
+    }
     const video = videoRef.current
     if (!video) return
     setVideoError(false)
@@ -728,22 +813,39 @@ function HomeV2() {
       <div className="home__floaters" aria-hidden="true" />
 
       <section className="home__video-hero" aria-label="Background video">
-        <video
-          ref={videoRef}
-          className="home__video-element"
-          autoPlay={!prefersReducedMotion}
-          muted
-          loop
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-          onPlaying={() => { setVideoPlaying(true); setPlaybackControlVisible(true); setVideoError(false); setAutoplayBlocked(false) }}
-          onPause={() => { setVideoPlaying(false); setPlaybackControlVisible(true) }}
-          onError={() => { setVideoPlaying(false); setVideoError(true) }}
-        >
-          {HOME_HERO_VIDEO_URLS.mobile && <source src={HOME_HERO_VIDEO_URLS.mobile} type="video/mp4" media="(max-width: 900px)" />}
-          {HOME_HERO_VIDEO_URLS.desktop && <source src={HOME_HERO_VIDEO_URLS.desktop} type="video/mp4" media="(min-width: 901px)" />}
-        </video>
+        {HOME_HERO_USES_NATIVE_VIDEO ? (
+          <video
+            ref={videoRef}
+            className="home__video-element"
+            autoPlay={!prefersReducedMotion}
+            muted
+            loop
+            playsInline
+            preload="auto"
+            aria-hidden="true"
+            onPlaying={() => { setVideoPlaying(true); setPlaybackControlVisible(true); setVideoError(false); setAutoplayBlocked(false) }}
+            onPause={() => { setVideoPlaying(false); setPlaybackControlVisible(true) }}
+            onError={() => { setVideoPlaying(false); setVideoError(true) }}
+          >
+            <source src={HOME_HERO_VIDEO_URLS.mobile} type="video/mp4" media="(max-width: 900px)" />
+            <source src={HOME_HERO_VIDEO_URLS.desktop} type="video/mp4" media="(min-width: 901px)" />
+          </video>
+        ) : (
+          <div
+            className={`home__video-iframe-wrap${isMobileViewport ? ' home__video-iframe-wrap--mobile' : ''}${vimeoRevealed ? ' home__video-iframe-wrap--ready' : ''}`}
+            aria-hidden="true"
+          >
+            {/* Keyed by viewport so only the matching variant is ever fetched. */}
+            <iframe
+              key={isMobileViewport ? 'mobile' : 'desktop'}
+              ref={vimeoIframeRef}
+              src={buildHeroVimeoSrc(isMobileViewport ? HOME_HERO_VIMEO_IDS.mobile : HOME_HERO_VIMEO_IDS.desktop)}
+              allow="autoplay; fullscreen; picture-in-picture"
+              title="Hero background video"
+              tabIndex={-1}
+            />
+          </div>
+        )}
         <div className="home__video-overlay" />
         <div className="home__video-copy">
           <h1 className="home__video-copy-title">{t('home.hero.headline')}</h1>
