@@ -30,7 +30,7 @@ Everything still open after the 2026-11-16 remediation pass, for owner review. I
 
 - [ ] **V2-002 First-party hero video.** Export landscape + portrait MP4s (H.264, faststart, no audio, ~2–4 / ~1.5–2.5 Mbps). Upload as `home-hero-desktop-v1.mp4` / `home-hero-mobile-v1.mp4` to R2 behind a custom domain with long cache headers, then set `VITE_HOME_HERO_VIDEO_BASE_URL` in the build env. Verify first frame, range requests and mobile autoplay.
 - [ ] **V2-006 Shared rate limiter.** The API rate limits are per process (fine for the single `exposeu-contact` container). Move them to a shared store before adding API replicas.
-- [ ] **Dependencies.** The 2026-11-16 deploy reported `19 vulnerabilities (9 moderate, 9 high, 1 critical)` from `npm audit`. Review them inside the deploy container (never `npm audit fix` on the shared mount).
+- [x] **Dependencies (V2-027).** Done in source: the critical and every runtime advisory are fixed (see issues.md). **Deploy with `scripts/deploy.sh all`** so `exposeu-contact` restarts on the new `express`/`nodemailer`. Remaining: 7 moderate typescript-eslint advisories, dev-only; their "fix" is a downgrade, so they're left alone.
 
 ## Needs a real browser / assistive tech
 

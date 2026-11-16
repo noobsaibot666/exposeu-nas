@@ -246,3 +246,16 @@ Production homepage was inspected at 1200× and 390×. Local route-family checks
 - **Verification:** the built site was scanned with Playwright on 25 routes (EN + `/de` sample, 404) at 1280 and 390 px in **both** themes: 0 text elements below 3:1. Toggle click flips and persists the theme; the banner computes light bg/dark text in light mode and the reverse in dark.
 
 **Acceptance:** toggle on every page except `/consent`; the choice survives reload without a flash; each page family is readable in both themes (owner eye review).
+
+### [x] V2-027 — `npm audit`: 19 vulnerabilities including 1 critical in the contact API
+
+**Status: DONE IN SOURCE — deploy with `all`.** The 2026-11-16 deploy log reported 19 vulnerabilities (1 critical, 9 high, 9 moderate). The ones that matter run inside `exposeu-contact`:
+
+- **`proxy-addr` (critical):** IP spoofing via IPv4-mapped IPv6 in `trust proxy`, which the rate limits and logs depend on.
+- **`body-parser` / `qs`:** request-parsing DoS.
+- **`nodemailer` (high):** `resolveContent` file-access bypass and IDN allow-list bypass.
+
+**Changes:** `npm audit fix` (non-breaking) plus `express` ^4.19.2 → ^4.22.3 (`qs` 6.16.2) and `nodemailer` ^9.0.5 → ^10.6.0. The build-tool advisories (vite 7.3.8, browserslist, source-map-js, js-yaml, brace-expansion, zod, systeminformation via cypress) were cleared by the same fix. All of this was done in an isolated copy; only `package.json` and `package-lock.json` changed in the repo, and the shared `node_modules` was never touched.
+
+**Verification:** `tsc -b` + `vite build` pass. The contact API ran against a local SMTP sink: a contact POST returned 200 with a matching `X-Request-Id`, and the sink received the message (correct from/to/subject). `/reverse-geocode?lat=500` → 400 (also confirms V2-021). Remaining: 7 moderate typescript-eslint advisories (dev-only; the offered fix is a downgrade).
+
