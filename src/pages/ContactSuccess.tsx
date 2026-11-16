@@ -2,9 +2,12 @@ import './Contact.css'
 import TopNav from '../components/TopNav'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { useTranslation } from '../i18n/LocaleProvider'
+import { useSubmittedGuard } from '../hooks/useSubmittedGuard'
 
 function ContactSuccess() {
   const { t } = useTranslation()
+  const submitted = useSubmittedGuard()
+  if (!submitted) return null
   return (
     <main className="contact contact--success" id="main">
       <div className="content contact__nav">

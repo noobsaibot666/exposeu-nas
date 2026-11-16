@@ -277,3 +277,12 @@ Production homepage was inspected at 1200× and 390×. Local route-family checks
 
 **Verified:** a live YouTube film fades in (`is-ready` at 2.5 s, no link). With players blocked, the cover shows and the link appears at 6 s (YouTube and Vimeo). Live Vimeo couldn't be loaded here (Vimeo bot-checks automated browsers). Its readiness protocol was confirmed from Vimeo's `player.js`, and failure degrades to cover + link, never a blank frame.
 
+### [x] V2-029 — Success pages confirmed a submission when opened directly; residual audit checks
+
+**Status: DONE IN SOURCE.** The remaining source-level findings from pages.md / systems.md that had no issue ID:
+
+- **Success pages (fixed):** `/contact-success` had no inbound link (the contact form confirms inline), so it was reachable only by typing the URL, and it then claimed the message was received. `/pricing-request/success` said the same when opened directly. The new `useSubmittedGuard()` makes both pages render only with `{ submitted: true }` navigation state, which `PricingRequest` now passes after a real submission. Otherwise they redirect (localized, `replace`) to `/contact`. The real pricing flow and its success URL are unchanged, so analytics goals on that URL keep working.
+- **EN/DE key parity (verified, no change):** every key in all 15 `en/*.json` files exists in `de/`, with equal list lengths, so no missing-object crash is possible.
+- **Reduced motion (verified, no change):** all GSAP animation in HomeV2, AdLandingPage, WorkPageLayout, ReleaseContentKit, Portfolio, About, Contact and the lightbox runs inside effects that return early on `prefers-reduced-motion: reduce`.
+- **Sitemap (verified):** no retired URLs (`/v2`, `/old-home`, legacy service aliases). Note: it lists 3 of the 7 campaign pages (concerts-berlin, exhibition-gallery, brand-agency); see todo.md.
+

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import TopNav from '../components/TopNav'
 import { useNavOverMedia } from '../hooks/useNavOverMedia'
+import { SUBMITTED_STATE } from '../hooks/useSubmittedGuard'
 import { resolveImagePath } from '../utils/resolveImagePath'
 import { trackEvent } from '../utils/analytics'
 import { serviceMeta, type ServiceSlug } from '../data/serviceMeta'
@@ -165,7 +166,7 @@ function PricingRequest() {
     trackEvent('form_submission', 'pricing', planInfo?.name ?? plan ?? 'unknown')
     setStatus('success')
     form.reset()
-    navigate('/pricing-request/success')
+    navigate('/pricing-request/success', { state: SUBMITTED_STATE })
   }
 
   const clearFieldError = (name: string) => {

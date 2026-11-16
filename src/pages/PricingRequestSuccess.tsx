@@ -2,9 +2,12 @@ import TopNav from '../components/TopNav'
 import './PricingRequest.css'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { useTranslation } from '../i18n/LocaleProvider'
+import { useSubmittedGuard } from '../hooks/useSubmittedGuard'
 
 function PricingRequestSuccess() {
   const { t } = useTranslation()
+  const submitted = useSubmittedGuard()
+  if (!submitted) return null
   return (
     <main className="pricing-request pricing-request--success" id="main">
       <div className="home__nav pricing-request__nav">
