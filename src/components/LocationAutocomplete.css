@@ -19,16 +19,11 @@
   overflow-y: auto;
 }
 
-.location-autocomplete__menu li {
+.location-autocomplete__option {
   margin: 0;
-}
-
-.location-autocomplete__menu button {
-  width: 100%;
   text-align: left;
   padding: 10px 12px;
   border-radius: 8px;
-  border: none;
   background: transparent;
   color: var(--pc-text);
   font-family: var(--font-sans);
@@ -36,7 +31,7 @@
   cursor: pointer;
 }
 
-.location-autocomplete__menu button.is-active,
-.location-autocomplete__menu button:hover {
+.location-autocomplete__option.is-active,
+.location-autocomplete__option:hover {
   background: var(--pc-button-ghost-bg);
 }

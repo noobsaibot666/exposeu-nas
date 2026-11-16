@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import './LocationAutocomplete.css'
 
 interface LocationAutocompleteProps {
@@ -45,6 +45,8 @@ function LocationAutocomplete({
   const [isOpen, setIsOpen] = useState(false)
   const [highlightIndex, setHighlightIndex] = useState(0)
   const rootRef = useRef<HTMLDivElement | null>(null)
+  const listboxId = useId()
+  const optionId = (index: number) => `${listboxId}-option-${index}`
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
@@ -71,18 +73,31 @@ function LocationAutocomplete({
     setLearned(readLearned(storageKey))
   }
 
+  const isExpanded = isOpen && options.length > 0
+  const activeIndex = Math.min(highlightIndex, Math.max(options.length - 1, 0))
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!isOpen || options.length === 0) return
+    if (!isOpen && (e.key === 'ArrowDown' || e.key === 'ArrowUp') && options.length > 0) {
+      e.preventDefault()
+      setIsOpen(true)
+      return
+    }
+    if (e.key === 'Tab') {
+      setIsOpen(false)
+      return
+    }
+    if (!isExpanded) return
     if (e.key === 'ArrowDown') {
       e.preventDefault()
       setHighlightIndex((i) => (i + 1) % options.length)
     } else if (e.key === 'ArrowUp') {
       e.preventDefault()
       setHighlightIndex((i) => (i - 1 + options.length) % options.length)
-    } else if (e.key === 'Enter' && options[highlightIndex]) {
+    } else if (e.key === 'Enter' && options[activeIndex]) {
       e.preventDefault()
-      commit(options[highlightIndex])
+      commit(options[activeIndex])
     } else if (e.key === 'Escape') {
+      e.preventDefault()
       setIsOpen(false)
     }
   }
@@ -93,6 +108,11 @@ function LocationAutocomplete({
         <span>{label}</span>
         <input
           type="text"
+          role="combobox"
+          aria-autocomplete="list"
+          aria-expanded={isExpanded}
+          aria-controls={listboxId}
+          aria-activedescendant={isExpanded ? optionId(activeIndex) : undefined}
           inputMode="text"
           placeholder={placeholder}
           value={value}
@@ -107,24 +127,25 @@ function LocationAutocomplete({
           onKeyDown={handleKeyDown}
         />
       </label>
-      {isOpen && options.length > 0 && (
-        <ul className="location-autocomplete__menu" role="listbox">
-          {options.map((option, index) => (
-            <li key={option} role="option" aria-selected={index === highlightIndex}>
-              <button
-                type="button"
-                className={index === highlightIndex ? 'is-active' : ''}
-                onMouseDown={(e) => {
-                  e.preventDefault()
-                  commit(option)
-                }}
-              >
-                {option}
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+      {/* Listbox always rendered (hidden when closed) so aria-controls resolves. */}
+      <ul id={listboxId} className="location-autocomplete__menu" role="listbox" aria-label={label} hidden={!isExpanded}>
+        {options.map((option, index) => (
+          <li
+            key={option}
+            id={optionId(index)}
+            role="option"
+            aria-selected={index === activeIndex}
+            className={`location-autocomplete__option${index === activeIndex ? ' is-active' : ''}`}
+            // mousedown + preventDefault keeps focus in the input (no blur).
+            onMouseDown={(e) => {
+              e.preventDefault()
+              commit(option)
+            }}
+          >
+            {option}
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }

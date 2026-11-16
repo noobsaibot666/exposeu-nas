@@ -204,6 +204,18 @@ Remaining: full route-by-route screenshot review at every width, 200% zoom/reflo
 
 **Acceptance:** the deploy build emits separate page chunks. Homepage, a service page, contact, portfolio and `/consent` render with unchanged styling on direct load and SPA navigation. The homepage pricing section looks unchanged.
 
-### [ ] V2-023 — `LocationAutocomplete` lacks combobox semantics
+### [x] V2-023 — `LocationAutocomplete` lacks combobox semantics
 
-**Status: OPEN.** The suggestions list supports arrows/Enter/Escape, but the input has no `role="combobox"`, `aria-expanded`, `aria-controls` or `aria-activedescendant`, so screen readers don't announce the suggestions. Folds into V2-018.
+**Status: DONE IN SOURCE — screen-reader pass pending (V2-018).** The suggestions list supported arrows/Enter/Escape, but the input had no combobox semantics and each `role="option"` wrapped a `<button>` (interactive content inside an option). It now follows the ARIA 1.2 combobox pattern:
+
+- The input has `role="combobox"`, `aria-autocomplete="list"`, `aria-expanded`, `aria-controls` and `aria-activedescendant`.
+- The listbox is always in the DOM (`hidden` when closed) with an accessible name, and each `<li role="option">` has an id, `aria-selected` and mouse selection. The buttons were removed.
+- ArrowDown/ArrowUp open a closed list, Tab closes it, and the highlighted index is clamped when the filtered list shrinks.
+
+**Files:** `src/components/LocationAutocomplete.tsx`, `src/components/LocationAutocomplete.css`.
+
+**Acceptance:** on `/consent`, VoiceOver/NVDA announce the location field as a combobox, report expanded/collapsed, and read the highlighted suggestion while arrowing. Mouse/touch selection still fills the field.
+
+### [ ] V2-024 — Main bundle is 522 kB (170 kB gzip) after route splitting
+
+**Status: OPEN — low priority.** The 2026-11-16 deploy build split out all 28 non-home pages (largest: PhotoConsent 18 kB), but the main chunk still holds React DOM, React Router, GSAP (all needed by the homepage), both EN and DE locale JSON (~109 kB raw), pricing tiers and portfolio data. Lazy-loading the inactive locale is the only sizeable remaining saving. Measure homepage LCP/TBT before deciding whether it's worth doing.
