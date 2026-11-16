@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import TopNav from '../components/TopNav'
+import { useNavOverMedia } from '../hooks/useNavOverMedia'
 import { resolveImagePath } from '../utils/resolveImagePath'
 import { trackEvent } from '../utils/analytics'
 import { serviceMeta, type ServiceSlug } from '../data/serviceMeta'
@@ -26,6 +27,8 @@ function PricingRequest() {
   const [searchParams] = useSearchParams()
   const serviceParam = searchParams.get('service') ?? ''
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+  const heroRef = useRef<HTMLElement | null>(null)
+  useNavOverMedia(heroRef)
   const [errorMessage, setErrorMessage] = useState('')
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const hasTrackedPlanSelect = useRef(false)
@@ -195,7 +198,7 @@ function PricingRequest() {
         />
       </div>
 
-      <section className="pricing-request__hero" style={{ backgroundImage: `url(${heroImage})` }}>
+      <section className="pricing-request__hero" ref={heroRef} style={{ backgroundImage: `url(${heroImage})` }}>
         <div className="pricing-request__hero-overlay" />
         <div className="pricing-request__hero-content content">
           <p className="pricing-request__eyebrow">{t('forms.pricing.eyebrow')}</p>

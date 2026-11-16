@@ -336,7 +336,7 @@
 }
 
 .portfolio__card .portfolio__context {
-  color: var(--text-secondary);
+  color: color-mix(in srgb, var(--text-strong) 82%, transparent);
 }
 
 .portfolio__card .portfolio__context-label {
@@ -344,7 +344,7 @@
 }
 
 .portfolio__card .portfolio__description {
-  color: var(--text-secondary);
+  color: color-mix(in srgb, var(--text-strong) 82%, transparent);
 }
 
 .portfolio__overlay {

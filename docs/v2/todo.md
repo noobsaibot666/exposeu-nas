@@ -9,7 +9,7 @@ Everything that still needs **you** after the 2026-11-16 remediation pass, in th
 
 ## 2. Review by eye (production)
 
-- [ ] **V2-026 Light mode:** check every page family in both themes. In particular:
+- [ ] **V2-026 Light mode:** check every page family in both themes. (Portfolio thumbnail text is now white, fixed from your first review; campaign/RCK/pricing hero headlines too.) In particular:
   - the hard edge where a dark campaign / Release Content Kit hero meets the light page (in dark mode it fades)
   - the homepage nav: white over the video, then dark text on a light frosted bar after scrolling (desktop and phone)
   - the theme and language buttons beside the menu button on phones

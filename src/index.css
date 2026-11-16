@@ -152,11 +152,16 @@
   .home__pricing-card--monthly,
   .home__pricing-card--custom,
   .portfolio__overlay,
-  .portfolio__pill,
+  .portfolio__thumb,
   .alp__hero,
-  .rck__hero
+  .rck__hero,
+  .pricing-request__hero
 ) {
   color-scheme: dark;
+  /* Inherited colours are already resolved on the ancestor (light value), so
+     set the island's own text colour too — headings that only inherit it
+     would otherwise stay dark over the photo. */
+  color: var(--text-strong);
   /* page-bg / bg-base too: glass pills mix against --page-bg and the campaign
      heroes fade their bottom edge into --bg-base. */
   --page-bg: #050507;
