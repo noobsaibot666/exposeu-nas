@@ -319,3 +319,11 @@ All marked "TEST — please ignore (QA 2026-11-16)"; the test rows were deleted 
 - **German Portfolio title** said "Last Projects"; it is now "Letzte Projekte", matching the German homepage section.
 - **The 404 was indexable:** it declared itself canonical and had hreflang alternates. Unknown routes now get `noindex` with no canonical/alternates/`og:url`. Indexable pages clear a leftover robots tag on SPA navigation (both metadata writers).
 
+### Owner decisions 2026-11-16
+
+- **V2-001 AdSense:** keep it grouped with the analytics "Accept". Closed.
+- **V2-018 Signature:** keep drawing-only; no alternative will be built. Closed.
+- **V2-016 Photo-consent data:** handled manually. The owner exports signatures per project and stores them in their own folders, so no automatic retention job is planned. Closed.
+- **Pricing:** parked for a later phase; everything open is in [pricing/README.md](./pricing/README.md).
+- **Ads-only pages:** `noindex`, not in the sitemap (done).
+

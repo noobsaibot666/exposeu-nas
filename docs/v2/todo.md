@@ -1,10 +1,10 @@
 # V2 pre-flight — owner to-do
 
-Only what still needs **you**, in the order to do it. Everything Claude could do alone is finished (31 issues; evidence in [issues.md](./issues.md) and [verification.md](./verification.md)) and summarised at the bottom. IDs link to issues.md.
+Only what still needs **you**, in the order to do it. Pricing is parked for a later phase: see [pricing/README.md](./pricing/README.md). Everything Claude could do alone is finished (31 issues; evidence in [issues.md](./issues.md) and [verification.md](./verification.md)) and summarised at the bottom. IDs link to issues.md.
 
 ## 1. Deploy and check your inbox
 
-- [ ] **Run `scripts/deploy.sh frontend`** for the last fix: German homepage/Portfolio titles and the 404 hidden from search (V2-031). Everything else is already live, including the API.
+- [ ] **Run `scripts/deploy.sh frontend`** for the latest changes: German titles, the 404 hidden from search, smaller nav buttons, the self-hosted hero video and the new project pages.
 - [ ] **Inbox:** you should have two emails marked "TEST — please ignore", one from the contact form and one from the pricing form (Claude's live tests). If either is missing, tell Claude.
 
 ## 2. Review by eye (production)
@@ -14,30 +14,17 @@ Only what still needs **you**, in the order to do it. Everything Claude could do
   - the homepage nav: white over the video, then dark text on a light frosted bar after scrolling (desktop and phone)
   - the theme and language buttons beside the menu button on phones
 - [ ] **V2-028 Pop-up films:** open Leonis Work & Liquidrom, SANAM and Gleo (Vimeo) and Lick the walls (YouTube). Each film should fade in over its cover within a second or two. If one stays on the cover with a "Watch the film on …" link, tell Claude which project and browser. (Vimeo blocks automated browsers, so only you can confirm the live Vimeo path.)
-- [ ] **V2-002 Hero video:** the homepage plays the Vimeo background players. Confirm that's fine until step 5.
+- [ ] **V2-002 Hero video:** the homepage now plays your Leonis/Liquidrom film (self-hosted). Check it on desktop and phone; the phone version is a 9:16 centre crop.
 - [ ] **V2-018 Overall look** at phone, tablet and desktop widths. Reflow, zoom and contrast already pass automatically, so this is a design check only.
 
-## 3. Pricing follow-ups (V2-030)
+## 3. Two decisions left (explained in plain words)
 
-- [ ] **Lost requests:** until today every pricing request was silently discarded (the Google Apps Script refused them). If Analytics shows recent visits to `/pricing-request/*`, those people never reached you; consider following up through other channels.
-- [ ] **Optional, Google Sheet:** pricing requests now reach your inbox and Supabase. If you also want them in the sheet, open the Apps Script and set **Deploy → Manage deployments → edit → "Who has access: Anyone"** → Deploy. Otherwise ignore this.
+- [ ] **Contact delivery:** when someone sends the contact form, two things happen: an email to you, and a copy saved in Supabase. Today the visitor sees "sent" as soon as the email goes out, even if saving the Supabase copy fails. Is that OK (you still get the email), or should a failed Supabase save also count as an error? Claude recommends keeping it as is.
+- [ ] **Link previews:** when someone shares a page on WhatsApp, LinkedIn, Facebook etc., the preview card shows the same generic expose.u title and image for every page, because the site builds its pages in the browser. Per-page previews (each project or service with its own image and title) need pre-rendered pages, a moderate build change. Do you want that? It matters most once the new project pages are shared.
 
-## 4. Decisions (you / legal); answer Claude and it builds the change
+Decided 2026-11-16 (no action): **AdSense** keeps sharing the analytics "Accept"; **signature** stays drawing-only; **photo-consent data** is handled manually (you export signatures per project and store them in your own folders).
 
-- [ ] **V2-001 AdSense:** it loads with the same "Accept" as analytics. Keep that, or give ads their own choice?
-- [ ] **V2-018 Signature:** `/consent` only accepts a drawn signature. Is a non-drawing alternative (typed name + checkbox, or staff-assisted) acceptable?
-- [ ] **V2-016 Photo-consent data policy:** signatures store name, signature image, IP, browser and location. How long should they be kept, who may access them, and is the on-page wording right?
-- [ ] **Contact persistence:** a message counts as sent once the email is accepted, even if the Supabase log fails. Keep that?
-- [ ] **V2-010 Link previews:** shared links show the generic site preview, not per-page ones. Does that matter (fixing it needs prerendering)?
-
-## 5. Media (when you have it)
-
-- [ ] **V2-002 First-party hero video:**
-  1. Export landscape + portrait MP4s (H.264, faststart, no audio, ~2–4 / ~1.5–2.5 Mbps).
-  2. Upload them as `home-hero-desktop-v1.mp4` / `home-hero-mobile-v1.mp4` to R2 behind a custom domain with long cache headers.
-  3. Set `VITE_HOME_HERO_VIDEO_BASE_URL` in the build env and deploy. The hero switches from Vimeo automatically; this is the biggest remaining homepage speed win.
-
-## 6. Assistive tech
+## 4. Assistive tech
 
 - [ ] **V2-018 Screen reader** (VoiceOver on Mac/iPhone; NVDA on Windows if available): cookie banner, mobile menu, the `/consent` location field, form errors on contact/pricing/campaign/consent, and the signature label.
 
