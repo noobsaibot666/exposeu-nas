@@ -29,11 +29,11 @@ export const portfolioProjects: PortfolioProject[] = [
   {
     id: 'metaxy',
     title: 'Metaxy',
-    description: 'Immersive dance performance by Renato De Leon, presented by Leonis Works.',
-    context: 'Immersive dance performance, Atelier Gardens Berlin',
+    description: 'An immersive dance performance by Leonis Works, choreographed by Renato De Leon.',
+    context: 'Leonis Works · Choreography by Renato De Leon',
     outcome: 'Performance stills',
     year: '2026',
-    location: 'Atelier Gardens, Berlin',
+    location: 'Berlin',
     thumb: resolveImagePath(projectPreviewImages.metaxy),
     slideshowImages: [
       // metaxy_019 (DSC_4495) is the main photo and the card cover: keep it first.
