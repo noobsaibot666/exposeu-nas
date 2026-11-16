@@ -18,7 +18,9 @@ The static snippets were removed from `index.html`; `initializeAnalyticsVendors(
 
 ## P1 — pre-V2
 
-### [ ] V2-002 — Homepage background video causes heavy first-load work
+### [x] V2-002 — Homepage background video causes heavy first-load work
+
+**Update 2026-11-16 — DONE: first-party hero video live in source.** The owner supplied `leoniswork_&_liquidrom_v1 (1080p).mp4` (86 s, 61 MB with audio). It was encoded to `home-hero-desktop-v1.mp4` (1920×1080, H.264 ≤2.2 Mbps, 23.6 MB, no audio, faststart) and `home-hero-mobile-v1.mp4` (608×1080 9:16 centre crop, ≤1.8 Mbps, 12.7 MB). They are self-hosted under `public/assets/media/`: nginx already serves `/assets/` with a 30-day immutable cache (filenames are versioned), so neither R2 nor an nginx change is needed (`nginx/default.conf` is write-protected). The files are gitignored (`*.mp4`) and ship from the NAS working copy via `deploy.sh`; see `docs/media-hosting.md`. The hero uses one `src` per viewport, because `<source media>` fires `error` on non-matching sources. If the file fails, it **falls back to the Vimeo players automatically**. Verified on a local build: desktop and mobile each play their own file; with the files missing, both fall back to Vimeo.
 
 **Status: REGRESSION FIXED (2026-11-16) — hero plays via the Vimeo fallback; first-party R2 media still open.** The native-video rewrite (`ddf557b`) rendered `<source>` elements only when `VITE_HOME_HERO_VIDEO_BASE_URL` was set. That variable is blank and no MP4s exist in the repo or `media-originals/`, so production showed an empty black hero with no video at all. The hero now has two modes chosen at build time:
 

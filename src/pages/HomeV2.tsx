@@ -170,6 +170,11 @@ function HomeV2() {
   const vimeoIframeRef = useRef<HTMLIFrameElement | null>(null)
   const prefersReducedMotionRef = useRef(prefersReducedMotion)
   const [vimeoRevealed, setVimeoRevealed] = useState(false)
+  // Native MP4 hero unless a <source> fails to load, then fall back to Vimeo.
+  const [nativeHeroFailed, setNativeHeroFailed] = useState(false)
+  const useNativeHero = HOME_HERO_USES_NATIVE_VIDEO && !nativeHeroFailed
+  const useNativeHeroRef = useRef(useNativeHero)
+  useEffect(() => { useNativeHeroRef.current = useNativeHero }, [useNativeHero])
 
   useNavOverMedia(videoHeroRef)
   useTrackViewEvent('home_view')
@@ -255,7 +260,7 @@ function HomeV2() {
     const handleChange = (event: MediaQueryListEvent) => {
       setIsMobileViewport(event.matches)
       // The Vimeo fallback swaps to a fresh iframe: hide it until it plays again.
-      if (!HOME_HERO_USES_NATIVE_VIDEO) {
+      if (!useNativeHeroRef.current) {
         setVimeoRevealed(false)
         setVideoPlaying(false)
       }
@@ -275,7 +280,7 @@ function HomeV2() {
 
   // Vimeo fallback: listen for player events (play/pause state, early loop).
   useEffect(() => {
-    if (HOME_HERO_USES_NATIVE_VIDEO) return
+    if (useNativeHero) return
     let seeking = false
     const onMessage = (event: MessageEvent) => {
       if (event.origin !== VIMEO_ORIGIN) return
@@ -309,25 +314,25 @@ function HomeV2() {
     }
     window.addEventListener('message', onMessage)
     return () => window.removeEventListener('message', onMessage)
-  }, [])
+  }, [useNativeHero])
 
   // Vimeo fallback: never leave the hero blacked out if the player's events
   // don't arrive (re-armed for each viewport swap / new iframe).
   useEffect(() => {
-    if (HOME_HERO_USES_NATIVE_VIDEO) return
+    if (useNativeHero) return
     const fallback = setTimeout(() => setVimeoRevealed(true), 3500)
     return () => clearTimeout(fallback)
-  }, [isMobileViewport])
+  }, [isMobileViewport, useNativeHero])
 
   useEffect(() => {
     prefersReducedMotionRef.current = prefersReducedMotion
-    if (HOME_HERO_USES_NATIVE_VIDEO) return
+    if (useNativeHero) return
     sendToVimeo(vimeoIframeRef.current, prefersReducedMotion ? 'pause' : 'play')
-  }, [prefersReducedMotion])
+  }, [prefersReducedMotion, useNativeHero])
 
   useEffect(() => {
     const video = videoRef.current
-    if (!video || !HOME_HERO_USES_NATIVE_VIDEO) return
+    if (!video || !useNativeHero) return
     video.autoplay = !prefersReducedMotion
     setVideoPlaying(false)
     setVideoError(false)
@@ -337,10 +342,10 @@ function HomeV2() {
     }
     video.load()
     void video.play().catch(() => { setVideoPlaying(false); setAutoplayBlocked(true) })
-  }, [isMobileViewport, prefersReducedMotion])
+  }, [isMobileViewport, prefersReducedMotion, useNativeHero])
 
   const toggleHeroPlayback = () => {
-    if (!HOME_HERO_USES_NATIVE_VIDEO) {
+    if (!useNativeHero) {
       postToVimeo(videoPlaying ? 'pause' : 'play')
       return
     }
@@ -821,7 +826,7 @@ function HomeV2() {
       <div className="home__floaters" aria-hidden="true" />
 
       <section className="home__video-hero" aria-label="Background video" ref={videoHeroRef}>
-        {HOME_HERO_USES_NATIVE_VIDEO ? (
+        {useNativeHero ? (
           <video
             ref={videoRef}
             className="home__video-element"
@@ -833,11 +838,12 @@ function HomeV2() {
             aria-hidden="true"
             onPlaying={() => { setVideoPlaying(true); setPlaybackControlVisible(true); setVideoError(false); setAutoplayBlocked(false) }}
             onPause={() => { setVideoPlaying(false); setPlaybackControlVisible(true) }}
-            onError={() => { setVideoPlaying(false); setVideoError(true) }}
-          >
-            <source src={HOME_HERO_VIDEO_URLS.mobile} type="video/mp4" media="(max-width: 900px)" />
-            <source src={HOME_HERO_VIDEO_URLS.desktop} type="video/mp4" media="(min-width: 901px)" />
-          </video>
+            // One src for the current viewport (the effect above reloads on a
+            // breakpoint change). Not <source media>: the spec fires `error` on
+            // every non-matching <source>, which looked like a failed load.
+            src={isMobileViewport ? HOME_HERO_VIDEO_URLS.mobile : HOME_HERO_VIDEO_URLS.desktop}
+            onError={() => { setVideoPlaying(false); setVideoError(true); setNativeHeroFailed(true) }}
+          />
         ) : (
           <div
             className={`home__video-iframe-wrap${isMobileViewport ? ' home__video-iframe-wrap--mobile' : ''}${vimeoRevealed ? ' home__video-iframe-wrap--ready' : ''}`}
