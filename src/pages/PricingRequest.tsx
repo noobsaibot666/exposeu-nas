@@ -21,6 +21,14 @@ const serviceImages: Record<ServiceSlug, string> = {
   'artist-musician': resolveImagePath('/src/assets/images/services/3_artist_sessions/3_AS_012.webp'),
 }
 
+// Same contact API base resolution as Contact.tsx / AdLeadForm.tsx.
+const resolveApi = (path: string) => {
+  const raw = String(import.meta.env.VITE_CONTACT_API_BASE || '').trim()
+  if (!raw) return path
+  const base = raw.startsWith('http://') || raw.startsWith('https://') ? raw : `https://${raw}`
+  return `${base.replace(/\/+$/, '')}${path}`
+}
+
 function PricingRequest() {
   const navigate = useLocaleNavigate()
   const { t, tm } = useTranslation()
@@ -133,34 +141,69 @@ function PricingRequest() {
 
     setFieldErrors({})
     setStatus('sending')
-    const endpoint = import.meta.env.VITE_PRICING_FORM_ENDPOINT as string | undefined
 
-    if (!endpoint) {
+    // Primary delivery: the contact API (email + Supabase log), same as
+    // /contact. It returns a real result, so the visitor only sees success
+    // when the request was actually accepted (V2-004 / V2-030 — the Google
+    // Apps Script endpoint answered 403 to every public request).
+    const field = (key: string) => String(formData.get(key) ?? '').trim()
+    const planName = planInfo?.name ?? plan ?? ''
+    const message = [
+      `Pricing request${planName ? ` — ${planName}` : ''}${serviceInfo?.label ? ` · ${serviceInfo.label}` : ''}`,
+      `Coverage type: ${coverageType}`,
+      trimmedCoverageNotes ? `Coverage notes: ${trimmedCoverageNotes}` : '',
+      field('phone') ? `Phone: ${field('phone')}` : '',
+      field('organization') ? `Organization: ${field('organization')}` : '',
+      field('date') ? `Date: ${field('date')}` : '',
+      field('location') ? `Location: ${field('location')}` : '',
+      field('details') ? `\nDetails:\n${field('details')}` : '',
+    ].filter(Boolean).join('\n')
+
+    let requestId: string | undefined
+    try {
+      const response = await fetch(resolveApi('/api/contact'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: trimmedName,
+          email: trimmedEmail,
+          projectType: `Pricing request: ${coverageType}`,
+          message,
+          ...(serviceParam ? { service: serviceParam } : {}),
+          ...(serviceInfo?.label ? { serviceLabel: serviceInfo.label } : {}),
+          ...(plan ? { package: plan } : {}),
+          ...(planName ? { packageLabel: planName } : {}),
+          sourceUrl: window.location.href,
+          referrer: document.referrer,
+        }),
+      })
+      const data = (await response.json().catch(() => null)) as { ok?: boolean; requestId?: string } | null
+      requestId = data?.requestId
+      if (!response.ok || data?.ok !== true) throw new Error('Request failed.')
+    } catch (error) {
+      console.error(error)
       setStatus('error')
-      setErrorMessage(t('forms.pricing.errors.missingEndpoint'))
+      setErrorMessage(
+        requestId
+          ? `${t('forms.pricing.errors.requestFailed')} ${t('forms.contact.errors.referenceId', { id: requestId })}`
+          : t('forms.pricing.errors.requestFailed'),
+      )
       return
     }
 
-    const useNoCors = endpoint.includes('script.google.com')
-    try {
-      const body = useNoCors ? new URLSearchParams(payload as Record<string, string>).toString() : JSON.stringify(payload)
-      const response = await fetch(endpoint, {
+    // Secondary copy to the pricing sheet, if configured. Best effort only:
+    // Apps Script needs no-cors, so its result can't be read and never gates
+    // the visitor's success state.
+    const sheetEndpoint = (import.meta.env.VITE_PRICING_FORM_ENDPOINT as string | undefined)?.trim()
+    if (sheetEndpoint) {
+      const useNoCors = sheetEndpoint.includes('script.google.com')
+      fetch(sheetEndpoint, {
         method: 'POST',
         mode: useNoCors ? 'no-cors' : 'cors',
         headers: useNoCors ? { 'Content-Type': 'application/x-www-form-urlencoded' } : { 'Content-Type': 'application/json' },
-        body,
-      })
-
-      if (!useNoCors && !response.ok) {
-        throw new Error('Request failed.')
-      }
-    } catch (error) {
-      console.error(error)
-      if (!useNoCors) {
-        setStatus('error')
-        setErrorMessage(t('forms.pricing.errors.requestFailed'))
-        return
-      }
+        body: useNoCors ? new URLSearchParams(payload as Record<string, string>).toString() : JSON.stringify(payload),
+        keepalive: true,
+      }).catch(() => { /* sheet copy is optional */ })
     }
 
     trackEvent('form_submission', 'pricing', planInfo?.name ?? plan ?? 'unknown')

@@ -41,9 +41,11 @@ The static snippets were removed from `index.html`; `initializeAnalyticsVendors(
 
 **Acceptance:** source hides locale switching and removes alternates on all three English-only legal pages; the local browser confirmed the control is hidden and the rendered legal heads have no hreflang tags.
 
-### V2-004 — Pricing request form has a runtime-only endpoint dependency
+### [x] V2-004 — Pricing request form has a runtime-only endpoint dependency
 
-**Status: BLOCKED — local configuration is present; production delivery cannot be confirmed from this checkout.** `PricingRequest.tsx` returns an inline missing-endpoint error when `VITE_PRICING_FORM_ENDPOINT` is absent. The variable was not documented in `.env.example`; that example now names the required build-time setting without a value. A local `.env` contains the setting (its value is intentionally not copied into this audit). The endpoint appears to support Google Apps Script; its `no-cors` branch receives an opaque response and treats any HTTP response as success. This checkout cannot establish whether the production build has the variable or whether records reach the destination.
+**Update 2026-11-16: resolved by V2-030** (pricing now posts to the contact API; the Apps Script endpoint is an optional secondary copy).
+
+**Original status: BLOCKED — local configuration is present; production delivery cannot be confirmed from this checkout.** `PricingRequest.tsx` returns an inline missing-endpoint error when `VITE_PRICING_FORM_ENDPOINT` is absent. The variable was not documented in `.env.example`; that example now names the required build-time setting without a value. A local `.env` contains the setting (its value is intentionally not copied into this audit). The endpoint appears to support Google Apps Script; its `no-cors` branch receives an opaque response and treats any HTTP response as success. This checkout cannot establish whether the production build has the variable or whether records reach the destination.
 
 **Resolution:** The required build variable is now documented, but opaque Apps Script success and destination delivery remain unresolved pending staging access.
 
@@ -285,4 +287,23 @@ Production homepage was inspected at 1200× and 390×. Local route-family checks
 - **EN/DE key parity (verified, no change):** every key in all 15 `en/*.json` files exists in `de/`, with equal list lengths, so no missing-object crash is possible.
 - **Reduced motion (verified, no change):** all GSAP animation in HomeV2, AdLandingPage, WorkPageLayout, ReleaseContentKit, Portfolio, About, Contact and the lightbox runs inside effects that return early on `prefers-reduced-motion: reduce`.
 - **Sitemap (verified):** no retired URLs (`/v2`, `/old-home`, legacy service aliases). Note: it lists 3 of the 7 campaign pages (concerts-berlin, exhibition-gallery, brand-agency); see todo.md.
+
+### [x] V2-030 — Every pricing request was being lost (P0, found in live QA)
+
+**Status: DONE IN SOURCE — deploy `frontend`.** During the owner-delegated live form test on 2026-11-16, the pricing form showed its success page, but the browser logged a 403. A direct test POST to the configured Google Apps Script URL returned **403 "Zugriff verweigert – Sie benötigen Zugriff"**: the web app isn't deployed for "Anyone". Because the form used `no-cors`, the page couldn't see the 403 and always reported success. **Every public pricing request since that deployment state was discarded.**
+
+**Fix (`PricingRequest.tsx`):**
+- Pricing requests now go to the contact API (`/api/contact`), the same delivery as `/contact`: email to the inbox plus a `contact_submissions` row with `package` / `package_label` / service. The page reaches `/pricing-request/success` only on `{ ok: true }`; otherwise it shows an error with the server reference.
+- The email subject is `Expose.u Lead - Pricing request: <coverage type>`, and the body carries plan, service, coverage, phone, organisation, date, location and details.
+- If `VITE_PRICING_FORM_ENDPOINT` is set, the sheet still gets a best-effort `no-cors` copy (`keepalive`). It never gates success.
+
+**Verified locally (full stack):** built frontend → Traefik-style `/api` strip proxy → contact API → SMTP sink. Success lands on the success page and the email is received with the pricing details. With SMTP down, the form shows the error plus a reference and stays on the form.
+
+### Live form QA on production (2026-11-16, owner-delegated)
+
+All marked "TEST — please ignore (QA 2026-11-16)"; the test rows were deleted afterwards (exact name match).
+
+- **Contact (V2-014):** 200 with a matching `requestId` / `X-Request-Id`, the thank-you shown, exactly 1 `contact_submissions` row. This is the first live send on nodemailer 10 (V2-027).
+- **Photo consent (V2-016):** an offline save was queued; on reconnect the first sync's reply was lost to a reload, and the retry got `{ok:true, duplicate:true}`. Exactly **1** row: idempotency confirmed in production.
+- **Pricing:** reached the success page (V2-025 confirmed live) but was silently lost. See V2-030.
 

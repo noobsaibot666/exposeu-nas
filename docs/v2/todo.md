@@ -24,15 +24,14 @@ Everything that still needs **you** after the 2026-11-16 remediation pass, in th
 - [ ] **Photo-consent data policy:** signatures store name, signature PNG, IP, user agent and location. Decide retention, deletion and access, and confirm the on-page wording.
 - [ ] **Contact persistence:** a message counts as sent once SMTP accepts it, even if the Supabase log insert fails. Keep that?
 - [ ] **V2-010 Link previews:** the site is client-rendered, so shared links show the generic preview. Do per-page previews matter (that needs prerendering)?
-- [ ] **V2-004 Pricing endpoint:** who owns the Google Apps Script destination? Its `no-cors` mode can't confirm a save. Choose between an endpoint that returns a readable response and routing pricing requests through the contact API (Claude can build the latter).
 
-## 4. Test the forms on the live site (no staging needed)
+## 4. Forms (Claude tested these live; one thing for you)
 
-There is no staging copy of the site; the repo only has production. So test the three forms on the live site with obvious test data. Use the name **"TEST — please ignore"** so the entries are easy to find and delete. Tell Claude what arrived (and the reference number the contact form shows).
+Contact and photo consent work in production. **Pricing requests were being lost:** the Google Apps Script behind the pricing form refuses public requests ("access denied"). Claude rerouted pricing requests to your inbox (same delivery as contact messages); that ships with the next `frontend` deploy.
 
-- [ ] **Contact (V2-014):** send a message from `/contact`. Check: the page shows a "Reference: …" number, the email reaches your inbox, and a row with that reference appears in Supabase → `contact_submissions` (outreach-app project).
-- [ ] **Pricing (V2-025 / V2-004):** open any service page → pricing → pick a package, fill in the form and send. Check: you land on the "request sent" page, and the request reaches its destination (the Google Sheet behind the Apps Script). If nothing arrives, the pricing form is silently losing requests; tell Claude.
-- [ ] **Photo consent (V2-016):** on your phone open `/consent`, turn on airplane mode, sign, tap save (it should say it will sync later), turn airplane mode off and reload. Check: Supabase → `photo_consent_signatures` gets exactly **one** new row. Delete the test rows afterwards.
+- [ ] **Deploy `frontend`**, then check your inbox. Claude's test email from the contact form ("TEST — please ignore") should already be there, confirming the new email library works live.
+- [ ] **Optional: the pricing Google Sheet.** If you still want pricing requests in the sheet too, open the Apps Script → **Deploy → Manage deployments → edit → "Who has access: Anyone"** → Deploy. Otherwise ignore it: requests now reach your inbox and Supabase regardless.
+- [ ] **Look for lost requests:** before this fix, pricing requests never reached you. If you've had pricing-page traffic recently (Analytics → `/pricing-request/*`), those visitors may be worth a follow-up through other channels.
 
 ## 5. Media / infrastructure
 
