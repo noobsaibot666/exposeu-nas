@@ -41,6 +41,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     ...baseConfig,
     sectionOrder: SECTION_ORDER,
     canonical: "https://expose-u.com/gallery-museum-documentation",
+    noindex: true,
     title: "Gallery & Museum Documentation Berlin",
     description:
       "Photo and video for exhibitions in Berlin — galleries, artists and independent spaces. Content worth sharing long after opening night.",
@@ -160,6 +161,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     ...baseConfig,
     sectionOrder: SECTION_ORDER,
     canonical: "https://expose-u.com/de/gallery-museum-documentation",
+    noindex: true,
     title: "Galerie- & Museumsdokumentation Berlin",
     description:
       "Foto und Video für Ausstellungen in Berlin — Galerien, Künstler:innen und unabhängige Räume. Inhalte, die weit über die Eröffnung hinaus wirken.",

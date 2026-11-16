@@ -11,6 +11,8 @@ interface SEOMetaProps {
   canonical?: string
   lang?: Locale
   noAlternates?: boolean
+  /** Ads-only pages: keep them out of search results (links still followed). */
+  noindex?: boolean
 }
 
 const DEFAULT_OG_IMAGE = 'https://expose-u.com/og-default.png'
@@ -54,7 +56,15 @@ export function SEOMeta({
   canonical,
   lang = 'en',
   noAlternates = false,
+  noindex = false,
 }: SEOMetaProps) {
+  useEffect(() => {
+    if (!noindex) return
+    setMeta('robots', 'name', 'noindex, follow')
+    // Removed on navigation so the next page is indexable again.
+    return () => document.querySelector('meta[name="robots"]')?.remove()
+  }, [noindex])
+
   useEffect(() => {
     const fullTitle = title.endsWith(`| ${SITE_NAME}`) ? title : `${title} | ${SITE_NAME}`
     const resolvedOgTitle = ogTitle ?? fullTitle

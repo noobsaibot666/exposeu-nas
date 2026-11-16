@@ -24,14 +24,15 @@ Everything that still needs **you** after the 2026-11-16 remediation pass, in th
 - [ ] **Photo-consent data policy:** signatures store name, signature PNG, IP, user agent and location. Decide retention, deletion and access, and confirm the on-page wording.
 - [ ] **Contact persistence:** a message counts as sent once SMTP accepts it, even if the Supabase log insert fails. Keep that?
 - [ ] **V2-010 Link previews:** the site is client-rendered, so shared links show the generic preview. Do per-page previews matter (that needs prerendering)?
-- [ ] **Sitemap coverage:** `sitemap.xml` lists only 3 of the 7 campaign pages (concerts-berlin, exhibition-gallery, brand-agency). `/popups`, `/gallery-museum-documentation` and `/artist-musician-documentation` are missing (Release Content Kit is listed). Should every campaign page be indexable, or are some ad-only on purpose?
 - [ ] **V2-004 Pricing endpoint:** who owns the Google Apps Script destination? Its `no-cors` mode can't confirm a save. Choose between an endpoint that returns a readable response and routing pricing requests through the contact API (Claude can build the latter).
 
-## 4. Staging (send Claude the staging URL + test inbox)
+## 4. Test the forms on the live site (no staging needed)
 
-- [ ] **V2-014 Contact:** reconcile a staging submission (request ID) with the test inbox and Supabase, including the error and duplicate paths.
-- [ ] **V2-025 / V2-004 Pricing:** a staging request lands on `/pricing-request/success` with no console error and reaches its destination.
-- [ ] **V2-016 Photo consent:** go offline → sign → back online and reload; check exactly one row appears. Also try private mode / storage full.
+There is no staging copy of the site; the repo only has production. So test the three forms on the live site with obvious test data. Use the name **"TEST — please ignore"** so the entries are easy to find and delete. Tell Claude what arrived (and the reference number the contact form shows).
+
+- [ ] **Contact (V2-014):** send a message from `/contact`. Check: the page shows a "Reference: …" number, the email reaches your inbox, and a row with that reference appears in Supabase → `contact_submissions` (outreach-app project).
+- [ ] **Pricing (V2-025 / V2-004):** open any service page → pricing → pick a package, fill in the form and send. Check: you land on the "request sent" page, and the request reaches its destination (the Google Sheet behind the Apps Script). If nothing arrives, the pricing form is silently losing requests; tell Claude.
+- [ ] **Photo consent (V2-016):** on your phone open `/consent`, turn on airplane mode, sign, tap save (it should say it will sync later), turn airplane mode off and reload. Check: Supabase → `photo_consent_signatures` gets exactly **one** new row. Delete the test rows afterwards.
 
 ## 5. Media / infrastructure
 
@@ -51,6 +52,7 @@ Everything that still needs **you** after the 2026-11-16 remediation pass, in th
 
 - V2-001 consent gating verified on production: nothing before a choice or after Reject; all vendors after Accept (requests aborted, no analytics pollution).
 - V2-016 idempotent consent retries: the client UUID is the row id and duplicates return `ok` (live schema checked read-only; tested on a mock, no rows written).
+- Ads-only campaign pages (`/popups`, `/gallery-museum-documentation`, `/artist-musician-documentation`, EN + DE) carry `noindex, follow` and stay out of the sitemap (owner decision 2026-11-16).
 - V2-024 closed: lazy-loading German saves only 13 kB gzip and would slow German visitors.
 - V2-027 dependency advisories: the critical and all runtime advisories are fixed. The 7 dev-only typescript-eslint moderates are left (their "fix" is a downgrade).
 - Tidy-ups reviewed and left as-is on purpose:

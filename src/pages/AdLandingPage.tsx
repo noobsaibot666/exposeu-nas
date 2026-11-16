@@ -29,6 +29,8 @@ export type AdLandingPageConfig = {
   title: string
   description: string
   canonical: string
+  /** Ads-only campaign page: noindex, and kept out of sitemap.xml. */
+  noindex?: boolean
   ogImage?: string
   ogTitle?: string
   ogDescription?: string
@@ -584,6 +586,7 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
         ogImage={config.ogImage}
         canonical={config.canonical}
         lang={locale}
+        noindex={config.noindex}
       />
 
       <div className="home__nav alp__nav">

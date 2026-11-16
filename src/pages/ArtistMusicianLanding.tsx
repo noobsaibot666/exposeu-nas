@@ -45,6 +45,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     ...baseConfig,
     sectionOrder: SECTION_ORDER,
     canonical: "https://expose-u.com/artist-musician-documentation",
+    noindex: true,
     title: "Artist & Musician Documentation Berlin",
     description:
       "Editorial photo and video documentation for artists, musicians and performers in Berlin. Press-ready, delivered fast enough to matter.",
@@ -175,6 +176,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     ...baseConfig,
     sectionOrder: SECTION_ORDER,
     canonical: "https://expose-u.com/de/artist-musician-documentation",
+    noindex: true,
     title: "Künstler- und Musikerdokumentation Berlin",
     description:
       "Editoriale Foto- und Videodokumentation für Künstler:innen, Musiker:innen und Performer in Berlin. Pressereif, schnell geliefert.",
