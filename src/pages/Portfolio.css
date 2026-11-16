@@ -144,7 +144,7 @@
   translate: 0 -4px;
   z-index: 2;
   box-shadow: none;
-  border-color: rgba(255, 255, 255, 0.22);
+  border-color: var(--border-strong);
 }
 
 .portfolio__card:hover .portfolio__thumb {
@@ -336,15 +336,15 @@
 }
 
 .portfolio__card .portfolio__context {
-  color: rgba(255, 255, 255, 0.82);
+  color: var(--text-secondary);
 }
 
 .portfolio__card .portfolio__context-label {
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--text-tertiary);
 }
 
 .portfolio__card .portfolio__description {
-  color: rgba(255, 255, 255, 0.82);
+  color: var(--text-secondary);
 }
 
 .portfolio__overlay {

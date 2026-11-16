@@ -138,6 +138,48 @@
 
 
 
+/* Dark islands: components that stay dark in light mode because they sit on
+   photos/video or are designed as dark accent cards. Re-declaring the dark
+   token values here keeps every descendant that uses tokens readable. */
+:root[data-theme='light'] :is(
+  .home__video-hero,
+  .home--v2 .home__nav .top-nav__bar,
+  .home__pricing-card--monthly,
+  .home__pricing-card--custom,
+  .portfolio__overlay,
+  .portfolio__pill
+) {
+  color-scheme: dark;
+  --surface-base: #090a0c;
+  --surface-muted: #111216;
+  --surface-card: rgba(8, 8, 8, 0.7);
+  --surface-card-strong: rgba(15, 15, 15, 0.95);
+  --surface-overlay: rgba(255, 255, 255, 0.05);
+  --text-strong: #f5f5f4;
+  --text-secondary: rgba(245, 245, 244, 0.75);
+  --text-tertiary: rgba(245, 245, 244, 0.6);
+  --text-soft: rgba(245, 245, 244, 0.7);
+  --link-color: #f6f7fb;
+  --border-soft: rgba(255, 255, 255, 0.12);
+  --border-color: rgba(245, 245, 244, 0.18);
+  --border-strong: rgba(255, 255, 255, 0.35);
+  --border-highlight: rgba(255, 255, 255, 0.85);
+  --button-solid-bg: #f5f5f4;
+  --button-solid-text: #050505;
+  --button-solid-border: #f5f5f4;
+  --button-outline-border: rgba(255, 255, 255, 0.6);
+  --button-outline-hover: rgba(255, 255, 255, 0.1);
+  --button-ghost-bg: rgba(255, 255, 255, 0.14);
+  --button-ghost-hover-bg: rgba(255, 255, 255, 0.22);
+  /* Aliases resolve where declared (:root), so they must be re-declared here
+     or they'd inherit the light values. */
+  --text-color: var(--text-strong);
+  --text-muted-strong: var(--text-secondary);
+  --muted-color: var(--text-secondary);
+  --accent-color: var(--link-color);
+  --accent-strong: var(--link-color);
+}
+
 *,
 *::before,
 *::after {

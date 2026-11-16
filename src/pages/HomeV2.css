@@ -224,7 +224,7 @@
 }
 
 .home__actions button:focus-visible {
-  outline: 2px solid rgba(245, 245, 244, 0.6);
+  outline: 2px solid var(--border-highlight);
   outline-offset: 2px;
 }
 
@@ -265,7 +265,7 @@
 }
 
 .home__hero-cta:focus-visible {
-  outline: 2px solid rgba(245, 245, 244, 0.6);
+  outline: 2px solid var(--border-highlight);
   outline-offset: 2px;
 }
 
@@ -727,7 +727,7 @@
 }
 
 .home__pricing-card button:focus-visible {
-  outline: 2px solid rgba(245, 245, 244, 0.6);
+  outline: 2px solid var(--border-highlight);
   outline-offset: 2px;
 }
 
