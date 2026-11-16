@@ -582,6 +582,7 @@ const DATA_URL_PREFIX = 'data:image/png;base64,'
 // rejected (reverse-geocode) before reaching the DB or Overpass/Nominatim.
 const isValidLatitude = (value) => Number.isFinite(value) && value >= -90 && value <= 90
 const isValidLongitude = (value) => Number.isFinite(value) && value >= -180 && value <= 180
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
 app.post('/photo-consent', async (req, res) => {
   const ip = getClientIp(req)
@@ -594,8 +595,15 @@ app.post('/photo-consent', async (req, res) => {
     return sendApiError(res, 500, 'DB_UNAVAILABLE', 'Signature storage is not configured.')
   }
 
-  const { name, locationText, latitude, longitude, locationAccuracy, capturedAt, language, signatureImage } =
+  const { name, locationText, latitude, longitude, locationAccuracy, capturedAt, language, signatureImage, submissionId } =
     req.body || {}
+
+  // Idempotent retries (V2-016): the client generates a UUID per signature and
+  // re-sends it on every retry from its offline queue. It becomes the row's
+  // primary key, so a retry whose first attempt already landed (but whose
+  // response was lost) hits a duplicate key instead of storing a second row.
+  // Non-UUID ids (old-browser fallback) keep the DB-generated id.
+  const rowId = typeof submissionId === 'string' && UUID_RE.test(submissionId) ? submissionId.toLowerCase() : undefined
 
   const trimmedSignature = typeof signatureImage === 'string' ? signatureImage : ''
   if (!trimmedSignature.startsWith(DATA_URL_PREFIX) || trimmedSignature.length <= DATA_URL_PREFIX.length) {
@@ -618,6 +626,7 @@ app.post('/photo-consent', async (req, res) => {
     // by design, so subject signatures can't be browsed via the API). Requesting the
     // row back would implicitly require SELECT and fail RLS.
     const { error } = await supabase.from('photo_consent_signatures').insert({
+      ...(rowId ? { id: rowId } : {}),
       name: trimValue(name) || null,
       location_text: trimValue(locationText) || null,
       latitude: isValidLatitude(Number(latitude)) ? Number(latitude) : null,
@@ -629,6 +638,13 @@ app.post('/photo-consent', async (req, res) => {
       ip,
       user_agent: req.get('user-agent') || null,
     })
+
+    // 23505 = unique_violation on the primary key: this signature was already
+    // stored by an earlier attempt, so the retry has succeeded.
+    if (error && error.code === '23505' && rowId) {
+      console.log('PHOTO CONSENT DUPLICATE RETRY (already saved):', { ts: new Date().toISOString(), ip })
+      return res.json({ ok: true, duplicate: true })
+    }
 
     if (error) {
       console.error('PHOTO CONSENT INSERT FAILED:', error.message)
