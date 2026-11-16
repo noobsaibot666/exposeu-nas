@@ -13,6 +13,7 @@ Everything that still needs **you** after the 2026-11-16 remediation pass, in th
   - the hard edge where a dark campaign / Release Content Kit hero meets the light page (in dark mode it fades)
   - the homepage nav: white over the video, then dark text on a light frosted bar after scrolling (desktop and phone)
   - the theme and language buttons beside the menu button on phones
+- [ ] **Portfolio pop-up films (V2-028):** open Leonis Work & Liquidrom, SANAM and Gleo (Vimeo) and Lick the walls (YouTube). Each film should fade in over its cover within a second or two. If one stays on the cover with a "Watch the film on …" link, tell Claude which project and browser.
 - [ ] **V2-002 Hero video:** the homepage plays the Vimeo background players. Confirm that's fine until step 5.
 - [ ] **V2-018 Per-route look** at phone, tablet and desktop widths. Automated reflow (320 px and 200% zoom) and contrast scans already pass, so this is a design check only.
 

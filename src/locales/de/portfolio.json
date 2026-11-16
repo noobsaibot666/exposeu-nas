@@ -103,6 +103,7 @@
     "close": "Video schließen",
     "previousSlide": "Vorherige Folie",
     "nextSlide": "Nächste Folie",
-    "showSlide": "Foto {{n}} anzeigen"
+    "showSlide": "Foto {{n}} anzeigen",
+    "watchOn": "Film auf {{platform}} ansehen"
   }
 }

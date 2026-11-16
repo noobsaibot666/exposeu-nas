@@ -103,6 +103,7 @@
     "close": "Close video",
     "previousSlide": "Previous slide",
     "nextSlide": "Next slide",
-    "showSlide": "Show photo {{n}}"
+    "showSlide": "Show photo {{n}}",
+    "watchOn": "Watch the film on {{platform}}"
   }
 }

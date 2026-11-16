@@ -265,3 +265,15 @@ Production homepage was inspected at 1200× and 390×. Local route-family checks
 
 **Verification:** `tsc -b` + `vite build` pass. The contact API ran against a local SMTP sink: a contact POST returned 200 with a matching `X-Request-Id`, and the sink received the message (correct from/to/subject). `/reverse-geocode?lat=500` → 400 (also confirms V2-021). Remaining: 7 moderate typescript-eslint advisories (dev-only; the offered fix is a downgrade).
 
+### [x] V2-028 — Project pop-up showed an empty white/grey frame instead of the film
+
+**Status: DONE IN SOURCE — owner to confirm Vimeo films in a real browser.** The pop-up's film frame was the bare Vimeo/YouTube iframe on a transparent background. Whenever the embed didn't render (blocked by browser privacy settings or a content blocker, network filter, slow load), the frame showed nothing or the browser's light-grey error page. Reproduced by blocking the players.
+
+**Fix (`useVideoLightbox.tsx`, `Portfolio.css`):**
+- The film frame now shows the **project cover** on a dark base.
+- The iframe stays invisible until its player **reports in via postMessage**: Vimeo `api=1` (it posts `ready`, and answers a `ping`); YouTube `enablejsapi=1` (it answers a `listening` handshake). Only messages whose `source` is that iframe count. Error pages never post, so a broken embed never shows.
+- After 6 s without a player, a **"Watch the film on Vimeo/YouTube"** link (EN/DE) appears over the cover.
+- Applies to the Portfolio page and the homepage "Last Projects" (same hook).
+
+**Verified:** a live YouTube film fades in (`is-ready` at 2.5 s, no link). With players blocked, the cover shows and the link appears at 6 s (YouTube and Vimeo). Live Vimeo couldn't be loaded here (Vimeo bot-checks automated browsers). Its readiness protocol was confirmed from Vimeo's `player.js`, and failure degrades to cover + link, never a blank frame.
+

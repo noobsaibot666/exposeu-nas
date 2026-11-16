@@ -22,42 +22,37 @@ function getEmbedSrc(src: string, ambient = false) {
   )
   if (youTubeMatch) {
     const id = youTubeMatch[1]
-    return `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&modestbranding=1&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0`
+    return `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&modestbranding=1&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`
   }
 
   const vimeoMatch = src.match(/vimeo\.com\/(?:video\/)?(\d+)/i)
   if (vimeoMatch) {
     const params = ambient
-      ? 'background=1&autoplay=1&muted=1&loop=1&controls=0&title=0&byline=0&portrait=0&badge=0&dnt=1&autopause=0'
-      : 'autoplay=1&title=0&byline=0&portrait=0'
+      ? 'background=1&autoplay=1&muted=1&loop=1&controls=0&title=0&byline=0&portrait=0&badge=0&dnt=1&autopause=0&api=1'
+      : 'autoplay=1&title=0&byline=0&portrait=0&api=1'
     return `https://player.vimeo.com/video/${vimeoMatch[1]}?${params}`
   }
 
   return null
 }
 
+// Where to watch the film directly if its embedded player never comes alive.
+function getWatchLink(src: string): { url: string; platform: string } | null {
+  const yt = src.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube-nocookie\.com\/embed\/)([^?&/]+)/i)
+  if (yt) return { url: `https://www.youtube.com/watch?v=${yt[1]}`, platform: 'YouTube' }
+  const vimeo = src.match(/vimeo\.com\/(?:video\/)?(\d+)/i)
+  if (vimeo) return { url: `https://vimeo.com/${vimeo[1]}`, platform: 'Vimeo' }
+  return null
+}
+
+// Seconds to wait for the embedded player to report in before offering the
+// external link over the cover.
+const FILM_FALLBACK_MS = 6000
+
 // YouTube offers no way to switch its branding off, so its films always play
 // as ambient loops (no hover/pause/end-screen UI) behind a veil that covers the
 // title overlay YouTube shows for the first few seconds.
 const isYouTube = (src?: string) => Boolean(src && /youtu\.?be/i.test(src))
-
-function renderVideo(video: LightboxVideo) {
-  if (!video.videoSrc) return null
-  const embedSrc = getEmbedSrc(video.videoSrc, video.ambientVideo)
-  if (embedSrc) {
-    return (
-      <iframe
-        key={video.id}
-        title={video.title}
-        src={embedSrc}
-        allow="autoplay; fullscreen; picture-in-picture"
-        allowFullScreen
-      />
-    )
-  }
-
-  return <video key={video.id} controls autoPlay playsInline poster={video.thumb} src={video.videoSrc} />
-}
 
 const pad = (n: number) => String(n).padStart(2, '0')
 
@@ -83,6 +78,11 @@ export function useVideoLightbox(scopeRef?: RefObject<HTMLElement | null>) {
   const [leavingIndex, setLeavingIndex] = useState<number | null>(null)
   const [slideDirection, setSlideDirection] = useState(1)
   const openerRef = useRef<HTMLElement | null>(null)
+  // Embedded film: hidden (cover shows) until its player reports in, so a
+  // blocked/failed embed never shows the browser's grey error page.
+  const filmFrameRef = useRef<HTMLIFrameElement | null>(null)
+  const [filmReady, setFilmReady] = useState(false)
+  const [filmSlow, setFilmSlow] = useState(false)
   const stripRef = useRef<HTMLDivElement | null>(null)
   const slideSwipeState = useRef({ active: false, startX: 0, pointerId: 0 })
   const navRef = useRef<{
@@ -99,8 +99,67 @@ export function useVideoLightbox(scopeRef?: RefObject<HTMLElement | null>) {
     setSlideIndex(0)
     setLeavingIndex(null)
     setSlideDirection(1)
+    setFilmReady(false)
+    setFilmSlow(false)
     setActiveVideo(video)
   }, [])
+
+  const activeEmbedSrc = activeVideo?.videoSrc ? getEmbedSrc(activeVideo.videoSrc, activeVideo.ambientVideo) : null
+
+  useEffect(() => {
+    if (!activeEmbedSrc) return
+    const onMessage = (event: MessageEvent) => {
+      // Any message from this frame means the Vimeo/YouTube player is running
+      // (an error page never posts). Check the source, not just the origin.
+      if (event.source && event.source === filmFrameRef.current?.contentWindow) setFilmReady(true)
+    }
+    window.addEventListener('message', onMessage)
+    const timer = window.setTimeout(() => setFilmSlow(true), FILM_FALLBACK_MS)
+    return () => {
+      window.removeEventListener('message', onMessage)
+      window.clearTimeout(timer)
+    }
+  }, [activeEmbedSrc])
+
+  // Ask the player to report in: Vimeo answers a `ping` (and also posts
+  // `ready` on its own); YouTube starts posting after a `listening` handshake.
+  const handleFilmLoad = useCallback(() => {
+    const win = filmFrameRef.current?.contentWindow
+    if (!win) return
+    try {
+      win.postMessage(JSON.stringify({ method: 'ping' }), 'https://player.vimeo.com')
+      win.postMessage(JSON.stringify({ event: 'listening', id: 1, channel: 'widget' }), 'https://www.youtube-nocookie.com')
+    } catch {
+      /* frame navigated elsewhere (error page): stay on the cover */
+    }
+  }, [])
+
+  const renderVideo = (video: LightboxVideo) => {
+    if (!video.videoSrc) return null
+    if (activeEmbedSrc) {
+      const watch = getWatchLink(video.videoSrc)
+      return (
+        <>
+          <iframe
+            key={video.id}
+            ref={filmFrameRef}
+            className={filmReady ? 'is-ready' : undefined}
+            title={video.title}
+            src={activeEmbedSrc}
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+            onLoad={handleFilmLoad}
+          />
+          {filmSlow && !filmReady && watch && (
+            <a className="portfolio__film-fallback" href={watch.url} target="_blank" rel="noopener noreferrer">
+              {t('portfolio.modal.watchOn', { platform: watch.platform })}
+            </a>
+          )}
+        </>
+      )
+    }
+    return <video key={video.id} controls autoPlay playsInline poster={video.thumb} src={video.videoSrc} />
+  }
 
   const closeVideo = useCallback(() => setActiveVideo(null), [])
 
@@ -389,6 +448,9 @@ export function useVideoLightbox(scopeRef?: RefObject<HTMLElement | null>) {
                 className={`portfolio__film ${
                   activeVideo.ambientVideo || isYouTube(activeVideo.videoSrc) ? 'portfolio__film--ambient' : ''
                 }`}
+                // The project cover sits behind the player, so the frame always
+                // has content while the embed loads (or if it's blocked).
+                style={activeVideo.thumb ? { backgroundImage: `url(${activeVideo.thumb})` } : undefined}
               >
                 {renderVideo(activeVideo)}
                 {isYouTube(activeVideo.videoSrc) && <div className="portfolio__film-veil" aria-hidden="true" />}
