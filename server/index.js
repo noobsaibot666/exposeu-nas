@@ -578,6 +578,11 @@ app.head('/photo-consent', (_req, res) => res.status(200).end())
 // signature locally and retry, rather than believing it was saved.
 const DATA_URL_PREFIX = 'data:image/png;base64,'
 
+// Geographic bounds — out-of-range values are dropped (consent insert) or
+// rejected (reverse-geocode) before reaching the DB or Overpass/Nominatim.
+const isValidLatitude = (value) => Number.isFinite(value) && value >= -90 && value <= 90
+const isValidLongitude = (value) => Number.isFinite(value) && value >= -180 && value <= 180
+
 app.post('/photo-consent', async (req, res) => {
   const ip = getClientIp(req)
   if (isStoreRateLimited(photoConsentRequestStore, ip, 20)) {
@@ -615,8 +620,8 @@ app.post('/photo-consent', async (req, res) => {
     const { error } = await supabase.from('photo_consent_signatures').insert({
       name: trimValue(name) || null,
       location_text: trimValue(locationText) || null,
-      latitude: toFiniteOrNull(latitude),
-      longitude: toFiniteOrNull(longitude),
+      latitude: isValidLatitude(Number(latitude)) ? Number(latitude) : null,
+      longitude: isValidLongitude(Number(longitude)) ? Number(longitude) : null,
       location_accuracy_m: toFiniteOrNull(locationAccuracy),
       signature_image: trimmedSignature,
       language: trimmedLanguage,
@@ -741,8 +746,8 @@ app.get('/reverse-geocode', async (req, res) => {
 
   const lat = Number(req.query.lat)
   const lon = Number(req.query.lon)
-  if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
-    return sendApiError(res, 400, 'INVALID_PAYLOAD', 'lat and lon query params are required.')
+  if (!isValidLatitude(lat) || !isValidLongitude(lon)) {
+    return sendApiError(res, 400, 'INVALID_PAYLOAD', 'lat and lon query params are required and must be valid coordinates.')
   }
 
   const lang = trimValue(req.query.lang) === 'de' ? 'de' : 'en'

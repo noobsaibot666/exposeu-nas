@@ -3,8 +3,6 @@ const baseUrl = process.env.BASE_URL || 'http://localhost'
 const canonical = [
   '/',
   '/de',
-  '/v2',
-  '/de/v2',
   '/about',
   '/de/about',
   '/call-session',
@@ -51,6 +49,8 @@ const canonical = [
 
 const redirects = [
   ['/old-home', '/'],
+  ['/v2', '/'],
+  ['/de/v2', '/de'],
   ['/de/old-home', '/de'],
   ['/artist-sessions', '/services/artist-sessions'],
   ['/de/artist-sessions', '/de/services/artist-sessions'],

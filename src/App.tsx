@@ -145,8 +145,8 @@ function App() {
             <Route path="/de" element={<HomeV2 />} />
             <Route path="/old-home" element={<Navigate to="/" replace />} />
             <Route path="/de/old-home" element={<Navigate to="/de" replace />} />
-            <Route path="/v2" element={<HomeV2 />} />
-            <Route path="/de/v2" element={<HomeV2 />} />
+            <Route path="/v2" element={<Navigate to="/" replace />} />
+            <Route path="/de/v2" element={<Navigate to="/de" replace />} />
             <Route path="/about" element={<About />} />
             <Route path="/de/about" element={<About />} />
             <Route path="/call-session" element={<CallSession />} />

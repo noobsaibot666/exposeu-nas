@@ -174,3 +174,29 @@ Remaining: full route-by-route screenshot review at every width, 200% zoom/reflo
 **Resolution:** Service galleries disappeared below 900 px; responsive stacked gallery images now display on mobile and tablet widths.
 
 **Acceptance:** local browser at 390 px confirms gallery media containers render as blocks at 351×242 px and both images load. Check crops and scroll flow across 320–900 px and all service routes.
+
+## Gap pass — 2026-11-16 (items found in pages.md / systems.md without an issue ID)
+
+### [x] V2-020 — `/v2` and `/de/v2` served a duplicate homepage
+
+**Status: DONE IN SOURCE.** Both paths rendered `HomeV2` without redirecting, which created duplicate URLs for the homepage. They now `<Navigate replace>` to `/` and `/de`, like `/old-home`. `scripts/verify-routes.mjs` lists them as redirects instead of canonical routes.
+
+**Files:** `src/App.tsx`, `scripts/verify-routes.mjs`.
+
+**Acceptance:** after deploy, `/v2` → `/` and `/de/v2` → `/de`.
+
+### [x] V2-021 — Reverse-geocode and photo-consent accepted out-of-range coordinates
+
+**Status: DONE IN SOURCE (API deploy).** `/reverse-geocode` checked only that coordinates were finite, so values like `lat=500` were forwarded to Overpass/Nominatim. It now returns 400 unless −90 ≤ lat ≤ 90 and −180 ≤ lon ≤ 180. `/photo-consent` stores `null` for out-of-range coordinates instead of persisting them.
+
+**Files:** `server/index.js`.
+
+**Acceptance:** `GET /api/reverse-geocode?lat=500&lon=0` returns 400 `INVALID_PAYLOAD`. A valid Berlin coordinate still returns a label.
+
+### [ ] V2-022 — No route-level code splitting
+
+**Status: OPEN — next step.** `App.tsx` imports every page eagerly, so the homepage downloads the JS for every campaign, legal and consent page (including SignaturePad/geolocation code). Convert non-home routes to `React.lazy` + `Suspense`, then compare bundle size from the deployment build.
+
+### [ ] V2-023 — `LocationAutocomplete` lacks combobox semantics
+
+**Status: OPEN.** The suggestions list supports arrows/Enter/Escape, but the input has no `role="combobox"`, `aria-expanded`, `aria-controls` or `aria-activedescendant`, so screen readers don't announce the suggestions. Folds into V2-018.

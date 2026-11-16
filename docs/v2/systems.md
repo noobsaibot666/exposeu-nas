@@ -17,12 +17,12 @@
 | Meta CAPI | `/api/track-lead` sends lead to Meta | Contact UI gates call by analytics consent. HTML no longer bootstraps the Pixel; consented initialization is handled by `initializeAnalyticsVendors()` (V2-001). |
 | Analytics | GA4 + Clarity + Meta hooks + scroll/form events | Before the fix, Clarity and Meta requests were verified before choice. Source now gates all vendor script injection on affirmative consent; post-deployment network confirmation remains (V2-001). |
 | Photo consent | `/api/photo-consent` writes signature and location metadata to Supabase; reverse-geocode uses Overpass/Nominatim | 3x print-resolution canvas, base64 PNG, user-agent/IP/location persistence. Client queue now validates entries, caps storage to 10 records/4 MiB, surfaces pending/retry state, and offers a backup if persistence fails. Server ignores the client submission ID, so duplicate prevention is not guaranteed. Validate retention/privacy copy and idempotency against the actual schema. |
-| Geolocation | Browser geolocation, then server-side reverse-geocode | External Overpass/Nominatim dependency can take up to sequential timeouts; UX needs offline/timeout test. Lat/lon are checked for finiteness but not geographic range. |
+| Geolocation | Browser geolocation, then server-side reverse-geocode | External Overpass/Nominatim dependency can take up to sequential timeouts; UX needs offline/timeout test. Lat/lon are range-checked before external calls (V2-021). |
 | SMTP diagnostics | `/smtp-test` token-gated outside dev and rate-limited in process | Ensure production token is set only when needed; validate endpoint is not surfaced publicly in docs/monitoring. |
 
 ## Performance and loading
 
-1. **Homepage Vimeo hero:** before the fix, initial load transferred roughly 20 MB of adaptive video segments. Source now uses small local posters and starts the corresponding Vimeo player only after a play action; production transfer/LCP recheck remains (V2-002).
+1. **Homepage hero video:** the original Vimeo hero transferred roughly 20 MB of adaptive segments on first load. A click-to-play poster version was replaced by native MP4 (`ddf557b`), which showed an empty hero because the R2 media was never provisioned. The hero now autoplays the viewport-matched Vimeo background player (`dnt=1`) until `VITE_HOME_HERO_VIDEO_BASE_URL` is set, then switches to native MP4. Measure transfer/LCP after R2 provisioning (V2-002).
 2. **Service galleries:** shared template keeps the hero eager/high priority and lazy-loads below-hero images. Gallery images stack below section copy at widths ≤900 px (V2-005, 019).
 3. **Unused image assets:** the audit moved 35 files / 2.71 MB reported by `check:images` to `archive/unused-assets/`, outside the eagerly-globbed image tree (V2-007); checker now reports no unused assets.
 4. **Image sizes and layout stability:** project checklist asks for dimensions/aspect-ratio. A complete image audit by page and CLS measurement has not been done. Current source tree is ~19 MB locally, 176 WebP files; 18 WebP files exceed 200 KB. File size alone does not show which are initial viewport assets.
@@ -33,7 +33,7 @@
 ## Navigation and usability
 
 - Top nav is shared but links vary by page. Mobile drawer has modal semantics, Tab/Shift+Tab trapping, Escape, body scroll lock and focus restoration. A local keyboard pass verified these behaviors; assistive-technology review remains open.
-- `/v2` is an alias rendering the same homepage without redirect; `/de/v2` likewise. This can create duplicate URLs/canonical drift.
+- `/v2` and `/de/v2` now redirect to the localized homepage (V2-020).
 - Root skip link is in the accessibility tree, but appears at a negative viewport y until focused, which is normal visually; verify focus style on keyboard.
 - Before the fix, the mobile homepage first viewport showed a full-screen decorative video with no offer text. Source now overlays localized H1/subhead/primary CTA on the mobile poster; screenshot validation remains (V2-012).
 - Consent banner takes a small fixed area at bottom on mobile, but focus management and keyboard dismissal were not inspected.
@@ -52,7 +52,7 @@
 - Positive controls found: CORS allowlist, one trusted proxy hop, honeypot, timing-safe SMTP token check, generic API error handler, JSON size cap, API endpoint rate limits.
 - Rate limiting currently lives in process memory; maps now cap at 10,000 IP keys and prune stale records (V2-006). Compose defines one API container. Restart resets remain; use a shared store before adding replicas.
 - Contact endpoint logs IP and lead metadata; signature endpoint stores IP, user-agent, geolocation, signature PNG and name/location. Confirm retention, access, deletion and least-privilege policies with service owners.
-- Reverse-geocode accepts finite but out-of-range coordinates; add geographic bounds before making external requests.
+- Reverse-geocode rejects out-of-range coordinates; the consent insert stores null for them (V2-021).
 - Contact email syntax/field caps are implemented (V2-015). Consider idempotency/replay controls for duplicate form posts and protect PII in logs.
 - `docker-compose.traefik.yml` is not audited here for secret exposure or full routing; inspect deployment configuration and production headers in the remediation pass.
 
