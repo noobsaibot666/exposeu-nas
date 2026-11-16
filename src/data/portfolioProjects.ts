@@ -21,9 +21,64 @@ export type PortfolioProject = {
   uploadDate?: string
   slideshowImages?: string[]
   tag?: string
+  // Shown verbatim at the end of the project page (same in every language).
+  credits?: Array<{ role: string; names: string }>
 }
 
 export const portfolioProjects: PortfolioProject[] = [
+  {
+    id: 'metaxy',
+    title: 'Metaxy',
+    description: 'Immersive dance performance by Renato De Leon, presented by Leonis Works.',
+    context: 'Immersive dance performance, Atelier Gardens Berlin',
+    outcome: 'Performance stills',
+    year: '2026',
+    location: 'Atelier Gardens, Berlin',
+    thumb: resolveImagePath(projectPreviewImages.metaxy),
+    slideshowImages: [
+      // metaxy_019 (DSC_4495) is the main photo and the card cover: keep it first.
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_019.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_001.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_002.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_003.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_004.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_005.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_006.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_007.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_008.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_009.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_010.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_011.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_012.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_013.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_014.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_015.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_016.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_017.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_018.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_020.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_021.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_022.webp'),
+      resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_023.webp'),
+    ],
+    tag: 'Performance',
+    credits: [
+      { role: 'Concept & Artistic Direction', names: 'Renato De Leon | Leonis Works' },
+      { role: 'Choreography', names: 'Renato De Leon, developed in collaboration with the performers' },
+      { role: 'Performers', names: 'Renato De Leon | Dan Ozeri | Caterina Politi | Jade Albrieux' },
+      { role: 'Music, Mixed Live', names: 'Norman Nodge' },
+      { role: 'Video Projections', names: 'Dan Tombs (2MS)' },
+      { role: 'Lighting Design', names: 'Marco Di Nardo' },
+      { role: 'Sound System', names: 'Dahledohr' },
+      { role: 'Dramaturgical Assistance', names: 'Irakli Khishtovani' },
+      { role: 'Operations & Logistics', names: 'Mark Polin' },
+      { role: 'Exhibition Curation & Production Support', names: 'Emily Brockington' },
+      { role: 'Operations Support', names: 'Rocio Lagger' },
+      { role: 'Production Manager', names: 'Sheena Leach' },
+      { role: 'Mask Design', names: 'Gamma Sky' },
+      { role: 'Styling', names: 'Michelle Döring by The Code' },
+    ],
+  },
   {
     id: 'leonis-voo-store',
     title: 'Leonis Work & VOO Space',

@@ -33,10 +33,24 @@
     "counter": "Projekt {{n}} von {{total}}",
     "nextShort": "Weiter",
     "backShort": "Projekte",
-    "viewNext": "Nächstes Projekt"
+    "viewNext": "Nächstes Projekt",
+    "credits": "Credits"
   },
   "proofStrip": ["12+ dokumentierte Events", "Konzerte · Ausstellungen · Sessions", "Künstler, Venues & Agenturen", "Europa"],
   "videos": [
+    {
+      "id": "metaxy",
+      "title": "Metaxy",
+      "description": "Immersive Tanzperformance von Renato De Leon, präsentiert von Leonis Works.",
+      "context": "Immersive Tanzperformance, Atelier Gardens Berlin",
+      "outcome": "Performance-Stills",
+      "tag": "Performance",
+      "story": [
+        "Metaxy, griechisch für „dazwischen“, stellt vier Performer:innen zwischen Ordnung und Chaos, angelehnt an Nietzsches Die Geburt der Tragödie.",
+        "Inszeniert mitten im Publikum in Haus 12/13 der Atelier Gardens, mit Musik, live gemischt von Berghain-Resident Norman Nodge."
+      ],
+      "highlight": "Zwischen Ordnung und Chaos, Disziplin und Begehren."
+    },
     {
       "id": "leonis-voo-store",
       "title": "Leonis Work & VOO Space",

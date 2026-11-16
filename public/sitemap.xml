@@ -255,6 +255,24 @@
 
   <!-- Project pages (src/data/projectSlugs.json) -->
   <url>
+    <loc>https://expose-u.com/projects/metaxy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/projects/metaxy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/projects/metaxy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/projects/metaxy"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/de/projects/metaxy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/projects/metaxy"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/projects/metaxy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/projects/metaxy"/>
+  </url>
+
+  <url>
     <loc>https://expose-u.com/projects/leonis-voo-space</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

@@ -45,6 +45,8 @@ const canonical = [
   '/de/pricing-request/success',
   '/concerts-berlin',
   '/de/concerts-berlin',
+  '/projects/metaxy',
+  '/de/projects/metaxy',
   '/projects/leonis-voo-space',
   '/de/projects/leonis-voo-space',
   '/projects/mirrwal-liquidrom',

@@ -359,6 +359,20 @@ function ProjectDetailPage({ projectId }: { projectId: string }) {
         )}
       </section>
 
+      {project.credits && project.credits.length > 0 && (
+        <section className="project-detail__credits" aria-labelledby="project-credits-title">
+          <p className="project-detail__eyebrow" id="project-credits-title">{t('portfolio.detail.credits')}</p>
+          <dl>
+            {project.credits.map((credit) => (
+              <div key={credit.role}>
+                <dt>{credit.role}</dt>
+                <dd>{credit.names}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )}
+
       <div ref={endRef}>
         <LocalizedLink to={`/projects/${projectSlug(next.id)}`} className="project-detail__next">
           <div className="project-detail__next-media"><img src={next.thumb} alt="" loading="lazy" decoding="async" /></div>
