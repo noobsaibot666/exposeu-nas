@@ -6,7 +6,9 @@
     "secondaryCta": "View our work",
     "scroll": "Scroll",
     "scrollAria": "Scroll to content",
-    "playVideo": "Play background video"
+    "playVideo": "Play background video",
+    "pauseVideo": "Pause background video",
+    "retryVideo": "Retry background video"
   },
   "proof": {
     "badge": "Our approach",

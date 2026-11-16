@@ -18,17 +18,15 @@ The static snippets were removed from `index.html`; `initializeAnalyticsVendors(
 
 ## P1 — pre-V2
 
-### [x] V2-002 — Homepage background video causes heavy first-load work
+### [ ] V2-002 — Homepage background video causes heavy first-load work
 
-**Status: DONE IN SOURCE — local initial no-player state verified; post-play and production transfer checks remain.** Previously, a Vimeo iframe loaded automatically on first visit; the observed trace included adaptive playlists and roughly 20 MB of video segments. The hero background is decorative. The source already mounts only the matching desktop or mobile iframe, but both variants autoplay as soon as that viewport loads.
+**Status: FRONTEND IMPLEMENTED; MEDIA PROVISIONING OPEN.** Vimeo iframe startup and adaptive-stream transfers were removed from the hero. The homepage now mounts one muted, inline native video immediately, selects a mobile or desktop MP4 at the 900 px breakpoint, retains the localized mobile headline and CTA, and includes localized pause/play/retry controls with reduced-motion support. No authorized source files, R2 objects, or configured custom domain are available in this checkout, so actual playback and performance remain unverified.
 
-**Resolution:** The decorative Vimeo hero loaded video on page load; it now shows small local posters and loads its player only after Play is selected.
+**Resolution:** Deferred Vimeo player code, poster images, and readiness overlays were removed; native muted autoplay starts on the first homepage render when the configured R2 MP4s are available, and pause/play/retry controls honor reduced-motion preferences.
 
-The homepage now shows lightweight local WebP posters (49 KB desktop, 19 KB mobile) and loads the corresponding Vimeo player only after the visitor selects “Play background video.” Vimeo preconnects were also removed from the initial HTML. If iframe loading errors, the play action returns so the visitor can retry.
+**Files:** `src/pages/HomeV2.tsx`, `src/pages/HomeV2.css`, `src/config/homeHeroVideo.ts`, `.env.example`, `src/locales/{en,de}/home.json`.
 
-**Files:** `src/pages/HomeV2.tsx`, `src/pages/HomeV2.css`, `index.html` (Vimeo preconnects).
-
-**Acceptance:** source and static checks show no initial iframe source or Vimeo preconnect; the play action mounts only the active viewport's player; mobile/desktop poster assets are small and the title/controls remain available without video. Local browser confirms the initial player stays unloaded. Verify click-to-play and compare production network/LCP after deployment.
+**Acceptance:** TypeScript and targeted ESLint pass; source contains one native video element with responsive MP4 sources and no Vimeo/YouTube hero player, poster, or loading overlay. `VITE_HOME_HERO_VIDEO_BASE_URL` is intentionally blank until provisioned, preventing requests to missing media. Provide the authorized landscape/portrait videos, upload them to R2, configure its custom domain/cache and the build variable, then verify first-frame timing, range responses, cold/warm transfer, and mobile playback before closing this issue or deploying.
 
 ### [x] V2-003 — German language switch can navigate to missing legal routes
 

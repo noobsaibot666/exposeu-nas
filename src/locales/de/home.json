@@ -6,7 +6,9 @@
     "secondaryCta": "Unsere Arbeiten",
     "scroll": "Scrollen",
     "scrollAria": "Zum Inhalt scrollen",
-    "playVideo": "Hintergrundvideo abspielen"
+    "playVideo": "Hintergrundvideo abspielen",
+    "pauseVideo": "Hintergrundvideo pausieren",
+    "retryVideo": "Hintergrundvideo erneut abspielen"
   },
   "proof": {
     "badge": "Unser Ansatz",

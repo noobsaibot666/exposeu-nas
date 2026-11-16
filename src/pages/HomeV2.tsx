@@ -7,6 +7,7 @@ import '../pages/Portfolio.css'
 import styles from './HomeRedesign.module.css'
 import Footer from '../sections/Footer'
 import { resolveImagePath } from '../utils/resolveImagePath'
+import { HOME_HERO_VIDEO_URLS } from '../config/homeHeroVideo'
 import { portfolioProjects } from '../data/portfolioProjects'
 import { serviceMeta } from '../data/serviceMeta'
 import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
@@ -15,34 +16,6 @@ import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProv
 import LocalizedLink from '../i18n/LocalizedLink'
 import { SchemaOrg, SEOMeta } from '../components/SEOMeta'
 import { useVideoLightbox } from '../hooks/useVideoLightbox'
-
-// Set type to 'vimeo' or 'youtube' and replace id with the actual video ID
-const HERO_VIDEO = {
-  type: 'vimeo' as 'vimeo' | 'youtube',
-  id: '1228854165',
-  hash: '',
-}
-
-const MOBILE_HERO_VIDEO = {
-  type: 'vimeo' as 'vimeo' | 'youtube',
-  id: '1228856768',
-  hash: '',
-}
-
-const HERO_POSTER = resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.webp')
-const MOBILE_HERO_POSTER = resolveImagePath('/src/assets/images/services/7_Hero/9_16/7_HERO_004.webp')
-
-// How many seconds before the end to jump back to the start
-const EARLY_LOOP_SECONDS = 1
-
-function buildHeroVideoSrc(video: typeof HERO_VIDEO | typeof MOBILE_HERO_VIDEO): string {
-  if (video.type === 'vimeo') {
-    const hashParam = video.hash ? `h=${video.hash}&` : ''
-    // loop=1 = native fallback; api=1 = enables postMessage for early-seek enhancement
-    return `https://player.vimeo.com/video/${video.id}?${hashParam}background=1&autoplay=1&loop=1&byline=0&title=0&muted=1&api=1`
-  }
-  return `https://www.youtube.com/embed/${video.id}?autoplay=1&mute=1&loop=1&playlist=${video.id}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1`
-}
 
 const projectVisuals = [
   {
@@ -144,14 +117,14 @@ function HomeV2() {
   const { locale } = useLocale()
   const { t } = useTranslation()
   const [activeSection, setActiveSection] = useState('home')
-  const [videoReady, setVideoReady] = useState(false)
-  const [mobileVideoReady, setMobileVideoReady] = useState(false)
-  const [videoStarted, setVideoStarted] = useState(false)
-  const [isMuted, setIsMuted] = useState(true)
-  // Mirrors the CSS breakpoint that swaps --desktop/--mobile video sections
-  // (HomeV2.css, max-width: 900px). CSS alone hides the inactive iframe but
-  // doesn't reliably stop the browser from fetching its src, so gate mounting
-  // in JS too — otherwise every visitor downloads both hero videos.
+  const [videoPlaying, setVideoPlaying] = useState(false)
+  const [playbackControlVisible, setPlaybackControlVisible] = useState(false)
+  const [autoplayBlocked, setAutoplayBlocked] = useState(false)
+  const [videoError, setVideoError] = useState(false)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
+    () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  )
+  // Mirrors the video source media breakpoint so a resize reloads the matching variant.
   const [isMobileViewport, setIsMobileViewport] = useState(
     () => window.matchMedia('(max-width: 900px)').matches,
   )
@@ -169,9 +142,7 @@ function HomeV2() {
   const galleryRef = useRef<HTMLDivElement | null>(null)
   const tiltX = useRef<((value: number) => void) | null>(null)
   const tiltY = useRef<((value: number) => void) | null>(null)
-  const videoIframeRef = useRef<HTMLIFrameElement | null>(null)
-  const mobileVideoIframeRef = useRef<HTMLIFrameElement | null>(null)
-  const earlyLoopUnsubscribeRef = useRef<(() => void) | null>(null)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
 
   useTrackViewEvent('home_view')
   useScrollDepthTracking('home', [25, 50, 75, 90])
@@ -258,96 +229,37 @@ function HomeV2() {
     return () => mql.removeEventListener('change', handleChange)
   }, [])
 
-  useEffect(() => () => earlyLoopUnsubscribeRef.current?.(), [])
-
-  // Reveal the player after load, with a fallback in case Vimeo never signals load.
   useEffect(() => {
-    if (!videoStarted) return undefined
-    const fallback = setTimeout(() => setVideoReady(true), 3000)
-    return () => clearTimeout(fallback)
-  }, [videoStarted])
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const handleMotionPreference = () => setPrefersReducedMotion(motionQuery.matches)
+    motionQuery.addEventListener('change', handleMotionPreference)
+    return () => motionQuery.removeEventListener('change', handleMotionPreference)
+  }, [])
 
   useEffect(() => {
-    if (!videoStarted) return undefined
-    const fallback = setTimeout(() => setMobileVideoReady(true), 3000)
-    return () => clearTimeout(fallback)
-  }, [videoStarted])
+    const video = videoRef.current
+    if (!video || !HOME_HERO_VIDEO_URLS.desktop || !HOME_HERO_VIDEO_URLS.mobile) return
+    video.autoplay = !prefersReducedMotion
+    setVideoPlaying(false)
+    setVideoError(false)
+    if (prefersReducedMotion) {
+      video.pause()
+      return
+    }
+    video.load()
+    void video.play().catch(() => { setVideoPlaying(false); setAutoplayBlocked(true) })
+  }, [isMobileViewport, prefersReducedMotion])
 
-  const handleVideoLoad = () => {
-    setTimeout(() => setVideoReady(true), 600)
-    subscribeVimeoEarlyLoop()
-  }
-
-  const handleMobileVideoLoad = () => {
-    setTimeout(() => setMobileVideoReady(true), 600)
-  }
-
-  const toggleMute = () => {
-    const iframe = videoIframeRef.current
-    if (!iframe?.contentWindow) return
-    if (isMuted) {
-      iframe.contentWindow.postMessage(
-        JSON.stringify({ method: 'setVolume', value: 1 }),
-        'https://player.vimeo.com',
-      )
+  const toggleHeroPlayback = () => {
+    const video = videoRef.current
+    if (!video) return
+    setVideoError(false)
+    if (video.paused || video.ended) {
+      if (videoError) video.load()
+      void video.play().catch(() => { setVideoError(true); setAutoplayBlocked(true) })
     } else {
-      iframe.contentWindow.postMessage(
-        JSON.stringify({ method: 'setVolume', value: 0 }),
-        'https://player.vimeo.com',
-      )
+      video.pause()
     }
-    setIsMuted((prev) => !prev)
-  }
-
-  // Early-loop via Vimeo postMessage API.
-  // Called from handleVideoLoad so the iframe ref is guaranteed to be populated.
-  // loop=1 in the URL is the safety net — this just makes the loop start earlier.
-  const subscribeVimeoEarlyLoop = () => {
-    if (HERO_VIDEO.type !== 'vimeo') return
-    const iframe = videoIframeRef.current
-    if (!iframe) return
-
-    // Guards against handleVideoLoad firing more than once (e.g. the iframe
-    // reloading after a network hiccup) leaving stale listeners attached.
-    earlyLoopUnsubscribeRef.current?.()
-
-    let seeking = false
-
-    const onMessage = (event: MessageEvent) => {
-      if (event.origin !== 'https://player.vimeo.com') return
-
-      let data: Record<string, unknown>
-      try {
-        data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data
-      } catch {
-        return
-      }
-
-      if (data.event === 'ready') {
-        iframe.contentWindow?.postMessage(
-          JSON.stringify({ method: 'addEventListener', value: 'timeupdate' }),
-          'https://player.vimeo.com',
-        )
-      }
-
-      if (data.event === 'timeupdate') {
-        const payload = data.data as { seconds: number; duration: number }
-        if (!payload || typeof payload.duration !== 'number') return
-        const remaining = payload.duration - payload.seconds
-
-        if (!seeking && payload.duration > 0 && remaining <= EARLY_LOOP_SECONDS) {
-          seeking = true
-          iframe.contentWindow?.postMessage(
-            JSON.stringify({ method: 'seekTo', value: 0 }),
-            'https://player.vimeo.com',
-          )
-          setTimeout(() => { seeking = false }, 1000)
-        }
-      }
-    }
-
-    window.addEventListener('message', onMessage)
-    earlyLoopUnsubscribeRef.current = () => window.removeEventListener('message', onMessage)
   }
 
   const handleScroll = (id: string) => {
@@ -815,91 +727,24 @@ function HomeV2() {
       <div className="home__background" aria-hidden="true" />
       <div className="home__floaters" aria-hidden="true" />
 
-      {/* Fullscreen video hero — desktop only */}
-      <section className="home__video-hero home__video-hero--desktop" aria-label="Background video">
-        <img className="home__video-poster" src={HERO_POSTER} alt="" fetchPriority="high" />
-        <div className="home__video-iframe-wrap" aria-hidden="true">
-          {!isMobileViewport && videoStarted && (
-            <iframe
-              ref={videoIframeRef}
-              src={buildHeroVideoSrc(HERO_VIDEO)}
-              frameBorder="0"
-              allow="autoplay; fullscreen"
-              allowFullScreen
-              title="Hero background video"
-              tabIndex={-1}
-              onLoad={handleVideoLoad}
-              onError={() => setVideoStarted(false)}
-            />
-          )}
-        </div>
-        <div className="home__video-overlay" />
-        <div className={`home__video-blind${!videoStarted || videoReady ? ' home__video-blind--gone' : ''}`} aria-hidden="true" />
-        <button
-          className="home__video-scroll-hint"
-          type="button"
-          aria-label={t('home.hero.scrollAria')}
-          onClick={() => handleScroll('#hero')}
+      <section className="home__video-hero" aria-label="Background video">
+        <video
+          ref={videoRef}
+          className="home__video-element"
+          autoPlay={!prefersReducedMotion}
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          onPlaying={() => { setVideoPlaying(true); setPlaybackControlVisible(true); setVideoError(false); setAutoplayBlocked(false) }}
+          onPause={() => { setVideoPlaying(false); setPlaybackControlVisible(true) }}
+          onError={() => { setVideoPlaying(false); setVideoError(true) }}
         >
-          <span>{t('home.hero.scroll')}</span>
-        </button>
-        {!videoStarted && (
-          <button
-            className="home__video-play-btn"
-            type="button"
-            aria-label={t('home.hero.playVideo')}
-            onClick={() => setVideoStarted(true)}
-          >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M8 5.5v13l10-6.5z" />
-            </svg>
-            <span>{t('home.hero.playVideo')}</span>
-          </button>
-        )}
-        {!isMobileViewport && videoStarted && HERO_VIDEO.type === 'vimeo' && (
-          <button
-            className="home__video-mute-btn"
-            type="button"
-            aria-label={isMuted ? 'Unmute video' : 'Mute video'}
-            onClick={toggleMute}
-          >
-            {isMuted ? (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                <line x1="23" y1="9" x2="17" y2="15" />
-                <line x1="17" y1="9" x2="23" y2="15" />
-              </svg>
-            ) : (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-                <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-              </svg>
-            )}
-          </button>
-        )}
-      </section>
-
-      {/* Fullscreen video hero — mobile only */}
-      <section className="home__video-hero home__video-hero--mobile" aria-label="Background video">
-        <img className="home__video-poster" src={MOBILE_HERO_POSTER} alt="" fetchPriority="high" />
-        <div className="home__video-iframe-wrap home__video-iframe-wrap--mobile" aria-hidden="true">
-          {isMobileViewport && videoStarted && (
-            <iframe
-              ref={mobileVideoIframeRef}
-              src={buildHeroVideoSrc(MOBILE_HERO_VIDEO)}
-              frameBorder="0"
-              allow="autoplay; fullscreen"
-              allowFullScreen
-              title="Mobile hero background video"
-              tabIndex={-1}
-              onLoad={handleMobileVideoLoad}
-              onError={() => setVideoStarted(false)}
-            />
-          )}
-        </div>
+          {HOME_HERO_VIDEO_URLS.mobile && <source src={HOME_HERO_VIDEO_URLS.mobile} type="video/mp4" media="(max-width: 900px)" />}
+          {HOME_HERO_VIDEO_URLS.desktop && <source src={HOME_HERO_VIDEO_URLS.desktop} type="video/mp4" media="(min-width: 901px)" />}
+        </video>
         <div className="home__video-overlay" />
-        <div className={`home__video-blind${!videoStarted || mobileVideoReady ? ' home__video-blind--gone' : ''}`} aria-hidden="true" />
         <div className="home__video-copy">
           <h1 className="home__video-copy-title">{t('home.hero.headline')}</h1>
           <p>{t('home.hero.subhead')}</p>
@@ -919,17 +764,14 @@ function HomeV2() {
         >
           <span>{t('home.hero.scroll')}</span>
         </button>
-        {!videoStarted && (
+        {(videoPlaying || playbackControlVisible || autoplayBlocked || videoError || prefersReducedMotion) && (
           <button
             className="home__video-play-btn"
             type="button"
-            aria-label={t('home.hero.playVideo')}
-            onClick={() => setVideoStarted(true)}
+            aria-label={videoError ? t('home.hero.retryVideo') : videoPlaying ? t('home.hero.pauseVideo') : t('home.hero.playVideo')}
+            onClick={toggleHeroPlayback}
           >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M8 5.5v13l10-6.5z" />
-            </svg>
-            <span>{t('home.hero.playVideo')}</span>
+            {videoPlaying ? t('home.hero.pauseVideo') : videoError ? t('home.hero.retryVideo') : t('home.hero.playVideo')}
           </button>
         )}
       </section>

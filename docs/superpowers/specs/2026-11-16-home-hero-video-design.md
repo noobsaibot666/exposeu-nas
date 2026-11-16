@@ -1,6 +1,8 @@
 # Home hero video delivery design
 
-**Status:** Approved design direction; user review of this written spec is still required before implementation planning.
+**Status:** Approved by the user for implementation on 2026-11-16.
+
+**Implementation update (2026-11-16):** `HomeV2` now uses one responsive native video with localized playback controls and reduced-motion handling. The media base URL intentionally has no source-code fallback; the R2 objects and `VITE_HOME_HERO_VIDEO_BASE_URL` must be provisioned before the homepage can display moving footage. Browser performance acceptance remains pending real assets and a deployed custom domain.
 
 ## Goal
 
