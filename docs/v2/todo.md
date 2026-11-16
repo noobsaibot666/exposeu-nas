@@ -2,10 +2,9 @@
 
 Only what still needs **you**, in the order to do it. Pricing is parked for a later phase: see [pricing/README.md](./pricing/README.md). Source work is finished (32 issues; evidence in [issues.md](./issues.md) and [verification.md](./verification.md)); production deployment and owner review are summarised below. IDs link to issues.md.
 
-## 1. Deploy and check your inbox
+## 1. Deploy and check your inbox — done 2026-11-16
 
-- [ ] **Run `scripts/deploy.sh all`** for the latest changes: corrected homepage film, project-page contrast, German titles, smaller nav buttons, project pages, required contact persistence, and pre-rendered social metadata.
-- [ ] **Inbox:** you should have two emails marked "TEST — please ignore", one from the contact form and one from the pricing form (Claude's live tests). If either is missing, tell Claude.
+Deployed, and the owner confirmed "all pass". Production re-verified by Claude: project pages, readable URLs, link previews, sitemap, the nginx no-redirect fix (V2-034) and project-to-project navigation (V2-035).
 
 ## 2. Review by eye (production)
 

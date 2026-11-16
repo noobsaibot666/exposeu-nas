@@ -18,7 +18,7 @@ The static snippets were removed from `index.html`; `initializeAnalyticsVendors(
 
 ## P1 — pre-V2
 
-### [ ] V2-002 — Homepage background video causes heavy first-load work
+### [x] V2-002 — Homepage background video causes heavy first-load work
 
 **Update 2026-11-16 — source corrected.** The original first-party hero used `leoniswork_&_liquidrom_v1 (1080p).mp4`, which is the Leonis project film and belongs on that project page. The owner identified `website_-_main_v1 (1080p).mp4` as the homepage source. New immutable outputs are named `home-hero-desktop-v2.mp4` and `home-hero-mobile-v2.mp4` to avoid stale CDN copies; they remain self-hosted under `public/assets/media/` and are copied by the deploy script. The asset is still ignored by Git because the NAS working copy carries it into production builds. The mobile output remains a 608×1080 centre crop.
 
@@ -151,7 +151,9 @@ The earlier native-video rewrite (`ddf557b`) rendered `<source>` elements only w
 
 ## P3 — verify with owner/production data
 
-### V2-016 — Photo-consent offline queue durability and user recovery
+### [x] V2-016 — Photo-consent offline queue durability and user recovery
+
+**Closed 2026-11-16:** idempotent saves were verified live (offline → sync → exactly one row, with the duplicate retry answered `ok`), and the data policy is an owner decision: signatures are exported and stored manually per project.
 
 **Update 2026-11-16 — server idempotency DONE IN SOURCE (API deploy).** A read-only check of the live `outreach-app` schema showed `photo_consent_signatures.id` is a `uuid` primary key with a `gen_random_uuid()` default, and the anon INSERT policy places no restriction on columns. The API now stores the client's `submissionId` (a `crypto.randomUUID()`, re-sent unchanged by the offline queue) as `id`. A retry whose first attempt already landed gets Postgres `23505`, which the API answers as `{ ok: true, duplicate: true }`, so there's no second row and the client clears its queue. Non-UUID legacy ids keep the DB default. Tested against a local PostgREST mock (new → 201, same id → duplicate ok, legacy → default id); no rows were written to the real table. Remaining: the retention/deletion policy and device wording (owner), plus a staging run.
 
@@ -169,7 +171,9 @@ Confirm the Supabase schema can safely persist a unique submission ID before cla
 
 Production remains limited to the homepage. Do not interpret local SPA fallback checks as deployment/API health checks.
 
-### V2-018 — Responsive and accessibility audit beyond homepage
+### [ ] V2-018 — Responsive and accessibility audit beyond homepage
+
+**Remaining (owner only):** the visual design check and a screen-reader pass. All automated checks pass (reflow at 320 px / 200% zoom, contrast in both themes, keyboard flows).
 
 Production homepage was inspected at 1200× and 390×. Local route-family checks at 320, 390, 768, 1024 and 1440 px found no horizontal overflow on the sampled home, service, campaign, contact, pricing, legal, portfolio, photo-consent and 404 pages. The mobile navigation drawer's dialog, Tab/Shift+Tab wrapping, Escape, focus restoration, `inert` and scroll lock were exercised. A language-menu focus warning was found and fixed with focus restoration and closed-state `inert`; the follow-up browser pass had no console errors or warnings.
 
