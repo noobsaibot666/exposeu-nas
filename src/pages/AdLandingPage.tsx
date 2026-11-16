@@ -1,6 +1,7 @@
 import { type CSSProperties, type ReactNode, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import gsap from 'gsap'
 import TopNav from '../components/TopNav'
+import { useNavOverMedia } from '../hooks/useNavOverMedia'
 import Footer from '../sections/Footer'
 import { SEOMeta } from '../components/SEOMeta'
 import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
@@ -136,6 +137,7 @@ export default function AdLandingPage({ config }: { config: AdLandingPageConfig 
   const { locale } = useLocale()
   const { t } = useTranslation()
   const heroRef = useRef<HTMLElement | null>(null)
+  useNavOverMedia(heroRef)
   const [stickyVisible, setStickyVisible] = useState(false)
   const contactPath = `/contact?service=${config.serviceSlug}${config.ctaPackage ? `&package=${encodeURIComponent(config.ctaPackage)}` : ''}`
   const heroOverlay = config.heroOverlay ?? 'linear-gradient(90deg, rgba(5, 7, 11, 0.88), rgba(5, 7, 11, 0.5))'

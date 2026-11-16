@@ -94,7 +94,7 @@
 /* Scrolled: frosted bar instead of the hero gradient, so section text passing
    under the fixed nav doesn't collide with the logo and links. */
 .home--v2 .home__nav .top-nav.is-scrolled .top-nav__bar {
-  background: rgba(5, 5, 7, 0.72);
+  background: color-mix(in srgb, var(--page-bg) 72%, transparent);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
@@ -109,6 +109,15 @@
 .home--v2 .home__nav .top-nav__brand {
   color: #fff;
   text-shadow: 0 1px 18px rgba(0, 0, 0, 0.42);
+}
+
+/* Light mode, past the video: dark text on the light frosted bar. Over the
+   video, the rules above (white text) apply via the dark-island tokens. */
+:root[data-theme='light']:not([data-nav-over-media]) .home--v2 .home__nav .top-nav,
+:root[data-theme='light']:not([data-nav-over-media]) .home--v2 .home__nav .top-nav__link,
+:root[data-theme='light']:not([data-nav-over-media]) .home--v2 .home__nav .top-nav__brand {
+  color: var(--text-strong);
+  text-shadow: none;
 }
 
 .home--v2 .home__nav .top-nav__theme {
@@ -130,7 +139,9 @@
   }
 
   .home--v2 .home__nav .top-nav__links--right {
-    padding-right: 0;
+    /* The fixed theme + language buttons occupy the rightmost 118px
+       (18 + 46 + 8 + 46); keep 16px clear of them beyond the bar padding. */
+    padding-right: max(0px, calc(134px - clamp(24px, 5vw, 84px)));
   }
 }
 

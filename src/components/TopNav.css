@@ -45,7 +45,8 @@
 }
 
 .top-nav.is-scrolled .top-nav__bar {
-  background: rgba(5, 5, 7, 0.72);
+  /* rgba(5, 5, 7, 0.72) in dark; a subtle light glass in light mode. */
+  background: color-mix(in srgb, var(--page-bg) 72%, transparent);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
@@ -67,7 +68,8 @@
 
 .top-nav__links--right {
   justify-content: flex-end;
-  padding-right: 84px;
+  /* Room for the fixed theme toggle + language switcher (2 × 46px + gaps). */
+  padding-right: 138px;
 }
 
 .top-nav__link {
@@ -389,4 +391,9 @@
 
 .top-nav.is-open .top-nav__toggle span {
   opacity: 0.8;
+}
+
+/* Light mode: hairline under the frosted bar so it reads on a light page. */
+:root[data-theme='light']:not([data-nav-over-media]) .top-nav.is-scrolled .top-nav__bar {
+  box-shadow: inset 0 -1px 0 var(--border-soft);
 }

@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import gsap from 'gsap'
 import './ReleaseContentKit.css'
 import TopNav from '../components/TopNav'
+import { useNavOverMedia } from '../hooks/useNavOverMedia'
 import Footer from '../sections/Footer'
 import { SEOMeta } from '../components/SEOMeta'
 import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
@@ -90,6 +91,8 @@ function IconPoster() {
 
 export default function ReleaseContentKit() {
   const rootRef = useRef<HTMLElement | null>(null)
+  const heroRef = useRef<HTMLElement | null>(null)
+  useNavOverMedia(heroRef)
   const navigate = useLocaleNavigate()
   const { locale } = useLocale()
   const { t, tm } = useTranslation()
@@ -299,7 +302,7 @@ export default function ReleaseContentKit() {
         />
       </div>
 
-      <section className="rck__hero" style={{ backgroundImage: `linear-gradient(90deg, rgba(5, 7, 11, 0.88), rgba(5, 7, 11, 0.5)), url(${heroImage})` }}>
+      <section className="rck__hero" ref={heroRef} style={{ backgroundImage: `linear-gradient(90deg, rgba(5, 7, 11, 0.88), rgba(5, 7, 11, 0.5)), url(${heroImage})` }}>
         <div className="content rck__hero-inner">
           <h1>{t('services.pages.release-content-kit.hero.h1Line1')}<br />{t('services.pages.release-content-kit.hero.h1Line2')}</h1>
           <p className="rck__subheadline">

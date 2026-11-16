@@ -16,6 +16,7 @@ The production homepage responded successfully on 2026-11-15. Playwright inspect
 - [Route and page audit](./pages.md)
 - [Services, integrations, performance, accessibility and security review](./systems.md)
 - [Verification record and limitations](./verification.md)
+- [Open items for owner review](./todo.md)
 
 ## Priority legend
 

@@ -38,6 +38,7 @@ import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProv
 import LocalizedLink from '../i18n/LocalizedLink'
 import { SchemaOrg, SEOMeta } from '../components/SEOMeta'
 import { useVideoLightbox } from '../hooks/useVideoLightbox'
+import { useNavOverMedia } from '../hooks/useNavOverMedia'
 
 const projectVisuals = [
   {
@@ -165,10 +166,12 @@ function HomeV2() {
   const tiltX = useRef<((value: number) => void) | null>(null)
   const tiltY = useRef<((value: number) => void) | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
+  const videoHeroRef = useRef<HTMLElement | null>(null)
   const vimeoIframeRef = useRef<HTMLIFrameElement | null>(null)
   const prefersReducedMotionRef = useRef(prefersReducedMotion)
   const [vimeoRevealed, setVimeoRevealed] = useState(false)
 
+  useNavOverMedia(videoHeroRef)
   useTrackViewEvent('home_view')
   useScrollDepthTracking('home', [25, 50, 75, 90])
 
@@ -817,7 +820,7 @@ function HomeV2() {
       <div className="home__background" aria-hidden="true" />
       <div className="home__floaters" aria-hidden="true" />
 
-      <section className="home__video-hero" aria-label="Background video">
+      <section className="home__video-hero" aria-label="Background video" ref={videoHeroRef}>
         {HOME_HERO_USES_NATIVE_VIDEO ? (
           <video
             ref={videoRef}

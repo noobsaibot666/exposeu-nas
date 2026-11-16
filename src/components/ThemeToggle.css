@@ -46,13 +46,13 @@
 }
 
 /* Light theme, off the homepage video: a light control on the light page. */
-:root[data-theme='light'] .theme-toggle--page {
+:root[data-theme='light']:not([data-nav-over-media]) .theme-toggle {
   background: rgba(255, 255, 255, 0.72);
   color: var(--text-strong);
   box-shadow: 0 8px 24px rgba(17, 17, 19, 0.1);
 }
 
-:root[data-theme='light'] .theme-toggle--page:focus-visible {
+:root[data-theme='light']:not([data-nav-over-media]) .theme-toggle:focus-visible {
   outline-color: var(--text-strong);
 }
 
@@ -79,7 +79,7 @@
     right: calc(clamp(16px, 4vw, 22px) + 72px);
   }
 
-  :root[data-theme='light'] .theme-toggle--page {
+  :root[data-theme='light']:not([data-nav-over-media]) .theme-toggle {
     background: var(--surface-overlay);
     box-shadow: none;
   }

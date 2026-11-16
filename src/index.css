@@ -141,9 +141,14 @@
 /* Dark islands: components that stay dark in light mode because they sit on
    photos/video or are designed as dark accent cards. Re-declaring the dark
    token values here keeps every descendant that uses tokens readable. */
+:root[data-theme='light'][data-nav-over-media] :is(
+  /* Nav + fixed controls only while over a hero photo/video (useNavOverMedia). */
+  .home__nav .top-nav__bar,
+  .theme-toggle,
+  .locale-switcher
+),
 :root[data-theme='light'] :is(
   .home__video-hero,
-  .home--v2 .home__nav .top-nav__bar,
   .home__pricing-card--monthly,
   .home__pricing-card--custom,
   .portfolio__overlay,
