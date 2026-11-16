@@ -2,7 +2,7 @@
 
 ## Architecture and routes
 
-- Frontend: React 19, TypeScript 5.9, Vite 7, React Router 7. Routes are centralized in `src/App.tsx`; no route-level lazy loading is visible. Page modules and libraries imported by the root route are therefore candidates for a large initial JavaScript graph. Obtain bundle stats before deciding the size impact.
+- Frontend: React 19, TypeScript 5.9, Vite 7, React Router 7. Routes are centralized in `src/App.tsx`; every route except the homepage is lazy-loaded through `lazyWithReload()` (V2-022).
 - Shared page systems: `WorkPageLayout` for four services; `AdLandingPage` for seven campaign pages; `TopNav`, locale switcher, footer, metadata helper, consent banner and analytics wrapper are cross-cutting.
 - Locale resources are imported eagerly from EN and DE JSON. Missing string translations fall back to English in dev with a warning; missing object translations throw. Audit the DE key parity and content by page before launch.
 - Canonical URL, locale prefix, route config, page-level `SEOMeta`, and route component declarations are split across files. Consolidation is recommended (V2-010, 013).
@@ -26,7 +26,7 @@
 2. **Service galleries:** shared template keeps the hero eager/high priority and lazy-loads below-hero images. Gallery images stack below section copy at widths ≤900 px (V2-005, 019).
 3. **Unused image assets:** the audit moved 35 files / 2.71 MB reported by `check:images` to `archive/unused-assets/`, outside the eagerly-globbed image tree (V2-007); checker now reports no unused assets.
 4. **Image sizes and layout stability:** project checklist asks for dimensions/aspect-ratio. A complete image audit by page and CLS measurement has not been done. Current source tree is ~19 MB locally, 176 WebP files; 18 WebP files exceed 200 KB. File size alone does not show which are initial viewport assets.
-5. **Initial JS:** root imports all page components directly. No route-level `lazy()` or `Suspense` exists in `App.tsx`; quantify with deployment build bundle report before changing.
+5. **Initial JS:** non-home pages are now separate chunks behind one `Suspense` (V2-022); record the main-bundle size from the deploy build.
 6. **Animation work:** GSAP appears in home, legacy home, portfolio, about, shared work and landing template. Several files include reduced-motion CSS, but source inspection has not verified every animation setup checks preference. Test reduced motion and script-disabled content visibility.
 7. **Third-party work:** Google, Meta, Clarity, Vimeo, Overpass and Nominatim add network and privacy dependencies. Delay nonessential scripts and measure cold/warm starts on mobile.
 
