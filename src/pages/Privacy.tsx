@@ -31,6 +31,7 @@ function Privacy() {
         description="How expose.u collects, uses, and protects your personal data."
         canonical="https://expose-u.com/privacy"
         lang="en"
+        noAlternates
       />
 
       <div className="home__nav impressum__nav">

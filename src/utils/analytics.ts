@@ -1,6 +1,9 @@
 import { useEffect, useRef, type RefObject } from 'react'
 
 const GA_ID = import.meta.env.VITE_GA_MEASUREMENT_ID
+const META_PIXEL_ID = import.meta.env.VITE_META_PIXEL_ID
+const CLARITY_ID = import.meta.env.VITE_CLARITY_ID || 'vlupnuzyk8'
+const ADSENSE_CLIENT_ID = 'ca-pub-8205854545246075'
 
 type Primitive = string | number | boolean | undefined | null
 export type AnalyticsParams = Record<string, Primitive>
@@ -34,6 +37,83 @@ const CONSENT_COOKIE_KEYS = [
 
 export const ANALYTICS_CONSENT_KEY = '__analyticsConsent'
 const DEBUG_STORAGE_KEY = '__analyticsDebug'
+let consentVendorsStarted = false
+let lastPageViewPath: string | null = null
+
+function appendVendorScript(id: string, src: string, crossOrigin?: string) {
+  if (document.getElementById(id)) return
+  const script = document.createElement('script')
+  script.id = id
+  script.async = true
+  script.src = src
+  if (crossOrigin) script.crossOrigin = crossOrigin
+  document.head.appendChild(script)
+}
+
+/** Bootstrap optional analytics and advertising vendors after affirmative consent. */
+export const initializeAnalyticsVendors = () => {
+  if (typeof window === 'undefined' || !hasAnalyticsConsent() || consentVendorsStarted) return
+  consentVendorsStarted = true
+
+  if (GA_ID) {
+    window.dataLayer = window.dataLayer || []
+    if (typeof window.gtag !== 'function') {
+      window.gtag = (...args: unknown[]) => {
+        window.dataLayer?.push(args)
+      }
+    }
+    window.gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied',
+      wait_for_update: 500,
+    })
+    window.gtag('consent', 'update', {
+      ad_storage: 'granted',
+      ad_user_data: 'granted',
+      ad_personalization: 'granted',
+      analytics_storage: 'granted',
+    })
+    window.gtag('js', new Date())
+    window.gtag('config', GA_ID, { send_page_view: false })
+    appendVendorScript('vendor-google-tag', `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA_ID)}`)
+    trackPageView(window.location.pathname + window.location.search)
+  }
+
+  if (META_PIXEL_ID) {
+    if (!window.fbq) {
+      type FbqWithQueue = NonNullable<Window['fbq']> & { queue: unknown[][] }
+      const fbqStub = ((...args: Parameters<NonNullable<Window['fbq']>>) => {
+        fbqStub.queue.push(args)
+      }) as FbqWithQueue
+      fbqStub.queue = []
+      window.fbq = fbqStub
+      window._fbq = window.fbq
+    }
+    appendVendorScript('vendor-meta-pixel', 'https://connect.facebook.net/en_US/fbevents.js')
+    window.fbq('init', META_PIXEL_ID)
+    window.fbq('track', 'PageView')
+  }
+
+  if (CLARITY_ID) {
+    if (!window.clarity) {
+      type ClarityWithQueue = NonNullable<Window['clarity']> & { q: unknown[][] }
+      const clarityStub = ((...args: Parameters<NonNullable<Window['clarity']>>) => {
+        clarityStub.q.push(args)
+      }) as ClarityWithQueue
+      clarityStub.q = []
+      window.clarity = clarityStub
+    }
+    appendVendorScript('vendor-clarity', `https://www.clarity.ms/tag/${encodeURIComponent(CLARITY_ID)}`)
+  }
+
+  appendVendorScript(
+    'vendor-adsense',
+    `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(ADSENSE_CLIENT_ID)}`,
+    'anonymous',
+  )
+}
 
 const isTruthyConsentValue = (value: string | null | undefined) => {
   if (!value) return false
@@ -57,6 +137,26 @@ const getStoredConsentPreference = () => {
     if (value === 'true' || value === 'false') return value
   } catch {
     // ignore storage access issues
+  }
+
+  return null
+}
+
+const getLegacyConsentPreference = () => {
+  if (typeof window === 'undefined') return null
+
+  try {
+    for (const key of CONSENT_STORAGE_KEYS) {
+      const value = window.localStorage.getItem(key)
+      if (value !== null) return isTruthyConsentValue(value)
+    }
+  } catch {
+    // ignore storage access issues
+  }
+
+  for (const key of CONSENT_COOKIE_KEYS) {
+    const value = getCookie(key)
+    if (value !== null) return isTruthyConsentValue(value)
   }
 
   return null
@@ -111,6 +211,12 @@ export const initializeAnalyticsConsent = () => {
   if (storedPreference === 'false') {
     window.__analyticsConsent = false
     return false
+  }
+
+  const legacyPreference = getLegacyConsentPreference()
+  if (legacyPreference !== null) {
+    window.__analyticsConsent = legacyPreference
+    return legacyPreference
   }
 
   if (window.__analyticsConsent === true) return true
@@ -235,11 +341,9 @@ function captureLandingAttributionParams(): AnalyticsParams {
 }
 
 export const trackPageView = (path: string, params: AnalyticsParams = {}) => {
-  // Intentionally NOT gated on consent: gtag.js/Consent Mode v2 already
-  // handles this correctly (cookieless ping when denied, full hit when
-  // granted). Gating here on top of that drops the hit — and its UTM
-  // data — entirely for every visitor who hasn't yet answered the banner.
-  if (typeof window.gtag === 'function' && GA_ID) {
+  // There is no gtag function before consent because vendor bootstrap is deferred.
+  if (typeof window.gtag === 'function' && GA_ID && path !== lastPageViewPath) {
+    lastPageViewPath = path
     window.gtag('config', GA_ID, {
       page_path: path,
       page_title: typeof document !== 'undefined' ? document.title : undefined,
@@ -255,8 +359,7 @@ export const trackPageView = (path: string, params: AnalyticsParams = {}) => {
     })
   }
 
-  // Meta Pixel's initial PageView is fired by the required snippet in index.html.
-  // Avoid sending an additional SPA route PageView here.
+  // Meta Pixel's initial PageView is fired once during consented bootstrap.
 }
 
 export function trackEvent(name: string, params?: AnalyticsParams): void

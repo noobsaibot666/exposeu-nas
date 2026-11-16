@@ -5,7 +5,8 @@
     "primaryCta": "Tell us about your project",
     "secondaryCta": "View our work",
     "scroll": "Scroll",
-    "scrollAria": "Scroll to content"
+    "scrollAria": "Scroll to content",
+    "playVideo": "Play background video"
   },
   "proof": {
     "badge": "Our approach",

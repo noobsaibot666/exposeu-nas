@@ -5,7 +5,7 @@ export type MetaConfig = {
 }
 
 export function getMetaForPath(pathname: string): MetaConfig {
-  if (pathname === '/' || pathname === '/v2' || pathname === '/old-home') {
+  if (pathname === '/' || pathname === '/v2') {
     return { titleKey: 'common.meta.home.title', descriptionKey: 'common.meta.home.description' }
   }
   if (pathname === '/about') {
@@ -87,13 +87,13 @@ export function getMetaForPath(pathname: string): MetaConfig {
     }
   }
   if (pathname === '/privacy') {
-    return { titleKey: 'common.meta.privacy.title', descriptionKey: 'common.meta.privacy.description' }
+    return { titleKey: 'common.meta.privacy.title', descriptionKey: 'common.meta.privacy.description', noAlternates: true }
   }
   if (pathname === '/terms') {
-    return { titleKey: 'common.meta.terms.title', descriptionKey: 'common.meta.terms.description' }
+    return { titleKey: 'common.meta.terms.title', descriptionKey: 'common.meta.terms.description', noAlternates: true }
   }
   if (pathname === '/data-deletion') {
-    return { titleKey: 'common.meta.dataDeletion.title', descriptionKey: 'common.meta.dataDeletion.description' }
+    return { titleKey: 'common.meta.dataDeletion.title', descriptionKey: 'common.meta.dataDeletion.description', noAlternates: true }
   }
   return { titleKey: 'common.meta.notFound.title', descriptionKey: 'common.meta.notFound.description' }
 }

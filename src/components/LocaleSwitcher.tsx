@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom'
 import { useLocale, useTranslation } from '../i18n/LocaleProvider'
 import './LocaleSwitcher.css'
 
-const HOME_PATHS = new Set(['/', '/de', '/v2', '/de/v2', '/old-home'])
+const HOME_PATHS = new Set(['/', '/de', '/v2', '/de/v2'])
 
 function LocaleSwitcher() {
   const { locale, switchLocale } = useLocale()

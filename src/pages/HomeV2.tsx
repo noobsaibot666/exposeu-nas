@@ -29,6 +29,9 @@ const MOBILE_HERO_VIDEO = {
   hash: '',
 }
 
+const HERO_POSTER = resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_030.webp')
+const MOBILE_HERO_POSTER = resolveImagePath('/src/assets/images/services/7_Hero/9_16/7_HERO_004.webp')
+
 // How many seconds before the end to jump back to the start
 const EARLY_LOOP_SECONDS = 1
 
@@ -143,6 +146,7 @@ function HomeV2() {
   const [activeSection, setActiveSection] = useState('home')
   const [videoReady, setVideoReady] = useState(false)
   const [mobileVideoReady, setMobileVideoReady] = useState(false)
+  const [videoStarted, setVideoStarted] = useState(false)
   const [isMuted, setIsMuted] = useState(true)
   // Mirrors the CSS breakpoint that swaps --desktop/--mobile video sections
   // (HomeV2.css, max-width: 900px). CSS alone hides the inactive iframe but
@@ -256,16 +260,18 @@ function HomeV2() {
 
   useEffect(() => () => earlyLoopUnsubscribeRef.current?.(), [])
 
-  // Reveal video: fires on iframe load + 600ms buffer, with 3s absolute fallback
+  // Reveal the player after load, with a fallback in case Vimeo never signals load.
   useEffect(() => {
+    if (!videoStarted) return undefined
     const fallback = setTimeout(() => setVideoReady(true), 3000)
     return () => clearTimeout(fallback)
-  }, [])
+  }, [videoStarted])
 
   useEffect(() => {
+    if (!videoStarted) return undefined
     const fallback = setTimeout(() => setMobileVideoReady(true), 3000)
     return () => clearTimeout(fallback)
-  }, [])
+  }, [videoStarted])
 
   const handleVideoLoad = () => {
     setTimeout(() => setVideoReady(true), 600)
@@ -811,8 +817,9 @@ function HomeV2() {
 
       {/* Fullscreen video hero — desktop only */}
       <section className="home__video-hero home__video-hero--desktop" aria-label="Background video">
+        <img className="home__video-poster" src={HERO_POSTER} alt="" fetchPriority="high" />
         <div className="home__video-iframe-wrap" aria-hidden="true">
-          {!isMobileViewport && (
+          {!isMobileViewport && videoStarted && (
             <iframe
               ref={videoIframeRef}
               src={buildHeroVideoSrc(HERO_VIDEO)}
@@ -822,11 +829,12 @@ function HomeV2() {
               title="Hero background video"
               tabIndex={-1}
               onLoad={handleVideoLoad}
+              onError={() => setVideoStarted(false)}
             />
           )}
         </div>
         <div className="home__video-overlay" />
-        <div className={`home__video-blind${videoReady ? ' home__video-blind--gone' : ''}`} aria-hidden="true" />
+        <div className={`home__video-blind${!videoStarted || videoReady ? ' home__video-blind--gone' : ''}`} aria-hidden="true" />
         <button
           className="home__video-scroll-hint"
           type="button"
@@ -835,7 +843,20 @@ function HomeV2() {
         >
           <span>{t('home.hero.scroll')}</span>
         </button>
-        {!isMobileViewport && HERO_VIDEO.type === 'vimeo' && (
+        {!videoStarted && (
+          <button
+            className="home__video-play-btn"
+            type="button"
+            aria-label={t('home.hero.playVideo')}
+            onClick={() => setVideoStarted(true)}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M8 5.5v13l10-6.5z" />
+            </svg>
+            <span>{t('home.hero.playVideo')}</span>
+          </button>
+        )}
+        {!isMobileViewport && videoStarted && HERO_VIDEO.type === 'vimeo' && (
           <button
             className="home__video-mute-btn"
             type="button"
@@ -861,8 +882,9 @@ function HomeV2() {
 
       {/* Fullscreen video hero — mobile only */}
       <section className="home__video-hero home__video-hero--mobile" aria-label="Background video">
+        <img className="home__video-poster" src={MOBILE_HERO_POSTER} alt="" fetchPriority="high" />
         <div className="home__video-iframe-wrap home__video-iframe-wrap--mobile" aria-hidden="true">
-          {isMobileViewport && (
+          {isMobileViewport && videoStarted && (
             <iframe
               ref={mobileVideoIframeRef}
               src={buildHeroVideoSrc(MOBILE_HERO_VIDEO)}
@@ -872,11 +894,23 @@ function HomeV2() {
               title="Mobile hero background video"
               tabIndex={-1}
               onLoad={handleMobileVideoLoad}
+              onError={() => setVideoStarted(false)}
             />
           )}
         </div>
         <div className="home__video-overlay" />
-        <div className={`home__video-blind${mobileVideoReady ? ' home__video-blind--gone' : ''}`} aria-hidden="true" />
+        <div className={`home__video-blind${!videoStarted || mobileVideoReady ? ' home__video-blind--gone' : ''}`} aria-hidden="true" />
+        <div className="home__video-copy">
+          <h1 className="home__video-copy-title">{t('home.hero.headline')}</h1>
+          <p>{t('home.hero.subhead')}</p>
+          <LocalizedLink
+            to="/contact"
+            className="home__video-copy-cta"
+            onClick={() => setTimeout(() => trackHomeCta(t('home.hero.primaryCta'), 'hero_primary'), 0)}
+          >
+            {t('home.hero.primaryCta')}
+          </LocalizedLink>
+        </div>
         <button
           className="home__video-scroll-hint"
           type="button"
@@ -885,6 +919,19 @@ function HomeV2() {
         >
           <span>{t('home.hero.scroll')}</span>
         </button>
+        {!videoStarted && (
+          <button
+            className="home__video-play-btn"
+            type="button"
+            aria-label={t('home.hero.playVideo')}
+            onClick={() => setVideoStarted(true)}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M8 5.5v13l10-6.5z" />
+            </svg>
+            <span>{t('home.hero.playVideo')}</span>
+          </button>
+        )}
       </section>
 
       {/* Nav wrapper — hidden on desktop (nav is fixed), visible on mobile */}

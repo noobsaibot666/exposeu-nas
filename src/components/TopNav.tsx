@@ -42,6 +42,7 @@ function TopNav({
   const lastScrollY = useRef(0)
   const ticking = useRef(false)
   const toggleRef = useRef<HTMLButtonElement>(null)
+  const drawerPanelRef = useRef<HTMLDivElement>(null)
   const localizePath = useLocalePath()
   const { t } = useTranslation()
 
@@ -60,7 +61,32 @@ function TopNav({
       closeBtn?.focus()
     })
     const handleKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') closeMenu()
+      if (event.key === 'Escape') {
+        closeMenu()
+        return
+      }
+
+      if (event.key === 'Tab') {
+        const panel = drawerPanelRef.current
+        const focusable = panel?.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        )
+        if (!focusable?.length) {
+          event.preventDefault()
+          return
+        }
+
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+        const active = document.activeElement
+        if (event.shiftKey && (active === first || !panel?.contains(active))) {
+          event.preventDefault()
+          last.focus()
+        } else if (!event.shiftKey && (active === last || !panel?.contains(active))) {
+          event.preventDefault()
+          first.focus()
+        }
+      }
     }
     const mql = window.matchMedia('(min-width: 901px)')
     const handleBreakpoint = (event: MediaQueryListEvent) => {
@@ -191,9 +217,16 @@ function TopNav({
 
   const drawer = typeof document !== 'undefined'
     ? createPortal(
-      <div className={`top-nav__drawer ${open ? 'is-open' : ''}`}>
+        <div className={`top-nav__drawer ${open ? 'is-open' : ''}`} aria-hidden={!open} inert={!open}>
         <button type="button" className="top-nav__scrim" aria-label={t('nav.closeMenu')} onClick={closeMenu} />
-        <div className="top-nav__drawer-panel" id="mobile-menu">
+          <div
+            className="top-nav__drawer-panel"
+            id="mobile-menu"
+            ref={drawerPanelRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label={t('nav.mobileMenu')}
+          >
           <div className="top-nav__drawer-header">
             {renderBrand()}
             <button type="button" className="top-nav__close" onClick={closeMenu} aria-label={t('nav.closeMenu')}>

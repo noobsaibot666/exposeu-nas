@@ -4,9 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="google-site-verification" content="-AyFfBAO3UIZJ7rrdRaTsBILN2htWdhp5e-bB5xJSKw" />
     <link rel="icon" type="image/png" href="/src/assets/icons/faviconA.png" />
-    <link rel="preconnect" href="https://player.vimeo.com" />
-    <link rel="preconnect" href="https://i.vimeocdn.com" />
-    <link rel="preconnect" href="https://f.vimeocdn.com" crossorigin />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Concert &amp; Exhibition Documentation Berlin | expose.u</title>
 
@@ -35,71 +32,9 @@
         background-color: #05070b;
       }
     </style>
-    <!-- Meta Pixel Code -->
-    <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '%VITE_META_PIXEL_ID%');
-      fbq('track', 'PageView');
-    </script>
-    <!-- End Meta Pixel Code -->
-    <!-- Google Consent Mode v2 — defaults must fire before any gtag.js loads -->
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('consent', 'default', {
-        ad_storage: 'denied',
-        ad_user_data: 'denied',
-        ad_personalization: 'denied',
-        analytics_storage: 'denied',
-        wait_for_update: 500
-      });
-      try {
-        if (localStorage.getItem('__analyticsConsent') === 'true') {
-          gtag('consent', 'update', {
-            ad_storage: 'granted',
-            ad_user_data: 'granted',
-            ad_personalization: 'granted',
-            analytics_storage: 'granted'
-          });
-        }
-      } catch(e) {}
-    </script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GA_MEASUREMENT_ID%"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      if ('%VITE_GA_MEASUREMENT_ID%') {
-        // send_page_view is disabled here: App.tsx's trackPageView() fires the
-        // real page_view on mount (with UTM/landing params attached), so this
-        // config call only bootstraps the tag and avoids a duplicate hit.
-        gtag('config', '%VITE_GA_MEASUREMENT_ID%', { send_page_view: false });
-      }
-    </script>
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8205854545246075"
-         crossorigin="anonymous"></script>
-    <!-- Microsoft Clarity -->
-    <script type="text/javascript">
-      (function(c,l,a,r,i,t,y){
-          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-      })(window, document, "clarity", "script", "vlupnuzyk8");
-    </script>
+    <!-- Optional analytics and advertising vendors load only after consent. -->
   </head>
   <body>
-    <noscript><img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=%VITE_META_PIXEL_ID%&ev=PageView&noscript=1"
-    /></noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

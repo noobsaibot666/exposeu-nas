@@ -31,6 +31,7 @@ function Terms() {
         description="Terms governing the use of the expose.u website and services."
         canonical="https://expose-u.com/terms"
         lang="en"
+        noAlternates
       />
 
       <div className="home__nav impressum__nav">

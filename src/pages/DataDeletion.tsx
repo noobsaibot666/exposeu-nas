@@ -31,6 +31,7 @@ function DataDeletion() {
         description="How to request deletion of your data from expose.u services connected via Facebook or Instagram."
         canonical="https://expose-u.com/data-deletion"
         lang="en"
+        noAlternates
       />
 
       <div className="home__nav impressum__nav">

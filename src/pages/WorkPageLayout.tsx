@@ -263,7 +263,7 @@ function WorkPageLayout({
         </div>
         <div className="work-gallery__media">
           {image && (
-            <img className="work-gallery__image" src={image} alt={heading} loading="eager" decoding="async" />
+            <img className="work-gallery__image" src={image} alt={heading} loading="lazy" decoding="async" />
           )}
         </div>
       </div>

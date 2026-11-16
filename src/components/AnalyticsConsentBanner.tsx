@@ -1,11 +1,19 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './AnalyticsConsentBanner.module.css'
-import { ANALYTICS_CONSENT_KEY, initializeAnalyticsConsent, updateGoogleConsentMode } from '../utils/analytics'
+import {
+  ANALYTICS_CONSENT_KEY,
+  initializeAnalyticsConsent,
+  initializeAnalyticsVendors,
+} from '../utils/analytics'
 import { useTranslation } from '../i18n/LocaleProvider'
 
 function AnalyticsConsentBanner() {
   const [isVisible, setIsVisible] = useState(() => initializeAnalyticsConsent() === null)
   const { t } = useTranslation()
+
+  useEffect(() => {
+    if (initializeAnalyticsConsent() === true) initializeAnalyticsVendors()
+  }, [])
 
   const handleChoice = (value: 'true' | 'false') => {
     try {
@@ -16,7 +24,7 @@ function AnalyticsConsentBanner() {
 
     const granted = value === 'true'
     window.__analyticsConsent = granted
-    updateGoogleConsentMode(granted)
+    if (granted) initializeAnalyticsVendors()
     setIsVisible(false)
   }
 

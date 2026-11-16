@@ -516,7 +516,10 @@
   }
 
   .work-gallery__media {
-    display: none;
+    display: block;
+    width: 100%;
+    height: clamp(280px, 48vw, 420px);
+    min-height: 0;
   }
 
   .work-gallery__text {
@@ -584,5 +587,12 @@
 @media (hover: none) {
   .work-gallery__image {
     pointer-events: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .work-gallery__media {
+    height: clamp(220px, 62vw, 320px);
+    border-radius: 18px;
   }
 }

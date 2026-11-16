@@ -11,7 +11,6 @@ import Impressum from './pages/Impressum'
 import ArtistSessions from './pages/ArtistSessions'
 import Portfolio from './pages/Portfolio'
 import NotFound from './pages/NotFound'
-import Home from './pages/Home'
 import BrandAgencyLanding from './pages/BrandAgencyLanding'
 import ConcertsBerlin from './pages/ConcertsBerlin'
 import ExhibitionGalleryLanding from './pages/ExhibitionGalleryLanding'
@@ -36,6 +35,9 @@ import { usePageMeta } from './i18n/pageMeta'
 import { useTranslation } from './i18n/LocaleProvider'
 function App() {
   const location = useLocation()
+  const isEnglishOnlyLegalPage = ['/privacy', '/terms', '/data-deletion'].some(
+    (path) => location.pathname === path || location.pathname === `/de${path}`,
+  )
   const contentRef = useRef<HTMLDivElement>(null)
   const isFirstRender = useRef(true)
   const { t } = useTranslation()
@@ -136,12 +138,12 @@ function App() {
       <div className="page">
         <a className="skip-link" href="#main">{t('common.skipToContent')}</a>
         <AnalyticsConsentBanner />
-        {location.pathname !== '/consent' && <LocaleSwitcher />}
+        {location.pathname !== '/consent' && !isEnglishOnlyLegalPage && <LocaleSwitcher />}
         <div className="page__content" ref={contentRef}>
           <Routes>
             <Route path="/" element={<HomeV2 />} />
             <Route path="/de" element={<HomeV2 />} />
-            <Route path="/old-home" element={<Home />} />
+            <Route path="/old-home" element={<Navigate to="/" replace />} />
             <Route path="/de/old-home" element={<Navigate to="/de" replace />} />
             <Route path="/v2" element={<HomeV2 />} />
             <Route path="/de/v2" element={<HomeV2 />} />

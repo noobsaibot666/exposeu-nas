@@ -44,11 +44,27 @@ app.set('trust proxy', 1)
 const port = Number(process.env.CONTACT_API_PORT || 8787)
 const RATE_LIMIT_WINDOW_MS = 60_000
 const RATE_LIMIT_MAX_REQUESTS = 5
+const MAX_RATE_LIMIT_KEYS = 10_000
+const CONTACT_FIELD_LIMITS = {
+  name: 120,
+  email: 254,
+  projectType: 160,
+  service: 80,
+  serviceLabel: 200,
+  package: 80,
+  packageLabel: 200,
+  sourceUrl: 2048,
+  referrer: 2048,
+  eventId: 120,
+  message: 10_000,
+}
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const contactRequestStore = new Map()
 const metaEventRequestStore = new Map()
 const smtpTestRequestStore = new Map()
 const photoConsentRequestStore = new Map()
 const reverseGeocodeRequestStore = new Map()
+const rateLimitStoreLastPrune = new WeakMap()
 
 const buildSmtpConfig = () => {
   const host = process.env.SMTP_HOST
@@ -161,6 +177,7 @@ const getClientIp = (req) => {
 
 const isRateLimited = (ip) => {
   const now = Date.now()
+  ensureRateLimitStoreCapacity(contactRequestStore, ip, now)
   const existingEntries = contactRequestStore.get(ip) || []
   const recentEntries = existingEntries.filter((timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS)
 
@@ -176,6 +193,7 @@ const isRateLimited = (ip) => {
 
 const isStoreRateLimited = (store, ip, maxRequests = RATE_LIMIT_MAX_REQUESTS) => {
   const now = Date.now()
+  ensureRateLimitStoreCapacity(store, ip, now)
   const existingEntries = store.get(ip) || []
   const recentEntries = existingEntries.filter((timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS)
 
@@ -187,6 +205,27 @@ const isStoreRateLimited = (store, ip, maxRequests = RATE_LIMIT_MAX_REQUESTS) =>
   recentEntries.push(now)
   store.set(ip, recentEntries)
   return false
+}
+
+function ensureRateLimitStoreCapacity(store, ip, now) {
+  if (store.has(ip) || store.size < MAX_RATE_LIMIT_KEYS) return
+
+  const lastPrune = rateLimitStoreLastPrune.get(store) || 0
+  if (now - lastPrune >= RATE_LIMIT_WINDOW_MS) {
+    for (const [key, timestamps] of store) {
+      const recent = timestamps.filter((timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS)
+      if (recent.length === 0) store.delete(key)
+      else if (recent.length !== timestamps.length) store.set(key, recent)
+    }
+    rateLimitStoreLastPrune.set(store, now)
+  }
+
+  // Keep memory bounded under high-cardinality traffic. This is a safeguard,
+  // not a replacement for a shared limiter if the API is ever replicated.
+  if (store.size >= MAX_RATE_LIMIT_KEYS) {
+    const oldestKey = store.keys().next().value
+    if (oldestKey !== undefined) store.delete(oldestKey)
+  }
 }
 
 const sendMetaLeadEvent = async ({
@@ -371,17 +410,6 @@ app.post('/contact', async (req, res) => {
       [trimmedFirstName, trimmedLastName].filter(Boolean).join(' ').trim() ||
       'N/A'
 
-    console.log('CONTACT LEAD META:', {
-      ts: new Date().toISOString(),
-      ip,
-      projectType: trimmedProjectType,
-      service: trimmedService,
-      package: trimmedPackage,
-      sourceUrl: trimmedSourceUrl,
-      referrer: trimmedReferrer,
-      eventId: trimmedEventId,
-    })
-
     if (trimmedCompanyWebsite) {
       console.warn('CONTACT SPAM BLOCKED:', {
         ts: new Date().toISOString(),
@@ -411,6 +439,41 @@ app.post('/contact', async (req, res) => {
       })
       return sendApiError(res, 400, 'INVALID_PAYLOAD', 'Please provide your name and email.')
     }
+
+    if (!EMAIL_PATTERN.test(trimmedEmail)) {
+      return sendApiError(res, 400, 'INVALID_EMAIL', 'Please provide a valid email address.')
+    }
+
+    const fieldLengths = {
+      name: senderName.length,
+      email: trimmedEmail.length,
+      projectType: trimmedProjectType.length,
+      service: trimmedService.length,
+      serviceLabel: trimmedServiceLabel.length,
+      package: trimmedPackage.length,
+      packageLabel: trimmedPackageLabel.length,
+      sourceUrl: trimmedSourceUrl.length,
+      referrer: trimmedReferrer.length,
+      eventId: trimmedEventId.length,
+      message: trimmedMessage.length,
+    }
+    const oversizedField = Object.entries(fieldLengths).find(
+      ([field, length]) => length > CONTACT_FIELD_LIMITS[field],
+    )
+    if (oversizedField) {
+      return sendApiError(res, 413, 'FIELD_TOO_LONG', `The ${oversizedField[0]} field is too long.`)
+    }
+
+    console.log('CONTACT LEAD META:', {
+      ts: new Date().toISOString(),
+      ip,
+      projectType: trimmedProjectType,
+      service: trimmedService,
+      package: trimmedPackage,
+      sourceUrl: trimmedSourceUrl,
+      referrer: trimmedReferrer,
+      eventId: trimmedEventId,
+    })
 
     const config = buildSmtpConfig()
 
