@@ -1,9 +1,10 @@
 import { resolveImagePath } from '../utils/resolveImagePath'
+import servicePreviewImages from '../data/servicePreviewImages.json'
 import WorkPageLayout from './WorkPageLayout'
 import { useLocale, useTranslation } from '../i18n/LocaleProvider'
 import { SEOMeta } from '../components/SEOMeta'
 
-const heroImage = resolveImagePath('/src/assets/images/landing/agency_hero_01.webp')
+const heroImage = resolveImagePath(servicePreviewImages['brand-agency'])
 
 const sectionImages = {
   gallery: resolveImagePath('/src/assets/images/services/6_brand_agency/6_BA_gallery.webp'),

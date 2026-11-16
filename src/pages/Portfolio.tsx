@@ -9,7 +9,6 @@ import { serviceMeta } from '../data/serviceMeta'
 import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { SchemaOrg, SEOMeta } from '../components/SEOMeta'
-import { useVideoLightbox } from '../hooks/useVideoLightbox'
 import { portfolioProjects, type PortfolioProject } from '../data/portfolioProjects'
 
 type VideoItem = PortfolioProject
@@ -63,7 +62,6 @@ function Portfolio() {
   const gridRef = useRef<HTMLDivElement | null>(null)
   const rootRef = useRef<HTMLElement | null>(null)
   const dragState = useRef({ active: false, startX: 0, scrollLeft: 0, moved: false, pointerId: 0 })
-  const { openVideo, modal: videoModal } = useVideoLightbox(rootRef)
 
   const videoTranslations = tm<Array<Pick<VideoItem, 'id' | 'title' | 'description' | 'context' | 'outcome' | 'tag'>>>('portfolio.videos')
   const proofItems = tm<string[]>('portfolio.proofStrip')
@@ -93,7 +91,7 @@ function Portfolio() {
         thumbnailUrl: [video.thumbnailUrl],
         uploadDate: video.uploadDate,
         embedUrl: video.embedUrl,
-        url: `https://expose-u.com/portfolio#${video.id}`,
+        url: `https://expose-u.com/projects/${video.id}`,
         inLanguage: locale,
         publisher: {
           '@type': 'Organization',
@@ -330,18 +328,17 @@ function Portfolio() {
               onPointerLeave={stopDragging}
             >
               {localizedVideos.map((video) => (
-                <button
+                <LocalizedLink
                   key={video.id}
                   id={video.id}
-                  type="button"
                   className="portfolio__card"
-                  aria-label={video.title}
-                  onClick={() => {
+                  aria-label={`${t('portfolio.detail.openProject')}: ${video.title}`}
+                  to={`/projects/${video.id}`}
+                  onClick={(event) => {
                     if (dragState.current.moved) {
+                      event.preventDefault()
                       dragState.current.moved = false
-                      return
                     }
-                    openVideo(video)
                   }}
                 >
                   <div
@@ -363,7 +360,7 @@ function Portfolio() {
                       </div>
                     </div>
                   </div>
-                </button>
+                </LocalizedLink>
               ))}
             </div>
           </div>
@@ -411,7 +408,6 @@ function Portfolio() {
         </div>
       </section>
 
-      {videoModal}
       <Footer />
     </main>
   )

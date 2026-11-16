@@ -10,6 +10,25 @@
     "feature": "Feature",
     "play": "Play"
   },
+  "detail": {
+    "back": "All projects",
+    "explore": "Explore the project",
+    "project": "The project",
+    "story": "We followed the work from the first moments through the details that make the night memorable. A considered mix of atmosphere, people and place creates a lasting record for the team and its audience.",
+    "location": "Location",
+    "film": "Project film",
+    "loadingFilm": "Loading the film…",
+    "gallery": "Selected frames",
+    "galleryTitle": "A closer look",
+    "image": "Photo",
+    "projectNavigation": "Project navigation",
+    "previous": "Previous project",
+    "next": "Next project",
+    "ctaEyebrow": "Have something coming up?",
+    "ctaTitle": "Let’s make it stay.",
+    "cta": "Start a conversation",
+    "openProject": "View project"
+  },
   "proofStrip": ["12+ events documented", "Concerts · Exhibitions · Sessions", "Artists, venues & agencies", "Europe"],
   "videos": [
     {

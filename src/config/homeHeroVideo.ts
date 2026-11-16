@@ -8,8 +8,8 @@ const mediaBaseUrl = (import.meta.env.VITE_HOME_HERO_VIDEO_BASE_URL?.trim() || '
 /** First-party hero MP4s (desktop landscape + mobile 9:16 crop). */
 export const HOME_HERO_VIDEO_URLS: { desktop?: string; mobile?: string } = {
   ...(mediaBaseUrl ? {
-    desktop: `${mediaBaseUrl}/home-hero-desktop-v1.mp4`,
-    mobile: `${mediaBaseUrl}/home-hero-mobile-v1.mp4`,
+    desktop: `${mediaBaseUrl}/home-hero-desktop-v2.mp4`,
+    mobile: `${mediaBaseUrl}/home-hero-mobile-v2.mp4`,
   } : {}),
 }
 

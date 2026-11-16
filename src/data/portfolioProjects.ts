@@ -1,4 +1,5 @@
 import { resolveImagePath } from '../utils/resolveImagePath'
+import projectPreviewImages from './projectPreviewImages.json'
 
 // Single source for portfolio projects (media, dates, schema fields). Used by
 // the Portfolio page and by HomeV2's "Last Projects", which keeps its own card
@@ -31,7 +32,7 @@ export const portfolioProjects: PortfolioProject[] = [
     outcome: 'Performance stills',
     year: '2026',
     location: 'Berlin',
-    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/08/thumb_0.webp'),
+    thumb: resolveImagePath(projectPreviewImages['leonis-voo-store']),
     // agape_001 (DSC_6345) is the main photo and the card cover: keep it first.
     slideshowImages: [
       resolveImagePath('/src/assets/images/thumbs/portfolio/08/agape_001.webp'),
@@ -74,7 +75,7 @@ export const portfolioProjects: PortfolioProject[] = [
     outcome: 'Performance stills',
     year: '2026',
     location: 'Berlin',
-    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/07/thumb_0.webp'),
+    thumb: resolveImagePath(projectPreviewImages['mirrwal-liquidrom']),
     slideshowImages: [
       // mirrwal_004 is the project's main photo (also the card cover): keep it first.
       resolveImagePath('/src/assets/images/thumbs/portfolio/07/mirrwal_004.webp'),
@@ -96,7 +97,7 @@ export const portfolioProjects: PortfolioProject[] = [
     outcome: 'Performance film',
     year: '2026',
     location: 'Berlin',
-    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/06/thumb_0.webp'),
+    thumb: resolveImagePath(projectPreviewImages['leonis-liquidrom']),
     videoSrc: 'https://vimeo.com/1231688364',
     embedUrl: 'https://player.vimeo.com/video/1231688364',
     thumbnailUrl: 'https://i.vimeocdn.com/video/2206903226-a92ca0b4441b470692995d6bb36303dca1d05b11347c9c1dd53cd59ed12cafc2-d_1280x720',
@@ -125,7 +126,7 @@ export const portfolioProjects: PortfolioProject[] = [
     outcome: 'delivered press stills + archive set',
     year: '2026',
     location: 'Berlin',
-    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/01/thumb_0.webp'),
+    thumb: resolveImagePath(projectPreviewImages.v1),
     videoSrc: 'https://youtu.be/00OZBQL4W3Q',
     embedUrl: 'https://www.youtube-nocookie.com/embed/00OZBQL4W3Q',
     thumbnailUrl: 'https://i.ytimg.com/vi/00OZBQL4W3Q/maxresdefault.jpg',
@@ -154,7 +155,7 @@ export const portfolioProjects: PortfolioProject[] = [
     outcome: 'delivered recap film + promo stills',
     year: '2026',
     location: 'Berlin',
-    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/02/thumb_0.webp'),
+    thumb: resolveImagePath(projectPreviewImages.v2),
     videoSrc:
       'https://www.youtube-nocookie.com/embed/DkruqulWupw?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0',
     embedUrl: 'https://www.youtube-nocookie.com/embed/DkruqulWupw',
@@ -182,7 +183,7 @@ export const portfolioProjects: PortfolioProject[] = [
     outcome: 'press stills + social media content — delivered',
     year: '2026',
     location: 'Berlin',
-    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/03/thumb_0.webp'),
+    thumb: resolveImagePath(projectPreviewImages.sanam),
     videoSrc: 'https://vimeo.com/1231736451',
     ambientVideo: true,
     embedUrl: 'https://player.vimeo.com/video/1231736451',
@@ -214,7 +215,7 @@ export const portfolioProjects: PortfolioProject[] = [
     outcome: 'concert coverage — delivered',
     year: '2026',
     location: 'Berlin',
-    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/04/thumb_0.webp'),
+    thumb: resolveImagePath(projectPreviewImages.seefeel),
     slideshowImages: [
       resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_001.webp'),
       resolveImagePath('/src/assets/images/thumbs/portfolio/04/seefeel_002.webp'),
@@ -247,7 +248,7 @@ export const portfolioProjects: PortfolioProject[] = [
     outcome: 'concert coverage — delivered',
     year: '2026',
     location: 'Berlin',
-    thumb: resolveImagePath('/src/assets/images/thumbs/portfolio/05/thumb_0.webp'),
+    thumb: resolveImagePath(projectPreviewImages.gleo),
     videoSrc: 'https://vimeo.com/1231736450',
     ambientVideo: true,
     embedUrl: 'https://player.vimeo.com/video/1231736450',

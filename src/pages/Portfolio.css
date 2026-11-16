@@ -138,6 +138,8 @@
   overflow: hidden;
   height: 100%;
   align-self: stretch;
+  color: inherit;
+  text-decoration: none;
 }
 
 .portfolio__card:hover {

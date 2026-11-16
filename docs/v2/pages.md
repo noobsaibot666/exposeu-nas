@@ -17,20 +17,21 @@ This is the source-of-truth route map from `src/App.tsx`, grouped by rendered pa
 | Gallery/museum landing | `/gallery-museum-documentation` | `/de/gallery-museum-documentation` | `AdLandingPage.tsx` | Source-reviewed shared campaign template. |
 | Artist/musician landing | `/artist-musician-documentation` | `/de/artist-musician-documentation` | `AdLandingPage.tsx` | Source-reviewed shared campaign template. |
 | Concerts Berlin landing | `/concerts-berlin` | `/de/concerts-berlin` | `AdLandingPage.tsx` | Source-reviewed shared campaign template. |
-| Contact | `/contact` | `/de/contact` | `Contact.tsx` | Source reviewed; API success path and mail receipt not tested. Consent gates Meta CAPI/client conversion calls. |
-| Contact success | `/contact-success` | `/de/contact-success` | `ContactSuccess.tsx` | Direct route exists; verify it cannot falsely imply successful submission when opened directly. |
+| Contact | `/contact` | `/de/contact` | `Contact.tsx` | Production API submission verified; owner inbox receipt is part of the post-deploy review. Consent gates Meta CAPI/client conversion calls. |
+| Contact success | `/contact-success` | `/de/contact-success` | `ContactSuccess.tsx` | Guarded by submission navigation state; direct entry returns to contact (V2-029). |
 | Concerts & events service | `/services/concerts-events` | `/de/services/concerts-events` | `WorkPageLayout.tsx` | Shared template; gallery lazy-loaded, stacked on mobile (V2-005, 019). |
 | Exhibition & gallery service | `/services/exhibition-gallery` | `/de/services/exhibition-gallery` | `WorkPageLayout.tsx` | Shared template; gallery lazy-loaded, stacked on mobile (V2-005, 019). |
 | Artist sessions service | `/services/artist-sessions` | `/de/services/artist-sessions` | `WorkPageLayout.tsx` | Shared template; gallery lazy-loaded, stacked on mobile (V2-005, 019). |
 | Brand/agency service | `/services/brand-agency` | `/de/services/brand-agency` | `WorkPageLayout.tsx` | Shared template; gallery lazy-loaded, stacked on mobile (V2-005, 019). |
 | Portfolio | `/portfolio` | `/de/portfolio` | `Portfolio.tsx` | Source reviewed; image/video interactions and filtering not runtime-tested. |
-| Pricing request | `/pricing-request/:plan` | `/de/pricing-request/:plan` | `PricingRequest.tsx` | External endpoint required; configuration/delivery unknown (V2-004, 014). Unknown plan falls back to generic copy. |
-| Pricing request success | `/pricing-request/success` | `/de/pricing-request/success` | `PricingRequestSuccess.tsx` | Route is declared after dynamic `:plan`; React Router ranks static route higher, but direct/open behavior needs runtime validation. |
+| Project detail | `/projects/:projectId` | `/de/projects/:projectId` | `ProjectDetail.tsx` | Localized visual case-study pages; card links from the homepage and portfolio. Build emits route-specific static social metadata and covers (owner decision 2026-11-16); visual review pending. |
+| Pricing request | `/pricing-request/:plan` | `/de/pricing-request/:plan` | `PricingRequest.tsx` | Posts to `/api/contact`; production email/database delivery verified (V2-030). Optional Apps Script sheet copy remains best-effort. Unknown plans use generic copy; decide in the later pricing phase. |
+| Pricing request success | `/pricing-request/success` | `/de/pricing-request/success` | `PricingRequestSuccess.tsx` | Guarded by real submission navigation state; direct entry returns to contact (V2-029). |
 | Impressum | `/impressum` | `/de/impressum` | `Impressum.tsx` | Source reviewed; legal content accuracy is outside technical verification. |
 | Privacy | `/privacy` | **intentionally unavailable** | `Privacy.tsx` | English-only; locale switch and language alternates suppressed (V2-003). |
 | Terms | `/terms` | **intentionally unavailable** | `Terms.tsx` | English-only; locale switch and language alternates suppressed (V2-003). |
 | Data deletion | `/data-deletion` | **intentionally unavailable** | `DataDeletion.tsx` | English-only; locale switch and language alternates suppressed (V2-003). |
-| Photo consent | `/consent` | no `/de/consent` route | `PhotoConsent.tsx` | Own EN/DE switch is internal; offline queue, geolocation, canvas, and Supabase persistence need device/API validation (V2-016). Global locale switch intentionally hidden. |
+| Photo consent | `/consent` | no `/de/consent` route | `PhotoConsent.tsx` | Own EN/DE switch is internal; production offline retry and duplicate protection verified (V2-016). Broader device and assistive-tech review remains. Global locale switch intentionally hidden. |
 | Not found | `*` | `*` | `NotFound.tsx` | Source reviewed; direct unknown route and link recovery not smoke-tested. |
 
 ## Legacy redirects

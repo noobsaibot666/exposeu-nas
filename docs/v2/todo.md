@@ -1,10 +1,10 @@
 # V2 pre-flight — owner to-do
 
-Only what still needs **you**, in the order to do it. Pricing is parked for a later phase: see [pricing/README.md](./pricing/README.md). Everything Claude could do alone is finished (31 issues; evidence in [issues.md](./issues.md) and [verification.md](./verification.md)) and summarised at the bottom. IDs link to issues.md.
+Only what still needs **you**, in the order to do it. Pricing is parked for a later phase: see [pricing/README.md](./pricing/README.md). Source work is finished (32 issues; evidence in [issues.md](./issues.md) and [verification.md](./verification.md)); production deployment and owner review are summarised below. IDs link to issues.md.
 
 ## 1. Deploy and check your inbox
 
-- [ ] **Run `scripts/deploy.sh frontend`** for the latest changes: German titles, the 404 hidden from search, smaller nav buttons, the self-hosted hero video and the new project pages.
+- [ ] **Run `scripts/deploy.sh all`** for the latest changes: corrected homepage film, project-page contrast, German titles, smaller nav buttons, project pages, required contact persistence, and pre-rendered social metadata.
 - [ ] **Inbox:** you should have two emails marked "TEST — please ignore", one from the contact form and one from the pricing form (Claude's live tests). If either is missing, tell Claude.
 
 ## 2. Review by eye (production)
@@ -14,15 +14,18 @@ Only what still needs **you**, in the order to do it. Pricing is parked for a la
   - the homepage nav: white over the video, then dark text on a light frosted bar after scrolling (desktop and phone)
   - the theme and language buttons beside the menu button on phones
 - [ ] **V2-028 Pop-up films:** open Leonis Work & Liquidrom, SANAM and Gleo (Vimeo) and Lick the walls (YouTube). Each film should fade in over its cover within a second or two. If one stays on the cover with a "Watch the film on …" link, tell Claude which project and browser. (Vimeo blocks automated browsers, so only you can confirm the live Vimeo path.)
-- [ ] **V2-002 Hero video:** the homepage now plays your Leonis/Liquidrom film (self-hosted). Check it on desktop and phone; the phone version is a 9:16 centre crop.
+- [ ] **V2-032 Project pages:** open each project from the portfolio and homepage; confirm direct URL + refresh, desktop/mobile layout, both themes, previous/next navigation, and the film cover/fallback behavior.
+- [ ] **Social previews:** use a social preview debugger on one project URL and one service URL; confirm each shows its own title, description and image.
+- [ ] **V2-002 Hero video:** after the source-swap deploy, confirm the homepage uses `website_-_main_v1 (1080p).mp4` on desktop and its 9:16 crop on phone. Leonis Work & Liquidrom remains the film on its project page.
 - [ ] **V2-018 Overall look** at phone, tablet and desktop widths. Reflow, zoom and contrast already pass automatically, so this is a design check only.
 
-## 3. Two decisions left (explained in plain words)
+## 3. Decisions recorded 2026-11-16
 
-- [ ] **Contact delivery:** when someone sends the contact form, two things happen: an email to you, and a copy saved in Supabase. Today the visitor sees "sent" as soon as the email goes out, even if saving the Supabase copy fails. Is that OK (you still get the email), or should a failed Supabase save also count as an error? Claude recommends keeping it as is.
-- [ ] **Link previews:** when someone shares a page on WhatsApp, LinkedIn, Facebook etc., the preview card shows the same generic expose.u title and image for every page, because the site builds its pages in the browser. Per-page previews (each project or service with its own image and title) need pre-rendered pages, a moderate build change. Do you want that? It matters most once the new project pages are shared.
-
-Decided 2026-11-16 (no action): **AdSense** keeps sharing the analytics "Accept"; **signature** stays drawing-only; **photo-consent data** is handled manually (you export signatures per project and store them in your own folders).
+- **Contact delivery:** both email acceptance and a saved Supabase record are required before showing success. If email was accepted but saving failed, the form explains not to resubmit and includes a reference ID.
+- **Link previews:** per-page previews for the homepage, portfolio, four service pages and all project pages in EN/DE. Build emits static metadata pages; deployment and social debugger review remain above.
+- **AdSense:** keeps sharing the analytics "Accept".
+- **Signature:** stays drawing-only; no alternate method for now.
+- **Photo-consent data:** handled manually; export signatures per project and store them in the project folders.
 
 ## 4. Assistive tech
 
@@ -36,7 +39,7 @@ Decided 2026-11-16 (no action): **AdSense** keeps sharing the analytics "Accept"
 
 ## Done by Claude (no action needed)
 
-- **Live and verified on production:** consent gating, the contact form on the new email library, photo-consent offline sync with duplicate protection, and the pricing form rerouted to the contact API (was losing every request). Test rows were deleted.
+- **Previously live and verified on production:** consent gating, contact email delivery, photo-consent offline sync with duplicate protection, and pricing form delivery. The new requirement that contact email and Supabase persistence both succeed is source-verified but awaits deployment and a safe failure-path check.
 - **Site-wide:** light mode with a working toggle; text stays readable over photos; the nav adapts over video and photos; the lightbox never shows an empty film frame.
 - **SEO:** route matrix, a 41-route metadata sweep, German titles fixed, the 404 and ads-only pages are `noindex`, and the sitemap is clean.
 - **Accessibility source fixes:** banner, skip link, form errors, combobox, signature label, contrast, reflow.

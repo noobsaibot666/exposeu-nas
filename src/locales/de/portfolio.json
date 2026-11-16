@@ -10,6 +10,25 @@
     "feature": "Feature",
     "play": "Abspielen"
   },
+  "detail": {
+    "back": "Alle Projekte",
+    "explore": "Projekt entdecken",
+    "project": "Das Projekt",
+    "story": "Wir haben die Arbeit von den ersten Momenten bis zu den Details begleitet, die den Abend besonders machen. Eine ausgewogene Mischung aus Atmosphäre, Menschen und Ort hält die Erinnerung für Team und Publikum fest.",
+    "location": "Ort",
+    "film": "Projektfilm",
+    "loadingFilm": "Film wird geladen …",
+    "gallery": "Ausgewählte Bilder",
+    "galleryTitle": "Ein näherer Blick",
+    "image": "Foto",
+    "projectNavigation": "Projektnavigation",
+    "previous": "Vorheriges Projekt",
+    "next": "Nächstes Projekt",
+    "ctaEyebrow": "Ein Projekt steht an?",
+    "ctaTitle": "Machen wir es unvergesslich.",
+    "cta": "Gespräch beginnen",
+    "openProject": "Projekt ansehen"
+  },
   "proofStrip": ["12+ dokumentierte Events", "Konzerte · Ausstellungen · Sessions", "Künstler, Venues & Agenturen", "Europa"],
   "videos": [
     {

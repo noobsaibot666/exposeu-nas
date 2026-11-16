@@ -36,6 +36,7 @@ function PricingRequest() {
   const [searchParams] = useSearchParams()
   const serviceParam = searchParams.get('service') ?? ''
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+  const [retryBlocked, setRetryBlocked] = useState(false)
   const heroRef = useRef<HTMLElement | null>(null)
   useNavOverMedia(heroRef)
   const [errorMessage, setErrorMessage] = useState('')
@@ -177,15 +178,21 @@ function PricingRequest() {
           referrer: document.referrer,
         }),
       })
-      const data = (await response.json().catch(() => null)) as { ok?: boolean; requestId?: string } | null
+      const data = (await response.json().catch(() => null)) as { ok?: boolean; requestId?: string; error?: { code?: string } } | null
       requestId = data?.requestId
-      if (!response.ok || data?.ok !== true) throw new Error('Request failed.')
+      if (!response.ok || data?.ok !== true) {
+        const message = data?.error?.code === 'CONTACT_PERSISTENCE_FAILED'
+          ? t('forms.pricing.errors.persistenceFailed')
+          : t('forms.pricing.errors.requestFailed')
+        if (data?.error?.code === 'CONTACT_PERSISTENCE_FAILED') setRetryBlocked(true)
+        throw new Error(message)
+      }
     } catch (error) {
       console.error(error)
       setStatus('error')
       setErrorMessage(
         requestId
-          ? `${t('forms.pricing.errors.requestFailed')} ${t('forms.contact.errors.referenceId', { id: requestId })}`
+          ? `${error instanceof Error ? error.message : t('forms.pricing.errors.requestFailed')} ${t('forms.contact.errors.referenceId', { id: requestId })}`
           : t('forms.pricing.errors.requestFailed'),
       )
       return
@@ -348,7 +355,7 @@ function PricingRequest() {
                 placeholder={t('forms.pricing.fields.detailsPlaceholder')}
               />
             </div>
-            <button type="submit" disabled={status === 'sending'}>
+            <button type="submit" disabled={status === 'sending' || retryBlocked}>
               {status === 'sending' ? t('forms.pricing.submitSending') : t('forms.pricing.submitIdle')}
             </button>
             {status === 'error' && <p className="pricing-request__error" role="alert">{errorMessage}</p>}

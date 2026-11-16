@@ -76,6 +76,15 @@
 
 All LCP values are within Google's "good" threshold (2.5 s), and CLS is effectively zero. The **Vimeo hero stream is excluded**: it plays in a cross-origin iframe the page-level CDP session doesn't see. It is the largest remaining homepage cost, which the R2 MP4 hero (todo step 5) removes. The accepted-consent session wasn't byte-measured: it adds Google tag, Meta, Clarity and AdSense scripts, and running them for real would send analytics hits.
 
+## Follow-up owner choices — source verification (2026-11-16)
+
+| Change | Result | Scope / remaining check |
+|---|---|---|
+| Contact success now requires email acceptance and Supabase persistence | Pass, source and API configuration path | A synthetic local request with SMTP test settings and no Supabase returned `503 CONTACT_PERSISTENCE_UNAVAILABLE` before `sendMail`. The post-email Supabase error branch is source-checked; deploy and reconcile a controlled failure before relying on it. |
+| Route-specific social previews | Pass, generator fixture | `prerender-social-pages.mjs` generated 28 localized HTML pages and 13 distinct cover images for homepage, portfolio, four services and eight projects. A real Vite build and deployed social debugger check remain pending. |
+| Local browser preview | Blocked | This checkout's Vite startup still lacks `@rollup/rollup-darwin-arm64`; dependencies were not changed because this is the SMB-shared worktree. |
+| Homepage film source correction | Encodes ready; deploy pending | `website_-_main_v1 (1080p).mp4` is encoded to 1920×1080 (10.1 MiB) and 608×1080 centre crop (6.5 MiB), both H.264, 24 fps, silent and faststart. The config uses immutable v2 filenames. User visual confirmation remains open. |
+
 ## Earlier "open before closing" items, resolved
 
 1. Build + deep-link matrix from the deploy environment: done (deploy-container builds and the production route matrix above).

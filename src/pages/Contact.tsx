@@ -48,6 +48,7 @@ function Contact() {
   const rootRef = useRef<HTMLElement | null>(null)
   const selectRef = useRef<HTMLDivElement | null>(null)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [retryBlocked, setRetryBlocked] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -182,8 +183,13 @@ function Contact() {
       if (!response.ok || !responseOk) {
         let serverMsg = t('forms.contact.errors.generic')
         if (typeof responseData === 'object' && responseData !== null) {
-          const data = responseData as { requestId?: string; error?: string | { message?: string } }
+          const data = responseData as { requestId?: string; error?: string | { code?: string; message?: string } }
           if (typeof data.error === 'string') serverMsg = data.error
+          else if (data.error?.code === 'CONTACT_PERSISTENCE_FAILED') {
+            setRetryBlocked(true)
+            serverMsg = t('forms.contact.errors.persistenceFailed')
+          }
+          else if (data.error?.code === 'CONTACT_PERSISTENCE_UNAVAILABLE') serverMsg = t('forms.contact.errors.generic')
           else if (data.error?.message) serverMsg = String(data.error.message)
           if (data.requestId) serverMsg = `${serverMsg} ${t('forms.contact.errors.referenceId', { id: data.requestId })}`
         }
@@ -493,7 +499,7 @@ function Contact() {
                 {submitError ?? ''}
               </p>
 
-              <button className="contact__submit" type="submit" disabled={isSubmitting}>
+              <button className="contact__submit" type="submit" disabled={isSubmitting || retryBlocked}>
                 {isSubmitting ? (
                   <>
                     <span className="contact__spinner" aria-hidden="true" />

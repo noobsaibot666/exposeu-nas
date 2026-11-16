@@ -6,7 +6,7 @@
 
 ## Current status
 
-This is a React 19 / TypeScript / Vite single-page application with 27 page components, 71 explicit route entries (including language variants, legacy redirects and dynamic forms), 4 canonical shared-layout service pages, 7 campaign landing pages, and a separate Express API for contact, Meta lead events, photo consent, reverse geocoding and SMTP diagnostics.
+This is a React 19 / TypeScript / Vite single-page application with 28 page components, 73 explicit route entries (including language variants, legacy redirects and dynamic forms), 4 canonical shared-layout service pages, 7 campaign landing pages, and a separate Express API for contact, Meta lead events, photo consent, reverse geocoding and SMTP diagnostics.
 
 The production homepage responded successfully on 2026-11-15. Playwright inspection at desktop (1200 px) and mobile (390 px) found no browser console errors and one warning. This was a homepage smoke review, not a full end-to-end test of every production route. The checked-out code passes ESLint. The image audit reports 35 unused image files (2.71 MB). A local Vite server could not start because `@rollup/rollup-darwin-arm64` is missing; repository guidance prohibits repairing dependencies in this SMB-shared checkout. Therefore local route-by-route visual checks and a current production build comparison remain open.
 

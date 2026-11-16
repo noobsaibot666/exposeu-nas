@@ -38,6 +38,7 @@ const Privacy = lazyWithReload(() => import('./pages/Privacy'))
 const PhotoConsent = lazyWithReload(() => import('./pages/PhotoConsent'))
 const Terms = lazyWithReload(() => import('./pages/Terms'))
 const DataDeletion = lazyWithReload(() => import('./pages/DataDeletion'))
+const ProjectDetail = lazyWithReload(() => import('./pages/ProjectDetail'))
 
 function App() {
   const location = useLocation()
@@ -213,6 +214,8 @@ function App() {
             <Route path="/de/artist-sessions" element={<Navigate to="/de/services/artist-sessions" replace />} />
             <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/de/portfolio" element={<Portfolio />} />
+            <Route path="/projects/:projectId" element={<ProjectDetail />} />
+            <Route path="/de/projects/:projectId" element={<ProjectDetail />} />
             <Route path="/pricing-request/:plan" element={<PricingRequest />} />
             <Route path="/de/pricing-request/:plan" element={<PricingRequest />} />
             <Route path="/pricing-request/success" element={<PricingRequestSuccess />} />

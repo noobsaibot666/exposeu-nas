@@ -37,7 +37,6 @@ import { smoothScrollTo } from '../utils/smoothScroll'
 import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { SchemaOrg, SEOMeta } from '../components/SEOMeta'
-import { useVideoLightbox } from '../hooks/useVideoLightbox'
 import { useNavOverMedia } from '../hooks/useNavOverMedia'
 
 const projectVisuals = [
@@ -180,7 +179,6 @@ function HomeV2() {
   useTrackViewEvent('home_view')
   useScrollDepthTracking('home', [25, 50, 75, 90])
 
-  const { openVideo, modal: videoModal } = useVideoLightbox(rootRef)
 
   const projects = useMemo(
     () =>
@@ -1064,16 +1062,15 @@ function HomeV2() {
         <div className="home__cases-grid">
           <div className="home__cases-row home__cases-row--triple">
             {lastProjects.map((project, index) => (
-              <button
+              <LocalizedLink
                 key={project.id}
-                type="button"
                 className="home__case-card"
+                to={`/projects/${project.id}`}
                 onClick={() => {
                   trackEvent('home_last_project_click', {
                     project_id: project.id,
                     card_position: index + 1,
                   })
-                  openVideo(project)
                 }}
               >
                 <div className="home__case-media">
@@ -1084,7 +1081,7 @@ function HomeV2() {
                   <p className={`home__case-copy ${styles.homeRedesign__cardCopy}`}>{project.subtext}</p>
                   <span className="home__case-cta">{t('home.lastProjects.cta')}</span>
                 </div>
-              </button>
+              </LocalizedLink>
             ))}
           </div>
         </div>
@@ -1132,7 +1129,6 @@ function HomeV2() {
       </section>
 
       <Footer />
-      {videoModal}
     </main>
   )
 }

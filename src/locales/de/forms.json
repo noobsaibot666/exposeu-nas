@@ -16,6 +16,7 @@
       "projectTypeRequired": "Bitte wähle eine Projektart aus.",
       "highlightedFields": "Bitte korrigiere die markierten Felder.",
       "generic": "Etwas ist schiefgelaufen – schreib uns bitte direkt an hello@expose-u.com",
+      "persistenceFailed": "Deine E-Mail wurde angenommen, aber der Kontaktdatensatz konnte nicht gespeichert werden. Bitte sende die Anfrage nicht erneut. Schreib uns direkt, wenn du nachfragen möchtest.",
       "referenceId": "Referenz: {{id}}"
     },
     "success": {
@@ -107,7 +108,8 @@
       "emailRequired": "Bitte gib deine E-Mail-Adresse ein.",
       "coverageNotesRequired": "Sag uns kurz, welche Coverage du brauchst.",
       "missingEndpoint": "Formular-Endpunkt fehlt. Hinterlege VITE_PRICING_FORM_ENDPOINT in den Umgebungswerten.",
-      "requestFailed": "Etwas ist schiefgelaufen. Bitte versuche es erneut oder schreib uns direkt."
+      "requestFailed": "Etwas ist schiefgelaufen. Bitte versuche es erneut oder schreib uns direkt.",
+      "persistenceFailed": "Deine E-Mail wurde angenommen, aber der Anfragedatensatz konnte nicht gespeichert werden. Bitte sende die Anfrage nicht erneut. Schreib uns direkt, wenn du nachfragen möchtest."
     },
     "submitIdle": "Anfrage senden",
     "submitSending": "Wird gesendet...",

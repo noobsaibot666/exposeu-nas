@@ -7,9 +7,9 @@ import { createClient } from '@supabase/supabase-js'
 import ws from 'ws'
 import { buildMetaLeadEvent, sendMetaEvents } from './metaConversions.js'
 
-// Logs contact submissions into the outreach-app's Supabase project so the ads dashboard
-// can join clicks to actual conversions via the service= tier. Optional — if unset, the
-// contact form still works, submissions just aren't logged anywhere.
+// Persists contact submissions into the outreach-app's Supabase project so the ads
+// dashboard can join clicks to actual conversions via the service= tier. Required for
+// a successful form response; SMTP acceptance alone is not presented as full success.
 //
 // createClient() always constructs a RealtimeClient, which throws synchronously on
 // Node <22 without a WebSocket polyfill (we only ever call .from().insert(), never
@@ -28,12 +28,17 @@ if (process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) {
 }
 
 async function logContactSubmission(fields) {
-  if (!supabase) return
+  if (!supabase) return false
   try {
     const { error } = await supabase.from('contact_submissions').insert(fields)
-    if (error) console.error('CONTACT SUPABASE LOG FAILED:', error.message)
+    if (error) {
+      console.error('CONTACT SUPABASE LOG FAILED:', error.message)
+      return false
+    }
+    return true
   } catch (error) {
     console.error('CONTACT SUPABASE LOG FAILED:', serializeError(error))
+    return false
   }
 }
 
@@ -497,6 +502,10 @@ app.post('/contact', async (req, res) => {
       return sendApiError(res, 500, 'EMAIL_CONFIG_MISSING', 'Server email configuration missing.')
     }
 
+    if (!supabase) {
+      return sendApiError(res, 503, 'CONTACT_PERSISTENCE_UNAVAILABLE', 'Contact record storage is unavailable.')
+    }
+
     const transporter = createTransporter(config)
 
     const subjectType = trimmedProjectType || trimmedServiceLabel || trimmedService || ''
@@ -544,7 +553,11 @@ app.post('/contact', async (req, res) => {
       rejectedCount: info.rejected?.length ?? 0,
     })
 
-    await logContactSubmission({
+    if (!info.accepted?.length) {
+      return sendApiError(res, 502, 'EMAIL_NOT_ACCEPTED', 'The message could not be accepted for delivery.')
+    }
+
+    const stored = await logContactSubmission({
       name: senderName,
       email: trimmedEmail,
       project_type: trimmedProjectType || null,
@@ -556,9 +569,8 @@ app.post('/contact', async (req, res) => {
       referrer: trimmedReferrer || null,
       message: trimmedMessage || null,
     })
-
-    if (!info.accepted?.length) {
-      return sendApiError(res, 502, 'EMAIL_NOT_ACCEPTED', 'The message could not be accepted for delivery.')
+    if (!stored) {
+      return sendApiError(res, 502, 'CONTACT_PERSISTENCE_FAILED', 'The email was accepted, but the contact record could not be saved. Please do not resubmit; contact us directly if you need to follow up.')
     }
 
     return res.json({ ok: true, requestId: res.locals.requestId })

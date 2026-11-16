@@ -18,11 +18,13 @@ The static snippets were removed from `index.html`; `initializeAnalyticsVendors(
 
 ## P1 — pre-V2
 
-### [x] V2-002 — Homepage background video causes heavy first-load work
+### [ ] V2-002 — Homepage background video causes heavy first-load work
 
-**Update 2026-11-16 — DONE: first-party hero video live in source.** The owner supplied `leoniswork_&_liquidrom_v1 (1080p).mp4` (86 s, 61 MB with audio). It was encoded to `home-hero-desktop-v1.mp4` (1920×1080, H.264 ≤2.2 Mbps, 23.6 MB, no audio, faststart) and `home-hero-mobile-v1.mp4` (608×1080 9:16 centre crop, ≤1.8 Mbps, 12.7 MB). They are self-hosted under `public/assets/media/`: nginx already serves `/assets/` with a 30-day immutable cache (filenames are versioned), so neither R2 nor an nginx change is needed (`nginx/default.conf` is write-protected). The files are gitignored (`*.mp4`) and ship from the NAS working copy via `deploy.sh`; see `docs/media-hosting.md`. The hero uses one `src` per viewport, because `<source media>` fires `error` on non-matching sources. If the file fails, it **falls back to the Vimeo players automatically**. Verified on a local build: desktop and mobile each play their own file; with the files missing, both fall back to Vimeo.
+**Update 2026-11-16 — source corrected.** The original first-party hero used `leoniswork_&_liquidrom_v1 (1080p).mp4`, which is the Leonis project film and belongs on that project page. The owner identified `website_-_main_v1 (1080p).mp4` as the homepage source. New immutable outputs are named `home-hero-desktop-v2.mp4` and `home-hero-mobile-v2.mp4` to avoid stale CDN copies; they remain self-hosted under `public/assets/media/` and are copied by the deploy script. The asset is still ignored by Git because the NAS working copy carries it into production builds. The mobile output remains a 608×1080 centre crop.
 
-**Status: REGRESSION FIXED (2026-11-16) — hero plays via the Vimeo fallback; first-party R2 media still open.** The native-video rewrite (`ddf557b`) rendered `<source>` elements only when `VITE_HOME_HERO_VIDEO_BASE_URL` was set. That variable is blank and no MP4s exist in the repo or `media-originals/`, so production showed an empty black hero with no video at all. The hero now has two modes chosen at build time:
+**Status: source corrected; deploy and owner visual confirmation pending.** Production currently serves the previously encoded Leonis/Liquidrom film in the homepage hero. The correct homepage media is the newly supplied `website_-_main_v1 (1080p).mp4`; the Leonis film belongs on its project page. V2 encodes are ready and the config points to them, but they are ignored by Git and must be carried by the TrueNAS deploy script.
+
+The earlier native-video rewrite (`ddf557b`) rendered `<source>` elements only when `VITE_HOME_HERO_VIDEO_BASE_URL` was set. When that variable was blank and no MP4s were present, production showed an empty black hero; a Vimeo fallback was restored until self-hosted assets were supplied. The current runtime uses the media files when available and falls back to Vimeo if a file fails:
 
 - **Native (target):** when `VITE_HOME_HERO_VIDEO_BASE_URL` is set, one muted, inline, looping `<video>` with media-selected mobile/desktop MP4s, pause/play/retry controls and reduced-motion support (unchanged from `ddf557b`).
 - **Vimeo fallback (current production):** when it is blank, the pre-audit Vimeo background players (desktop `1228854165`, mobile `1228856768`) are mounted — only the variant for the current viewport, swapped at 900 px. URL adds `dnt=1` so Vimeo sets no tracking cookies before consent. The iframe fades in on Vimeo's `play` event (3.5 s fallback), the early-loop seek hides Vimeo's loop-point black frame, and the same localized pause/play button and `prefers-reduced-motion` pause work through the player postMessage API.
@@ -31,7 +33,7 @@ The static snippets were removed from `index.html`; `initializeAnalyticsVendors(
 
 **Acceptance (fallback):** `tsc --noEmit` and targeted ESLint pass. After deploy, verify on desktop and a phone that the video appears within a few seconds, loops without a black flash, the pause/play button works, and a desktop↔mobile resize swaps the variant. Vimeo's player can't be probed via curl (JS bot check), so playback is confirmed in a real browser only.
 
-**Acceptance (close V2-002):** export landscape/portrait MP4s (H.264, faststart, ~2–4 Mbps desktop / ~1.5–2.5 Mbps mobile, no audio), upload as `home-hero-desktop-v1.mp4` / `home-hero-mobile-v1.mp4` to R2 behind a custom domain with long cache headers, set `VITE_HOME_HERO_VIDEO_BASE_URL` in the build env, then verify first-frame timing, range responses and mobile autoplay. That switches off Vimeo automatically.
+**Acceptance (close V2-002):** deploy the `v2` assets and config; confirm on desktop and phone that the homepage plays `website_-_main_v1`, the phone crop is 9:16, and the Leonis/Liquidrom video remains on its project page.
 
 ### [x] V2-003 — German language switch can navigate to missing legal routes
 
@@ -318,6 +320,14 @@ All marked "TEST — please ignore (QA 2026-11-16)"; the test rows were deleted 
 - **German homepage title** was hard-coded English in `HomeV2`. It now comes from `common.meta.home` (EN keeps the exact live copy; DE "Foto- & Videodokumentation Berlin").
 - **German Portfolio title** said "Last Projects"; it is now "Letzte Projekte", matching the German homepage section.
 - **The 404 was indexable:** it declared itself canonical and had hreflang alternates. Unknown routes now get `noindex` with no canonical/alternates/`og:url`. Indexable pages clear a leftover robots tag on SPA navigation (both metadata writers).
+
+### [x] V2-032 — Portfolio work needs shareable project pages
+
+**Status: DONE IN SOURCE — TypeScript, targeted ESLint and a fixture build of the social metadata generator pass; visual runtime review is blocked by the missing local Rollup binary.** Portfolio and homepage project cards now open localized `/projects/:projectId` pages. Each page uses existing project media, brief EN/DE context and outcome copy, a cover-backed film player with a direct-watch fallback, a responsive image gallery, previous/next project navigation, and a contact CTA. The build emits static HTML and route-specific cover images for the homepage, portfolio, all four services and all projects in EN/DE. Unknown project IDs return to the localized portfolio. Pricing remains parked for its later phase.
+
+**Owner visual check:** desktop and mobile layouts, both themes, and each film embed after deployment.
+
+**Owner decisions 2026-11-16:** require both contact email acceptance and Supabase persistence before reporting success; generate route-specific social preview pages for the homepage, portfolio, four services and every project in EN/DE. Persistence failures after mail acceptance return a reference error, tell visitors not to resubmit, and disable another submit in the current form view.
 
 ### Owner decisions 2026-11-16
 

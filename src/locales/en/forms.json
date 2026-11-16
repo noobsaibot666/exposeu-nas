@@ -16,6 +16,7 @@
       "projectTypeRequired": "Select a project type.",
       "highlightedFields": "Please correct the highlighted fields.",
       "generic": "Something went wrong — please email us at hello@expose-u.com",
+      "persistenceFailed": "We accepted your email, but could not save the contact record. Please do not resubmit; email us directly if you need to follow up.",
       "referenceId": "Reference: {{id}}"
     },
     "success": {
@@ -107,7 +108,8 @@
       "emailRequired": "Enter your email address.",
       "coverageNotesRequired": "Tell us what coverage you need.",
       "missingEndpoint": "Missing form endpoint. Add VITE_PRICING_FORM_ENDPOINT to your environment settings.",
-      "requestFailed": "Something went wrong. Please try again or email us directly."
+      "requestFailed": "Something went wrong. Please try again or email us directly.",
+      "persistenceFailed": "We accepted your email, but could not save the request record. Please do not resubmit; email us directly if you need to follow up."
     },
     "submitIdle": "Send request",
     "submitSending": "Sending...",

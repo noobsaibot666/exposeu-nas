@@ -1034,6 +1034,11 @@
   will-change: transform, opacity, filter;
 }
 
+.home__last-projects .home__case-card {
+  color: inherit;
+  text-decoration: none;
+}
+
 .home__case-media img {
   width: 100%;
   height: clamp(190px, 22vw, 280px);
