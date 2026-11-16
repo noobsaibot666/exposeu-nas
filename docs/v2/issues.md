@@ -173,7 +173,7 @@ Production homepage was inspected at 1200× and 390×. Local route-family checks
 - **Signature canvas:** it had no accessible name; it is now `role="img"` labelled with the localized "sign" copy.
 - **Contrast:** all dark-theme text tokens are ≥7:1 on `--page-bg`. A scan of hard-coded `rgba(245,245,244,a)` text found two failures, now fixed: the AdLanding quick-book placeholder (0.4 → 0.6, ~3.5:1 → ≥4.5:1) and the Release Content Kit testimonial handle (0.42 → 0.62). The third hit is a decorative `›` chevron, which is exempt.
 
-**Remaining (browser/owner):** 200% zoom/reflow, the full per-route screenshot pass, a VoiceOver/NVDA pass (banner, drawer, combobox, form errors), light-theme contrast if the toggle stays, and an accessible alternative to the drawing-only signature. Confirm legal/product acceptance before changing the signature method.
+**Remaining (browser/owner):** 200% zoom/reflow, the full per-route screenshot pass, a VoiceOver/NVDA pass (banner, drawer, combobox, form errors), and an accessible alternative to the drawing-only signature. Confirm legal/product acceptance before changing the signature method.
 
 ### [x] V2-019 — Service-page gallery media is hidden on mobile/tablet widths
 
@@ -236,12 +236,13 @@ Production homepage was inspected at 1200× and 390×. Local route-family checks
 
 **Acceptance:** a successful staging submission lands on `/pricing-request/success` with no console error.
 
-### [ ] V2-026 — Light mode existed but had no toggle and no light tokens
+### [x] V2-026 — Light mode existed but had no toggle and no light tokens
 
-**Status: IN PROGRESS.** A "day version" beta (`7bdd2a8`) added `[data-theme='light']` tokens and a toggle. Both were later removed (`e34574a`), `initTheme()` forced dark, and nothing rendered `useThemeContext()`, so only 12 orphan light rules remained. Owner decision 2026-11-16: keep light mode and make the toggle work.
+**Status: DONE IN SOURCE — owner eye review pending.** A "day version" beta (`7bdd2a8`) added `[data-theme='light']` tokens and a toggle. Both were later removed (`e34574a`), `initTheme()` forced dark, and nothing rendered `useThemeContext()`, so only 12 orphan light rules remained. Owner decision 2026-11-16: keep light mode and make the toggle work.
 
 - **Step 1 — foundation (done):** a light token set in `index.css` (text ≥4.5:1 on `#f6f5f2`), a `ThemeToggle` beside the language switcher (it takes the switcher's spot on English-only legal pages and is hidden on `/consent`, which has its own mode), EN/DE labels, a persisted choice (`localStorage('site-theme')`, default dark), and an inline `<head>` script that applies it before first paint. Pages already built on tokens (services, About, Contact, CallSession, legal, pricing, footer, nav) follow automatically.
 - **Step 2 — homepage + Portfolio (done):** a "dark islands" block in `index.css` re-declares the dark tokens, aliases included, on components that stay dark in light mode: the video hero, home nav bar over the video, monthly/custom pricing accent cards, the Portfolio lightbox and the thumbnail pills. Homepage focus rings use `--border-highlight`. Portfolio card text and hover border use tokens. A light-mode contrast scan of the built site (Playwright, 1280/390 px) found 0 text elements below 3:1 on `/`, `/portfolio`, `/about`, `/contact`, a service page, pricing, privacy and call-session. Scanner control: unconverted `/popups` and `/release-content-kit` were flagged at 1:1.
-- **Step 3:** AdLandingPage, ReleaseContentKit, PhotoConsent, LocaleSwitcher, ImageCarousel.
+- **Step 3 — campaign pages, Release Content Kit, shared bits (done):** 109 hard-coded colours in `AdLandingPage.css` / `ReleaseContentKit.css`, plus the consent banner, Contact/Pricing focus rings and the FAQ border, were rewritten as `color-mix(in srgb, var(--token) N%, transparent)`, which keeps each original opacity so **dark mode renders the same**. Text opacity has a 62% floor so light mode stays ≥4.5:1; that only raises dark-mode contrast. `.alp__hero` and `.rck__hero` (photo heroes) are dark islands, so their copy stays white over the image, while the mobile below-the-fold copies of the price/proof and contact rows follow the page theme. Fixed along the way: the consent banner had a hard-coded dark background with token text, which would have been dark-on-dark in light mode. ImageCarousel arrows/dots sit on photos and stay white; PhotoConsent keeps its own light/dark mode (global toggle hidden there).
+- **Verification:** the built site was scanned with Playwright on 25 routes (EN + `/de` sample, 404) at 1280 and 390 px in **both** themes: 0 text elements below 3:1. Toggle click flips and persists the theme; the banner computes light bg/dark text in light mode and the reverse in dark.
 
 **Acceptance:** toggle on every page except `/consent`; the choice survives reload without a flash; each page family is readable in both themes (owner eye review).

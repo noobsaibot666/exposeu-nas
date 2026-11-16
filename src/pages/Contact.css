@@ -152,7 +152,7 @@
 }
 
 .contact__select-trigger:focus-visible {
-  outline: 2px solid rgba(245, 245, 244, 0.5);
+  outline: 2px solid color-mix(in srgb, var(--text-strong) 50%, transparent);
   outline-offset: 2px;
 }
 
@@ -232,7 +232,7 @@
 .contact__field input:focus-visible,
 .contact__field textarea:focus-visible,
 .contact__field select:focus-visible {
-  outline: 2px solid rgba(245, 245, 244, 0.5);
+  outline: 2px solid color-mix(in srgb, var(--text-strong) 50%, transparent);
   outline-offset: 2px;
 }
 
@@ -306,7 +306,7 @@
 }
 
 .contact__submit:focus-visible {
-  outline: 2px solid rgba(245, 245, 244, 0.6);
+  outline: 2px solid color-mix(in srgb, var(--text-strong) 60%, transparent);
   outline-offset: 2px;
 }
 

@@ -131,14 +131,14 @@
   max-width: 100%;
   gap: 8px;
   padding: 6px 12px;
-  border: 1px solid rgba(245, 245, 244, 0.34);
+  border: 1px solid color-mix(in srgb, var(--text-strong) 34%, transparent);
   border-radius: 999px;
-  color: rgba(245, 245, 244, 0.92);
+  color: color-mix(in srgb, var(--text-strong) 92%, transparent);
   font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  background: rgba(5, 5, 5, 0.32);
+  background: color-mix(in srgb, var(--page-bg) 32%, transparent);
   backdrop-filter: blur(4px);
 }
 
@@ -152,14 +152,14 @@
     backdrop-filter: none;
     font-size: 0.72rem;
     letter-spacing: 0.08em;
-    color: rgba(245, 245, 244, 0.86);
+    color: color-mix(in srgb, var(--text-strong) 86%, transparent);
   }
 }
 
 .alp__hero-urgency {
   margin: 0;
   max-width: 640px;
-  color: rgba(245, 245, 244, 0.94);
+  color: color-mix(in srgb, var(--text-strong) 94%, transparent);
   font-size: clamp(0.92rem, 1.05vw, 1.02rem);
   font-weight: 700;
   line-height: 1.5;
@@ -167,7 +167,7 @@
 
 .alp__hero-price {
   margin: 0;
-  color: rgba(245, 245, 244, 0.66);
+  color: color-mix(in srgb, var(--text-strong) 66%, transparent);
   font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: 0.01em;
@@ -187,10 +187,10 @@
   align-items: center;
   min-height: 30px;
   padding: 5px 13px;
-  border: 1px solid rgba(245, 245, 244, 0.28);
+  border: 1px solid color-mix(in srgb, var(--text-strong) 28%, transparent);
   border-radius: 999px;
-  background: rgba(245, 245, 244, 0.07);
-  color: rgba(245, 245, 244, 0.88);
+  background: color-mix(in srgb, var(--text-strong) 7%, transparent);
+  color: color-mix(in srgb, var(--text-strong) 88%, transparent);
   font-size: 0.82rem;
   font-weight: 600;
 }
@@ -239,9 +239,9 @@
   min-height: 40px;
   padding: 9px 16px;
   border-radius: 999px;
-  border: 1px solid rgba(245, 245, 244, 0.34);
-  background: rgba(5, 5, 5, 0.34);
-  color: #f5f5f4;
+  border: 1px solid color-mix(in srgb, var(--text-strong) 34%, transparent);
+  background: color-mix(in srgb, var(--page-bg) 34%, transparent);
+  color: var(--text-strong);
   font-size: 0.86rem;
   font-weight: 700;
   text-decoration: none;
@@ -272,10 +272,10 @@
   width: fit-content;
   min-height: 46px;
   padding: 12px 22px;
-  border: 1px solid rgba(245, 245, 244, 0.44);
+  border: 1px solid color-mix(in srgb, var(--text-strong) 44%, transparent);
   border-radius: 999px;
-  color: #f5f5f4;
-  background: rgba(5, 5, 5, 0.46);
+  color: var(--text-strong);
+  background: color-mix(in srgb, var(--page-bg) 46%, transparent);
   font-weight: 700;
   text-decoration: none;
   box-shadow: 0 12px 34px rgba(0, 0, 0, 0.22);
@@ -286,42 +286,42 @@
 .alp__button:hover,
 .alp__button:visited,
 .alp__section-cta:visited {
-  color: #f5f5f4;
+  color: var(--text-strong);
   text-decoration: none;
 }
 
 .alp__button:hover {
   transform: translateY(-2px);
-  background: rgba(245, 245, 244, 0.12);
-  border-color: rgba(245, 245, 244, 0.72);
+  background: color-mix(in srgb, var(--text-strong) 12%, transparent);
+  border-color: color-mix(in srgb, var(--text-strong) 72%, transparent);
 }
 
 .alp__button--primary,
 .alp__section-cta {
-  background: #f5f5f4;
-  color: #050505;
-  border-color: #f5f5f4;
+  background: var(--button-solid-bg);
+  color: var(--button-solid-text);
+  border-color: var(--button-solid-border);
   box-shadow: none;
 }
 
 .alp__button--primary:visited,
 .alp__section-cta:visited {
-  color: #050505;
+  color: var(--button-solid-text);
 }
 
 .alp__button--primary:hover,
 .alp__section-cta:hover {
   transform: translateY(-2px);
-  color: #050505;
-  background: rgba(245, 245, 244, 0.9);
-  border-color: rgba(245, 245, 244, 0.9);
+  color: var(--button-solid-text);
+  background: color-mix(in srgb, var(--text-strong) 90%, transparent);
+  border-color: color-mix(in srgb, var(--text-strong) 90%, transparent);
   text-decoration: none;
 }
 
 .alp__button:focus-visible,
 .alp__section-cta:focus-visible,
 .alp__asset-card:focus-visible {
-  outline: 2px solid rgba(245, 245, 244, 0.78);
+  outline: 2px solid color-mix(in srgb, var(--text-strong) 78%, transparent);
   outline-offset: 3px;
 }
 
@@ -384,7 +384,7 @@
 }
 
 .alp__audience-body p {
-  color: rgba(245, 245, 244, 0.74);
+  color: color-mix(in srgb, var(--text-strong) 74%, transparent);
   font-size: clamp(1.02rem, 1.1vw, 1.16rem);
   line-height: 1.58;
 }
@@ -405,21 +405,21 @@
   align-items: center;
   min-height: 34px;
   padding: 6px 14px;
-  border: 1px solid rgba(245, 245, 244, 0.32);
+  border: 1px solid color-mix(in srgb, var(--text-strong) 32%, transparent);
   border-radius: 999px;
   font-size: 0.88rem;
   font-weight: 700;
-  background: #f5f5f4;
-  color: #070707;
+  background: var(--button-solid-bg);
+  color: var(--button-solid-text);
   letter-spacing: 0.01em;
   transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease, color 180ms ease;
 }
 
 .alp__tag-grid span:hover {
   transform: translateY(-2px);
-  border-color: rgba(245, 245, 244, 0.76);
-  background: #070707;
-  color: #f5f5f4;
+  border-color: color-mix(in srgb, var(--text-strong) 76%, transparent);
+  background: var(--page-bg);
+  color: var(--text-strong);
 }
 
 .alp__image-wrap {
@@ -450,7 +450,7 @@
   margin-top: 16px;
   font-size: clamp(1.05rem, 1.15vw, 1.18rem);
   line-height: 1.72;
-  color: rgba(245, 245, 244, 0.8);
+  color: color-mix(in srgb, var(--text-strong) 80%, transparent);
 }
 
 .alp__asset-grid {
@@ -465,18 +465,18 @@
   gap: 8px;
   min-height: 134px;
   padding: 18px;
-  border: 1px solid rgba(245, 245, 244, 0.14);
+  border: 1px solid color-mix(in srgb, var(--text-strong) 14%, transparent);
   border-radius: 8px;
   color: inherit;
-  background: rgba(245, 245, 244, 0.055);
+  background: color-mix(in srgb, var(--text-strong) 5.5%, transparent);
   text-decoration: none;
   transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
 }
 
 .alp__asset-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(245, 245, 244, 0.52);
-  background: rgba(245, 245, 244, 0.105);
+  border-color: color-mix(in srgb, var(--text-strong) 52%, transparent);
+  background: color-mix(in srgb, var(--text-strong) 10.5%, transparent);
   text-decoration: none;
 }
 
@@ -516,18 +516,18 @@
   display: grid;
   gap: 8px;
   padding: 18px;
-  border: 1px solid rgba(245, 245, 244, 0.14);
+  border: 1px solid color-mix(in srgb, var(--text-strong) 14%, transparent);
   border-radius: 8px;
-  background: rgba(245, 245, 244, 0.055);
+  background: color-mix(in srgb, var(--text-strong) 5.5%, transparent);
 }
 
 .alp__platform-item {
   display: grid;
   gap: 10px;
   padding: 18px;
-  border: 1px solid rgba(245, 245, 244, 0.14);
+  border: 1px solid color-mix(in srgb, var(--text-strong) 14%, transparent);
   border-radius: 8px;
-  background: rgba(245, 245, 244, 0.045);
+  background: color-mix(in srgb, var(--text-strong) 4.5%, transparent);
 }
 
 .alp__platform-icon {
@@ -537,8 +537,8 @@
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: #f5f5f4;
-  color: #050505;
+  background: var(--button-solid-bg);
+  color: var(--button-solid-text);
   font-size: 0.78rem;
   font-weight: 800;
 }
@@ -577,9 +577,9 @@
   display: grid;
   gap: 7px;
   padding: 18px;
-  border: 1px solid rgba(245, 245, 244, 0.14);
+  border: 1px solid color-mix(in srgb, var(--text-strong) 14%, transparent);
   border-radius: 8px;
-  background: rgba(245, 245, 244, 0.055);
+  background: color-mix(in srgb, var(--text-strong) 5.5%, transparent);
 }
 
 .alp__audience-item p {
@@ -600,9 +600,9 @@
   display: grid;
   gap: 8px;
   padding: 18px;
-  border: 1px solid rgba(245, 245, 244, 0.14);
+  border: 1px solid color-mix(in srgb, var(--text-strong) 14%, transparent);
   border-radius: 8px;
-  background: rgba(245, 245, 244, 0.045);
+  background: color-mix(in srgb, var(--text-strong) 4.5%, transparent);
 }
 
 .alp__what-item p {
@@ -628,7 +628,7 @@
 
 .alp__proof-prose p:not(:first-child) {
   font-size: clamp(1.04rem, 1.15vw, 1.18rem);
-  color: rgba(245, 245, 244, 0.74);
+  color: color-mix(in srgb, var(--text-strong) 74%, transparent);
   line-height: 1.72;
 }
 
@@ -645,8 +645,8 @@
   justify-content: space-between;
   gap: 14px;
   padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
-  background: rgba(5, 7, 11, 0.94);
-  border-top: 1px solid rgba(245, 245, 244, 0.16);
+  background: color-mix(in srgb, var(--page-bg) 94%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--text-strong) 16%, transparent);
   backdrop-filter: blur(10px);
   transform: translateY(110%);
   transition: transform 260ms ease;
@@ -659,7 +659,7 @@
 .alp__sticky-cta-note {
   flex: 1 1 auto;
   min-width: 0;
-  color: rgba(245, 245, 244, 0.86);
+  color: color-mix(in srgb, var(--text-strong) 86%, transparent);
   font-size: 0.82rem;
   font-weight: 600;
   line-height: 1.3;
@@ -865,10 +865,10 @@
     grid-template-columns: minmax(0, 1fr);
     gap: 0;
     margin-top: 18px;
-    border: 1px solid rgba(245, 245, 244, 0.14);
+    border: 1px solid color-mix(in srgb, var(--text-strong) 14%, transparent);
     border-radius: 12px;
     overflow: hidden;
-    background: rgba(245, 245, 244, 0.03);
+    background: color-mix(in srgb, var(--text-strong) 3%, transparent);
   }
 
   .alp--gallery-museum-documentation .alp__asset-card {
@@ -878,7 +878,7 @@
     min-height: 0;
     padding: 14px 16px;
     border: 0;
-    border-top: 1px solid rgba(245, 245, 244, 0.1);
+    border-top: 1px solid color-mix(in srgb, var(--text-strong) 10%, transparent);
     border-radius: 0;
     background: transparent;
     gap: 3px 12px;
@@ -901,7 +901,7 @@
     margin: 0;
     font-size: 0.85rem;
     line-height: 1.4;
-    color: rgba(245, 245, 244, 0.56);
+    color: color-mix(in srgb, var(--text-strong) 62%, transparent);
   }
 
   .alp--gallery-museum-documentation .alp__asset-card::after {
@@ -909,7 +909,7 @@
     grid-column: 2;
     grid-row: 1 / 3;
     align-self: center;
-    color: rgba(245, 245, 244, 0.4);
+    color: color-mix(in srgb, var(--text-strong) 62%, transparent);
     font-size: 1.2rem;
     line-height: 1;
   }
@@ -917,8 +917,8 @@
   .alp--gallery-museum-documentation .alp__asset-card:hover {
     transform: none;
     border-color: transparent;
-    border-top-color: rgba(245, 245, 244, 0.1);
-    background: rgba(245, 245, 244, 0.06);
+    border-top-color: color-mix(in srgb, var(--text-strong) 10%, transparent);
+    background: color-mix(in srgb, var(--text-strong) 6%, transparent);
   }
 }
 
@@ -955,7 +955,7 @@
 .alp__quick-book-copy p {
   margin-top: 14px;
   max-width: 44ch;
-  color: rgba(245, 245, 244, 0.68);
+  color: color-mix(in srgb, var(--text-strong) 68%, transparent);
   font-size: 1.02rem;
   line-height: 1.6;
 }
@@ -973,35 +973,35 @@
 .alp__quick-book-field > span {
   font-size: 0.9rem;
   font-weight: 600;
-  color: rgba(245, 245, 244, 0.82);
+  color: color-mix(in srgb, var(--text-strong) 82%, transparent);
 }
 
 .alp__quick-book-field > span em {
   font-style: normal;
   font-weight: 500;
-  color: rgba(245, 245, 244, 0.5);
+  color: color-mix(in srgb, var(--text-strong) 62%, transparent);
 }
 
 .alp__quick-book-field input {
   width: 100%;
   min-height: 48px;
   padding: 12px 14px;
-  border: 1px solid rgba(245, 245, 244, 0.24);
+  border: 1px solid color-mix(in srgb, var(--text-strong) 24%, transparent);
   border-radius: 12px;
-  background: rgba(245, 245, 244, 0.06);
-  color: #f5f5f4;
+  background: color-mix(in srgb, var(--text-strong) 6%, transparent);
+  color: var(--text-strong);
   font-size: 1.05rem; /* >=16px keeps iOS from zooming the field on focus */
   font-family: inherit;
 }
 
 .alp__quick-book-field input::placeholder {
-  color: rgba(245, 245, 244, 0.6); /* ≥4.5:1 on the dark field (was 0.4 ≈ 3.5:1) */
+  color: color-mix(in srgb, var(--text-strong) 62%, transparent); /* ≥4.5:1 on the dark field (was 0.4 ≈ 3.5:1) */
 }
 
 .alp__quick-book-field input:focus-visible {
-  outline: 2px solid rgba(245, 245, 244, 0.7);
+  outline: 2px solid color-mix(in srgb, var(--text-strong) 70%, transparent);
   outline-offset: 2px;
-  border-color: rgba(245, 245, 244, 0.5);
+  border-color: color-mix(in srgb, var(--text-strong) 50%, transparent);
 }
 
 .alp__quick-book-form .alp__button--primary {
@@ -1027,7 +1027,7 @@
 
 .alp__quick-book-fulllink {
   justify-self: center;
-  color: rgba(245, 245, 244, 0.6);
+  color: color-mix(in srgb, var(--text-strong) 62%, transparent);
   font-size: 0.88rem;
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -1036,7 +1036,7 @@
 .alp__quick-book-success p {
   margin-top: 12px;
   max-width: 48ch;
-  color: rgba(245, 245, 244, 0.72);
+  color: color-mix(in srgb, var(--text-strong) 72%, transparent);
   font-size: 1.05rem;
   line-height: 1.6;
 }

@@ -147,9 +147,15 @@
   .home__pricing-card--monthly,
   .home__pricing-card--custom,
   .portfolio__overlay,
-  .portfolio__pill
+  .portfolio__pill,
+  .alp__hero,
+  .rck__hero
 ) {
   color-scheme: dark;
+  /* page-bg / bg-base too: glass pills mix against --page-bg and the campaign
+     heroes fade their bottom edge into --bg-base. */
+  --page-bg: #050507;
+  --bg-base: #050507;
   --surface-base: #090a0c;
   --surface-muted: #111216;
   --surface-card: rgba(8, 8, 8, 0.7);
