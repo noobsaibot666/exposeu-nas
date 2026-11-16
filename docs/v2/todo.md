@@ -29,7 +29,7 @@ Everything that still needs **you** after the 2026-11-16 remediation pass, in th
 
 Contact and photo consent work in production. **Pricing requests were being lost:** the Google Apps Script behind the pricing form refuses public requests ("access denied"). Claude rerouted pricing requests to your inbox (same delivery as contact messages); that ships with the next `frontend` deploy.
 
-- [ ] **Deploy `frontend`**, then check your inbox. Claude's test email from the contact form ("TEST — please ignore") should already be there, confirming the new email library works live.
+- [x] **Deployed and verified 2026-11-16:** a live test pricing request reached the contact API and Supabase. **Check your inbox:** you should have two emails marked "TEST — please ignore" (one contact, one pricing). If either is missing, tell Claude.
 - [ ] **Optional: the pricing Google Sheet.** If you still want pricing requests in the sheet too, open the Apps Script → **Deploy → Manage deployments → edit → "Who has access: Anyone"** → Deploy. Otherwise ignore it: requests now reach your inbox and Supabase regardless.
 - [ ] **Look for lost requests:** before this fix, pricing requests never reached you. If you've had pricing-page traffic recently (Analytics → `/pricing-request/*`), those visitors may be worth a follow-up through other channels.
 
