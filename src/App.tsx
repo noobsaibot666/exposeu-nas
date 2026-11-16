@@ -40,6 +40,25 @@ const Terms = lazyWithReload(() => import('./pages/Terms'))
 const DataDeletion = lazyWithReload(() => import('./pages/DataDeletion'))
 const ProjectDetail = lazyWithReload(() => import('./pages/ProjectDetail'))
 
+// Resets scroll on navigation *before* the incoming page's own layout effects
+// run: React runs layout effects for earlier siblings first, and this sits
+// before <Routes>. Pages that create ScrollTriggers on mount (projects,
+// portfolio, campaign pages) would otherwise measure them while still scrolled
+// to the previous page's position (V2-035: that crashed project-to-project
+// navigation).
+function RouteScrollReset() {
+  const { pathname } = useLocation()
+  const isFirst = useRef(true)
+  useLayoutEffect(() => {
+    if (isFirst.current) {
+      isFirst.current = false
+      return
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior })
+  }, [pathname])
+  return null
+}
+
 function App() {
   const location = useLocation()
   const isEnglishOnlyLegalPage = ['/privacy', '/terms', '/data-deletion'].some(
@@ -147,6 +166,7 @@ function App() {
         <AnalyticsConsentBanner />
         {location.pathname !== '/consent' && !isEnglishOnlyLegalPage && <LocaleSwitcher />}
         {location.pathname !== '/consent' && <ThemeToggle solo={isEnglishOnlyLegalPage} />}
+        <RouteScrollReset />
         <div className="page__content" ref={contentRef}>
           <Suspense fallback={<div className="page__route-loading" aria-busy="true" />}>
           <Routes>

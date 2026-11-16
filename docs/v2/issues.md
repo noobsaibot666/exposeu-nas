@@ -359,3 +359,14 @@ All marked "TEST — please ignore (QA 2026-11-16)"; the test rows were deleted 
 
 **Original report:**** Since the social-metadata prerender (V2-032) writes `dist/<path>/index.html`, nginx's `try_files $uri $uri/ /index.html` finds a directory and issues `301 Location: http://expose-u.com/<path>/` (absolute redirect, plain http behind Traefik's TLS). Measured on production 2026-11-16: `/projects/lick-the-walls`, `/de/projects/sanam-silent-green`, `/services/concerts-events` and `/portfolio` each take one redirect, then 200 with the correct per-page `og:title`. **Fix:** `try_files $uri $uri/index.html /index.html;` in `location /` (serves the directory index without redirecting) plus `absolute_redirect off;`. Exact steps are in todo.md step 1.
 
+### [x] V2-035 — Clicking to another project from the bottom of a project page blanked the page
+
+**Status: DONE IN SOURCE — deploy `frontend`.** Reported by the owner: after scrolling to the end of a project and opening another one, the new page didn't load until a refresh. Reproduced: the whole app unmounted with `TypeError: Cannot read properties of undefined (reading 'end')` thrown inside `ScrollTrigger.refresh`. **Cause:** the new project's scroll animations were created while the window was still scrolled to the bottom (the app-level scroll reset ran only after the page's own layout effects). Triggers using `once: true` whose start was already passed then fired and killed themselves *inside* ScrollTrigger's refresh loop, which crashed it.
+
+**Fix:**
+- `RouteScrollReset` in `App.tsx` resets scroll before any incoming page's layout effects run (it's a sibling placed before `<Routes>`). This protects every page that builds ScrollTriggers on mount (projects, Portfolio, campaign pages).
+- Each project mounts as a fresh instance (`key={projectId}`), and it scrolls to the top before creating triggers.
+- Project reveals use `toggleActions: 'play none none none'` instead of self-killing `once` triggers.
+
+**Verified (local build, 1440 and 390 px):** a chain through all 8 projects via the next-project teaser from the very bottom of each page, previous, "All projects", browser back, and the mobile bar's Next from mid-page all render the new page at the top with no errors.
+

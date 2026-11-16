@@ -69,8 +69,7 @@ function ProjectFilm({ embedUrl, cover, title }: { embedUrl: string; cover: stri
   )
 }
 
-function ProjectDetail() {
-  const { projectId = '' } = useParams()
+function ProjectDetailPage({ projectId }: { projectId: string }) {
   const navigate = useNavigate()
   const { locale, localizePath } = useLocale()
   const { t, tm } = useTranslation()
@@ -143,6 +142,11 @@ function ProjectDetail() {
   }, [projectId])
 
   useLayoutEffect(() => {
+    // Arriving from another project (e.g. the next-project teaser at the very
+    // bottom), the window is still scrolled down while this effect runs; the
+    // app-level scroll reset only happens after children mount. Reset first so
+    // every trigger below is measured from the top.
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior })
     if (!heroRef.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const context = gsap.context(() => {
@@ -172,7 +176,7 @@ function ProjectDetail() {
       // Gallery: each image is unveiled upward while it eases out of a zoom.
       gsap.utils.toArray<HTMLElement>('.project-detail__reveal').forEach((frame) => {
         const img = frame.querySelector('img')
-        const timeline = gsap.timeline({ scrollTrigger: { trigger: frame, start: 'top 88%', once: true } })
+        const timeline = gsap.timeline({ scrollTrigger: { trigger: frame, start: 'top 88%', toggleActions: 'play none none none' } })
         timeline.fromTo(frame, { clipPath: 'inset(18% 0% 0% 0%)', y: 40 }, { clipPath: 'inset(0% 0% 0% 0%)', y: 0, duration: 1.3, ease: 'expo.out' })
         if (img) timeline.fromTo(img, { scale: 1.18 }, { scale: 1, duration: 1.6, ease: 'expo.out' }, 0)
       })
@@ -194,8 +198,9 @@ function ProjectDetail() {
       gsap.set('.project-detail__more-grid figure', { opacity: 0, y: 30 })
       ScrollTrigger.batch('.project-detail__more-grid figure', {
         start: 'top 92%',
-        once: true,
-        onEnter: (batch) => gsap.to(batch, { opacity: 1, y: 0, duration: 0.9, ease: 'expo.out', stagger: 0.07 }),
+        // No `once`: a trigger that kills itself during ScrollTrigger's refresh
+        // crashed the page (V2-035). Re-entering just replays to the same state.
+        onEnter: (batch) => gsap.to(batch, { opacity: 1, y: 0, duration: 0.9, ease: 'expo.out', stagger: 0.07, overwrite: true }),
       })
 
       // Next-project teaser: image eases in as it arrives.
@@ -396,6 +401,13 @@ function ProjectDetail() {
       <SchemaOrg data={{'@context': 'https://schema.org', '@type': 'CreativeWork', name: project.title, description: project.description, image: project.thumb, dateCreated: project.year, locationCreated: {'@type': 'Place', name: project.location}, url: `https://expose-u.com/projects/${slug}`}} />
     </main>
   )
+}
+
+// A fresh page instance per project: state, observers and scroll animations
+// from the previous project never carry over when navigating between projects.
+function ProjectDetail() {
+  const { projectId = '' } = useParams()
+  return <ProjectDetailPage key={projectId} projectId={projectId} />
 }
 
 export default ProjectDetail
