@@ -13,8 +13,11 @@ Only what still needs **you**, in the order to do it. Pricing is parked for a la
   - the hard edge where a dark campaign / Release Content Kit hero meets the light page (in dark mode it fades)
   - the homepage nav: white over the video, then dark text on a light frosted bar after scrolling (desktop and phone)
   - the theme and language buttons beside the menu button on phones
-- [ ] **V2-028 Pop-up films:** open Leonis Work & Liquidrom, SANAM and Gleo (Vimeo) and Lick the walls (YouTube). Each film should fade in over its cover within a second or two. If one stays on the cover with a "Watch the film on …" link, tell Claude which project and browser. (Vimeo blocks automated browsers, so only you can confirm the live Vimeo path.)
-- [ ] **V2-032 Project pages:** open each project from the portfolio and homepage; confirm direct URL + refresh, desktop/mobile layout, both themes, previous/next navigation, and the film cover/fallback behavior.
+- [ ] **V2-032/033 Project pages:** open a few projects from Portfolio and the homepage, on desktop and phone, in both themes. Check that:
+  - the big image reveals feel right and the gallery rhythm reads well
+  - on the phone, the bottom bar (← Projects · 03 / 08 · Next →) appears after the opening photo and hides at the end
+  - the films play: press Play on Leonis Work & Liquidrom, SANAM and Gleo (Vimeo) and Lick the walls (YouTube). Each should fade in over its cover; if one stays on the cover with "Watch the film on …", tell Claude the project and browser
+  - the per-project texts are mostly real with light placeholder framing. Edit them in `src/locales/{en,de}/portfolio.json` → `videos[].story` / `highlight`, or send Claude corrections.
 - [ ] **Social previews:** use a social preview debugger on one project URL and one service URL; confirm each shows its own title, description and image.
 - [ ] **V2-002 Hero video:** after the source-swap deploy, confirm the homepage uses `website_-_main_v1 (1080p).mp4` on desktop and its 9:16 crop on phone. Leonis Work & Liquidrom remains the film on its project page.
 - [ ] **V2-018 Overall look** at phone, tablet and desktop widths. Reflow, zoom and contrast already pass automatically, so this is a design check only.

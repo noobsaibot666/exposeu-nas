@@ -31,6 +31,7 @@ function sendToVimeo(iframe: HTMLIFrameElement | null, method: string, value?: u
   )
 }
 import { portfolioProjects } from '../data/portfolioProjects'
+import { projectSlug } from '../data/projectPages'
 import { serviceMeta } from '../data/serviceMeta'
 import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
 import { smoothScrollTo } from '../utils/smoothScroll'
@@ -1065,7 +1066,7 @@ function HomeV2() {
               <LocalizedLink
                 key={project.id}
                 className="home__case-card"
-                to={`/projects/${project.id}`}
+                to={`/projects/${projectSlug(project.id)}`}
                 onClick={() => {
                   trackEvent('home_last_project_click', {
                     project_id: project.id,

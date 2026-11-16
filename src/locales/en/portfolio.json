@@ -27,7 +27,13 @@
     "ctaEyebrow": "Have something coming up?",
     "ctaTitle": "Let’s make it stay.",
     "cta": "Start a conversation",
-    "openProject": "View project"
+    "openProject": "View project",
+    "allProjects": "All projects",
+    "moreFrames": "More from the project",
+    "counter": "Project {{n}} of {{total}}",
+    "nextShort": "Next",
+    "backShort": "Projects",
+    "viewNext": "Next project"
   },
   "proofStrip": ["12+ events documented", "Concerts · Exhibitions · Sessions", "Artists, venues & agencies", "Europe"],
   "videos": [
@@ -37,7 +43,12 @@
       "description": "World premiere of AGAPE at VOO Space.",
       "context": "Dance, fashion and art exhibition, VOO Space Berlin",
       "outcome": "Performance stills",
-      "tag": "Performance"
+      "tag": "Performance",
+      "story": [
+        "AGAPE had its world premiere at VOO Space: dance, fashion and art sharing one room, one night.",
+        "We stayed close to the movement and the garments, shooting for stills that hold the energy of a first performance and work long after it."
+      ],
+      "highlight": "A premiere only happens once. The images are what carry it forward."
     },
     {
       "id": "mirrwal-liquidrom",
@@ -45,7 +56,12 @@
       "description": "Live beatbox under the Liquidrom dome.",
       "context": "Ukrainian beatbox artist, Liquidrom Berlin",
       "outcome": "Performance stills",
-      "tag": "Performance"
+      "tag": "Performance",
+      "story": [
+        "Ukrainian beatbox artist Mirrwal performed live under the Liquidrom dome, sound bouncing off water and concrete.",
+        "We worked with the venue's low, coloured light instead of against it, keeping the room's atmosphere in every frame."
+      ],
+      "highlight": "Sound you can almost see."
     },
     {
       "id": "leonis-liquidrom",
@@ -53,7 +69,12 @@
       "description": "Four dancers, two live performances at Liquidrom.",
       "context": "DOME 36 performance, Liquidrom Berlin",
       "outcome": "Performance film",
-      "tag": "Performance"
+      "tag": "Performance",
+      "story": [
+        "Four dancers, two live performances, one dome. DOME 36 brought Leonis Work into the water and light of Liquidrom.",
+        "A short film and a set of stills follow the choreography from first entrance to the final pose in the pool."
+      ],
+      "highlight": "Movement, water and light, held still for a moment."
     },
     {
       "id": "v1",
@@ -61,7 +82,12 @@
       "description": "Sound installation made visible.",
       "context": "Sound installation, Berlin",
       "outcome": "Press stills + archive set",
-      "tag": "Live Event"
+      "tag": "Live Event",
+      "story": [
+        "A sound installation is hard to photograph: the work lives in the air. We looked for the moments where it became visible.",
+        "The result is a press set and an archive of the space, made to explain the piece to people who weren't in the room."
+      ],
+      "highlight": "Making something you hear into something you can see."
     },
     {
       "id": "v2",
@@ -69,7 +95,12 @@
       "description": "Multi-artist night, fully documented.",
       "context": "Silent Green Kulturquartier",
       "outcome": "Recap film + press stills",
-      "tag": "Live Event"
+      "tag": "Live Event",
+      "story": [
+        "Abigail Toll and IDOL shared the stage at Silent Green for a multi-artist night, documented from soundcheck to the last song.",
+        "A recap film and press stills give every act its own moment, and the night as a whole a story."
+      ],
+      "highlight": "One night, several artists, one coherent record."
     },
     {
       "id": "sanam",
@@ -77,7 +108,12 @@
       "description": "Stage, crowd and atmosphere.",
       "context": "Betonhalle, Silent Green",
       "outcome": "Press stills + social content",
-      "tag": "Concert"
+      "tag": "Concert",
+      "story": [
+        "SANAM in the Betonhalle at Silent Green: stage, crowd and the room itself, all part of the show.",
+        "Press stills and short social content, delivered fast enough to use while the night was still being talked about."
+      ],
+      "highlight": "The room is part of the performance."
     },
     {
       "id": "seefeel",
@@ -85,7 +121,12 @@
       "description": "Concert coverage, stage to crowd.",
       "context": "Betonhalle, Silent Green",
       "outcome": "Press stills + film",
-      "tag": "Concert"
+      "tag": "Concert",
+      "story": [
+        "Seefeel's show in the Betonhalle, covered from the front of the stage to the back of the crowd.",
+        "Press-ready stills and footage that keep the band's layered, hazy sound in the pictures."
+      ],
+      "highlight": "Stage to crowd, nothing missed."
     },
     {
       "id": "gleo",
@@ -93,7 +134,12 @@
       "description": "Live photo and video coverage.",
       "context": "Betonhalle, Silent Green",
       "outcome": "Concert photo + video",
-      "tag": "Concert"
+      "tag": "Concert",
+      "story": [
+        "GLEO live at Silent Green, captured in photo and video in one pass.",
+        "A compact set of stills and clips, edited for press, the artist's channels and the venue's own archive."
+      ],
+      "highlight": "Photo and video from one visit, one consistent look."
     }
   ],
   "offers": {

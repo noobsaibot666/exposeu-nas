@@ -10,6 +10,7 @@ import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProv
 import LocalizedLink from '../i18n/LocalizedLink'
 import { SchemaOrg, SEOMeta } from '../components/SEOMeta'
 import { portfolioProjects, type PortfolioProject } from '../data/portfolioProjects'
+import { projectSlug } from '../data/projectPages'
 
 type VideoItem = PortfolioProject
 
@@ -91,7 +92,7 @@ function Portfolio() {
         thumbnailUrl: [video.thumbnailUrl],
         uploadDate: video.uploadDate,
         embedUrl: video.embedUrl,
-        url: `https://expose-u.com/projects/${video.id}`,
+        url: `https://expose-u.com/projects/${projectSlug(video.id)}`,
         inLanguage: locale,
         publisher: {
           '@type': 'Organization',
@@ -333,7 +334,7 @@ function Portfolio() {
                   id={video.id}
                   className="portfolio__card"
                   aria-label={`${t('portfolio.detail.openProject')}: ${video.title}`}
-                  to={`/projects/${video.id}`}
+                  to={`/projects/${projectSlug(video.id)}`}
                   onClick={(event) => {
                     if (dragState.current.moved) {
                       event.preventDefault()

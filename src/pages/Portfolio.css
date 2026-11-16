@@ -123,7 +123,6 @@
   filter: brightness(0.98);
 }
 
-
 .portfolio__card {
   display: block;
   position: relative;
@@ -349,225 +348,6 @@
   color: color-mix(in srgb, var(--text-strong) 82%, transparent);
 }
 
-.portfolio__overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(4px);
-  padding: clamp(56px, 9vh, 96px) 24px clamp(48px, 8vh, 80px);
-  /* Above the nav bars (2000 / HomeV2 3000) and the locale globe (4200), so
-     the site menu can't sit on top of the popup or collide with its close
-     button; still below the skip link and the mobile drawer (9999). */
-  z-index: 5000;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-}
-
-.portfolio__modal {
-  position: relative;
-  width: 100%;
-  max-width: 1100px;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  padding: 0;
-  box-shadow: none;
-  margin: 0;
-  display: block;
-  text-align: left;
-}
-
-.portfolio__close {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 52px;
-  height: 52px;
-  border-radius: 999px;
-  border: 1px solid var(--border-soft);
-  background: var(--surface-overlay);
-  color: var(--text-strong);
-  cursor: pointer;
-  display: grid;
-  place-items: center;
-  z-index: 5;
-  transition: transform 150ms ease, background-color 150ms ease, border-color 150ms ease;
-}
-
-.portfolio__close:hover {
-  transform: translateY(-1px);
-  background: var(--button-outline-hover);
-  border-color: var(--border-prominent);
-}
-
-/* One centred column shared by the film, the text and the stills, so their
-   edges line up. Capped so a 3:2 still never exceeds ~76% of the viewport height. */
-.portfolio__player {
-  display: grid;
-  /* minmax(0, 1fr), not the default auto track: otherwise the thumbnail
-     strip's full scroll width (14–20 thumbs) leaks into the column size and
-     pushes the film/stage past the column, off-centre and scrolling sideways. */
-  grid-template-columns: minmax(0, 1fr);
-  gap: clamp(20px, 3vh, 32px);
-  width: min(100%, calc(76vh * 3 / 2));
-  margin: 0 auto;
-}
-
-.portfolio__player > * {
-  min-width: 0;
-}
-
-/* ─── Film ─── */
-
-.portfolio__film {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 10px;
-  overflow: hidden;
-  /* Project cover (inline style) on a dark base: the frame is never empty
-     while the player loads, and stays meaningful if the embed is blocked. */
-  background-color: #050507;
-  background-size: cover;
-  background-position: center;
-}
-
-/* Covers the title/channel overlay YouTube shows for the first ~3s of
-   playback, then fades away so the film reads as a fade-in. */
-.portfolio__film-veil {
-  position: absolute;
-  inset: 0;
-  border-radius: 10px;
-  background: #050507;
-  pointer-events: none;
-  animation: portfolio-film-veil 900ms ease 3.4s forwards;
-}
-
-@keyframes portfolio-film-veil {
-  to {
-    opacity: 0;
-  }
-}
-
-.portfolio__player iframe.is-ready {
-  opacity: 1;
-}
-
-/* Shown over the cover if the embedded player hasn't come alive after a few
-   seconds (blocked by the browser/network): a direct link to the film. */
-.portfolio__film-fallback,
-.portfolio__film-fallback:visited {
-  position: absolute;
-  left: 50%;
-  bottom: 18px;
-  transform: translateX(-50%);
-  padding: 10px 18px;
-  border-radius: 999px;
-  background: rgba(5, 5, 7, 0.72);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  color: #fff;
-  font-size: 0.9rem;
-  font-weight: 700;
-  white-space: nowrap;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-.portfolio__film-fallback:hover {
-  background: rgba(5, 5, 7, 0.88);
-  color: #fff;
-  text-decoration: none;
-}
-
-.portfolio__film-fallback:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: 3px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .portfolio__player iframe {
-    transition: none;
-  }
-}
-
-/* Ambient loops ignore the pointer, so no player overlay is ever summoned. */
-.portfolio__film--ambient iframe {
-  pointer-events: none;
-}
-
-.portfolio__player video {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 10px;
-  border: none;
-  background: var(--bg-base);
-  box-shadow: none;
-  display: block;
-  object-fit: contain;
-}
-
-.portfolio__player iframe {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 10px;
-  border: none;
-  /* Hidden until the player reports in (useVideoLightbox): the cover behind
-     it shows instead of a blank frame or the browser's error page. */
-  background: transparent;
-  opacity: 0;
-  transition: opacity 450ms ease;
-  box-shadow: none;
-  display: block;
-}
-
-/* ─── Stills presentation: cross-fading stage + counter + thumbnail strip ─── */
-
-.portfolio__stills {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 14px;
-  min-width: 0;
-}
-
-.portfolio__stage {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 3 / 2;
-  border-radius: 10px;
-  overflow: hidden;
-  background: #050507;
-  touch-action: pan-y;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-/* Both the outgoing and incoming still sit in the same box; the incoming one
-   is later in the DOM, so it paints on top while the old one fades beneath. */
-.portfolio__stage-image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-  -webkit-user-drag: none;
-}
-
-.portfolio__stage-image--from-right {
-  animation: portfolio-stage-in-right 720ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
-}
-
-.portfolio__stage-image--from-left {
-  animation: portfolio-stage-in-left 720ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
-}
-
-.portfolio__stage-image--leaving {
-  animation: portfolio-stage-out 720ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
-}
-
 @keyframes portfolio-stage-in-right {
   from {
     opacity: 0;
@@ -601,196 +381,6 @@
     opacity: 0;
     transform: scale(0.995);
   }
-}
-
-.portfolio__stage-arrow {
-  position: absolute;
-  top: 50%;
-  width: 48px;
-  height: 48px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  background: rgba(0, 0, 0, 0.38);
-  backdrop-filter: blur(6px);
-  color: #fff;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  transform: translateY(-50%);
-  transition: opacity 260ms ease, transform 260ms ease, background-color 160ms ease, border-color 160ms ease;
-  z-index: 2;
-}
-
-.portfolio__stage-arrow span {
-  font-size: 1.6rem;
-  line-height: 1;
-  margin-top: -2px;
-}
-
-.portfolio__stage-arrow--left {
-  left: 16px;
-}
-
-.portfolio__stage-arrow--right {
-  right: 16px;
-}
-
-/* On mouse devices the arrows stay out of the photograph until you reach for them. */
-@media (hover: hover) and (pointer: fine) {
-  .portfolio__stage-arrow {
-    opacity: 0;
-  }
-
-  .portfolio__stage-arrow--left {
-    transform: translate(-6px, -50%);
-  }
-
-  .portfolio__stage-arrow--right {
-    transform: translate(6px, -50%);
-  }
-
-  .portfolio__stage:hover .portfolio__stage-arrow,
-  .portfolio__stage-arrow:focus-visible {
-    opacity: 1;
-    transform: translateY(-50%);
-  }
-
-  .portfolio__stage-arrow:hover {
-    background: rgba(0, 0, 0, 0.6);
-    border-color: rgba(255, 255, 255, 0.6);
-  }
-}
-
-.portfolio__stills-bar {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-.portfolio__counter {
-  margin: 0;
-  flex: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  font-variant-numeric: tabular-nums;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.portfolio__counter-current {
-  color: #fff;
-}
-
-.portfolio__counter-sep {
-  width: 22px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.35);
-}
-
-.portfolio__strip {
-  position: relative;
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  gap: 8px;
-  padding: 2px 20px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 20px, #000 calc(100% - 20px), transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 20px, #000 calc(100% - 20px), transparent);
-}
-
-.portfolio__strip::-webkit-scrollbar {
-  display: none;
-}
-
-.portfolio__strip-thumb {
-  position: relative;
-  flex: 0 0 auto;
-  width: 84px;
-  aspect-ratio: 3 / 2;
-  padding: 0;
-  border: 0;
-  border-radius: 6px;
-  overflow: hidden;
-  background: #111;
-  cursor: pointer;
-  opacity: 0.42;
-  transition: opacity 320ms ease;
-}
-
-.portfolio__strip-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.portfolio__strip-thumb::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0);
-  transition: box-shadow 320ms ease;
-}
-
-.portfolio__strip-thumb:hover {
-  opacity: 0.75;
-}
-
-.portfolio__strip-thumb.is-active {
-  opacity: 1;
-}
-
-.portfolio__strip-thumb.is-active::after {
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.85);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .portfolio__stage-image--from-right,
-  .portfolio__stage-image--from-left {
-    animation: none;
-  }
-
-  .portfolio__stage-image--leaving {
-    display: none;
-  }
-}
-
-/* ─── Project text ─── */
-
-.portfolio__player-meta {
-  display: grid;
-  gap: 4px;
-}
-
-.portfolio__player-meta .portfolio__eyebrow {
-  font-size: 0.85rem;
-  color: var(--text-muted-strong);
-}
-
-.portfolio__player-meta .portfolio__title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--text-strong);
-}
-
-.portfolio__player-meta .portfolio__description {
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-}
-
-.portfolio__player-meta .portfolio__eyebrow,
-.portfolio__player-meta .portfolio__title,
-.portfolio__player-meta .portfolio__description {
-  color: var(--text-strong);
-}
-
-.portfolio__player-meta .portfolio__description {
-  color: rgba(255, 255, 255, 0.82);
 }
 
 .portfolio__proofStrip {
@@ -1039,85 +629,37 @@
     grid-template-columns: 1fr;
   }
 
-  .portfolio__overlay {
-    padding: 64px 0 40px;
-    background: #000;
-  }
+  
 
-  .portfolio__modal {
-    width: 100%;
-    max-width: none;
-  }
+  
 
-  .portfolio__close {
-    top: max(12px, env(safe-area-inset-top));
-    right: 12px;
-    width: 44px;
-    height: 44px;
-    background: rgba(0, 0, 0, 0.52);
-    backdrop-filter: blur(12px);
-  }
+  
 
-  .portfolio__player {
-    gap: 18px;
-  }
+  
 
-  .portfolio__player iframe,
-  .portfolio__player video {
-    max-width: none;
-    max-height: none;
-    border-radius: 0;
-  }
+  
 
-  .portfolio__film,
-  .portfolio__film-veil {
-    border-radius: 0;
-  }
+  
 
-  .portfolio__player-meta {
-    padding: 0 16px;
-  }
+  
 
-  .portfolio__player-meta .portfolio__title {
-    font-size: 1.05rem;
-  }
+  
 
-  .portfolio__player-meta .portfolio__description {
-    font-size: 0.88rem;
-  }
+  
 
-  .portfolio__stage {
-    max-width: none;
-    max-height: none;
-    border-radius: 0;
-  }
+  
 
-  .portfolio__stage-arrow {
-    width: 40px;
-    height: 40px;
-    background: rgba(0, 0, 0, 0.42);
-  }
+  
 
-  .portfolio__stage-arrow--left {
-    left: 10px;
-  }
+  
 
-  .portfolio__stage-arrow--right {
-    right: 10px;
-  }
+  
 
-  .portfolio__stills-bar {
-    padding-left: 16px;
-    gap: 12px;
-  }
+  
 
-  .portfolio__strip {
-    padding-right: 16px;
-  }
+  
 
-  .portfolio__strip-thumb {
-    width: 64px;
-  }
+  
 
   .portfolio__offers-grid {
     grid-template-columns: minmax(0, 1fr);

@@ -27,7 +27,13 @@
     "ctaEyebrow": "Ein Projekt steht an?",
     "ctaTitle": "Machen wir es unvergesslich.",
     "cta": "Gespräch beginnen",
-    "openProject": "Projekt ansehen"
+    "openProject": "Projekt ansehen",
+    "allProjects": "Alle Projekte",
+    "moreFrames": "Mehr aus dem Projekt",
+    "counter": "Projekt {{n}} von {{total}}",
+    "nextShort": "Weiter",
+    "backShort": "Projekte",
+    "viewNext": "Nächstes Projekt"
   },
   "proofStrip": ["12+ dokumentierte Events", "Konzerte · Ausstellungen · Sessions", "Künstler, Venues & Agenturen", "Europa"],
   "videos": [
@@ -37,7 +43,12 @@
       "description": "Weltpremiere von AGAPE im VOO Space.",
       "context": "Tanz, Mode und Ausstellung, VOO Space Berlin",
       "outcome": "Performance-Stills",
-      "tag": "Performance"
+      "tag": "Performance",
+      "story": [
+        "AGAPE feierte im VOO Space Weltpremiere: Tanz, Mode und Kunst in einem Raum, an einem Abend.",
+        "Wir blieben nah an Bewegung und Kleidung und fotografierten Bilder, die die Energie einer Premiere halten und lange danach funktionieren."
+      ],
+      "highlight": "Eine Premiere passiert nur einmal. Die Bilder tragen sie weiter."
     },
     {
       "id": "mirrwal-liquidrom",
@@ -45,7 +56,12 @@
       "description": "Live-Beatbox unter der Kuppel des Liquidrom.",
       "context": "Beatbox-Artist aus der Ukraine, Liquidrom Berlin",
       "outcome": "Performance-Stills",
-      "tag": "Performance"
+      "tag": "Performance",
+      "story": [
+        "Der ukrainische Beatbox-Künstler Mirrwal trat live unter der Kuppel des Liquidrom auf, der Klang zwischen Wasser und Beton.",
+        "Wir haben mit dem gedämpften, farbigen Licht gearbeitet statt dagegen, damit die Atmosphäre in jedem Bild bleibt."
+      ],
+      "highlight": "Klang, den man fast sehen kann."
     },
     {
       "id": "leonis-liquidrom",
@@ -53,7 +69,12 @@
       "description": "Vier Tänzer:innen, zwei Live-Performances im Liquidrom.",
       "context": "DOME 36 Performance, Liquidrom Berlin",
       "outcome": "Performance-Film",
-      "tag": "Performance"
+      "tag": "Performance",
+      "story": [
+        "Vier Tänzer:innen, zwei Live-Performances, eine Kuppel. DOME 36 brachte Leonis Work in Wasser und Licht des Liquidrom.",
+        "Ein kurzer Film und eine Fotoserie folgen der Choreografie vom ersten Auftritt bis zur letzten Pose im Becken."
+      ],
+      "highlight": "Bewegung, Wasser und Licht, einen Moment lang festgehalten."
     },
     {
       "id": "v1",
@@ -61,7 +82,12 @@
       "description": "Soundinstallation sichtbar gemacht.",
       "context": "Soundinstallation, Berlin",
       "outcome": "Pressestills + Archivset",
-      "tag": "Live Event"
+      "tag": "Live Event",
+      "story": [
+        "Eine Klanginstallation ist schwer zu fotografieren: Das Werk lebt in der Luft. Wir haben die Momente gesucht, in denen es sichtbar wird.",
+        "Daraus entstanden ein Pressesatz und ein Archiv des Raums, die das Werk auch Menschen erklären, die nicht dabei waren."
+      ],
+      "highlight": "Was man hört, sichtbar machen."
     },
     {
       "id": "v2",
@@ -69,7 +95,12 @@
       "description": "Ein Abend, mehrere Acts, komplett dokumentiert.",
       "context": "Silent Green Kulturquartier",
       "outcome": "Recap-Film + Pressestills",
-      "tag": "Live Event"
+      "tag": "Live Event",
+      "story": [
+        "Abigail Toll und IDOL teilten sich die Bühne im Silent Green zu einem Abend mit mehreren Acts, dokumentiert vom Soundcheck bis zum letzten Song.",
+        "Ein Recap-Film und Pressefotos geben jedem Act seinen Moment und dem Abend als Ganzem eine Geschichte."
+      ],
+      "highlight": "Ein Abend, mehrere Acts, eine stimmige Dokumentation."
     },
     {
       "id": "sanam",
@@ -77,7 +108,12 @@
       "description": "Bühne, Publikum und Atmosphäre.",
       "context": "Betonhalle, Silent Green",
       "outcome": "Pressestills + Social-Content",
-      "tag": "Konzert"
+      "tag": "Konzert",
+      "story": [
+        "SANAM in der Betonhalle im Silent Green: Bühne, Publikum und der Raum selbst, alles Teil der Show.",
+        "Pressefotos und kurze Social-Inhalte, schnell genug geliefert, um sie zu nutzen, solange über den Abend noch gesprochen wurde."
+      ],
+      "highlight": "Der Raum spielt mit."
     },
     {
       "id": "seefeel",
@@ -85,7 +121,12 @@
       "description": "Konzert von der Bühne bis ins Publikum.",
       "context": "Betonhalle, Silent Green",
       "outcome": "Pressestills + Film",
-      "tag": "Konzert"
+      "tag": "Konzert",
+      "story": [
+        "Seefeel in der Betonhalle, dokumentiert von der Bühnenkante bis zur letzten Reihe.",
+        "Pressefertige Fotos und Footage, die den vielschichtigen, verhangenen Sound der Band im Bild halten."
+      ],
+      "highlight": "Von der Bühne bis zum Publikum, nichts verpasst."
     },
     {
       "id": "gleo",
@@ -93,7 +134,12 @@
       "description": "Live in Foto und Video.",
       "context": "Betonhalle, Silent Green",
       "outcome": "Konzert in Foto + Video",
-      "tag": "Konzert"
+      "tag": "Konzert",
+      "story": [
+        "GLEO live im Silent Green, in Foto und Video bei einem Termin festgehalten.",
+        "Eine kompakte Auswahl an Fotos und Clips, geschnitten für Presse, die Kanäle der Künstlerin und das Archiv der Venue."
+      ],
+      "highlight": "Foto und Video aus einem Termin, ein durchgehender Look."
     }
   ],
   "offers": {

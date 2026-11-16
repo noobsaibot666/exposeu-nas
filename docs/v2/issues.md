@@ -337,3 +337,19 @@ All marked "TEST — please ignore (QA 2026-11-16)"; the test rows were deleted 
 - **Pricing:** parked for a later phase; everything open is in [pricing/README.md](./pricing/README.md).
 - **Ads-only pages:** `noindex`, not in the sitemap (done).
 
+### [x] V2-033 — Project pages: visual-first rebuild, mobile navigation, readable URLs
+
+**Status: DONE IN SOURCE — owner eye review pending.** This closes the gaps left in V2-032 against the owner's brief (visual over text, big reveals, a proper mobile navigation, both themes):
+
+- **Editorial gallery** from each image's real shape (`scripts/gen-project-image-dims.mjs` → `src/data/projectImageDims.json`, read from WebP headers; 119 images): a landscape opens full-bleed, the next landscapes sit side by side, portraits pair up with an offset, and lone portraits alternate left/right. No crops, and `width`/`height` on every image reserves its space (no layout shift). The first 14 stills go in the editorial layout and the rest in a compact grid.
+- **Reveals (GSAP, skipped with reduced motion):** the hero photo settles from a zoom with a slow scroll parallax and the copy rises; each gallery image is unveiled upward (clip-path) while easing out of a zoom; full-bleed images drift; the highlight line rises on scroll; the compact grid fades up in batches; the next-project image eases in.
+- **Text hierarchy:** eyebrow (tag · place · year · 01/08), large H1, lead, two short project-specific paragraphs, facts (context / outcome / place), and one large highlight line between gallery blocks. The copy is per project in EN/DE (`portfolio.videos[].story` / `highlight`), mostly real with light placeholder framing.
+- **Mobile navigation:** a thumb-reach bottom bar (← Projects · 06 / 08 · Next →, 44 px targets, safe-area aware) appears after the hero and hides at the end of the page, where the full next-project teaser and the previous/all-projects links take over. The gallery stacks full-width.
+- **Next project:** a big image teaser with title and counter.
+- **Readable URLs:** `/projects/lick-the-walls`, `/projects/abigail-toll-idol`, … (`src/data/projectSlugs.json`, also used by the social prerender). Legacy `/projects/v1` / `v2` redirect to the slug, and unknown slugs go to `/portfolio`.
+- **Search:** all 16 project URLs are in `sitemap.xml` (with EN/DE alternates) and in `scripts/verify-routes.mjs`.
+- **Nav fix:** on project pages the theme/language controls now use the homepage position (fixed top-right, 16 px clear of "Contact"); before, they overlapped "About"/"Contact" and scrolled away.
+- **Dead code removed:** `useVideoLightbox` (the old pop-up) and 71 pop-up-only rules in `Portfolio.css` (1,137 → 679 lines).
+
+**Verified (local build, Playwright):** dark/light × 1440/390 plus reduced motion. Every image ends up visible, there's no horizontal overflow, one H1, two story paragraphs, the mobile bar goes hidden → visible → hidden, legacy redirects work, and Portfolio/homepage link to the slugs. ESLint, `tsc -b`, the build and the prerender all pass (16 static project pages emitted).
+

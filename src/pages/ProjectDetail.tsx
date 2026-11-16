@@ -1,13 +1,19 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
 import { portfolioProjects } from '../data/portfolioProjects'
 import { useLocale, useTranslation } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
 import { SchemaOrg, SEOMeta } from '../components/SEOMeta'
+import { buildGallery, findProjectId, projectSlug, toStill, type GalleryBlock, type Still } from '../data/projectPages'
 import './ProjectDetail.css'
+
+// Stills shown in the big editorial layout; the rest go to a compact grid.
+const EDITORIAL_STILLS = 14
+const pad = (n: number) => String(n).padStart(2, '0')
 
 function ProjectFilm({ embedUrl, cover, title }: { embedUrl: string; cover: string; title: string }) {
   const frameRef = useRef<HTMLIFrameElement | null>(null)
@@ -66,17 +72,40 @@ function ProjectFilm({ embedUrl, cover, title }: { embedUrl: string; cover: stri
 function ProjectDetail() {
   const { projectId = '' } = useParams()
   const navigate = useNavigate()
-  const { locale } = useLocale()
+  const { locale, localizePath } = useLocale()
   const { t, tm } = useTranslation()
   const heroRef = useRef<HTMLElement | null>(null)
   const storyRef = useRef<HTMLElement | null>(null)
-  const translated = tm<Array<{id: string; title: string; description: string; context: string; outcome: string; tag: string}>>('portfolio.videos')
+  const galleryRef = useRef<HTMLElement | null>(null)
+  const endRef = useRef<HTMLDivElement | null>(null)
+  const [pastHero, setPastHero] = useState(false)
+  const [atEnd, setAtEnd] = useState(false)
+  type Copy = { id: string; title: string; description: string; context: string; outcome: string; tag: string; story?: string[]; highlight?: string }
+  const translated = tm<Copy[]>('portfolio.videos')
   const projects = useMemo(() => portfolioProjects.map((project) => ({
     ...project,
     ...(translated.find((entry) => entry.id === project.id) ?? {}),
   })), [translated])
-  const index = projects.findIndex((project) => project.id === projectId)
-  const project = projects[index]
+  const match = findProjectId(projectId, projects.map((project) => project.id))
+  const index = match ? projects.findIndex((project) => project.id === match.id) : -1
+  const project = index >= 0 ? (projects[index] as (typeof projects)[number] & Partial<Copy>) : undefined
+  const slug = project ? projectSlug(project.id) : ''
+
+  // Hero = the sharper of the card cover and the first still; the remaining
+  // stills feed the editorial gallery (first ones) and the compact grid.
+  const media = useMemo(() => {
+    if (!project) return null
+    const stills = (project.slideshowImages?.length ? project.slideshowImages : [project.thumb]).map(toStill)
+    const cover = toStill(project.thumb)
+    const first = stills[0]
+    const hero = first && Math.max(first.w, first.h) >= Math.max(cover.w, cover.h) ? first : cover
+    const rest = stills.filter((still) => still.src !== hero.src)
+    return {
+      hero,
+      blocks: buildGallery(rest.slice(0, EDITORIAL_STILLS)),
+      more: rest.slice(EDITORIAL_STILLS),
+    }
+  }, [project])
 
   const navigateHomeToSection = (sectionId: string) => {
     navigate(locale === 'de' ? '/de' : '/')
@@ -87,6 +116,9 @@ function ProjectDetail() {
     })
   }
 
+  // Nav over the hero photo: white-on-dark; past it: themed bar. The mobile
+  // project bar appears once the hero has scrolled away and hides again at the
+  // end of the page, where the full next-project teaser takes over.
   useLayoutEffect(() => {
     const hero = heroRef.current
     if (!hero) return
@@ -94,53 +126,127 @@ function ProjectDetail() {
     const root = document.documentElement
     const previousMediaState = root.hasAttribute('data-nav-over-media')
     root.setAttribute('data-nav-over-media', '')
-    const observer = new IntersectionObserver(([entry]) => {
+    const heroObserver = new IntersectionObserver(([entry]) => {
       root.toggleAttribute('data-nav-over-media', entry.isIntersecting)
+      setPastHero(!entry.isIntersecting && entry.boundingClientRect.top < 0)
     })
-    observer.observe(hero)
+    heroObserver.observe(hero)
+    const end = endRef.current
+    const endObserver = new IntersectionObserver(([entry]) => setAtEnd(entry.isIntersecting))
+    if (end) endObserver.observe(end)
 
     return () => {
-      observer.disconnect()
+      heroObserver.disconnect()
+      endObserver.disconnect()
       root.toggleAttribute('data-nav-over-media', previousMediaState)
     }
   }, [projectId])
 
   useLayoutEffect(() => {
-    const story = storyRef.current
-    if (!story || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (!heroRef.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const context = gsap.context(() => {
-      const items = gsap.utils.toArray<HTMLElement>(
-        '.project-detail__story-copy > *, .project-detail__facts > div',
-      )
-
+      // Hero: the photo settles in, the copy rises, then slow parallax.
+      gsap.fromTo('.project-detail__cover', { scale: 1.14 }, { scale: 1, duration: 1.8, ease: 'expo.out' })
       gsap.fromTo(
-        items,
+        '.project-detail__hero-copy > *',
+        { opacity: 0, y: 36 },
+        { opacity: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger: 0.09, delay: 0.15 },
+      )
+      gsap.to('.project-detail__cover-wrap', {
+        yPercent: 14,
+        ease: 'none',
+        scrollTrigger: { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true },
+      })
+
+      // Story copy and facts.
+      gsap.fromTo(
+        '.project-detail__story-copy > *, .project-detail__facts > div',
         { opacity: 0, y: 22, filter: 'blur(4px)' },
         {
-          opacity: 1,
-          y: 0,
-          filter: 'blur(0px)',
-          stagger: 0.08,
-          ease: 'sine.inOut',
-          scrollTrigger: {
-            trigger: story,
-            start: 'top 88%',
-            end: 'top 62%',
-            scrub: 0.7,
-          },
+          opacity: 1, y: 0, filter: 'blur(0px)', stagger: 0.08, ease: 'sine.inOut',
+          scrollTrigger: { trigger: storyRef.current, start: 'top 88%', end: 'top 62%', scrub: 0.7 },
         },
       )
-    }, story)
+
+      // Gallery: each image is unveiled upward while it eases out of a zoom.
+      gsap.utils.toArray<HTMLElement>('.project-detail__reveal').forEach((frame) => {
+        const img = frame.querySelector('img')
+        const timeline = gsap.timeline({ scrollTrigger: { trigger: frame, start: 'top 88%', once: true } })
+        timeline.fromTo(frame, { clipPath: 'inset(18% 0% 0% 0%)', y: 40 }, { clipPath: 'inset(0% 0% 0% 0%)', y: 0, duration: 1.3, ease: 'expo.out' })
+        if (img) timeline.fromTo(img, { scale: 1.18 }, { scale: 1, duration: 1.6, ease: 'expo.out' }, 0)
+      })
+
+      // Full-bleed images drift slightly against the scroll.
+      gsap.utils.toArray<HTMLElement>('.project-detail__block--full .project-detail__drift').forEach((drift) => {
+        gsap.fromTo(drift, { yPercent: -6 }, {
+          yPercent: 6,
+          ease: 'none',
+          scrollTrigger: { trigger: drift, start: 'top bottom', end: 'bottom top', scrub: true },
+        })
+      })
+
+      // Highlight line, then the compact grid in small batches.
+      gsap.fromTo('.project-detail__highlight p', { opacity: 0, y: 50 }, {
+        opacity: 1, y: 0, ease: 'none',
+        scrollTrigger: { trigger: '.project-detail__highlight', start: 'top 85%', end: 'top 45%', scrub: 0.6 },
+      })
+      gsap.set('.project-detail__more-grid figure', { opacity: 0, y: 30 })
+      ScrollTrigger.batch('.project-detail__more-grid figure', {
+        start: 'top 92%',
+        once: true,
+        onEnter: (batch) => gsap.to(batch, { opacity: 1, y: 0, duration: 0.9, ease: 'expo.out', stagger: 0.07 }),
+      })
+
+      // Next-project teaser: image eases in as it arrives.
+      gsap.fromTo('.project-detail__next-media img', { scale: 1.15 }, {
+        scale: 1, ease: 'none',
+        scrollTrigger: { trigger: '.project-detail__next', start: 'top bottom', end: 'bottom bottom', scrub: true },
+      })
+    }, galleryRef.current?.parentElement ?? undefined)
 
     return () => context.revert()
   }, [projectId])
 
-  if (!project) {
-    return <Navigate to={locale === 'de' ? '/de/portfolio' : '/portfolio'} replace />
+  if (!project || !media) {
+    return <Navigate to={localizePath('/portfolio')} replace />
+  }
+  if (match?.isLegacy) {
+    // Old /projects/v1-style links keep working.
+    return <Navigate to={localizePath(`/projects/${slug}`)} replace />
   }
 
-  const images = project.slideshowImages?.length ? project.slideshowImages : [project.thumb]
+  const total = projects.length
+  const previous = projects[(index - 1 + total) % total]
+  const next = projects[(index + 1) % total]
+  const story = project.story?.length ? project.story : [`${project.description} ${t('portfolio.detail.story')}`]
+  const alt = (n: number) => `${project.title} — ${t('portfolio.detail.image')} ${n}`
+  let photoNumber = 1
+
+  const renderImage = (still: Still, className = '') => {
+    const n = photoNumber++
+    return (
+      <figure className={`project-detail__reveal ${className}`.trim()}>
+        <div className="project-detail__drift">
+          <img src={still.src} width={still.w} height={still.h} alt={alt(n)} loading="lazy" decoding="async" />
+        </div>
+      </figure>
+    )
+  }
+
+  const renderBlock = (block: GalleryBlock, blockIndex: number) => {
+    if (block.kind === 'full') return <div className="project-detail__block project-detail__block--full" key={blockIndex}>{renderImage(block.a)}</div>
+    if (block.kind === 'single') {
+      return <div className={`project-detail__block project-detail__block--single is-${block.side}`} key={blockIndex}>{renderImage(block.a)}</div>
+    }
+    return (
+      <div className={`project-detail__block project-detail__block--${block.kind}`} key={blockIndex}>
+        {renderImage(block.a)}
+        {renderImage(block.b, 'is-offset')}
+      </div>
+    )
+  }
+
   const navLinks = {
     left: [
       { id: 'home', label: t('nav.home'), onClick: () => navigate(locale === 'de' ? '/de' : '/') },
@@ -151,13 +257,14 @@ function ProjectDetail() {
       { id: 'contact', label: t('nav.contact'), onClick: () => navigate(locale === 'de' ? '/de/contact' : '/contact') },
     ],
   }
+  const highlightAfter = Math.min(2, media.blocks.length)
 
   return (
     <main className="home home--v2 project-detail" id="main">
       <SEOMeta
         title={`${project.title} — ${project.tag}`}
         description={project.description}
-        canonical={`https://expose-u.com/projects/${project.id}`}
+        canonical={`https://expose-u.com/projects/${slug}`}
         ogImage={project.thumb}
         lang={locale}
       />
@@ -170,12 +277,26 @@ function ProjectDetail() {
           brandLabel={t('nav.brand')}
         />
       </div>
+
       <header className="project-detail__hero" ref={heroRef}>
-        <img className="project-detail__cover" src={project.thumb} alt="" fetchPriority="high" />
+        <div className="project-detail__cover-wrap">
+          <img
+            className="project-detail__cover"
+            src={media.hero.src}
+            width={media.hero.w}
+            height={media.hero.h}
+            alt=""
+            fetchPriority="high"
+            decoding="async"
+          />
+        </div>
         <div className="project-detail__shade" />
         <div className="project-detail__hero-copy">
           <LocalizedLink to="/portfolio" className="project-detail__back">← {t('portfolio.detail.back')}</LocalizedLink>
-          <p className="project-detail__eyebrow">{project.tag} <span>·</span> {project.location} <span>·</span> {project.year}</p>
+          <p className="project-detail__eyebrow">
+            {project.tag} <span>·</span> {project.location} <span>·</span> {project.year}
+            <span className="project-detail__count">{pad(index + 1)} / {pad(total)}</span>
+          </p>
           <h1>{project.title}</h1>
           <p className="project-detail__intro">{project.description}</p>
         </div>
@@ -189,7 +310,7 @@ function ProjectDetail() {
         <div className="project-detail__story-copy">
           <p className="project-detail__eyebrow">{t('portfolio.detail.project')}</p>
           <h2>{project.context}</h2>
-          <p>{project.description} {t('portfolio.detail.story')}</p>
+          {story.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
         </div>
         <dl className="project-detail__facts">
           <div><dt>{t('portfolio.labels.context')}</dt><dd>{project.context}</dd></div>
@@ -204,35 +325,75 @@ function ProjectDetail() {
         </section>
       )}
 
-      <section className="project-detail__gallery" aria-label={t('portfolio.detail.gallery')}>
+      <section className="project-detail__gallery" aria-label={t('portfolio.detail.gallery')} ref={galleryRef}>
         <div className="project-detail__gallery-heading">
           <p className="project-detail__eyebrow">{t('portfolio.detail.gallery')}</p>
           <h2>{t('portfolio.detail.galleryTitle')}</h2>
         </div>
-        <div className="project-detail__image-grid">
-          {images.map((image, imageIndex) => (
-            <figure className={`project-detail__image project-detail__image--${imageIndex % 3}`} key={image}>
-              <img src={image} alt={`${project.title} — ${t('portfolio.detail.image')} ${imageIndex + 1}`} loading="lazy" decoding="async" />
-            </figure>
-          ))}
+        <div className="project-detail__blocks">
+          {media.blocks.slice(0, highlightAfter).map(renderBlock)}
+          {project.highlight && (
+            <blockquote className="project-detail__highlight"><p>{project.highlight}</p></blockquote>
+          )}
+          {media.blocks.slice(highlightAfter).map((block, i) => renderBlock(block, i + highlightAfter))}
         </div>
+        {media.more.length > 0 && (
+          <div className="project-detail__more">
+            <p className="project-detail__eyebrow">{t('portfolio.detail.moreFrames')}</p>
+            <div className="project-detail__more-grid">
+              {media.more.map((still) => {
+                const n = photoNumber++
+                return (
+                  <figure key={still.src}>
+                    <img src={still.src} width={still.w} height={still.h} alt={alt(n)} loading="lazy" decoding="async" />
+                  </figure>
+                )
+              })}
+            </div>
+          </div>
+        )}
       </section>
 
-      <nav className="project-detail__pagination" aria-label={t('portfolio.detail.projectNavigation')}>
-        <LocalizedLink to={`/projects/${projects[(index - 1 + projects.length) % projects.length].id}`}>
-          <span>{t('portfolio.detail.previous')}</span><strong>{projects[(index - 1 + projects.length) % projects.length].title}</strong>
+      <div ref={endRef}>
+        <LocalizedLink to={`/projects/${projectSlug(next.id)}`} className="project-detail__next">
+          <div className="project-detail__next-media"><img src={next.thumb} alt="" loading="lazy" decoding="async" /></div>
+          <div className="project-detail__next-copy">
+            <span className="project-detail__eyebrow">{t('portfolio.detail.viewNext')} · {pad(((index + 1) % total) + 1)} / {pad(total)}</span>
+            <strong>{next.title}</strong>
+            <span className="project-detail__next-arrow" aria-hidden="true">→</span>
+          </div>
         </LocalizedLink>
-        <LocalizedLink to={`/projects/${projects[(index + 1) % projects.length].id}`}>
-          <span>{t('portfolio.detail.next')}</span><strong>{projects[(index + 1) % projects.length].title}</strong>
-        </LocalizedLink>
+        <nav className="project-detail__pagination" aria-label={t('portfolio.detail.projectNavigation')}>
+          <LocalizedLink to={`/projects/${projectSlug(previous.id)}`}>
+            <span>{t('portfolio.detail.previous')}</span><strong>{previous.title}</strong>
+          </LocalizedLink>
+          <LocalizedLink to="/portfolio">
+            <span>{t('portfolio.detail.allProjects')}</span><strong>{t('portfolio.detail.back')} ↗</strong>
+          </LocalizedLink>
+        </nav>
+        <section className="project-detail__cta">
+          <p className="project-detail__eyebrow">{t('portfolio.detail.ctaEyebrow')}</p>
+          <h2>{t('portfolio.detail.ctaTitle')}</h2>
+          <LocalizedLink to="/contact">{t('portfolio.detail.cta')} <span aria-hidden="true">↗</span></LocalizedLink>
+        </section>
+        <Footer />
+      </div>
+
+      {/* Mobile: thumb-reach project navigation (hidden on desktop). */}
+      <nav
+        className={`project-detail__mobilebar${pastHero && !atEnd ? ' is-visible' : ''}`}
+        aria-label={t('portfolio.detail.projectNavigation')}
+        aria-hidden={!(pastHero && !atEnd)}
+        inert={!(pastHero && !atEnd)}
+      >
+        <LocalizedLink to="/portfolio" className="project-detail__mobilebar-back">← {t('portfolio.detail.backShort')}</LocalizedLink>
+        <span className="project-detail__mobilebar-count" aria-label={t('portfolio.detail.counter', { n: index + 1, total })}>
+          {pad(index + 1)} <i>/</i> {pad(total)}
+        </span>
+        <LocalizedLink to={`/projects/${projectSlug(next.id)}`} className="project-detail__mobilebar-next">{t('portfolio.detail.nextShort')} →</LocalizedLink>
       </nav>
-      <section className="project-detail__cta">
-        <p className="project-detail__eyebrow">{t('portfolio.detail.ctaEyebrow')}</p>
-        <h2>{t('portfolio.detail.ctaTitle')}</h2>
-        <LocalizedLink to="/contact">{t('portfolio.detail.cta')} <span aria-hidden="true">↗</span></LocalizedLink>
-      </section>
-      <Footer />
-      <SchemaOrg data={{'@context': 'https://schema.org', '@type': 'CreativeWork', name: project.title, description: project.description, image: project.thumb, dateCreated: project.year, locationCreated: {'@type': 'Place', name: project.location}}} />
+
+      <SchemaOrg data={{'@context': 'https://schema.org', '@type': 'CreativeWork', name: project.title, description: project.description, image: project.thumb, dateCreated: project.year, locationCreated: {'@type': 'Place', name: project.location}, url: `https://expose-u.com/projects/${slug}`}} />
     </main>
   )
 }

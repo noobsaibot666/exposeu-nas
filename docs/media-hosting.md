@@ -12,3 +12,8 @@ Video files served from `https://expose-u.com/assets/media/`. nginx serves `/ass
 | `home-hero-mobile-v1.mp4` | same (superseded) | 608×1080 centre crop (9:16), H.264 CRF 24 (≤1.8 Mbps), no audio, faststart |
 | `home-hero-desktop-v2.mp4` | `website_-_main_v1 (1080p).mp4` | 1920×1080, H.264 CRF 26 (≤2.2 Mbps), no audio, faststart; 10.1 MiB |
 | `home-hero-mobile-v2.mp4` | same | 608×1080 centre crop (9:16), H.264 CRF 24 (≤1.8 Mbps), no audio, faststart; 6.5 MiB |
+
+## Project images
+
+After adding or replacing images under `src/assets/images/thumbs/portfolio/`, run `node scripts/gen-project-image-dims.mjs`. It refreshes `src/data/projectImageDims.json`, which the project pages use for layout and to reserve image space. Project URL slugs live in `src/data/projectSlugs.json`.
+

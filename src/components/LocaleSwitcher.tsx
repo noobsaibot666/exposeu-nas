@@ -4,7 +4,10 @@ import { useLocation } from 'react-router-dom'
 import { useLocale, useTranslation } from '../i18n/LocaleProvider'
 import './LocaleSwitcher.css'
 
-const HOME_PATHS = new Set(['/', '/de', '/v2', '/de/v2'])
+// Pages using the homepage's full-width fixed nav (homepage + project pages):
+// the controls sit fixed top-right there, not anchored to the content column.
+const HOME_PATHS = new Set(['/', '/de'])
+const usesHomeNav = (pathname: string) => HOME_PATHS.has(pathname) || /^(\/de)?\/projects\//.test(pathname)
 
 function LocaleSwitcher() {
   const { locale, switchLocale } = useLocale()
@@ -13,7 +16,7 @@ function LocaleSwitcher() {
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement | null>(null)
   const triggerRef = useRef<HTMLButtonElement | null>(null)
-  const isHome = HOME_PATHS.has(pathname)
+  const isHome = usesHomeNav(pathname)
 
   const closeMenu = (restoreFocus = false) => {
     setOpen(false)

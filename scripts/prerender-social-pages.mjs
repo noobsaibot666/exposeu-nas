@@ -7,7 +7,7 @@ const distArg = process.argv.indexOf('--dist-dir')
 const distDir = distArg >= 0 ? path.resolve(process.argv[distArg + 1]) : path.join(repoRoot, 'dist')
 
 const readJson = async (relativePath) => JSON.parse(await readFile(path.join(repoRoot, relativePath), 'utf8'))
-const [baseHtml, commonEn, commonDe, portfolioEn, portfolioDe, projectImages, serviceImages] = await Promise.all([
+const [baseHtml, commonEn, commonDe, portfolioEn, portfolioDe, projectImages, serviceImages, projectSlugs] = await Promise.all([
   readFile(path.join(distDir, 'index.html'), 'utf8'),
   readJson('src/locales/en/common.json'),
   readJson('src/locales/de/common.json'),
@@ -15,6 +15,7 @@ const [baseHtml, commonEn, commonDe, portfolioEn, portfolioDe, projectImages, se
   readJson('src/locales/de/portfolio.json'),
   readJson('src/data/projectPreviewImages.json'),
   readJson('src/data/servicePreviewImages.json'),
+  readJson('src/data/projectSlugs.json'),
 ])
 
 const escapeHtml = (value) => String(value)
@@ -127,7 +128,10 @@ for (const { locale, common, portfolio } of localeData) {
   for (const project of portfolio.videos) {
     const imageSource = projectImages[project.id]
     if (!imageSource) throw new Error(`Missing social preview image for project ${project.id}`)
-    await writePage(`${locale === 'de' ? '/de' : ''}/projects/${project.id}`, locale, {
+    // Readable URL (src/data/projectSlugs.json); legacy /projects/<id> links
+    // fall back to the SPA, which redirects them to the slug.
+    const slug = projectSlugs[project.id] ?? project.id
+    await writePage(`${locale === 'de' ? '/de' : ''}/projects/${slug}`, locale, {
       title: `${project.title} | expose.u`,
       description: project.description,
       imageKey: `project-${project.id}`,

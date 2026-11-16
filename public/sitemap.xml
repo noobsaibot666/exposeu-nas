@@ -253,4 +253,149 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/brand-agency"/>
   </url>
 
+  <!-- Project pages (src/data/projectSlugs.json) -->
+  <url>
+    <loc>https://expose-u.com/projects/leonis-voo-space</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/projects/leonis-voo-space"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/projects/leonis-voo-space"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/projects/leonis-voo-space"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/de/projects/leonis-voo-space</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/projects/leonis-voo-space"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/projects/leonis-voo-space"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/projects/leonis-voo-space"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/projects/mirrwal-liquidrom</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/projects/mirrwal-liquidrom"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/projects/mirrwal-liquidrom"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/projects/mirrwal-liquidrom"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/de/projects/mirrwal-liquidrom</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/projects/mirrwal-liquidrom"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/projects/mirrwal-liquidrom"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/projects/mirrwal-liquidrom"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/projects/leonis-liquidrom</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/projects/leonis-liquidrom"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/projects/leonis-liquidrom"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/projects/leonis-liquidrom"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/de/projects/leonis-liquidrom</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/projects/leonis-liquidrom"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/projects/leonis-liquidrom"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/projects/leonis-liquidrom"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/projects/lick-the-walls</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/projects/lick-the-walls"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/projects/lick-the-walls"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/projects/lick-the-walls"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/de/projects/lick-the-walls</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/projects/lick-the-walls"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/projects/lick-the-walls"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/projects/lick-the-walls"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/projects/abigail-toll-idol</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/projects/abigail-toll-idol"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/projects/abigail-toll-idol"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/projects/abigail-toll-idol"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/de/projects/abigail-toll-idol</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/projects/abigail-toll-idol"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/projects/abigail-toll-idol"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/projects/abigail-toll-idol"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/projects/sanam-silent-green</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/projects/sanam-silent-green"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/projects/sanam-silent-green"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/projects/sanam-silent-green"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/de/projects/sanam-silent-green</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/projects/sanam-silent-green"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/projects/sanam-silent-green"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/projects/sanam-silent-green"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/projects/seefeel-silent-green</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/projects/seefeel-silent-green"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/projects/seefeel-silent-green"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/projects/seefeel-silent-green"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/de/projects/seefeel-silent-green</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/projects/seefeel-silent-green"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/projects/seefeel-silent-green"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/projects/seefeel-silent-green"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/projects/gleo-silent-green</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/projects/gleo-silent-green"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/projects/gleo-silent-green"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/projects/gleo-silent-green"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/de/projects/gleo-silent-green</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/projects/gleo-silent-green"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/projects/gleo-silent-green"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/projects/gleo-silent-green"/>
+  </url>
+
 </urlset>

@@ -4,7 +4,10 @@ import { useThemeContext } from '../ThemeContext'
 import { useTranslation } from '../i18n/LocaleProvider'
 import './ThemeToggle.css'
 
+// Pages using the homepage's full-width fixed nav (homepage + project pages):
+// the controls sit fixed top-right there, not anchored to the content column.
 const HOME_PATHS = new Set(['/', '/de'])
+const usesHomeNav = (pathname: string) => HOME_PATHS.has(pathname) || /^(\/de)?\/projects\//.test(pathname)
 
 /**
  * Light/dark switch shown beside the language switcher. `solo` places it in the
@@ -14,7 +17,7 @@ function ThemeToggle({ solo = false }: { solo?: boolean }) {
   const { theme, toggleTheme } = useThemeContext()
   const { t } = useTranslation()
   const { pathname } = useLocation()
-  const isHome = HOME_PATHS.has(pathname)
+  const isHome = usesHomeNav(pathname)
   const label = theme === 'dark' ? t('common.theme.toLight') : t('common.theme.toDark')
 
   return (
