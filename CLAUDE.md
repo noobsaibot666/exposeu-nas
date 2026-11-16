@@ -58,6 +58,8 @@ The script does **not** run `npm ci`/`npm run build` directly against this worki
 
 **If a git command fails with a confusing error on this mount** (`unable to write loose object file: Is a directory`, `couldn't write '...refs/heads/X.lock'`, or similar) — this is the same shared-SMB-mount issue, hitting `.git` itself rather than `node_modules`. It's leftover junk blocking the next write, not lost work; `git status`/`git diff` come back clean every time this has happened. Run `scripts/git-nas-doctor.sh` to see what it found, or `scripts/git-nas-doctor.sh --fix` to clear it, then retry the git command.
 
+**Editing `nginx/default.conf`:** it is write-protected (needs `sudo` on the NAS) and bind-mounted into `exposeu-nginx` as a *single read-only file*. Editors and `sed -i` write a new file, and the running container keeps seeing the old one, so the reload in `deploy.sh frontend` re-reads the old config. After editing it, run `sudo docker restart exposeu-nginx` (about a 1 s blip), then `sudo docker exec exposeu-nginx nginx -t`. Back up first (`sudo cp nginx/default.conf nginx/default.conf.bak_<date>`).
+
 Guardrails:
 - never recreate `traefik`
 - never run compose without explicit service names

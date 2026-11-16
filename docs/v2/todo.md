@@ -7,15 +7,6 @@ Only what still needs **you**, in the order to do it. Pricing is parked for a la
 - [ ] **Run `scripts/deploy.sh all`** for the latest changes: corrected homepage film, project-page contrast, German titles, smaller nav buttons, project pages, required contact persistence, and pre-rendered social metadata.
 - [ ] **Inbox:** you should have two emails marked "TEST — please ignore", one from the contact form and one from the pricing form (Claude's live tests). If either is missing, tell Claude.
 
-- [ ] **nginx: stop the trailing-slash redirect (found after the 2026-11-16 deploy).** Pre-rendered pages (projects, services, Portfolio) answer `301 → http://…/projects/<slug>/`: an extra hop, briefly to plain `http`, and the URL no longer matches its canonical (no slash). `nginx/default.conf` is write-protected for Claude, so on the NAS change the `location /` block to:
-  ```nginx
-  location / {
-    add_header Cache-Control "no-cache" always;
-    try_files $uri $uri/index.html /index.html;
-  }
-  ```
-  and add `absolute_redirect off;` near the top of the `server { … }` block. Then run `scripts/deploy.sh frontend` (it reloads nginx). Check: `curl -sI https://expose-u.com/projects/lick-the-walls` should return `200`, not `301`. Tell Claude and it will re-verify.
-
 ## 2. Review by eye (production)
 
 - [ ] **V2-026 Light mode:** check every page family in both themes. In particular:
