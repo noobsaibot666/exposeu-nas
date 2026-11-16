@@ -7,7 +7,7 @@
 | `npm run lint` | Pass, no reported warnings/errors | Read-only against existing shared dependencies. |
 | `tsc --noEmit --pretty false` | Pass | Read-only TypeScript check after V2-001 source change. |
 | `npm run check:images` | Fails by design with 35 unused files (2.71 MB) | Source reference and on-disk asset scan; see V2-007. |
-| `npm run check:images` after V2-007 | Pass: no unreferenced images found | 35 unused files moved to `archive/unused-assets/`, preserving their relative paths. |
+| `npm run check:images` after V2-007 | Pass: no unreferenced images found | 35 initial files and four residual thumbnails from the final audit are archived under `archive/unused-assets/`, preserving their relative paths. |
 | Production homepage desktop | HTTP 200; title `Documentation Studio Berlin \| expose.u`; 0 console errors, 1 warning | Browser at 1200 px. No full conversion flow. |
 | Production homepage mobile | Same page rendered at 390×844; 0 console errors, 1 warning | Visual/a11y snapshot only; no full device matrix. H1 begins below initial viewport. |
 | Pre-choice vendor requests | Meta Pixel script and PageView; Clarity script and collection observed while consent dialog remained open | Clean browser profile; confirms V2-001. |
