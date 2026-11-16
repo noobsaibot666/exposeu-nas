@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
@@ -67,6 +67,7 @@ function ProjectDetail() {
   const navigate = useNavigate()
   const { locale } = useLocale()
   const { t, tm } = useTranslation()
+  const heroRef = useRef<HTMLElement | null>(null)
   const translated = tm<Array<{id: string; title: string; description: string; context: string; outcome: string; tag: string}>>('portfolio.videos')
   const projects = useMemo(() => portfolioProjects.map((project) => ({
     ...project,
@@ -74,6 +75,33 @@ function ProjectDetail() {
   })), [translated])
   const index = projects.findIndex((project) => project.id === projectId)
   const project = projects[index]
+
+  const navigateHomeToSection = (sectionId: string) => {
+    navigate(locale === 'de' ? '/de' : '/')
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
+      })
+    })
+  }
+
+  useLayoutEffect(() => {
+    const hero = heroRef.current
+    if (!hero) return
+
+    const root = document.documentElement
+    const previousMediaState = root.hasAttribute('data-nav-over-media')
+    root.setAttribute('data-nav-over-media', '')
+    const observer = new IntersectionObserver(([entry]) => {
+      root.toggleAttribute('data-nav-over-media', entry.isIntersecting)
+    })
+    observer.observe(hero)
+
+    return () => {
+      observer.disconnect()
+      root.toggleAttribute('data-nav-over-media', previousMediaState)
+    }
+  }, [projectId])
 
   if (!project) {
     return <Navigate to={locale === 'de' ? '/de/portfolio' : '/portfolio'} replace />
@@ -83,7 +111,7 @@ function ProjectDetail() {
   const navLinks = {
     left: [
       { id: 'home', label: t('nav.home'), onClick: () => navigate(locale === 'de' ? '/de' : '/') },
-      { id: 'portfolio', label: t('portfolio.hero.eyebrow'), onClick: () => navigate(locale === 'de' ? '/de/portfolio' : '/portfolio') },
+      { id: 'services', label: t('nav.services'), onClick: () => navigateHomeToSection('cases') },
     ],
     right: [
       { id: 'about', label: t('nav.about'), onClick: () => navigate(locale === 'de' ? '/de/about' : '/about') },
@@ -92,7 +120,7 @@ function ProjectDetail() {
   }
 
   return (
-    <main className="project-detail" id="main">
+    <main className="home home--v2 project-detail" id="main">
       <SEOMeta
         title={`${project.title} — ${project.tag}`}
         description={project.description}
@@ -100,8 +128,16 @@ function ProjectDetail() {
         ogImage={project.thumb}
         lang={locale}
       />
-      <TopNav leftLinks={navLinks.left} rightLinks={navLinks.right} />
-      <header className="project-detail__hero">
+      <div className="home__nav">
+        <TopNav
+          className="top-nav--page"
+          leftLinks={navLinks.left}
+          rightLinks={navLinks.right}
+          onBrandClick={() => navigate(locale === 'de' ? '/de' : '/')}
+          brandLabel={t('nav.brand')}
+        />
+      </div>
+      <header className="project-detail__hero" ref={heroRef}>
         <img className="project-detail__cover" src={project.thumb} alt="" fetchPriority="high" />
         <div className="project-detail__shade" />
         <div className="project-detail__hero-copy">
@@ -110,7 +146,10 @@ function ProjectDetail() {
           <h1>{project.title}</h1>
           <p className="project-detail__intro">{project.description}</p>
         </div>
-        <a className="project-detail__scroll" href="#project-story">{t('portfolio.detail.explore')} <span aria-hidden="true">↓</span></a>
+        <a className="home__video-scroll-hint project-detail__scroll" href="#project-story" aria-label={t('portfolio.detail.explore')}>
+          <span>{t('portfolio.detail.explore')}</span>
+          <span aria-hidden="true">↓</span>
+        </a>
       </header>
 
       <section className="project-detail__story" id="project-story">
