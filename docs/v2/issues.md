@@ -235,3 +235,13 @@ Production homepage was inspected at 1200× and 390×. Local route-family checks
 **Files:** `src/pages/PricingRequest.tsx`.
 
 **Acceptance:** a successful staging submission lands on `/pricing-request/success` with no console error.
+
+### [ ] V2-026 — Light mode existed but had no toggle and no light tokens
+
+**Status: IN PROGRESS.** A "day version" beta (`7bdd2a8`) added `[data-theme='light']` tokens and a toggle. Both were later removed (`e34574a`), `initTheme()` forced dark, and nothing rendered `useThemeContext()`, so only 12 orphan light rules remained. Owner decision 2026-11-16: keep light mode and make the toggle work.
+
+- **Step 1 — foundation (done):** a light token set in `index.css` (text ≥4.5:1 on `#f6f5f2`), a `ThemeToggle` beside the language switcher (it takes the switcher's spot on English-only legal pages and is hidden on `/consent`, which has its own mode), EN/DE labels, a persisted choice (`localStorage('site-theme')`, default dark), and an inline `<head>` script that applies it before first paint. Pages already built on tokens (services, About, Contact, CallSession, legal, pricing, footer, nav) follow automatically.
+- **Step 2:** HomeV2 / Home / Portfolio hard-coded colors (~120) → tokens. Photo/video areas keep dark overlays.
+- **Step 3:** AdLandingPage, ReleaseContentKit, PhotoConsent, LocaleSwitcher, ImageCarousel.
+
+**Acceptance:** toggle on every page except `/consent`; the choice survives reload without a flash; each page family is readable in both themes (owner eye review).

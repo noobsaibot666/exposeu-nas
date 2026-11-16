@@ -1,0 +1,86 @@
+/* Mirrors .locale-switcher positioning (LocaleSwitcher.css), offset one
+   button + gap (46px + 8px = 54px) to its left. `--solo` takes the language
+   switcher's own spot on pages where that switcher is hidden. */
+.theme-toggle {
+  position: fixed;
+  top: 18px;
+  right: 72px;
+  z-index: 4200;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 12px;
+  background: rgba(8, 8, 10, 0.64);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.theme-toggle:hover {
+  background: rgba(14, 14, 18, 0.82);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
+}
+
+.theme-toggle--page {
+  position: absolute;
+  top: 14px;
+  right: calc(max(18px, calc((100vw - var(--content-max)) / 2 + var(--content-gutter))) + 54px);
+}
+
+.theme-toggle--home.theme-toggle--solo {
+  right: 18px;
+}
+
+.theme-toggle--page.theme-toggle--solo {
+  right: max(18px, calc((100vw - var(--content-max)) / 2 + var(--content-gutter)));
+}
+
+/* Light theme, off the homepage video: a light control on the light page. */
+:root[data-theme='light'] .theme-toggle--page {
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--text-strong);
+  box-shadow: 0 8px 24px rgba(17, 17, 19, 0.1);
+}
+
+:root[data-theme='light'] .theme-toggle--page:focus-visible {
+  outline-color: var(--text-strong);
+}
+
+@media (max-width: 768px) {
+  .theme-toggle {
+    top: 14px;
+    right: calc(clamp(16px, 4vw, 22px) + 72px + 52px);
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    background: var(--surface-overlay);
+    color: var(--text-strong);
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .theme-toggle--page {
+    top: 16px;
+  }
+
+  .theme-toggle.theme-toggle--solo {
+    right: calc(clamp(16px, 4vw, 22px) + 72px);
+  }
+
+  :root[data-theme='light'] .theme-toggle--page {
+    background: var(--surface-overlay);
+    box-shadow: none;
+  }
+}

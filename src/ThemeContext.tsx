@@ -1,8 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
-import { setTheme } from './theme'
-
-type ThemeMode = 'dark' | 'light'
+import { getInitialTheme, setTheme, type ThemeMode } from './theme'
 
 type ThemeContextValue = {
   theme: ThemeMode
@@ -12,7 +10,7 @@ type ThemeContextValue = {
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeMode>('dark')
+  const [theme, setThemeState] = useState<ThemeMode>(getInitialTheme)
 
   const toggleTheme = useCallback(() => {
     const next = theme === 'dark' ? 'light' : 'dark'

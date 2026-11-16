@@ -31,7 +31,19 @@
       #root {
         background-color: #05070b;
       }
+      html[data-theme='light'],
+      html[data-theme='light'] body,
+      html[data-theme='light'] #root {
+        background-color: #f6f5f2;
+      }
     </style>
+    <script>
+      // Apply the saved theme before first paint (no dark flash for light-mode visitors).
+      try {
+        var t = localStorage.getItem('site-theme')
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t
+      } catch (e) {}
+    </script>
     <!-- Optional analytics and advertising vendors load only after consent. -->
   </head>
   <body>

@@ -4,6 +4,10 @@
     "switcherLabel": "Change language",
     "menuLabel": "Available languages"
   },
+  "theme": {
+    "toDark": "Switch to dark mode",
+    "toLight": "Switch to light mode"
+  },
   "analytics": {
     "ariaLabel": "Analytics consent",
     "title": "Analytics consent",

@@ -1,0 +1,39 @@
+import { Moon, Sun } from 'lucide-react'
+import { useLocation } from 'react-router-dom'
+import { useThemeContext } from '../ThemeContext'
+import { useTranslation } from '../i18n/LocaleProvider'
+import './ThemeToggle.css'
+
+const HOME_PATHS = new Set(['/', '/de'])
+
+/**
+ * Light/dark switch shown beside the language switcher. `solo` places it in the
+ * language switcher's own spot on pages where that switcher is hidden.
+ */
+function ThemeToggle({ solo = false }: { solo?: boolean }) {
+  const { theme, toggleTheme } = useThemeContext()
+  const { t } = useTranslation()
+  const { pathname } = useLocation()
+  const isHome = HOME_PATHS.has(pathname)
+  const label = theme === 'dark' ? t('common.theme.toLight') : t('common.theme.toDark')
+
+  return (
+    <button
+      type="button"
+      className={[
+        'theme-toggle',
+        isHome ? 'theme-toggle--home' : 'theme-toggle--page',
+        solo ? 'theme-toggle--solo' : '',
+      ].join(' ').trim()}
+      onClick={toggleTheme}
+      aria-label={label}
+      title={label}
+    >
+      {theme === 'dark'
+        ? <Sun aria-hidden="true" size={19} strokeWidth={1.6} />
+        : <Moon aria-hidden="true" size={19} strokeWidth={1.6} />}
+    </button>
+  )
+}
+
+export default ThemeToggle

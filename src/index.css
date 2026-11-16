@@ -94,6 +94,46 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color-scheme: dark;
+}
+
+/* Light theme — toggled by ThemeToggle, persisted in localStorage('site-theme').
+   Text tokens are ≥4.5:1 on --page-bg (tertiary ≈ 5:1). Photo/video areas keep
+   their own dark overlays in both themes. */
+:root[data-theme='light'] {
+  color-scheme: light;
+  --page-bg: #f6f5f2;
+  --bg-base: #f6f5f2;
+  --surface-base: #ffffff;
+  --surface-muted: #ecebe7;
+  --surface-card: rgba(255, 255, 255, 0.78);
+  --surface-card-strong: rgba(255, 255, 255, 0.96);
+  --surface-overlay: rgba(17, 17, 19, 0.04);
+  --text-strong: #111113;
+  --text-secondary: rgba(17, 17, 19, 0.76);
+  --text-tertiary: rgba(17, 17, 19, 0.64);
+  --text-soft: rgba(17, 17, 19, 0.7);
+  --link-color: #111113;
+  --border-soft: rgba(17, 17, 19, 0.12);
+  --border-color: rgba(17, 17, 19, 0.16);
+  --border-strong: rgba(17, 17, 19, 0.32);
+  --border-prominent: rgba(17, 17, 19, 0.4);
+  --border-contrast: rgba(255, 255, 255, 0.75);
+  --border-highlight: rgba(17, 17, 19, 0.8);
+  --shadow-soft: 0 10px 30px rgba(17, 17, 19, 0.1);
+  --button-solid-bg: #111113;
+  --button-solid-text: #f6f5f2;
+  --button-solid-border: #111113;
+  --button-outline-border: rgba(17, 17, 19, 0.55);
+  --button-outline-hover: rgba(17, 17, 19, 0.06);
+  --button-ghost-bg: rgba(17, 17, 19, 0.07);
+  --button-ghost-hover-bg: rgba(17, 17, 19, 0.12);
+  --contrast-bg: #111113;
+  --contrast-text: #f6f5f2;
+  --contrast-muted: rgba(246, 245, 242, 0.72);
+  --avatar-border: #f6f5f2;
+  --positive-accent: #15803d;
+  --error-color: #b91c1c;
 }
 
 

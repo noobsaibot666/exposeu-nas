@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom'
 import AnalyticsConsentBanner from './components/AnalyticsConsentBanner'
 import { trackEvent, trackPageView } from './utils/analytics'
 import LocaleSwitcher from './components/LocaleSwitcher'
+import ThemeToggle from './components/ThemeToggle'
 import { usePageMeta } from './i18n/pageMeta'
 import { useTranslation } from './i18n/LocaleProvider'
 import { lazyWithReload } from './utils/lazyWithReload'
@@ -144,6 +145,7 @@ function App() {
         <a className="skip-link" href="#main">{t('common.skipToContent')}</a>
         <AnalyticsConsentBanner />
         {location.pathname !== '/consent' && !isEnglishOnlyLegalPage && <LocaleSwitcher />}
+        {location.pathname !== '/consent' && <ThemeToggle solo={isEnglishOnlyLegalPage} />}
         <div className="page__content" ref={contentRef}>
           <Suspense fallback={<div className="page__route-loading" aria-busy="true" />}>
           <Routes>
