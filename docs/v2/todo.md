@@ -24,7 +24,7 @@ Everything that still needs **you** after the 2026-11-16 remediation pass, in th
 - [ ] **Photo-consent data policy:** signatures store name, signature PNG, IP, user agent and location. Decide retention, deletion and access, and confirm the on-page wording.
 - [ ] **Contact persistence:** a message counts as sent once SMTP accepts it, even if the Supabase log insert fails. Keep that?
 - [ ] **V2-010 Link previews:** the site is client-rendered, so shared links show the generic preview. Do per-page previews matter (that needs prerendering)?
-- [ ] **Sitemap coverage:** `sitemap.xml` lists only 3 of the 7 campaign pages (concerts-berlin, exhibition-gallery, brand-agency). `/popups`, `/gallery-museum-documentation`, `/artist-musician-documentation` and `/release-content-kit` aren't all in it. Should every campaign page be indexable, or are some ad-only on purpose?
+- [ ] **Sitemap coverage:** `sitemap.xml` lists only 3 of the 7 campaign pages (concerts-berlin, exhibition-gallery, brand-agency). `/popups`, `/gallery-museum-documentation` and `/artist-musician-documentation` are missing (Release Content Kit is listed). Should every campaign page be indexable, or are some ad-only on purpose?
 - [ ] **V2-004 Pricing endpoint:** who owns the Google Apps Script destination? Its `no-cors` mode can't confirm a save. Choose between an endpoint that returns a readable response and routing pricing requests through the contact API (Claude can build the latter).
 
 ## 4. Staging (send Claude the staging URL + test inbox)
