@@ -15,7 +15,8 @@
       "emailInvalid": "Bitte gib eine gültige E-Mail-Adresse ein.",
       "projectTypeRequired": "Bitte wähle eine Projektart aus.",
       "highlightedFields": "Bitte korrigiere die markierten Felder.",
-      "generic": "Etwas ist schiefgelaufen – schreib uns bitte direkt an hello@expose-u.com"
+      "generic": "Etwas ist schiefgelaufen – schreib uns bitte direkt an hello@expose-u.com",
+      "referenceId": "Referenz: {{id}}"
     },
     "success": {
       "eyebrow": "Danke",

@@ -32,7 +32,14 @@
 | V2-011 mobile drawer | Partial pass | At 390 px, the drawer exposed a “Navigation menu” dialog; Escape closed it and focus returned to “Open menu.” Tab wrapping and assistive-technology behavior were not exercised. |
 | V2-012 mobile homepage offer | Pass | At 390×844, accessibility snapshot exposed the localized hero H1, subhead and contact link in the video hero. Not a multi-width screenshot review. |
 | V2-019 mobile service gallery | Pass | At 390 px, `/services/exhibition-gallery` rendered two gallery media containers as `display:block` at 351×242 px; both images loaded. Other service routes and widths remain unverified. |
-| API/contact/pricing/photo-consent | Not exercised | Requires safe staging data and configured SMTP/Supabase/external endpoint; no real personal data submitted. |
+| Staging contact/pricing/photo-consent delivery | Not exercised | Requires the staging URL and configured test inbox/Supabase/external endpoint; no real personal data submitted. Local isolated contact API and synthetic local photo queue checks are recorded below. |
+| V2 metadata ownership and SPA navigation | Pass | Local browser checked direct and in-app EN/DE routes. Page-level SEO is not overwritten by the fallback; fallback clears stale OG/Twitter values, emits one canonical/description, sets document language, and creates localized alternates except on English-only legal routes. `/de/privacy` resolves to localized NotFound metadata without hreflang. Static `index.html` remains generic by the recorded SPA decision. |
+| V2 route matrix | Pass | `scripts/verify-routes.mjs` checked canonical EN/DE route families and aliases against local Vite: canonical and alias paths returned HTTP 200/SPA fallback. Browser matrix checked H1, one description/canonical, image load failures, and overflow across routes; this is not a production health check. |
+| V2 responsive overflow matrix | Pass, sampled | Local widths 320, 390, 768, 1024 and 1440 px across representative home, service, campaign, contact, pricing, legal, portfolio, consent and NotFound pages showed no horizontal overflow. Full per-route screenshots, zoom and contrast remain open. |
+| V2 locale-menu keyboard/focus regression | Pass | Locale selection and Escape return focus to the trigger; closed menu is inert/hidden. Switching EN→DE produced no console errors or warnings. Browser back/forward coverage is still required. |
+| V2 photo-consent local pending queue | Pass, synthetic local fixture | A synthetic record with API pointed to a local server remained pending after sync failure and showed retry state. The fixture was removed. The local app was restarted with a localhost API override after a browser preflight to the production origin was blocked; the preflight did not reach POST and no production submission occurred. Staging reload/retry, quota/private-mode and deduplication remain open. |
+| V2 contact API request IDs and validation | Pass, local isolated API | With SMTP/Supabase credentials blank, invalid email returned 400 `INVALID_EMAIL`, oversize message returned 413 `FIELD_TOO_LONG`, malformed JSON returned 400 `INVALID_JSON`, and a valid dummy payload returned 500 `EMAIL_CONFIG_MISSING`. Each response's `X-Request-Id` matched its JSON `requestId`; no mail or database delivery was configured. |
+| V2 staging form delivery | Blocked pending staging URL | Owner confirmed staging uses a test inbox, but has not provided its URL/browser entry point. No contact, pricing or photo-consent staging record has been submitted or reconciled. |
 
 ## Commands and evidence
 
@@ -44,8 +51,8 @@
 ## Open verification before closing the audit
 
 1. Run a build and deep-link route matrix from the deployment container, not from this shared mount.
-2. For all canonical EN/DE pages: capture title, description, canonical, hreflang, H1, broken images, JS errors and layout at desktop/mobile.
-3. Test navigation, language switching, browser back/forward, anchors, full mobile drawer keyboard flow and 200% zoom. Local Escape/focus restoration is verified; Tab wrapping is still open.
+2. For all canonical EN/DE pages: capture title, description, canonical, hreflang, H1, broken images, JS errors and layout at desktop/mobile. Route families and representative matrix are checked; full per-route screenshots remain open.
+3. Test navigation, language switching, browser back/forward, anchors, full mobile drawer keyboard flow, reduced motion and 200% zoom. Drawer Tab wrapping and locale focus restoration are verified; zoom/reflow and reduced-motion review remain open.
 4. In staging, submit contact, pricing and photo-consent forms; reconcile user success state with SMTP, external endpoint and Supabase records.
 5. Record reproducible Lighthouse/Web Vitals and total transferred bytes for a fresh consent-rejected session and an accepted session.
-6. Ask the owner to confirm legal language variants, tracker policy, photo-consent retention/deletion rules, pricing endpoint owner and whether `/old-home` is still needed.
+6. Ask the owner to confirm legal language variants, tracker policy, photo-consent retention/deletion rules, pricing endpoint owner, and whether submission IDs can be persisted uniquely. `/old-home` retirement was already approved.

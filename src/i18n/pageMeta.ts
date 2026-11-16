@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useLocale, useTranslation } from './LocaleProvider'
-import { getMetaForPath } from './pageMetaConfig'
+import { getMetaForPath, hasPageLevelMetaOwner, isUnsupportedLocalizedLegalPath } from './pageMetaConfig'
 
 function upsertMeta(selector: string, create: () => HTMLElement) {
   const existing = document.head.querySelector<HTMLElement>(selector)
@@ -11,21 +11,41 @@ function upsertMeta(selector: string, create: () => HTMLElement) {
   return next
 }
 
+function upsertMetaContent(selector: string, attribute: string, identity: string, content: string) {
+  const element = upsertMeta(selector, () => {
+    const meta = document.createElement('meta')
+    meta.setAttribute(attribute, identity)
+    return meta
+  })
+  element.setAttribute('content', content)
+}
+
 export function usePageMeta() {
   const { t } = useTranslation()
   const { locale, canonicalPathname, localizePath } = useLocale()
   const location = useLocation()
 
   useEffect(() => {
-    const meta = getMetaForPath(canonicalPathname)
-    document.title = t(meta.titleKey)
+    if (hasPageLevelMetaOwner(location.pathname)) return
 
-    const description = upsertMeta('meta[name="description"]', () => {
-      const el = document.createElement('meta')
-      el.setAttribute('name', 'description')
-      return el
-    })
-    description.setAttribute('content', t(meta.descriptionKey))
+    const meta = isUnsupportedLocalizedLegalPath(location.pathname)
+      ? { ...getMetaForPath('/__not-found__'), noAlternates: true }
+      : getMetaForPath(canonicalPathname)
+    const title = t(meta.titleKey)
+    const metaDescription = t(meta.descriptionKey)
+    const defaultOgImage = 'https://expose-u.com/og-default.png'
+    document.title = title
+    document.documentElement.setAttribute('lang', locale)
+
+    upsertMetaContent('meta[name="description"]', 'name', 'description', metaDescription)
+    upsertMetaContent('meta[property="og:title"]', 'property', 'og:title', title)
+    upsertMetaContent('meta[property="og:description"]', 'property', 'og:description', metaDescription)
+    upsertMetaContent('meta[property="og:image"]', 'property', 'og:image', defaultOgImage)
+    upsertMetaContent('meta[property="og:type"]', 'property', 'og:type', 'website')
+    upsertMetaContent('meta[property="og:site_name"]', 'property', 'og:site_name', 'expose.u')
+    upsertMetaContent('meta[name="twitter:title"]', 'name', 'twitter:title', title)
+    upsertMetaContent('meta[name="twitter:description"]', 'name', 'twitter:description', metaDescription)
+    upsertMetaContent('meta[name="twitter:image"]', 'name', 'twitter:image', defaultOgImage)
 
     const localeCanonical = `${window.location.origin}${localizePath(canonicalPathname)}`
 
@@ -36,17 +56,8 @@ export function usePageMeta() {
     }) as HTMLLinkElement
     canonical.href = localeCanonical
 
-    upsertMeta('meta[property="og:url"]', () => {
-      const el = document.createElement('meta')
-      el.setAttribute('property', 'og:url')
-      return el
-    }).setAttribute('content', localeCanonical)
-
-    upsertMeta('meta[property="og:locale"]', () => {
-      const el = document.createElement('meta')
-      el.setAttribute('property', 'og:locale')
-      return el
-    }).setAttribute('content', locale === 'de' ? 'de_DE' : 'en_US')
+    upsertMetaContent('meta[property="og:url"]', 'property', 'og:url', localeCanonical)
+    upsertMetaContent('meta[property="og:locale"]', 'property', 'og:locale', locale === 'de' ? 'de_DE' : 'en_US')
 
     if (meta.noAlternates) {
       document.head.querySelectorAll('link[rel="alternate"][hreflang]').forEach((el) => el.remove())

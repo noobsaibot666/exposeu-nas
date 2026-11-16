@@ -15,7 +15,8 @@
       "emailInvalid": "Enter a valid email address.",
       "projectTypeRequired": "Select a project type.",
       "highlightedFields": "Please correct the highlighted fields.",
-      "generic": "Something went wrong — please email us at hello@expose-u.com"
+      "generic": "Something went wrong — please email us at hello@expose-u.com",
+      "referenceId": "Reference: {{id}}"
     },
     "success": {
       "eyebrow": "Thank you",

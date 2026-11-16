@@ -4,6 +4,45 @@ export type MetaConfig = {
   noAlternates?: boolean
 }
 
+// These route components render `SEOMeta` with route-specific copy/canonical URLs.
+// Skip the app-level fallback on these paths so two effects do not compete to
+// own title, description, canonical and hreflang tags.
+const PAGE_LEVEL_META_PATHS = new Set([
+  '/',
+  '/v2',
+  '/about',
+  '/contact',
+  '/call-session',
+  '/release-content-kit',
+  '/exhibition-gallery',
+  '/brand-agency',
+  '/popups',
+  '/gallery-museum-documentation',
+  '/artist-musician-documentation',
+  '/portfolio',
+  '/services/concerts-events',
+  '/services/exhibition-gallery',
+  '/services/artist-sessions',
+  '/services/brand-agency',
+  '/privacy',
+  '/terms',
+  '/data-deletion',
+  '/concerts-berlin',
+])
+const ENGLISH_ONLY_META_PATHS = new Set(['/privacy', '/terms', '/data-deletion'])
+
+export function hasPageLevelMetaOwner(pathname: string): boolean {
+  const hasGermanPrefix = pathname === '/de' || pathname.startsWith('/de/')
+  const canonicalPath = pathname === '/de' ? '/' : hasGermanPrefix ? pathname.slice(3) : pathname
+  if (hasGermanPrefix && ENGLISH_ONLY_META_PATHS.has(canonicalPath)) return false
+  return PAGE_LEVEL_META_PATHS.has(canonicalPath)
+}
+
+export function isUnsupportedLocalizedLegalPath(pathname: string): boolean {
+  if (!pathname.startsWith('/de/')) return false
+  return ENGLISH_ONLY_META_PATHS.has(pathname.slice(3))
+}
+
 export function getMetaForPath(pathname: string): MetaConfig {
   if (pathname === '/' || pathname === '/v2') {
     return { titleKey: 'common.meta.home.title', descriptionKey: 'common.meta.home.description' }
@@ -16,6 +55,13 @@ export function getMetaForPath(pathname: string): MetaConfig {
   }
   if (pathname === '/contact-success') {
     return { titleKey: 'common.meta.contactSuccess.title', descriptionKey: 'common.meta.contactSuccess.description' }
+  }
+  if (pathname === '/consent') {
+    return {
+      titleKey: 'common.meta.photoConsent.title',
+      descriptionKey: 'common.meta.photoConsent.description',
+      noAlternates: true,
+    }
   }
   if (pathname === '/portfolio') {
     return { titleKey: 'common.meta.portfolio.title', descriptionKey: 'common.meta.portfolio.description' }

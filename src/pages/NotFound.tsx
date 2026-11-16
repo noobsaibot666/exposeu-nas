@@ -10,7 +10,7 @@ function NotFound() {
         <div className="content work-cta__content">
           <div>
             <p className="work-cta__eyebrow">{t('notFound.eyebrow')}</p>
-            <h3>{t('notFound.headline')}</h3>
+            <h1>{t('notFound.headline')}</h1>
           </div>
           <LocalizedLink className="work-cta__link" to="/">{t('notFound.cta')}</LocalizedLink>
         </div>

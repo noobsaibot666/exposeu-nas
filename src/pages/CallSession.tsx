@@ -27,10 +27,10 @@ function CallSession() {
   return (
     <main className="page-shell">
       <SEOMeta
-        title="Book a call"
-        description="Schedule a short call to clarify scope, timing, and the right documentation package."
-        ogTitle="Book a call | expose.u"
-        ogDescription="15 minutes to clarify your project scope and which package fits. No pressure."
+        title={t('common.meta.callSession.title')}
+        description={t('common.meta.callSession.description')}
+        ogTitle={t('common.meta.callSession.title')}
+        ogDescription={t('common.meta.callSession.description')}
         canonical="https://expose-u.com/call-session"
         lang={locale}
       />

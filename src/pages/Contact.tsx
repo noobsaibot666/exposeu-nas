@@ -176,12 +176,16 @@ function Contact() {
       let responseData: unknown = null
       try { responseData = await response.json() } catch { responseData = null }
 
-      if (!response.ok) {
+      const responseOk = typeof responseData === 'object'
+        && responseData !== null
+        && (responseData as { ok?: unknown }).ok === true
+      if (!response.ok || !responseOk) {
         let serverMsg = t('forms.contact.errors.generic')
         if (typeof responseData === 'object' && responseData !== null) {
-          const data = responseData as { error?: string | { message?: string } }
+          const data = responseData as { requestId?: string; error?: string | { message?: string } }
           if (typeof data.error === 'string') serverMsg = data.error
           else if (data.error?.message) serverMsg = String(data.error.message)
+          if (data.requestId) serverMsg = `${serverMsg} ${t('forms.contact.errors.referenceId', { id: data.requestId })}`
         }
         throw new Error(serverMsg)
       }
@@ -323,10 +327,10 @@ function Contact() {
   return (
     <main className="contact" ref={rootRef} id="main">
       <SEOMeta
-        title="Contact"
-        description="Get in touch with expose.u — Berlin-based concert and exhibition documentation. Fast response, no sales pressure."
-        ogTitle="Start a Project | expose.u"
-        ogDescription="Tell us what you're working on. We reply within 24 hours. No sales pressure."
+        title={t('common.meta.contact.title')}
+        description={t('common.meta.contact.description')}
+        ogTitle={t('common.meta.contact.title')}
+        ogDescription={t('common.meta.contact.description')}
         canonical="https://expose-u.com/contact"
         lang={locale}
       />

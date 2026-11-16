@@ -56,7 +56,7 @@ export function SEOMeta({
   noAlternates = false,
 }: SEOMetaProps) {
   useEffect(() => {
-    const fullTitle = `${title} | ${SITE_NAME}`
+    const fullTitle = title.endsWith(`| ${SITE_NAME}`) ? title : `${title} | ${SITE_NAME}`
     const resolvedOgTitle = ogTitle ?? fullTitle
     const resolvedOgDesc = ogDescription ?? description
 

@@ -80,10 +80,10 @@ function About() {
   return (
     <main className="about" ref={rootRef} id="main">
       <SEOMeta
-        title="About"
-        description="Berlin-based documentation studio for concerts, exhibitions, and cultural events. Art-first approach, fast delivery."
-        ogTitle="About expose.u | Berlin Documentation Studio"
-        ogDescription="Berlin-based documentation studio run by people inside the cultural scene. Fast delivery. Art-first."
+        title={t('common.meta.about.title')}
+        description={t('common.meta.about.description')}
+        ogTitle={t('common.meta.about.title')}
+        ogDescription={t('common.meta.about.description')}
         canonical="https://expose-u.com/about"
         lang={locale}
       />

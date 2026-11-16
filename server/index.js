@@ -154,6 +154,7 @@ const tokensMatch = (a, b) => {
 const sendApiError = (res, status, code, message) =>
   res.status(status).json({
     ok: false,
+    requestId: res.locals.requestId,
     error: {
       code,
       message,
@@ -292,9 +293,15 @@ app.use(cors({
     callback(new Error(`CORS: origin ${origin} not allowed`))
   },
 }))
+app.use((req, res, next) => {
+  const requestId = randomUUID()
+  res.locals.requestId = requestId
+  res.setHeader('X-Request-Id', requestId)
+  next()
+})
 app.use(express.json({ limit: '8mb' }))
-app.use((req, _res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`)
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] [${res.locals.requestId}] ${req.method} ${req.path}`)
   next()
 })
 
@@ -465,6 +472,7 @@ app.post('/contact', async (req, res) => {
     }
 
     console.log('CONTACT LEAD META:', {
+      requestId: res.locals.requestId,
       ts: new Date().toISOString(),
       ip,
       projectType: trimmedProjectType,
@@ -523,19 +531,17 @@ app.post('/contact', async (req, res) => {
 
     logSmtpConfig(config, 'Sending contact email with')
     console.log('MAIL META:', {
-      to: mailOptions.to,
-      from: mailOptions.from,
-      replyTo: mailOptions.replyTo,
+      requestId: res.locals.requestId,
       subject: mailOptions.subject,
     })
 
     const info = await transporter.sendMail(mailOptions)
 
     console.log('MAIL SENT:', {
+      requestId: res.locals.requestId,
       messageId: info.messageId,
-      accepted: info.accepted,
-      rejected: info.rejected,
-      response: info.response,
+      acceptedCount: info.accepted?.length ?? 0,
+      rejectedCount: info.rejected?.length ?? 0,
     })
 
     await logContactSubmission({
@@ -551,9 +557,13 @@ app.post('/contact', async (req, res) => {
       message: trimmedMessage || null,
     })
 
-    return res.json({ ok: true })
+    if (!info.accepted?.length) {
+      return sendApiError(res, 502, 'EMAIL_NOT_ACCEPTED', 'The message could not be accepted for delivery.')
+    }
+
+    return res.json({ ok: true, requestId: res.locals.requestId })
   } catch (error) {
-    console.error('Contact form error', serializeError(error))
+    console.error('Contact form error', { requestId: res.locals.requestId, ...serializeError(error) })
     return sendApiError(res, 500, 'EMAIL_SEND_FAILED', 'Failed to send email.')
   }
 })
@@ -832,7 +842,6 @@ app.get('/smtp-test', async (req, res) => {
 // malformed JSON body both land here via next(err) before ever reaching a
 // route handler's own try/catch, so relying on env config alone isn't
 // enough — this must exist regardless of how NODE_ENV is set.
-// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, _next) => {
   console.error('UNHANDLED ERROR:', serializeError(err))
 

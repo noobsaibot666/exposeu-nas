@@ -11,12 +11,12 @@
 
 | Service | Current implementation | Risk / evidence |
 |---|---|---|
-| Contact email | `/api/contact` → Traefik prefix strip → Express `/contact` → SMTP | Required env config and SMTP handshake are checked at startup; local mail delivery not verified. Rate limit is in-memory but bounded; email syntax and field limits are now validated (V2-006, 015). |
-| Contact persistence | Optional Supabase insert after email send | Best effort: user receives success even if Supabase insert fails. This is documented in source and may be intended. Verify operational reconciliation needs. |
-| Pricing request | Browser POST to `VITE_PRICING_FORM_ENDPOINT`; Apps Script branch uses `no-cors` | Missing env var is a hard user-facing failure; opaque response means client cannot distinguish server-side rejection from success. Destination not discovered in repo. |
+| Contact email | `/api/contact` → Traefik prefix strip → Express `/contact` → SMTP | Required env config and SMTP handshake are checked at startup. Responses include a request ID echoed in a response header and safe logs. Success requires SMTP to accept a configured recipient; this does not prove inbox delivery. Staging reconciliation is still needed. Rate limit is in-memory but bounded; email syntax and field limits are validated (V2-006, 014, 015). |
+| Contact persistence | Optional Supabase insert after email send | Best effort: user receives success if SMTP accepted the message even when the Supabase insert fails. Confirm whether this split delivery is intended and how it is reconciled. |
+| Pricing request | Browser POST to `VITE_PRICING_FORM_ENDPOINT`; Apps Script branch uses `no-cors` | Missing env var is a hard user-facing failure. Opaque responses cannot confirm a saved record, so the UI can report success without destination-level evidence. Destination owner and test-inbox staging URL are still unknown. |
 | Meta CAPI | `/api/track-lead` sends lead to Meta | Contact UI gates call by analytics consent. HTML no longer bootstraps the Pixel; consented initialization is handled by `initializeAnalyticsVendors()` (V2-001). |
 | Analytics | GA4 + Clarity + Meta hooks + scroll/form events | Before the fix, Clarity and Meta requests were verified before choice. Source now gates all vendor script injection on affirmative consent; post-deployment network confirmation remains (V2-001). |
-| Photo consent | `/api/photo-consent` writes signature and location metadata to Supabase; reverse-geocode uses Overpass/Nominatim | 3x print-resolution canvas, base64 PNG, user-agent/IP/location persistence. Validate limits, privacy copy, offline queue durability and duplicate behavior. |
+| Photo consent | `/api/photo-consent` writes signature and location metadata to Supabase; reverse-geocode uses Overpass/Nominatim | 3x print-resolution canvas, base64 PNG, user-agent/IP/location persistence. Client queue now validates entries, caps storage to 10 records/4 MiB, surfaces pending/retry state, and offers a backup if persistence fails. Server ignores the client submission ID, so duplicate prevention is not guaranteed. Validate retention/privacy copy and idempotency against the actual schema. |
 | Geolocation | Browser geolocation, then server-side reverse-geocode | External Overpass/Nominatim dependency can take up to sequential timeouts; UX needs offline/timeout test. Lat/lon are checked for finiteness but not geographic range. |
 | SMTP diagnostics | `/smtp-test` token-gated outside dev and rate-limited in process | Ensure production token is set only when needed; validate endpoint is not surfaced publicly in docs/monitoring. |
 
@@ -32,7 +32,7 @@
 
 ## Navigation and usability
 
-- Top nav is shared but links vary by page. Mobile drawer handles Escape, body scroll lock and focus restoration. No focus trap is apparent; validate focus behavior and announce open state.
+- Top nav is shared but links vary by page. Mobile drawer has modal semantics, Tab/Shift+Tab trapping, Escape, body scroll lock and focus restoration. A local keyboard pass verified these behaviors; assistive-technology review remains open.
 - `/v2` is an alias rendering the same homepage without redirect; `/de/v2` likewise. This can create duplicate URLs/canonical drift.
 - Root skip link is in the accessibility tree, but appears at a negative viewport y until focused, which is normal visually; verify focus style on keyboard.
 - Before the fix, the mobile homepage first viewport showed a full-screen decorative video with no offer text. Source now overlays localized H1/subhead/primary CTA on the mobile poster; screenshot validation remains (V2-012).
@@ -41,7 +41,8 @@
 ## Accessibility
 
 - `id="main"`, skip link and reduced-motion CSS are included in project conventions. Lint passes but does not establish WCAG conformance.
-- Mobile drawer now has modal semantics and a Tab focus trap; keyboard/screen-reader browser validation remains (V2-011).
+- Mobile drawer has modal semantics and a Tab focus trap; keyboard behavior was exercised locally, while screen-reader review remains (V2-011).
+- Locale menu now restores focus after selection/Escape and makes the closed menu inert; local locale-switch checks had no console warnings.
 - `LocationAutocomplete` renders a listbox and keyboard arrows/Enter/Escape, but the input does not expose combobox/listbox active-descendant relationships. It may be difficult for screen readers to understand suggestions.
 - `SignaturePad` supports pointer drawing and clear action. No keyboard alternative for creating a signature is evident; confirm legal/operational requirements and offer an accessible non-drawing consent path if appropriate.
 - Check color contrast, target sizes, zoom/reflow, form error live regions, headings, alt text and focus visibility across all page families.

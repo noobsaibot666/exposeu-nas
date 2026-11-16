@@ -28,6 +28,10 @@
       "title": "Nachricht erhalten | expose.u",
       "description": "Deine Nachricht ist bei uns eingegangen. Unser Team meldet sich zeitnah zurück."
     },
+    "photoConsent": {
+      "title": "Fotoerlaubnis | expose.u",
+      "description": "Formular für die Fotoeinwilligung und Bildfreigabe bei expose.u-Projekten."
+    },
     "portfolio": {
       "title": "Last Projects | expose.u",
       "description": "Ausgewählte Arbeiten von expose.u aus Live-Events, Ausstellungen, Artist Sessions und Brand-Aktivierungen."

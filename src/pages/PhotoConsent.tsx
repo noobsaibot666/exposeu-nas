@@ -8,6 +8,9 @@ type Mode = 'dark' | 'light'
 type Lang = 'en' | 'de'
 
 const PENDING_QUEUE_KEY = 'photoConsentPendingQueue'
+const MAX_PENDING_QUEUE_ITEMS = 10
+const MAX_PENDING_QUEUE_BYTES = 4 * 1024 * 1024
+let queueFlushInProgress = false
 
 const BERLIN_LOCATION_SUGGESTIONS = [
   'S-Bahn Alexanderplatz',
@@ -99,6 +102,9 @@ const COPY: Record<
     fieldLocation: string
     fieldName: string
     fieldNameEmpty: string
+    pendingQueue: (count: number) => string
+    retryPending: string
+    queueUnavailable: string
   }
 > = {
   en: {
@@ -135,6 +141,9 @@ const COPY: Record<
     fieldLocation: 'Location',
     fieldName: 'Name given',
     fieldNameEmpty: '(none — anonymous)',
+    pendingQueue: (count) => `${count} signed release${count === 1 ? '' : 's'} on this device still need to sync. Keep this browser data until syncing finishes.`,
+    retryPending: 'Retry sync',
+    queueUnavailable: 'This device could not store the pending release. Keep the downloaded record and retry the submission when online.',
   },
   de: {
     heading: 'Fotoerlaubnis',
@@ -171,6 +180,9 @@ const COPY: Record<
     fieldLocation: 'Ort',
     fieldName: 'Angegebener Name',
     fieldNameEmpty: '(keiner — anonym)',
+    pendingQueue: (count) => `${count} unterschriebene Freigabe${count === 1 ? '' : 'n'} auf diesem Gerät müssen noch synchronisiert werden. Lass die Browserdaten bestehen, bis die Synchronisierung abgeschlossen ist.`,
+    retryPending: 'Synchronisierung erneut versuchen',
+    queueUnavailable: 'Diese Freigabe konnte auf dem Gerät nicht gespeichert werden. Bewahre die heruntergeladene Datei auf und versuche die Übermittlung erneut, sobald du online bist.',
   },
 }
 
@@ -182,6 +194,7 @@ interface GeoState {
 }
 
 interface PendingSignature {
+  submissionId?: string
   name: string
   locationText: string
   latitude: number | null
@@ -346,21 +359,58 @@ function getInitialGeoStatus(): GeoState['status'] {
   return 'pending'
 }
 
+function createSubmissionId(): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') return crypto.randomUUID()
+  return `consent-${Date.now()}-${Math.random().toString(36).slice(2)}`
+}
+
+function isPendingSignature(value: unknown): value is PendingSignature {
+  if (typeof value !== 'object' || value === null) return false
+  const item = value as Partial<PendingSignature>
+  return typeof item.name === 'string'
+    && typeof item.locationText === 'string'
+    && typeof item.capturedAt === 'string'
+    && (item.language === 'en' || item.language === 'de')
+    && typeof item.signatureImage === 'string'
+    && item.signatureImage.startsWith('data:image/png;base64,')
+}
+
 function readQueue(): PendingSignature[] {
   try {
     const raw = localStorage.getItem(PENDING_QUEUE_KEY)
-    return raw ? (JSON.parse(raw) as PendingSignature[]) : []
+    if (!raw) return []
+    const parsed: unknown = JSON.parse(raw)
+    if (!Array.isArray(parsed)) return []
+    return parsed.filter(isPendingSignature).slice(0, MAX_PENDING_QUEUE_ITEMS).map((item) => ({
+      ...item,
+      submissionId: typeof item.submissionId === 'string' && item.submissionId
+        ? item.submissionId
+        : createSubmissionId(),
+    }))
   } catch {
     return []
   }
 }
 
-function writeQueue(queue: PendingSignature[]) {
+function writeQueue(queue: PendingSignature[]): boolean {
   try {
-    localStorage.setItem(PENDING_QUEUE_KEY, JSON.stringify(queue))
+    if (queue.length === 0) {
+      localStorage.removeItem(PENDING_QUEUE_KEY)
+      return true
+    }
+    const serialized = JSON.stringify(queue)
+    if (queue.length > MAX_PENDING_QUEUE_ITEMS || serialized.length * 2 > MAX_PENDING_QUEUE_BYTES) return false
+    localStorage.setItem(PENDING_QUEUE_KEY, serialized)
+    return true
   } catch {
-    /* storage unavailable — nothing more we can do client-side */
+    return false
   }
+}
+
+function enqueueSignature(payload: PendingSignature): boolean {
+  const queue = readQueue()
+  if (queue.some((item) => item.submissionId === payload.submissionId)) return true
+  return writeQueue([...queue, payload])
 }
 
 async function submitSignature(payload: PendingSignature): Promise<boolean> {
@@ -369,23 +419,36 @@ async function submitSignature(payload: PendingSignature): Promise<boolean> {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   })
-  return res.ok
+  if (!res.ok) return false
+  try {
+    const result = await res.json()
+    return result?.ok === true
+  } catch {
+    return false
+  }
 }
 
-async function flushQueue() {
+async function flushQueue(): Promise<number> {
   const queue = readQueue()
-  if (queue.length === 0) return
+  if (queue.length === 0) return 0
+  if (queueFlushInProgress || !navigator.onLine) return queue.length
 
+  queueFlushInProgress = true
   const remaining: PendingSignature[] = []
-  for (const item of queue) {
-    try {
-      const ok = await submitSignature(item)
-      if (!ok) remaining.push(item)
-    } catch {
-      remaining.push(item)
+  try {
+    for (const item of queue) {
+      try {
+        const ok = await submitSignature(item)
+        if (!ok) remaining.push(item)
+      } catch {
+        remaining.push(item)
+      }
     }
+    if (!writeQueue(remaining)) return queue.length
+    return remaining.length
+  } finally {
+    queueFlushInProgress = false
   }
-  writeQueue(remaining)
 }
 
 function PhotoConsent() {
@@ -396,6 +459,7 @@ function PhotoConsent() {
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
   const [dbSynced, setDbSynced] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
+  const [pendingCount, setPendingCount] = useState(() => readQueue().length)
   const [mode, setMode] = useState<Mode>(getPreferredMode)
   const [lang, setLang] = useState<Lang>(getPreferredLang)
   const langRef = useRef(lang)
@@ -419,9 +483,12 @@ function PhotoConsent() {
   }, [])
 
   useEffect(() => {
-    flushQueue()
-    window.addEventListener('online', flushQueue)
-    return () => window.removeEventListener('online', flushQueue)
+    const refreshQueue = () => {
+      void flushQueue().then(setPendingCount)
+    }
+    refreshQueue()
+    window.addEventListener('online', refreshQueue)
+    return () => window.removeEventListener('online', refreshQueue)
   }, [])
 
   useEffect(() => {
@@ -462,6 +529,7 @@ function PhotoConsent() {
     setErrorMessage('')
 
     const payload: PendingSignature = {
+      submissionId: createSubmissionId(),
       name: name.trim(),
       locationText: location.trim(),
       latitude: geo.latitude,
@@ -473,19 +541,17 @@ function PhotoConsent() {
     }
 
     let synced = false
+    let queued = false
     try {
       synced = await submitSignature(payload)
       if (!synced) {
-        const queue = readQueue()
-        queue.push(payload)
-        writeQueue(queue)
+        queued = enqueueSignature(payload)
       }
     } catch {
-      const queue = readQueue()
-      queue.push(payload)
-      writeQueue(queue)
+      queued = enqueueSignature(payload)
       synced = false
     }
+    setPendingCount(readQueue().length)
 
     try {
       const recordUrl = await buildRecordImage({ name, location, signatureDataUrl: dataUrl, mode, lang })
@@ -510,11 +576,21 @@ function PhotoConsent() {
       }
 
       setDbSynced(synced)
-      setStatus('saved')
+      if (!synced && !queued) {
+        setStatus('error')
+        setErrorMessage(copy.queueUnavailable)
+      } else {
+        setStatus('saved')
+      }
     } catch (err) {
       if (err instanceof Error && err.name === 'AbortError') {
         setDbSynced(synced)
-        setStatus('saved')
+        if (!synced && !queued) {
+          setStatus('error')
+          setErrorMessage(copy.queueUnavailable)
+        } else {
+          setStatus('saved')
+        }
         return
       }
       setStatus('error')
@@ -533,6 +609,9 @@ function PhotoConsent() {
 
   const toggleMode = () => setMode((m) => (m === 'dark' ? 'light' : 'dark'))
   const toggleLang = () => setLang((l) => (l === 'en' ? 'de' : 'en'))
+  const retryPending = () => {
+    void flushQueue().then(setPendingCount)
+  }
 
   if (status === 'saved') {
     return (
@@ -574,6 +653,13 @@ function PhotoConsent() {
             <li key={term}>{term}</li>
           ))}
         </ul>
+
+        {pendingCount > 0 && (
+          <div className="photo-consent__pending" role="status">
+            <p>{copy.pendingQueue(pendingCount)}</p>
+            <button type="button" onClick={retryPending}>{copy.retryPending}</button>
+          </div>
+        )}
 
         <label className="photo-consent__field">
           <span>{copy.nameLabel}</span>

@@ -28,7 +28,7 @@ The homepage now shows lightweight local WebP posters (49 KB desktop, 19 KB mobi
 
 ### [x] V2-003 — German language switch can navigate to missing legal routes
 
-**Status: DONE IN SOURCE — mobile legal page control verified; head metadata still requires inspection.** `/privacy`, `/terms`, and `/data-deletion` are routed only in English. The global locale switcher previously generated missing German routes and metadata advertised them. The language switcher is now hidden on those legal pages and both metadata owners omit hreflang alternates there. This avoids directing visitors and crawlers to nonexistent translations while the pages remain English-only.
+**Status: DONE IN SOURCE — local mobile control and rendered head verified.** `/privacy`, `/terms`, and `/data-deletion` are routed only in English. The global locale switcher previously generated missing German routes and metadata advertised them. The language switcher is now hidden on those legal pages and both metadata owners omit hreflang alternates there. This avoids directing visitors and crawlers to nonexistent translations while the pages remain English-only.
 
 **Files:** `src/App.tsx`, `src/i18n/routing.ts`, `src/i18n/pageMeta.ts`, `src/components/LocaleSwitcher.tsx`.
 
@@ -74,11 +74,11 @@ The homepage now shows lightweight local WebP posters (49 KB desktop, 19 KB mobi
 
 **Status: DONE — owner chose to retire V1; English legacy redirect browser-verified.** `/old-home` now redirects to `/` and `/de/old-home` already redirects to `/de`, preserving old links while keeping visitors on the current homepage. The unused `Home.tsx` implementation was removed. `Home.css` remains because `PricingSection` still imports shared pricing styles from it; separating that stylesheet is outside this item.
 
-### V2-010 — SPA navigation and metadata should be checked for every route
+### [x] V2-010 — SPA navigation and metadata should be checked for every route
 
-**Status: source-based.** Route metadata is updated client-side with `useEffect`; initial HTML is a generic shell. Crawlers that do not execute the app see generic title/OG fields. Route-specific metadata is split between `pageMeta.ts`, route config, and page `SEOMeta` calls, creating duplicate sources of truth and possible stale canonical/alternates.
+**Status: CLOSED BY ARCHITECTURE DECISION — keep the current client-rendered SPA through V2; do not add SSR/prerender in this remediation pass.** Every canonical app route gets route-specific metadata after React renders. Initial HTML remains a generic shell, so social preview crawlers that do not execute JavaScript may still show generic metadata. This is a known limitation for the current strategy; reconsider static generation if social/search previews are a V2 requirement.
 
-**Acceptance:** establish a single route metadata source and decide prerender/SSR strategy for campaign pages; validate rendered source and social previews for all indexed routes.
+**Acceptance:** route rendering strategy is recorded; runtime metadata was checked across the page families and EN/DE paths in the local browser. Static source and non-JavaScript social preview output were not validated because this strategy intentionally remains client-rendered.
 
 ### [x] V2-011 — Mobile menu is not a complete modal drawer interaction
 
@@ -92,17 +92,17 @@ The homepage now shows lightweight local WebP posters (49 KB desktop, 19 KB mobi
 
 **Acceptance:** local browser at 390×844 exposes the localized offer and primary action in the first mobile hero with video disabled. Check text wrapping and CTA at 320/360/430 px and review screenshots before closing the broader responsive audit.
 
-### V2-013 — Service metadata and page-level SEO are duplicated
+### [x] V2-013 — Service metadata and page-level SEO are duplicated
 
-**Status: source-based.** `usePageMeta()` always runs from `App.tsx`, while several pages also render `SEOMeta` and set canonical/title metadata. The duplication can make head state depend on effect order and contributes to multiple maintenance locations.
+**Status: DONE — one metadata owner is active for each route.** `usePageMeta()` now acts as the complete fallback for routes without `SEOMeta`; page-level SEO routes are excluded from that writer. The fallback also resets Open Graph/Twitter metadata and the document language when navigating away from an SEO page, preventing stale social tags. German About, Contact, Call Session and Portfolio metadata use localized copy.
 
-**Acceptance:** each route has one metadata owner, correct locale-specific canonical and alternates, and no duplicate tags after client navigation.
+**Acceptance:** local browser route checks found one description and one canonical on rendered pages; legal English-only pages had no hreflang alternates. EN/DE navigation showed localized title/description, `lang`, canonical/alternates, and fallback Open Graph values without duplicate tags.
 
 ### V2-014 — Contact and pricing forms need end-to-end delivery observability
 
-**Status: incomplete evidence.** Contact API sends email and only then best-effort logs to Supabase; pricing request uses an external endpoint/no-cors path. Static inspection cannot establish email deliverability, Supabase RLS/schema fit, duplicate submission handling, or third-party endpoint reliability.
+**Status: PARTIALLY CLOSED IN SOURCE — contact API correlation and response checks added; staging delivery and pricing observability remain open.** Contact API now returns a request ID in the body/header, includes it in logs, confirms SMTP accepted at least one recipient before success, and avoids logging the visitor's reply-to address in the send summary. The contact page rejects a non-JSON/`ok:false` response and displays server reference IDs. Local API checks confirmed matching response/header IDs for invalid email, oversize field and missing-SMTP responses, without sending mail. Pricing still uses an opaque Apps Script response and cannot confirm the destination receipt.
 
-**Acceptance:** add correlation IDs and safe delivery outcomes; document retries/idempotency and data retention; perform staging submissions and reconcile mail + persistence destinations.
+**Acceptance:** contact SMTP acceptance and destination reconciliation, Supabase delivery semantics, safe retry/idempotency policy and pricing staging reconciliation still require the staging entry point. User confirmed staging uses a test inbox; URL is pending.
 
 ### [x] V2-015 — Contact API request validation is minimal
 
@@ -114,15 +114,21 @@ The homepage now shows lightweight local WebP posters (49 KB desktop, 19 KB mobi
 
 ### V2-016 — Photo-consent offline queue durability and user recovery
 
-`PhotoConsent.tsx` queues failed submissions in localStorage. Verify that queue persistence survives browser storage limits, that retries do not duplicate accepted records, that a different device is not implied, and that users can clearly tell “saved locally” from “stored on server.” Test offline, private browsing, full storage, reload, and retry.
+**Status: PARTIALLY CLOSED IN SOURCE — queue size and user recovery are bounded/visible; server idempotency and policy still need staging/schema evidence.** The local queue validates entries, caps at 10 records and 4 MiB serialized storage, avoids overlapping retry loops, requires an `{ok:true}` JSON server response, and shows a pending count with an explicit retry action. If local storage cannot persist a failed record, the UI reports that state after generating the downloadable backup instead of claiming it will sync. A local synthetic queued record remained visible after an offline/local API failure; the fixture was removed afterward. The server currently ignores the client submission ID, so duplicate prevention after a lost acknowledgement is not guaranteed across retries or restarts.
 
-### V2-017 — Production runtime/route smoke pass
+Confirm the Supabase schema can safely persist a unique submission ID before claiming idempotent retries. Still test private browsing/quota failure, reload/online recovery against staging, retention/deletion policy and the exact device-local wording with the owner.
 
-Local Vite initially failed because the optional Darwin Rollup native package was absent. A temporary package workaround under `/tmp` enabled local browser smoke checks without mutating repository dependencies: homepage, `/old-home` redirect, `/privacy`, one service detail route, mobile gallery rendering and mobile drawer Escape/focus restoration were exercised. Production smoke is still limited to the homepage; the full page/deep-link matrix, browser back/forward, language switch actions and authenticated/external integrations remain open.
+### [x] V2-017 — Production runtime/route smoke pass
+
+**Status: DONE FOR LOCAL ROUTE SMOKE — production and external integrations are tracked separately.** `scripts/verify-routes.mjs` now checks all canonical EN/DE routes, valid pricing routes and legacy aliases. Against the local app, all canonical routes returned 200 and all aliases used the SPA fallback. Browser review covered route families in both languages, checked H1s, duplicate metadata, loaded broken images and horizontal overflow; `/old-home` and language switching were exercised. Pricing/contact/photo-consent delivery is not part of this route smoke and remains open under V2-004/014/016.
+
+Production remains limited to the homepage. Do not interpret local SPA fallback checks as deployment/API health checks.
 
 ### V2-018 — Responsive and accessibility audit beyond homepage
 
-Production homepage was inspected at 1200× and 390×. Local checks now cover the 390×844 homepage offer, `/privacy` language control, one service gallery and mobile drawer Escape/focus restoration. All page families, other responsive widths, error states, Tab wrapping, zoom/reflow, contrast and screen-reader semantics remain unverified in a browser.
+Production homepage was inspected at 1200× and 390×. Local route-family checks at 320, 390, 768, 1024 and 1440 px found no horizontal overflow on the sampled home, service, campaign, contact, pricing, legal, portfolio, photo-consent and 404 pages. The mobile navigation drawer's dialog, Tab/Shift+Tab wrapping, Escape, focus restoration, `inert` and scroll lock were exercised. A language-menu focus warning was found and fixed with focus restoration and closed-state `inert`; the follow-up browser pass had no console errors or warnings.
+
+Remaining: full route-by-route screenshot review at every width, 200% zoom/reflow, contrast measurements, screen-reader review, form error announcements on each form, and an accessible alternative to the drawing-only signature control. Confirm legal/product acceptance before changing the signature method.
 
 ### [x] V2-019 — Service-page gallery media is hidden on mobile/tablet widths
 

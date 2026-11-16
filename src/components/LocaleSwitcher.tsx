@@ -12,14 +12,23 @@ function LocaleSwitcher() {
   const { pathname } = useLocation()
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement | null>(null)
+  const triggerRef = useRef<HTMLButtonElement | null>(null)
   const isHome = HOME_PATHS.has(pathname)
+
+  const closeMenu = (restoreFocus = false) => {
+    setOpen(false)
+    if (restoreFocus) requestAnimationFrame(() => triggerRef.current?.focus())
+  }
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
       if (!rootRef.current?.contains(event.target as Node)) setOpen(false)
     }
     const handleKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpen(false)
+      if (event.key === 'Escape' && open) {
+        event.preventDefault()
+        closeMenu(true)
+      }
     }
     document.addEventListener('mousedown', handleClick)
     document.addEventListener('keydown', handleKey)
@@ -27,17 +36,18 @@ function LocaleSwitcher() {
       document.removeEventListener('mousedown', handleClick)
       document.removeEventListener('keydown', handleKey)
     }
-  }, [])
+  }, [open])
 
   return (
     <div className={`locale-switcher ${isHome ? 'locale-switcher--home' : 'locale-switcher--page'}`} ref={rootRef}>
       <button
+        ref={triggerRef}
         type="button"
         className="locale-switcher__trigger"
         aria-haspopup="menu"
         aria-expanded={open ? 'true' : 'false'}
         aria-label={t('common.language.switcherLabel')}
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={() => (open ? closeMenu() : setOpen(true))}
       >
         <Globe aria-hidden="true" size={20} strokeWidth={1.8} />
       </button>
@@ -47,6 +57,7 @@ function LocaleSwitcher() {
         role="menu"
         aria-label={t('common.language.menuLabel')}
         aria-hidden={open ? 'false' : 'true'}
+        inert={!open}
       >
         <button
           type="button"
@@ -55,7 +66,7 @@ function LocaleSwitcher() {
           aria-checked={locale === 'en' ? 'true' : 'false'}
           onClick={() => {
             switchLocale('en')
-            setOpen(false)
+            closeMenu(true)
           }}
           tabIndex={open ? 0 : -1}
         >
@@ -68,7 +79,7 @@ function LocaleSwitcher() {
           aria-checked={locale === 'de' ? 'true' : 'false'}
           onClick={() => {
             switchLocale('de')
-            setOpen(false)
+            closeMenu(true)
           }}
           tabIndex={open ? 0 : -1}
         >
