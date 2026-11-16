@@ -51,11 +51,36 @@
 - `npm run dev -- --host 127.0.0.1` initially failed before listening because the optional Darwin Rollup package could not be resolved. A temporary `/tmp` package workaround enabled browser review without changing repository dependencies.
 - Production browser capture was taken with the consent prompt unanswered, then viewport changed from 1200 px to 390 px. Network request capture showed pre-choice Meta and Clarity activity and Vimeo video range requests.
 
-## Open verification before closing the audit
+## Production checks 2026-11-16 (final pass)
 
-1. Run a build and deep-link route matrix from the deployment container, not from this shared mount.
-2. For all canonical EN/DE pages: capture title, description, canonical, hreflang, H1, broken images, JS errors and layout at desktop/mobile. Route families and representative matrix are checked; full per-route screenshots remain open.
-3. Test navigation, language switching, browser back/forward, anchors, full mobile drawer keyboard flow, reduced motion and 200% zoom. Drawer Tab wrapping and locale focus restoration are verified; zoom/reflow and reduced-motion review remain open.
-4. In staging, submit contact, pricing and photo-consent forms; reconcile user success state with SMTP, external endpoint and Supabase records.
-5. Record reproducible Lighthouse/Web Vitals and total transferred bytes for a fresh consent-rejected session and an accepted session.
-6. Ask the owner to confirm legal language variants, tracker policy, photo-consent retention/deletion rules, pricing endpoint owner, and whether submission IDs can be persisted uniquely. `/old-home` retirement was already approved.
+| Check | Result |
+|---|---|
+| Route matrix (`BASE_URL=https://expose-u.com node scripts/verify-routes.mjs`) | **Pass.** All canonical EN/DE routes return 200; legacy aliases 301 or redirect in the SPA. |
+| Per-route metadata, 41 routes (Playwright) | **Pass after V2-031.** Exactly one description, canonical and visible H1; correct `lang` and alternates; `noindex` on ads-only pages and the 404; no page errors or broken images. |
+| Navigation | **Pass.** Back/forward through About → Contact, the "Services" anchor scrolls to `#cases`, and all aliases (incl. the success-page guards) land correctly. |
+| Reflow 320 px / 200% zoom; light and dark contrast; text over media | **Pass** (see V2-018 / V2-026 rows above). |
+| Live forms | Contact ✓, pricing ✓ (after V2-030), photo consent ✓ incl. offline + duplicate retry. Test rows deleted. |
+| Consent gating | **Pass** for before-choice, Reject, Accept and stored Accept (V2-001). |
+| Performance baseline (Chromium, consent rejected, cache off; mobile = 390 px, 4× CPU, 9 Mbps / 150 ms) | See table below. |
+
+| Profile | Route | FCP | LCP | CLS | Site bytes |
+|---|---|---|---|---|---|
+| Desktop | `/` | 280 ms | 432 ms | 0.000 | 1.6 MB |
+| Desktop | `/portfolio` | 152 ms | 496 ms | 0.000 | 1.7 MB |
+| Desktop | `/services/concerts-events` | 160 ms | 484 ms | 0.000 | 0.47 MB |
+| Desktop | `/contact` | 132 ms | 460 ms | 0.000 | 0.36 MB |
+| Mobile 4G | `/` | 704 ms | 704 ms | 0.001 | 1.6 MB |
+| Mobile 4G | `/portfolio` | 644 ms | 1764 ms | 0.000 | 1.7 MB |
+| Mobile 4G | `/services/concerts-events` | 612 ms | 992 ms | 0.000 | 0.45 MB |
+| Mobile 4G | `/contact` | 608 ms | 920 ms | 0.000 | 0.37 MB |
+
+All LCP values are within Google's "good" threshold (2.5 s), and CLS is effectively zero. The **Vimeo hero stream is excluded**: it plays in a cross-origin iframe the page-level CDP session doesn't see. It is the largest remaining homepage cost, which the R2 MP4 hero (todo step 5) removes. The accepted-consent session wasn't byte-measured: it adds Google tag, Meta, Clarity and AdSense scripts, and running them for real would send analytics hits.
+
+## Earlier "open before closing" items, resolved
+
+1. Build + deep-link matrix from the deploy environment: done (deploy-container builds and the production route matrix above).
+2. Per-route metadata/H1/errors/layout: done (above). The full screenshot review is the owner's visual check (todo step 2).
+3. Navigation, language switch, back/forward, anchors, drawer keyboard, reduced motion, 200% zoom: done. The screen-reader pass is the owner's (todo step 6).
+4. Form delivery: done on production (no staging environment exists).
+5. Performance baseline: recorded above.
+6. Owner confirmations: tracked as decisions in [todo.md](./todo.md) step 3.

@@ -127,7 +127,9 @@ The static snippets were removed from `index.html`; `initializeAnalyticsVendors(
 
 **Acceptance:** local browser route checks found one description and one canonical on rendered pages; legal English-only pages had no hreflang alternates. EN/DE navigation showed localized title/description, `lang`, canonical/alternates, and fallback Open Graph values without duplicate tags.
 
-### V2-014 — Contact and pricing forms need end-to-end delivery observability
+### [x] V2-014 — Contact and pricing forms need end-to-end delivery observability
+
+**Update 2026-11-16 — CLOSED.** Request IDs round-trip (body + `X-Request-Id`) and were reconciled live: the contact and pricing test submissions each produced exactly one `contact_submissions` row, and the success state is shown only on `{ok:true}`. The downstream-failure path (SMTP down → error + reference, no false success) was verified end to end locally (V2-030). Duplicate contact posts aren't deduplicated server-side (only rate-limited, 5/min). That is acceptable for a contact form and recorded as policy, not a defect.
 
 **Status: PARTIALLY CLOSED IN SOURCE — contact API correlation and response checks added; staging delivery and pricing observability remain open.** Contact API now returns a request ID in the body/header, includes it in logs, confirms SMTP accepted at least one recipient before success, and avoids logging the visitor's reply-to address in the send summary. The contact page rejects a non-JSON/`ok:false` response and displays server reference IDs. Local API checks confirmed matching response/header IDs for invalid email, oversize field and missing-SMTP responses, without sending mail. Pricing still uses an opaque Apps Script response and cannot confirm the destination receipt.
 

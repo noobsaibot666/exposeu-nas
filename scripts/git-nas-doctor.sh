@@ -61,6 +61,25 @@ else
   echo "    none found."
 fi
 
+echo "==> Scanning for misnamed entries in .git/objects/XX/ (not a 38-hex object name)..."
+# Seen 2026-11-16: an empty file named 'eslint-utils' appeared in .git/objects/a3
+# during a failed commit — the SMB client mixed up a node_modules filename.
+# Git objects are always 38 hex chars; anything else there isn't git's. Empty
+# ones are safe to delete; non-empty ones are only reported (inspect by hand).
+misnamed=$(find .git/objects -mindepth 2 -maxdepth 2 -path '.git/objects/[0-9a-f][0-9a-f]/*' ! -name 'tmp_obj_*' 2>/dev/null \
+  | grep -Ev '/[0-9a-f]{2}/[0-9a-f]{38}$' || true)
+if [ -n "$misnamed" ]; then
+  found_any=true
+  echo "$misnamed" | sed 's/^/    /'
+  if $fix; then
+    echo "$misnamed" | while IFS= read -r f; do
+      if [ -f "$f" ] && [ ! -s "$f" ]; then rm -f "$f" && echo "    removed (empty): $f"; else echo "    left in place (not empty) — inspect: $f"; fi
+    done
+  fi
+else
+  echo "    none found."
+fi
+
 echo "==> Scanning for macOS SMB-client artifacts (.smbdelete*) under .git/..."
 smb_artifacts=$(find .git -iname ".smbdelete*" 2>/dev/null || true)
 if [ -n "$smb_artifacts" ]; then
