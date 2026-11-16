@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import gsap from 'gsap'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
 import { portfolioProjects } from '../data/portfolioProjects'
@@ -68,6 +69,7 @@ function ProjectDetail() {
   const { locale } = useLocale()
   const { t, tm } = useTranslation()
   const heroRef = useRef<HTMLElement | null>(null)
+  const storyRef = useRef<HTMLElement | null>(null)
   const translated = tm<Array<{id: string; title: string; description: string; context: string; outcome: string; tag: string}>>('portfolio.videos')
   const projects = useMemo(() => portfolioProjects.map((project) => ({
     ...project,
@@ -101,6 +103,37 @@ function ProjectDetail() {
       observer.disconnect()
       root.toggleAttribute('data-nav-over-media', previousMediaState)
     }
+  }, [projectId])
+
+  useLayoutEffect(() => {
+    const story = storyRef.current
+    if (!story || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const context = gsap.context(() => {
+      const items = gsap.utils.toArray<HTMLElement>(
+        '.project-detail__story-copy > *, .project-detail__facts > div',
+      )
+
+      gsap.fromTo(
+        items,
+        { opacity: 0, y: 22, filter: 'blur(4px)' },
+        {
+          opacity: 1,
+          y: 0,
+          filter: 'blur(0px)',
+          stagger: 0.08,
+          ease: 'sine.inOut',
+          scrollTrigger: {
+            trigger: story,
+            start: 'top 88%',
+            end: 'top 62%',
+            scrub: 0.7,
+          },
+        },
+      )
+    }, story)
+
+    return () => context.revert()
   }, [projectId])
 
   if (!project) {
@@ -152,7 +185,7 @@ function ProjectDetail() {
         </a>
       </header>
 
-      <section className="project-detail__story" id="project-story">
+      <section className="project-detail__story" id="project-story" ref={storyRef}>
         <div className="project-detail__story-copy">
           <p className="project-detail__eyebrow">{t('portfolio.detail.project')}</p>
           <h2>{project.context}</h2>
