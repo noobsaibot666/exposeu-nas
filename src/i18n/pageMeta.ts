@@ -47,6 +47,17 @@ export function usePageMeta() {
     upsertMetaContent('meta[name="twitter:description"]', 'name', 'twitter:description', metaDescription)
     upsertMetaContent('meta[name="twitter:image"]', 'name', 'twitter:image', defaultOgImage)
 
+    // A 404 must not be indexed or claim to be canonical; every other
+    // fallback route clears a robots tag a previous 404 may have left.
+    const robots = document.head.querySelector('meta[name="robots"]')
+    if (meta.notFound) {
+      upsertMetaContent('meta[name="robots"]', 'name', 'robots', 'noindex')
+      document.head.querySelectorAll('link[rel="canonical"], link[rel="alternate"][hreflang], meta[property="og:url"]').forEach((el) => el.remove())
+      upsertMetaContent('meta[property="og:locale"]', 'property', 'og:locale', locale === 'de' ? 'de_DE' : 'en_US')
+      return
+    }
+    robots?.remove()
+
     const localeCanonical = `${window.location.origin}${localizePath(canonicalPathname)}`
 
     const canonical = upsertMeta('link[rel="canonical"]', () => {

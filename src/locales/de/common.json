@@ -17,8 +17,9 @@
   },
   "meta": {
     "home": {
-      "title": "Dokumentationsstudio Berlin | expose.u",
-      "description": "Visuelle Dokumentation für kulturelle Projekte, kreative Menschen und gestaltete Erfahrungen in Berlin."
+      "title": "Foto- & Videodokumentation Berlin | expose.u",
+      "description": "Foto- und Videodokumentation für Konzerte, Ausstellungen und Live-Events in Berlin. Für Galerien, Künstler:innen, Venues und Agenturen.",
+      "ogTitle": "Konzert- & Ausstellungsdokumentation Berlin | expose.u"
     },
     "about": {
       "title": "Über uns | expose.u",
@@ -37,7 +38,7 @@
       "description": "Formular für die Fotoeinwilligung und Bildfreigabe bei expose.u-Projekten."
     },
     "portfolio": {
-      "title": "Last Projects | expose.u",
+      "title": "Letzte Projekte | expose.u",
       "description": "Ausgewählte Arbeiten von expose.u aus Live-Events, Ausstellungen, Artist Sessions und Brand-Aktivierungen."
     },
     "callSession": {

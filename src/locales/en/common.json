@@ -17,8 +17,9 @@
   },
   "meta": {
     "home": {
-      "title": "Documentation Studio Berlin | expose.u",
-      "description": "Visual documentation studio for cultural projects, creative people and designed experiences in Berlin."
+      "title": "Berlin Photo & Video Documentation | expose.u",
+      "description": "Photo and video documentation for concerts, exhibitions, and live events in Berlin. Serving galleries, artists, venues, and agencies.",
+      "ogTitle": "Concert & Exhibition Documentation Berlin | expose.u"
     },
     "about": {
       "title": "About | expose.u",

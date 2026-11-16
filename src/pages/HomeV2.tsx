@@ -810,9 +810,9 @@ function HomeV2() {
   return (
     <main className="home home--v2" ref={rootRef} id="main">
       <SEOMeta
-        title="Berlin Photo & Video Documentation"
-        description="Photo and video documentation for concerts, exhibitions, and live events in Berlin. Serving galleries, artists, venues, and agencies."
-        ogTitle="Concert & Exhibition Documentation Berlin | expose.u"
+        title={t('common.meta.home.title')}
+        description={t('common.meta.home.description')}
+        ogTitle={t('common.meta.home.ogTitle')}
         canonical="https://expose-u.com/"
         lang={locale}
       />

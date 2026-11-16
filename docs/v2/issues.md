@@ -307,3 +307,11 @@ All marked "TEST — please ignore (QA 2026-11-16)"; the test rows were deleted 
 - **Photo consent (V2-016):** an offline save was queued; on reconnect the first sync's reply was lost to a reload, and the retry got `{ok:true, duplicate:true}`. Exactly **1** row: idempotency confirmed in production.
 - **Pricing:** reached the success page (V2-025 confirmed live) but was silently lost. See V2-030.
 
+### [x] V2-031 — Production metadata sweep: German titles and the 404
+
+**Status: DONE IN SOURCE.** A Playwright pass over all 41 canonical EN/DE routes on production found exactly one description, canonical and visible H1 everywhere, plus correct `lang` and alternates, `noindex` on the ads-only pages, no page errors and no broken images. All aliases (including the success-page guards) redirect correctly, browser back/forward works, and the "Services" anchor scrolls to `#cases`. Three gaps were fixed:
+
+- **German homepage title** was hard-coded English in `HomeV2`. It now comes from `common.meta.home` (EN keeps the exact live copy; DE "Foto- & Videodokumentation Berlin").
+- **German Portfolio title** said "Last Projects"; it is now "Letzte Projekte", matching the German homepage section.
+- **The 404 was indexable:** it declared itself canonical and had hreflang alternates. Unknown routes now get `noindex` with no canonical/alternates/`og:url`. Indexable pages clear a leftover robots tag on SPA navigation (both metadata writers).
+

@@ -2,6 +2,8 @@ export type MetaConfig = {
   titleKey: string
   descriptionKey: string
   noAlternates?: boolean
+  /** Unknown route: noindex, no canonical/alternates (a 404 must not be indexed). */
+  notFound?: boolean
 }
 
 // These route components render `SEOMeta` with route-specific copy/canonical URLs.
@@ -141,5 +143,5 @@ export function getMetaForPath(pathname: string): MetaConfig {
   if (pathname === '/data-deletion') {
     return { titleKey: 'common.meta.dataDeletion.title', descriptionKey: 'common.meta.dataDeletion.description', noAlternates: true }
   }
-  return { titleKey: 'common.meta.notFound.title', descriptionKey: 'common.meta.notFound.description' }
+  return { titleKey: 'common.meta.notFound.title', descriptionKey: 'common.meta.notFound.description', notFound: true }
 }

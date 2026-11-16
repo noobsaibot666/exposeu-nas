@@ -59,7 +59,11 @@ export function SEOMeta({
   noindex = false,
 }: SEOMetaProps) {
   useEffect(() => {
-    if (!noindex) return
+    if (!noindex) {
+      // Indexable page: clear a robots tag left by a previous 404/ads-only page.
+      document.querySelector('meta[name="robots"]')?.remove()
+      return
+    }
     setMeta('robots', 'name', 'noindex, follow')
     // Removed on navigation so the next page is indexable again.
     return () => document.querySelector('meta[name="robots"]')?.remove()
