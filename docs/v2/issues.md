@@ -353,3 +353,7 @@ All marked "TEST — please ignore (QA 2026-11-16)"; the test rows were deleted 
 
 **Verified (local build, Playwright):** dark/light × 1440/390 plus reduced motion. Every image ends up visible, there's no horizontal overflow, one H1, two story paragraphs, the mobile bar goes hidden → visible → hidden, legacy redirects work, and Portfolio/homepage link to the slugs. ESLint, `tsc -b`, the build and the prerender all pass (16 static project pages emitted).
 
+### [ ] V2-034 — Pre-rendered pages redirect to add a trailing slash (via http)
+
+**Status: OPEN — owner action (nginx config is write-protected).** Since the social-metadata prerender (V2-032) writes `dist/<path>/index.html`, nginx's `try_files $uri $uri/ /index.html` finds a directory and issues `301 Location: http://expose-u.com/<path>/` (absolute redirect, plain http behind Traefik's TLS). Measured on production 2026-11-16: `/projects/lick-the-walls`, `/de/projects/sanam-silent-green`, `/services/concerts-events` and `/portfolio` each take one redirect, then 200 with the correct per-page `og:title`. **Fix:** `try_files $uri $uri/index.html /index.html;` in `location /` (serves the directory index without redirecting) plus `absolute_redirect off;`. Exact steps are in todo.md step 1.
+
