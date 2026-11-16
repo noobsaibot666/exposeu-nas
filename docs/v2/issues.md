@@ -165,7 +165,15 @@ Production homepage was inspected at 1200× and 390×. Local route-family checks
 
 **Resolution:** Sampled layouts and menu keyboard flows were checked and the locale-menu focus warning was fixed; remaining zoom, contrast, screen-reader and signature-accessibility checks are still open.
 
-Remaining: full route-by-route screenshot review at every width, 200% zoom/reflow, contrast measurements, screen-reader review, form error announcements on each form, and an accessible alternative to the drawing-only signature control. Confirm legal/product acceptance before changing the signature method.
+**Source pass 2026-11-16 (done):**
+
+- **Consent banner:** dropped `role="dialog"`. The banner never took or trapped focus, so a labelled `<aside>` landmark is accurate. After Accept/Reject, focus moves to `#main` instead of falling back to `<body>` when the focused button unmounts.
+- **Skip link:** `/consent` and `/call-session` had no `id="main"`, so "Skip to content" went nowhere. Both now have it, and every routed page has the skip target. Programmatic focus on `<main>` draws no outline.
+- **Form errors:** Contact and AdLeadForm already announced errors. PricingRequest field errors now have ids, `aria-describedby` and `role="alert"`, the submit error is `role="alert"`, and focus moves to the first invalid field. The PhotoConsent save error is `role="alert"`.
+- **Signature canvas:** it had no accessible name; it is now `role="img"` labelled with the localized "sign" copy.
+- **Contrast:** all dark-theme text tokens are ≥7:1 on `--page-bg`. A scan of hard-coded `rgba(245,245,244,a)` text found two failures, now fixed: the AdLanding quick-book placeholder (0.4 → 0.6, ~3.5:1 → ≥4.5:1) and the Release Content Kit testimonial handle (0.42 → 0.62). The third hit is a decorative `›` chevron, which is exempt.
+
+**Remaining (browser/owner):** 200% zoom/reflow, the full per-route screenshot pass, a VoiceOver/NVDA pass (banner, drawer, combobox, form errors), light-theme contrast if the toggle stays, and an accessible alternative to the drawing-only signature. Confirm legal/product acceptance before changing the signature method.
 
 ### [x] V2-019 — Service-page gallery media is hidden on mobile/tablet widths
 
@@ -219,3 +227,11 @@ Remaining: full route-by-route screenshot review at every width, 200% zoom/reflo
 ### [ ] V2-024 — Main bundle is 522 kB (170 kB gzip) after route splitting
 
 **Status: OPEN — low priority.** The 2026-11-16 deploy build split out all 28 non-home pages (largest: PhotoConsent 18 kB), but the main chunk still holds React DOM, React Router, GSAP (all needed by the homepage), both EN and DE locale JSON (~109 kB raw), pricing tiers and portfolio data. Lazy-loading the inactive locale is the only sizeable remaining saving. Measure homepage LCP/TBT before deciding whether it's worth doing.
+
+### [x] V2-025 — Pricing request never reached its success page (P1)
+
+**Status: DONE IN SOURCE — confirm with a staging submission (V2-004).** `PricingRequest.handleSubmit` called `event.currentTarget.reset()` after the `await fetch(...)`. React clears `currentTarget` once the handler's synchronous part returns, so that line threw `TypeError` (null). `navigate('/pricing-request/success')` never ran and the visitor stayed on the form, even though the request had been sent. The form element is now captured before the `await`, the same pattern `Contact.tsx` already uses. `AdLeadForm` only reads the form before awaiting and was unaffected.
+
+**Files:** `src/pages/PricingRequest.tsx`.
+
+**Acceptance:** a successful staging submission lands on `/pricing-request/success` with no console error.

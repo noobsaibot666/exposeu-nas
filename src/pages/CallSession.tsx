@@ -25,7 +25,7 @@ function CallSession() {
   )
 
   return (
-    <main className="page-shell">
+    <main className="page-shell" id="main">
       <SEOMeta
         title={t('common.meta.callSession.title')}
         description={t('common.meta.callSession.description')}

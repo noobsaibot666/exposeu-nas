@@ -440,7 +440,7 @@
 }
 
 .rck__testimonial-handle {
-  color: rgba(245, 245, 244, 0.42);
+  color: rgba(245, 245, 244, 0.62); /* ≥4.5:1 (was 0.42 ≈ 3.8:1) */
   font-size: 0.82rem;
   text-decoration: none;
   transition: color 160ms ease;

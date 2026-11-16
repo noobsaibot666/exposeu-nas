@@ -995,7 +995,7 @@
 }
 
 .alp__quick-book-field input::placeholder {
-  color: rgba(245, 245, 244, 0.4);
+  color: rgba(245, 245, 244, 0.6); /* ≥4.5:1 on the dark field (was 0.4 ≈ 3.5:1) */
 }
 
 .alp__quick-book-field input:focus-visible {

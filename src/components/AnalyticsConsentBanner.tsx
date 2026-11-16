@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styles from './AnalyticsConsentBanner.module.css'
 import {
   ANALYTICS_CONSENT_KEY,
@@ -10,6 +10,7 @@ import { useTranslation } from '../i18n/LocaleProvider'
 function AnalyticsConsentBanner() {
   const [isVisible, setIsVisible] = useState(() => initializeAnalyticsConsent() === null)
   const { t } = useTranslation()
+  const bannerRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     if (initializeAnalyticsConsent() === true) initializeAnalyticsVendors()
@@ -25,13 +26,24 @@ function AnalyticsConsentBanner() {
     const granted = value === 'true'
     window.__analyticsConsent = granted
     if (granted) initializeAnalyticsVendors()
+    // The focused button is about to unmount; without this, keyboard and
+    // screen-reader focus falls back to <body> (top of the document).
+    if (bannerRef.current?.contains(document.activeElement)) {
+      const main = document.getElementById('main')
+      if (main) {
+        if (!main.hasAttribute('tabindex')) main.setAttribute('tabindex', '-1')
+        main.focus({ preventScroll: true })
+      }
+    }
     setIsVisible(false)
   }
 
   if (!isVisible) return null
 
   return (
-    <aside className={styles.consent__banner} aria-label={t('common.analytics.ariaLabel')} role="dialog">
+    // Non-modal banner: a labelled landmark, not role="dialog" (it never takes
+    // or traps focus, so announcing it as a dialog was misleading).
+    <aside ref={bannerRef} className={styles.consent__banner} aria-label={t('common.analytics.ariaLabel')}>
       <p className={styles.consent__copy}>
         {t('common.analytics.copy')}
       </p>

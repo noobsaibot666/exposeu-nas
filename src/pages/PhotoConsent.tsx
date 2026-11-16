@@ -615,7 +615,7 @@ function PhotoConsent() {
 
   if (status === 'saved') {
     return (
-      <main className="photo-consent" data-mode={mode}>
+      <main className="photo-consent" data-mode={mode} id="main">
         <div className="photo-consent__card photo-consent__card--done">
           <div className="photo-consent__done-check">&#10003;</div>
           <h1>{copy.savedTitle}</h1>
@@ -629,7 +629,7 @@ function PhotoConsent() {
   }
 
   return (
-    <main className="photo-consent" data-mode={mode}>
+    <main className="photo-consent" data-mode={mode} id="main">
       <div className="photo-consent__card">
         <div className="photo-consent__top">
           <button type="button" className="photo-consent__lang-toggle" onClick={toggleLang} aria-label="Toggle language">
@@ -688,7 +688,7 @@ function PhotoConsent() {
               </button>
             )}
           </div>
-          <SignaturePad ref={sigPadRef} onChange={setHasSignature} strokeColor={PALETTE[mode].ink} />
+          <SignaturePad ref={sigPadRef} onChange={setHasSignature} strokeColor={PALETTE[mode].ink} label={copy.signLabel} />
         </div>
 
         <details className="photo-consent__log">
@@ -707,7 +707,7 @@ function PhotoConsent() {
           </p>
         </details>
 
-        {status === 'error' && <p className="photo-consent__error">{errorMessage}</p>}
+        {status === 'error' && <p className="photo-consent__error" role="alert">{errorMessage}</p>}
 
         <button
           type="button"

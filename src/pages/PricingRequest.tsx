@@ -93,7 +93,11 @@ function PricingRequest() {
       serviceLabel: serviceInfo?.label,
     })
 
-    const formData = new FormData(event.currentTarget)
+    // Capture the form now: React clears event.currentTarget once the handler's
+    // synchronous part returns, so after the fetch below it would be null and
+    // form.reset()/navigate() would never run.
+    const form = event.currentTarget
+    const formData = new FormData(form)
     const payload = Object.fromEntries(formData.entries())
     const coverageType = String(formData.get('coverageType') ?? '')
     const coverageNotes = String(formData.get('coverageNotes') ?? '')
@@ -117,6 +121,9 @@ function PricingRequest() {
     if (Object.keys(nextErrors).length > 0) {
       setFieldErrors(nextErrors)
       setStatus('idle')
+      // Move focus to the first invalid field so keyboard/screen-reader users land on the error.
+      const firstInvalid = ['coverageType', 'fullName', 'email', 'coverageNotes'].find((name) => nextErrors[name])
+      if (firstInvalid) (form.elements.namedItem(firstInvalid) as HTMLElement | null)?.focus()
       return
     }
 
@@ -154,7 +161,7 @@ function PricingRequest() {
 
     trackEvent('form_submission', 'pricing', planInfo?.name ?? plan ?? 'unknown')
     setStatus('success')
-    event.currentTarget.reset()
+    form.reset()
     navigate('/pricing-request/success')
   }
 
@@ -219,13 +226,14 @@ function PricingRequest() {
                 required
                 onChange={() => clearFieldError('coverageType')}
                 aria-invalid={fieldErrors.coverageType ? 'true' : undefined}
+                aria-describedby={fieldErrors.coverageType ? 'coverageType-error' : undefined}
               >
                 <option value="">{t('forms.pricing.coverageTypePlaceholder')}</option>
                 {tm<string[]>('forms.pricing.coverageTypeOptions').map((option) => (
                   <option key={option} value={option}>{option}</option>
                 ))}
               </select>
-              {fieldErrors.coverageType && <span className="pricing-request__field-error">{fieldErrors.coverageType}</span>}
+              {fieldErrors.coverageType && <span className="pricing-request__field-error" id="coverageType-error" role="alert">{fieldErrors.coverageType}</span>}
             </div>
             <div className={fieldClass('fullName')}>
               <label htmlFor="fullName">{t('forms.pricing.fields.name')}</label>
@@ -237,8 +245,9 @@ function PricingRequest() {
                 placeholder={t('forms.pricing.fields.namePlaceholder')}
                 onChange={() => clearFieldError('fullName')}
                 aria-invalid={fieldErrors.fullName ? 'true' : undefined}
+                aria-describedby={fieldErrors.fullName ? 'fullName-error' : undefined}
               />
-              {fieldErrors.fullName && <span className="pricing-request__field-error">{fieldErrors.fullName}</span>}
+              {fieldErrors.fullName && <span className="pricing-request__field-error" id="fullName-error" role="alert">{fieldErrors.fullName}</span>}
             </div>
             <div className={fieldClass('email')}>
               <label htmlFor="email">{t('forms.pricing.fields.email')}</label>
@@ -250,8 +259,9 @@ function PricingRequest() {
                 placeholder={t('forms.pricing.fields.emailPlaceholder')}
                 onChange={() => clearFieldError('email')}
                 aria-invalid={fieldErrors.email ? 'true' : undefined}
+                aria-describedby={fieldErrors.email ? 'email-error' : undefined}
               />
-              {fieldErrors.email && <span className="pricing-request__field-error">{fieldErrors.email}</span>}
+              {fieldErrors.email && <span className="pricing-request__field-error" id="email-error" role="alert">{fieldErrors.email}</span>}
             </div>
             <div className="pricing-request__field">
               <label htmlFor="phone">{t('forms.pricing.fields.phone')}</label>
@@ -278,8 +288,9 @@ function PricingRequest() {
                 placeholder={t('forms.pricing.fields.coverageNotesPlaceholder')}
                 onChange={() => clearFieldError('coverageNotes')}
                 aria-invalid={fieldErrors.coverageNotes ? 'true' : undefined}
+                aria-describedby={fieldErrors.coverageNotes ? 'coverageNotes-error' : undefined}
               />
-              {fieldErrors.coverageNotes && <span className="pricing-request__field-error">{fieldErrors.coverageNotes}</span>}
+              {fieldErrors.coverageNotes && <span className="pricing-request__field-error" id="coverageNotes-error" role="alert">{fieldErrors.coverageNotes}</span>}
             </div>
             <div className="pricing-request__field pricing-request__field--full">
               <label htmlFor="details">{t('forms.pricing.fields.details')}</label>
@@ -293,7 +304,7 @@ function PricingRequest() {
             <button type="submit" disabled={status === 'sending'}>
               {status === 'sending' ? t('forms.pricing.submitSending') : t('forms.pricing.submitIdle')}
             </button>
-            {status === 'error' && <p className="pricing-request__error">{errorMessage}</p>}
+            {status === 'error' && <p className="pricing-request__error" role="alert">{errorMessage}</p>}
           </form>
         </div>
       </section>

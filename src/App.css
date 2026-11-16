@@ -27,6 +27,12 @@
   top: 16px;
 }
 
+/* <main> receives programmatic focus (skip link, consent banner close); it is
+   not an interactive control, so don't draw a focus ring around the page. */
+main[tabindex='-1']:focus {
+  outline: none;
+}
+
 /* Placeholder while a lazy route chunk loads — holds the viewport so the
    footer doesn't flash up into view. */
 .page__route-loading {

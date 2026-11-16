@@ -10,10 +10,12 @@ export interface SignaturePadHandle {
 interface SignaturePadProps {
   onChange?: (hasSignature: boolean) => void
   strokeColor?: string
+  /** Accessible name for the drawing surface (announced by screen readers). */
+  label?: string
 }
 
 const SignaturePad = forwardRef<SignaturePadHandle, SignaturePadProps>(function SignaturePad(
-  { onChange, strokeColor = '#f5f5f4' },
+  { onChange, strokeColor = '#f5f5f4', label },
   ref,
 ) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -125,6 +127,8 @@ const SignaturePad = forwardRef<SignaturePadHandle, SignaturePadProps>(function 
       <canvas
         ref={canvasRef}
         className="signature-pad__canvas"
+        role="img"
+        aria-label={label}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={endStroke}
