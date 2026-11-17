@@ -18,21 +18,22 @@ gsap.registerPlugin(SplitText)
 const EDITORIAL_STILLS = 14
 const pad = (n: number) => String(n).padStart(2, '0')
 
-function ProjectFilm({ embedUrl, cover, title }: { embedUrl: string; cover: string; title: string }) {
+function ProjectFilm({ embedUrl, videoSrc, cover, title }: { embedUrl?: string; videoSrc?: string; cover: string; title: string }) {
   const frameRef = useRef<HTMLIFrameElement | null>(null)
   const [playing, setPlaying] = useState(false)
   const [ready, setReady] = useState(false)
   const [slow, setSlow] = useState(false)
+  const [videoError, setVideoError] = useState(false)
   const { t } = useTranslation()
-  const youtube = /youtube(?:-nocookie)?\.com\/embed\//i.test(embedUrl)
-  const vimeo = /player\.vimeo\.com\/video\//i.test(embedUrl)
-  const match = embedUrl.match(/(?:embed\/|video\/)([^?&/]+)/i)
-  const watchLink = youtube && match ? `https://www.youtube.com/watch?v=${match[1]}` : vimeo && match ? `https://vimeo.com/${match[1]}` : embedUrl
+  const youtube = /youtube(?:-nocookie)?\.com\/embed\//i.test(embedUrl ?? '')
+  const vimeo = /player\.vimeo\.com\/video\//i.test(embedUrl ?? '')
+  const match = embedUrl?.match(/(?:embed\/|video\/)([^?&/]+)/i)
+  const watchLink = youtube && match ? `https://www.youtube.com/watch?v=${match[1]}` : vimeo && match ? `https://vimeo.com/${match[1]}` : embedUrl ?? ''
   const platform = youtube ? 'YouTube' : vimeo ? 'Vimeo' : t('portfolio.detail.film')
-  const src = `${embedUrl}?autoplay=1&muted=1&playsinline=1${youtube ? `&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}` : ''}${vimeo ? '&api=1&dnt=1' : ''}`
+  const src = embedUrl ? `${embedUrl}?autoplay=1&muted=1&playsinline=1${youtube ? `&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}` : ''}${vimeo ? '&api=1&dnt=1' : ''}` : ''
 
   useEffect(() => {
-    if (!playing || ready) return
+    if (videoSrc || !playing || ready) return
     const onMessage = (event: MessageEvent) => {
       if (event.source === frameRef.current?.contentWindow) setReady(true)
     }
@@ -42,7 +43,7 @@ function ProjectFilm({ embedUrl, cover, title }: { embedUrl: string; cover: stri
       window.removeEventListener('message', onMessage)
       window.clearTimeout(timeout)
     }
-  }, [playing, ready])
+  }, [playing, ready, videoSrc])
 
   const announceReady = () => {
     const frame = frameRef.current?.contentWindow
@@ -59,9 +60,28 @@ function ProjectFilm({ embedUrl, cover, title }: { embedUrl: string; cover: stri
     <div className={`project-detail__film-frame ${ready ? 'is-ready' : ''}`} style={{ backgroundImage: `url(${cover})` }}>
       {playing ? (
         <>
-          <iframe ref={frameRef} src={src} title={`${title} — ${t('portfolio.detail.film')}`} allow="autoplay; picture-in-picture" allowFullScreen loading="eager" onLoad={announceReady} />
-          {!ready && !slow && <span className="project-detail__film-loading" role="status">{t('portfolio.detail.loadingFilm')}</span>}
-          {slow && !ready && <a className="project-detail__film-fallback" href={watchLink} target="_blank" rel="noopener noreferrer">{t('portfolio.modal.watchOn', { platform })} ↗</a>}
+          {videoSrc ? (
+            <>
+              <video
+                src={videoSrc}
+                title={`${title} — ${t('portfolio.detail.film')}`}
+                controls
+                autoPlay
+                playsInline
+                preload="metadata"
+                poster={cover}
+                onCanPlay={() => setReady(true)}
+                onError={() => setVideoError(true)}
+              />
+              {videoError && <a className="project-detail__film-fallback" href={videoSrc} target="_blank" rel="noopener noreferrer">{t('portfolio.detail.film')} ↗</a>}
+            </>
+          ) : (
+            <>
+              <iframe ref={frameRef} src={src} title={`${title} — ${t('portfolio.detail.film')}`} allow="autoplay; picture-in-picture" allowFullScreen loading="eager" onLoad={announceReady} />
+              {!ready && !slow && <span className="project-detail__film-loading" role="status">{t('portfolio.detail.loadingFilm')}</span>}
+              {slow && !ready && <a className="project-detail__film-fallback" href={watchLink} target="_blank" rel="noopener noreferrer">{t('portfolio.modal.watchOn', { platform })} ↗</a>}
+            </>
+          )}
         </>
       ) : (
         <button type="button" className="project-detail__film-play" onClick={() => setPlaying(true)} aria-label={`${t('portfolio.labels.play')}: ${title}`}>
@@ -356,9 +376,9 @@ function ProjectDetailPage({ projectId }: { projectId: string }) {
         </dl>
       </section>
 
-      {project.embedUrl && (
+      {(project.videoSrc || project.embedUrl) && (
         <section className="project-detail__film" aria-label={t('portfolio.detail.film')}>
-          <ProjectFilm embedUrl={project.embedUrl} cover={project.thumb} title={project.title} />
+          <ProjectFilm embedUrl={project.embedUrl} videoSrc={project.videoSrc} cover={project.thumb} title={project.title} />
         </section>
       )}
 

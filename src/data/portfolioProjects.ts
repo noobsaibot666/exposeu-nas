@@ -35,6 +35,7 @@ export const portfolioProjects: PortfolioProject[] = [
     year: '2026',
     location: 'Berlin',
     thumb: resolveImagePath(projectPreviewImages.metaxy),
+    videoSrc: 'https://pub-0fc7e90a3d9b4ca1903e917821cfddde.r2.dev/metaxy/metaxy-film-a99537fe.mp4',
     slideshowImages: [
       // metaxy_019 (DSC_4495) is the main photo and the card cover: keep it first.
       resolveImagePath('/src/assets/images/thumbs/portfolio/09/metaxy_019.webp'),

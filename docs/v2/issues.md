@@ -333,6 +333,8 @@ All marked "TEST — please ignore (QA 2026-11-16)"; the test rows were deleted 
 
 **Owner decisions 2026-11-16:** require both contact email acceptance and Supabase persistence before reporting success; generate route-specific social preview pages for the homepage, portfolio, four services and every project in EN/DE. Persistence failures after mail acceptance return a reference error, tell visitors not to resubmit, and disable another submit in the current form view.
 
+**Metaxy film update 2026-11-17:** Added the supplied `Metaxy.mov` to the Metaxy detail page as a native controlled MP4, retaining the project still as the poster and click-to-play cover. The 7.37-second 1080p source was encoded without audio from 16.3 MB to 5.4 MB, then uploaded to the dedicated EU `exposeu-media` R2 bucket with `video/mp4`, immutable caching and byte-range support (`206 Partial Content`). The public `r2.dev` URL is active because the authenticated Cloudflare account has no `expose-u.com` zone for a custom domain. Source and asset are ready; production deploy and owner visual review remain pending. Before broad traffic, attach a custom domain in the expose-u Cloudflare zone because `r2.dev` is rate limited.
+
 ### Owner decisions 2026-11-16
 
 - **V2-001 AdSense:** keep it grouped with the analytics "Accept". Closed.
