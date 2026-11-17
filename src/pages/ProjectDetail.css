@@ -28,8 +28,14 @@
 .project-detail__story h2, .project-detail__gallery-heading h2, .project-detail__cta h2 { margin: 0; font-size: clamp(2.4rem, 5vw, 5.5rem); line-height: 1; letter-spacing: -.05em; font-weight: 520; }
 .project-detail__story-copy > p:not(.project-detail__eyebrow) { max-width: 620px; margin: 22px 0 0; color: var(--project-muted); font-size: 1.07rem; line-height: 1.75; }
 .project-detail__story-copy > h2 + p { margin-top: 30px; }
-.project-detail__facts { margin: 0; border-top: 1px solid var(--project-line); }
-.project-detail__facts div { padding: 18px 0; border-bottom: 1px solid var(--project-line); }
+/* Rules are pseudo-elements so each one can draw in (scaleX via --rule). */
+.project-detail__facts { --rule: 1; position: relative; margin: 0; }
+.project-detail__facts div { --rule: 1; position: relative; padding: 18px 0; }
+.project-detail__facts::before, .project-detail__facts div::after { content: ''; position: absolute; left: 0; right: 0; height: 1px; background: var(--project-line); transform: scaleX(var(--rule)); transform-origin: left center; }
+.project-detail__facts::before { top: 0; }
+.project-detail__facts div::after { bottom: 0; }
+/* Line masks from SplitText: room for descenders so "g"/"y" are not clipped. */
+.project-detail__story .pd-line-mask { padding-bottom: .14em; margin-bottom: -.14em; }
 .project-detail__facts dt { margin-bottom: 7px; color: var(--project-muted); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; }
 .project-detail__facts dd { margin: 0; font-size: .96rem; }
 .project-detail__film { width: min(1440px, 92%); margin: 0 auto clamp(90px, 12vw, 160px); }

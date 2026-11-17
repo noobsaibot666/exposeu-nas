@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { SplitText } from 'gsap/SplitText'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
 import { portfolioProjects } from '../data/portfolioProjects'
@@ -10,6 +11,8 @@ import LocalizedLink from '../i18n/LocalizedLink'
 import { SchemaOrg, SEOMeta } from '../components/SEOMeta'
 import { buildGallery, findProjectId, projectSlug, toStill, type GalleryBlock, type Still } from '../data/projectPages'
 import './ProjectDetail.css'
+
+gsap.registerPlugin(SplitText)
 
 // Stills shown in the big editorial layout; the rest go to a compact grid.
 const EDITORIAL_STILLS = 14
@@ -149,6 +152,7 @@ function ProjectDetailPage({ projectId }: { projectId: string }) {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior })
     if (!heroRef.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
+    let cancelled = false
     const context = gsap.context(() => {
       // Hero: the photo settles in, the copy rises, then slow parallax.
       gsap.fromTo('.project-detail__cover', { scale: 1.14 }, { scale: 1, duration: 1.8, ease: 'expo.out' })
@@ -163,15 +167,40 @@ function ProjectDetailPage({ projectId }: { projectId: string }) {
         scrollTrigger: { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true },
       })
 
-      // Story copy and facts.
-      gsap.fromTo(
-        '.project-detail__story-copy > *, .project-detail__facts > div',
-        { opacity: 0, y: 22, filter: 'blur(4px)' },
-        {
-          opacity: 1, y: 0, filter: 'blur(0px)', stagger: 0.08, ease: 'sine.inOut',
-          scrollTrigger: { trigger: storyRef.current, start: 'top 88%', end: 'top 62%', scrub: 0.7 },
-        },
-      )
+      // Story copy and facts: every piece gets its own reveal instead of the
+      // section fading in as one block. Headline words rise out of a line mask,
+      // paragraphs follow line by line, and each fact row draws its rule before
+      // the label and value settle in. Built once webfonts are in, so SplitText measures the real line breaks
+      // (the section sits below the fold, so the wait is never visible).
+      const story = storyRef.current
+      const buildStory = () => {
+        if (!story) return
+        const storyTl = gsap.timeline({ scrollTrigger: { trigger: story, start: 'top 80%', toggleActions: 'play none none none' } })
+        const eyebrow = story.querySelector('.project-detail__story-copy > .project-detail__eyebrow')
+        if (eyebrow) storyTl.fromTo(eyebrow, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 1.1, ease: 'expo.out' }, 0)
+
+        const heading = story.querySelector('.project-detail__story-copy > h2')
+        if (heading) {
+          const split = SplitText.create(heading, { type: 'lines,words', mask: 'lines', linesClass: 'pd-line' })
+          storyTl.fromTo(split.words, { yPercent: 115, rotate: 3 }, { yPercent: 0, rotate: 0, duration: 1.25, ease: 'expo.out', stagger: 0.07 }, 0.12)
+        }
+
+        story.querySelectorAll<HTMLElement>('.project-detail__story-copy > p:not(.project-detail__eyebrow)').forEach((paragraph, i) => {
+          const split = SplitText.create(paragraph, { type: 'lines', mask: 'lines', linesClass: 'pd-line' })
+          storyTl.fromTo(split.lines, { yPercent: 105, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 1.05, ease: 'expo.out', stagger: 0.08 }, 0.45 + i * 0.22)
+        })
+
+        story.querySelectorAll<HTMLElement>('.project-detail__facts > div').forEach((row, i) => {
+          const at = 0.3 + i * 0.16
+          storyTl.fromTo(row, { '--rule': 0 }, { '--rule': 1, duration: 1.2, ease: 'expo.inOut' }, at)
+          storyTl.fromTo(row.querySelector('dt'), { opacity: 0, x: -12 }, { opacity: 1, x: 0, duration: 0.9, ease: 'expo.out' }, at + 0.25)
+          storyTl.fromTo(row.querySelector('dd'), { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 1, ease: 'expo.out' }, at + 0.35)
+        })
+        const facts = story.querySelector('.project-detail__facts')
+        if (facts) storyTl.fromTo(facts, { '--rule': 0 }, { '--rule': 1, duration: 1.2, ease: 'expo.inOut' }, 0.15)
+        ScrollTrigger.refresh()
+      }
+      document.fonts.ready.then(() => { if (!cancelled) context.add(buildStory) })
 
       // Gallery: each image is unveiled upward while it eases out of a zoom.
       gsap.utils.toArray<HTMLElement>('.project-detail__reveal').forEach((frame) => {
@@ -210,7 +239,10 @@ function ProjectDetailPage({ projectId }: { projectId: string }) {
       })
     }, galleryRef.current?.parentElement ?? undefined)
 
-    return () => context.revert()
+    return () => {
+      cancelled = true
+      context.revert()
+    }
   }, [projectId])
 
   if (!project || !media) {
