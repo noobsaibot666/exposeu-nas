@@ -257,7 +257,6 @@ function HomeV2() {
       // The Vimeo fallback swaps to a fresh iframe: hide it until it plays again.
       if (!useNativeHeroRef.current) {
         setVimeoRevealed(false)
-        setVideoPlaying(false)
       }
     }
     mql.addEventListener('change', handleChange)
