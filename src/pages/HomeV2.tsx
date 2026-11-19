@@ -381,6 +381,29 @@ function HomeV2() {
         { opacity: 1, y: 0, duration: 0.7, ease: 'sine.out', delay: 0.2 },
       )
 
+      // Hero video overlay copy (mobile <= 900px) + scroll hint — staggered fade/slide up on mount
+      if (window.matchMedia('(max-width: 900px)').matches) {
+        gsap.fromTo(
+          ['.home__video-copy-title', '.home__video-copy p', '.home__video-copy-cta'],
+          { opacity: 0, y: 26, filter: 'blur(6px)' },
+          {
+            opacity: 1,
+            y: 0,
+            filter: 'blur(0px)',
+            duration: 0.85,
+            ease: 'sine.out',
+            stagger: 0.12,
+            delay: 0.28,
+          },
+        )
+      }
+
+      gsap.fromTo(
+        '.home__video-scroll-hint',
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'sine.out', delay: 0.55 },
+      )
+
       if (galleryRef.current) {
         tiltX.current = gsap.quickTo(galleryRef.current, '--hero-tilt-x', { duration: 0.45, ease: 'power3.out' })
         tiltY.current = gsap.quickTo(galleryRef.current, '--hero-tilt-y', { duration: 0.45, ease: 'power3.out' })

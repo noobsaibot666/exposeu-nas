@@ -1213,7 +1213,8 @@
   .home__video-copy {
     position: absolute;
     z-index: 4;
-    top: clamp(150px, 27svh, 250px);
+    top: auto;
+    bottom: clamp(128px, 15svh, 180px);
     inset-inline: var(--content-gutter);
     display: grid;
     justify-items: center;
@@ -1293,10 +1294,6 @@
 }
 
 @media (max-width: 640px) {
-  .home__video-copy {
-    top: clamp(200px, 36svh, 300px);
-  }
-
   .home__proof-avatars {
     grid-template-columns: 1fr;
     justify-items: center;
