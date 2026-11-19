@@ -15,6 +15,7 @@ function ContactSuccess() {
           leftLinks={[
             { id: 'home', label: t('nav.home'), href: '/' },
             { id: 'services', label: t('nav.services'), href: '/#cases' },
+            { id: 'portfolio', label: t('nav.lastProjects'), href: '/portfolio' },
           ]}
           rightLinks={[
             { id: 'about', label: t('nav.about'), href: '/about' },

@@ -308,6 +308,7 @@ function ProjectDetailPage({ projectId }: { projectId: string }) {
     left: [
       { id: 'home', label: t('nav.home'), onClick: () => navigate(locale === 'de' ? '/de' : '/') },
       { id: 'services', label: t('nav.services'), onClick: () => navigateHomeToSection('cases') },
+      { id: 'portfolio', label: t('nav.lastProjects'), onClick: () => navigate(locale === 'de' ? '/de/portfolio' : '/portfolio') },
     ],
     right: [
       { id: 'about', label: t('nav.about'), onClick: () => navigate(locale === 'de' ? '/de/about' : '/about') },

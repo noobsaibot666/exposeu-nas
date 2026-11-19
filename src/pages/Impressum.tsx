@@ -14,6 +14,7 @@ function Impressum() {
       left: [
         { id: 'home', label: t('nav.home'), onClick: () => navigate('/') },
         { id: 'services', label: t('nav.services'), href: '/#cases' },
+        { id: 'portfolio', label: t('nav.lastProjects'), onClick: () => navigate('/portfolio') },
       ],
       right: [
         { id: 'about', label: t('nav.about'), onClick: () => navigate('/about') },
