@@ -140,10 +140,6 @@ function HomeV2() {
   const { locale } = useLocale()
   const { t } = useTranslation()
   const [activeSection, setActiveSection] = useState('home')
-  const [videoPlaying, setVideoPlaying] = useState(false)
-  const [playbackControlVisible, setPlaybackControlVisible] = useState(false)
-  const [autoplayBlocked, setAutoplayBlocked] = useState(false)
-  const [videoError, setVideoError] = useState(false)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(
     () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   )
@@ -275,9 +271,7 @@ function HomeV2() {
     return () => motionQuery.removeEventListener('change', handleMotionPreference)
   }, [])
 
-  const postToVimeo = (method: string, value?: unknown) => sendToVimeo(vimeoIframeRef.current, method, value)
-
-  // Vimeo fallback: listen for player events (play/pause state, early loop).
+  // Vimeo fallback: listen for player events (play state, early loop).
   useEffect(() => {
     if (useNativeHero) return
     let seeking = false
@@ -292,15 +286,10 @@ function HomeV2() {
       }
       if (data.event === 'ready') {
         const iframe = vimeoIframeRef.current
-        ;['play', 'pause', 'timeupdate'].forEach((name) => sendToVimeo(iframe, 'addEventListener', name))
+        ;['play', 'timeupdate'].forEach((name) => sendToVimeo(iframe, 'addEventListener', name))
         if (prefersReducedMotionRef.current) sendToVimeo(iframe, 'pause')
       } else if (data.event === 'play') {
-        setVideoPlaying(true)
-        setPlaybackControlVisible(true)
         setVimeoRevealed(true)
-      } else if (data.event === 'pause') {
-        setVideoPlaying(false)
-        setPlaybackControlVisible(true)
       } else if (data.event === 'timeupdate') {
         const { seconds, duration } = data.data ?? {}
         if (typeof seconds !== 'number' || typeof duration !== 'number' || duration <= 0) return
@@ -333,31 +322,13 @@ function HomeV2() {
     const video = videoRef.current
     if (!video || !useNativeHero) return
     video.autoplay = !prefersReducedMotion
-    setVideoPlaying(false)
-    setVideoError(false)
     if (prefersReducedMotion) {
       video.pause()
       return
     }
     video.load()
-    void video.play().catch(() => { setVideoPlaying(false); setAutoplayBlocked(true) })
+    void video.play().catch(() => {})
   }, [isMobileViewport, prefersReducedMotion, useNativeHero])
-
-  const toggleHeroPlayback = () => {
-    if (!useNativeHero) {
-      postToVimeo(videoPlaying ? 'pause' : 'play')
-      return
-    }
-    const video = videoRef.current
-    if (!video) return
-    setVideoError(false)
-    if (video.paused || video.ended) {
-      if (videoError) video.load()
-      void video.play().catch(() => { setVideoError(true); setAutoplayBlocked(true) })
-    } else {
-      video.pause()
-    }
-  }
 
   const handleScroll = (id: string) => {
     smoothScrollTo(id, 500, 72)
@@ -835,13 +806,11 @@ function HomeV2() {
             playsInline
             preload="auto"
             aria-hidden="true"
-            onPlaying={() => { setVideoPlaying(true); setPlaybackControlVisible(true); setVideoError(false); setAutoplayBlocked(false) }}
-            onPause={() => { setVideoPlaying(false); setPlaybackControlVisible(true) }}
             // One src for the current viewport (the effect above reloads on a
             // breakpoint change). Not <source media>: the spec fires `error` on
             // every non-matching <source>, which looked like a failed load.
             src={isMobileViewport ? HOME_HERO_VIDEO_URLS.mobile : HOME_HERO_VIDEO_URLS.desktop}
-            onError={() => { setVideoPlaying(false); setVideoError(true); setNativeHeroFailed(true) }}
+            onError={() => setNativeHeroFailed(true)}
           />
         ) : (
           <div
@@ -879,16 +848,6 @@ function HomeV2() {
         >
           <span>{t('home.hero.scroll')}</span>
         </button>
-        {(videoPlaying || playbackControlVisible || autoplayBlocked || videoError || prefersReducedMotion) && (
-          <button
-            className="home__video-play-btn"
-            type="button"
-            aria-label={videoError ? t('home.hero.retryVideo') : videoPlaying ? t('home.hero.pauseVideo') : t('home.hero.playVideo')}
-            onClick={toggleHeroPlayback}
-          >
-            {videoPlaying ? t('home.hero.pauseVideo') : videoError ? t('home.hero.retryVideo') : t('home.hero.playVideo')}
-          </button>
-        )}
       </section>
 
       {/* Nav wrapper — hidden on desktop (nav is fixed), visible on mobile */}

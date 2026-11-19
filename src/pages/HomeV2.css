@@ -1192,38 +1192,6 @@
   user-select: none;
 }
 
-/* First-party pause / play recovery control — bottom-right corner of the hero */
-.home__video-play-btn {
-  position: absolute;
-  z-index: 4;
-  right: clamp(20px, 3vw, 36px);
-  bottom: clamp(20px, 3svh, 32px);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 40px;
-  padding: 0 14px;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.32);
-  color: rgba(255, 255, 255, 0.9);
-  font: inherit;
-  font-size: 0.78rem;
-  cursor: pointer;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-.home__video-play-btn:hover {
-  background: rgba(0, 0, 0, 0.55);
-  border-color: rgba(255, 255, 255, 0.5);
-}
-
-.home__video-play-btn:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.7);
-  outline-offset: 3px;
-}
-
 @media (min-width: 901px) {
   .home--v2 .home__hero {
     padding-top: 40px;
@@ -1245,7 +1213,7 @@
   .home__video-copy {
     position: absolute;
     z-index: 4;
-    top: clamp(120px, 23svh, 220px);
+    top: clamp(150px, 27svh, 250px);
     inset-inline: var(--content-gutter);
     display: grid;
     justify-items: center;
@@ -1319,7 +1287,7 @@
 
 @media (max-width: 640px) {
   .home__video-copy {
-    top: clamp(160px, 30svh, 260px);
+    top: clamp(200px, 36svh, 300px);
   }
 
   .home__proof-avatars {
