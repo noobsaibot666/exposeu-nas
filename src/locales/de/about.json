@@ -1,33 +1,38 @@
 {
-  "label": "Profil",
-  "headline": "Berliner Dokumentation aus der Kulturszene heraus.",
-  "subline": "Schnelle Lieferung. Keine generische Coverage. Künstlerischer Anspruch.",
-  "sections": [
-    {
-      "label": "Arbeit",
-      "body": "Foto und Video für Konzerte, Ausstellungen und Events, bereit für Presse, Social Media und Archiv."
-    },
-    {
-      "label": "Standard",
-      "body": "Keine generische Coverage. Jedes Projekt folgt Raum, Künstler:innen und Atmosphäre."
-    },
-    {
-      "label": "Erfahrung",
-      "body": "Konzerte, Ausstellungen, Sessions und kulturelle Events in Berlin."
-    },
-    {
-      "label": "Prozess",
-      "body": "Erzähl uns, was passiert. Wir dokumentieren es und liefern pressetaugliche Dateien in 24–48 Stunden."
-    },
-    {
-      "label": "Kunden",
-      "body": "Venues, Galerien, Künstler:innen, Agenturen und Brands. In Berlin, europaweit verfügbar."
-    },
-    {
-      "label": "Start",
-      "body": "Planst du etwas?",
-      "cta": "Kontakt aufnehmen"
-    }
-  ],
-  "portraitAlt": "Installationsszene"
+  "page": {
+    "title": "Über expose.u",
+    "tagline": "Kreative Dokumentation für Arbeit, die bleiben soll.",
+    "paragraphs": [
+      "expose.u ist ein Kreativstudio aus Berlin für kunstorientierte Fotografie und Film. Wir arbeiten mit Galerien, Museen, Kulturinstitutionen, Ausstellungs- und Erlebnisstudios sowie Kreativagenturen und schaffen visuelle Inhalte mit einem klaren Zweck.",
+      "Jedes Projekt beginnt damit, die Arbeit, das Publikum und die Aufgabe der Bilder zu verstehen. Ob sie den Verkauf einer Galerie unterstützen, den Förderbericht einer Institution oder die nächste Case Study eines Studios: Wir richten die Produktion am Ziel aus.",
+      "Unsere Arbeit verbindet eine durchdachte kreative Leitung, einen geschulten Blick für Kunst und Design und eine verlässliche Umsetzung. So entsteht mehr als eine Aufzeichnung des Geschehenen: Es entstehen sorgfältig gestaltete Inhalte, die ein Projekt weitertragen und auch nach seinem Ende präsent halten."
+    ],
+    "location": "Wir arbeiten von Berlin aus in ganz Deutschland und darüber hinaus.",
+    "teamTitle": "Das Team",
+    "teamIntro": "Ein kleines Team mit gemeinsamer Sorgfalt für die Arbeit.",
+    "selectedMember": "Ausgewähltes Teammitglied",
+    "members": [
+      {
+        "name": "Alan Alves",
+        "role": "Kreativdirektor, Fotograf & Filmemacher",
+        "bio": "Kreativer Leiter mit internationaler Erfahrung in der Werbung und umfassender Erfahrung in der Foto- und Filmproduktion.",
+        "initials": "AA",
+        "tone": "warm"
+      },
+      {
+        "name": "Joanna Opalko",
+        "role": "Social Media & Markenpositionierung",
+        "bio": "Markenspezialistin mit Erfahrung in der Zusammenarbeit mit Künstler:innen, Galerien und Kulturinstitutionen in ganz Europa.",
+        "initials": "JO",
+        "tone": "cool"
+      },
+      {
+        "name": "Martha Losi",
+        "role": "Neukund:innen & Projektmanagement",
+        "bio": "Spezialistin für Kundenbeziehungen, die Projekte vom ersten Gespräch bis zur finalen Lieferung reibungslos voranbringt.",
+        "initials": "ML",
+        "tone": "earth"
+      }
+    ]
+  }
 }

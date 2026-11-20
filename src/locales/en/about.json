@@ -1,33 +1,38 @@
 {
-  "label": "Profile",
-  "headline": "Berlin documentation from inside the cultural scene.",
-  "subline": "Fast delivery. No generic coverage. Artist-level care.",
-  "sections": [
-    {
-      "label": "Work",
-      "body": "Photo and video for concerts, exhibitions, and events, ready for press, social, and archive."
-    },
-    {
-      "label": "Standard",
-      "body": "No generic coverage. Each project is shaped around its space, artists, and atmosphere."
-    },
-    {
-      "label": "Experience",
-      "body": "Concerts, exhibitions, sessions, and cultural events across Berlin."
-    },
-    {
-      "label": "Process",
-      "body": "Tell us what is happening. We document it and deliver press-ready files in 24–48 hours."
-    },
-    {
-      "label": "Clients",
-      "body": "Venues, galleries, artists, agencies, and brands. Berlin-based, available across Europe."
-    },
-    {
-      "label": "Start",
-      "body": "Something coming up?",
-      "cta": "Contact us"
-    }
-  ],
-  "portraitAlt": "Installation scene"
+  "page": {
+    "title": "About expose.u",
+    "tagline": "Creative documentation for work that deserves to last.",
+    "paragraphs": [
+      "expose.u is a Berlin-based creative studio for art-first photography and film. We work with galleries, museums, cultural institutions, exhibition and experience studios, and creative agencies to create visual work with a clear purpose.",
+      "Every project starts with understanding the work, the audience and what the images need to do. Whether they support a gallery’s sales, an institution’s funding report or a studio’s next case study, we shape the production around the goal.",
+      "Our work brings together thoughtful creative direction, a careful eye for art and design, and reliable delivery. The result is more than a record of what happened: it is a set of considered assets that helps a project reach further and stay present after it ends."
+    ],
+    "location": "Based in Berlin, we work across Germany and beyond.",
+    "teamTitle": "The team",
+    "teamIntro": "A small team with a shared care for the work.",
+    "selectedMember": "Selected team member",
+    "members": [
+      {
+        "name": "Alan Alves",
+        "role": "Creative Director, Photographer & Filmmaker",
+        "bio": "A creative lead with a global advertising background and extensive experience in photo and film production.",
+        "initials": "AA",
+        "tone": "warm"
+      },
+      {
+        "name": "Joanna Opalko",
+        "role": "Social Media & Brand Positioning",
+        "bio": "A brand specialist with experience working with artists, galleries and cultural institutions across Europe.",
+        "initials": "JO",
+        "tone": "cool"
+      },
+      {
+        "name": "Martha Losi",
+        "role": "New Business & Project Manager",
+        "bio": "A client relationship specialist who keeps projects moving smoothly, from first conversation to final delivery.",
+        "initials": "ML",
+        "tone": "earth"
+      }
+    ]
+  }
 }

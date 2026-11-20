@@ -1,19 +1,37 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import gsap from 'gsap'
 import './About.css'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
-import { resolveImagePath } from '../utils/resolveImagePath'
 import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
-import LocalizedLink from '../i18n/LocalizedLink'
 import { SEOMeta } from '../components/SEOMeta'
+
+type TeamMember = {
+  name: string
+  role: string
+  bio: string
+  initials: string
+  tone: string
+}
+
+type AboutCopy = {
+  title: string
+  tagline: string
+  paragraphs: string[]
+  location: string
+  teamTitle: string
+  teamIntro: string
+  members: TeamMember[]
+  selectedMember: string
+}
 
 function About() {
   const navigate = useLocaleNavigate()
   const { locale } = useLocale()
   const rootRef = useRef<HTMLElement | null>(null)
   const { t, tm } = useTranslation()
-  const sections = tm<Array<{ label: string; body: string; cta?: string }>>('about.sections')
+  const copy = tm<AboutCopy>('about.page')
+  const [selectedMember, setSelectedMember] = useState(0)
 
   const navLinks = useMemo(
     () => ({
@@ -35,48 +53,35 @@ function About() {
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        '.about__profile',
-        { opacity: 0, y: 24 },
-        { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', clearProps: 'opacity,transform' },
+        '.about__wordmark',
+        { opacity: 0, y: 34, clipPath: 'inset(0 0 100% 0)' },
+        { opacity: 1, y: 0, clipPath: 'inset(0 0 0% 0)', duration: 1, ease: 'power3.out' },
       )
 
-      const rows = gsap.utils.toArray<HTMLElement>('.about__row')
       gsap.fromTo(
-        rows,
-        { opacity: 0, y: 20 },
+        '.about__intro-copy > *',
+        { opacity: 0, y: 18 },
+        { opacity: 1, y: 0, duration: 0.7, stagger: 0.1, delay: 0.2, ease: 'power2.out', clearProps: 'opacity,transform' },
+      )
+
+      gsap.fromTo(
+        '.about__team',
+        { opacity: 0, y: 28 },
         {
           opacity: 1,
           y: 0,
-          duration: 0.7,
-          stagger: 0.08,
+          duration: 0.75,
           ease: 'power2.out',
           clearProps: 'opacity,transform',
-          scrollTrigger: {
-            trigger: '.about__grid',
-            start: 'top 80%',
-          },
-        },
-      )
-
-      gsap.fromTo(
-        '.about__portrait',
-        { opacity: 0, scale: 0.96 },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 0.8,
-          ease: 'power2.out',
-          clearProps: 'opacity,transform',
-          scrollTrigger: {
-            trigger: '.about__portrait-block',
-            start: 'top 80%',
-          },
+          scrollTrigger: { trigger: '.about__team', start: 'top 82%' },
         },
       )
     }, rootRef)
 
     return () => ctx.revert()
   }, [])
+
+  const activeMember = copy.members[selectedMember] ?? copy.members[0]
 
   return (
     <main className="about" ref={rootRef} id="main">
@@ -99,47 +104,64 @@ function About() {
         />
       </div>
 
-      <section className="section about__shell">
-        <div className="content about__profile">
-          <div className="about__profile-spacer" aria-hidden="true" />
-          <div>
-            <h1>{t('about.headline')}</h1>
-            <p className="about__subline">{t('about.subline')}</p>
+      <section className="about__shell">
+        <div className="about__wordmark-wrap" aria-label="expose.u">
+          <div className="about__wordmark" aria-hidden="true">expose.u</div>
+        </div>
+
+        <div className="about__intro content">
+          <div className="about__intro-heading">
+            <p className="about__eyebrow">{copy.title}</p>
+            <h1>{copy.tagline}</h1>
+          </div>
+          <div className="about__intro-copy">
+            {copy.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            <p className="about__location">{copy.location}</p>
           </div>
         </div>
 
-        <div className="content about__grid">
-          <div className="about__column about__column--wide">
-            {sections.slice(0, 3).map((section) => (
-              <div className="about__row" key={section.label}>
-                <p className="about__label">{section.label}</p>
-                <p className="about__body">{section.body}</p>
-              </div>
-            ))}
+        <section className="about__team content" aria-labelledby="about-team-heading">
+          <div className="about__team-intro">
+            <p className="about__eyebrow">{copy.teamTitle}</p>
+            <h2 id="about-team-heading">{copy.teamIntro}</h2>
           </div>
 
-          <div className="about__portrait-block">
-            <div className="about__portrait">
-              <img src={resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_024.webp')} alt={t('about.portraitAlt')} />
+          <div className="about__team-interactive">
+            <div className="about__team-list" aria-label={copy.teamTitle}>
+              {copy.members.map((member, index) => (
+                <button
+                  className={`about__team-button${selectedMember === index ? ' is-active' : ''}`}
+                  type="button"
+                  aria-pressed={selectedMember === index}
+                  aria-controls="about-team-portrait"
+                  id={`about-team-tab-${index}`}
+                  key={member.name}
+                  onMouseEnter={() => setSelectedMember(index)}
+                  onFocus={() => setSelectedMember(index)}
+                  onClick={() => setSelectedMember(index)}
+                >
+                  <span className="about__team-name">{member.name}</span>
+                  <span className="about__team-role">{member.role}</span>
+                </button>
+              ))}
+            </div>
+
+            <div
+              className={`about__team-portrait about__team-portrait--${activeMember.tone}`}
+              id="about-team-portrait"
+              role="region"
+              aria-label={`${copy.selectedMember}: ${activeMember.name}`}
+              aria-labelledby={`about-team-tab-${selectedMember}`}
+              key={activeMember.name}
+            >
+              <div className="about__team-portrait-mark" aria-hidden="true">{activeMember.initials}</div>
+              <div className="about__team-portrait-caption">
+                <span>{activeMember.name}</span>
+                <p>{activeMember.bio}</p>
+              </div>
             </div>
           </div>
-
-          <div className="about__column about__column--meta">
-            {sections.slice(3).map((section) => (
-              <div className="about__row" key={section.label}>
-                <p className="about__label">{section.label}</p>
-                <div>
-                  <p className="about__body">{section.body}</p>
-                  {section.cta && (
-                    <LocalizedLink className="about__cta-link" to="/contact">
-                      {section.cta}
-                    </LocalizedLink>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        </section>
 
         <Footer />
       </section>
