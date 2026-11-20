@@ -6,9 +6,10 @@
     "email": "Email",
     "phone": "Phone",
     "studio": "Studio",
-    "instagram": "Instagram"
+    "instagram": "Instagram",
+    "threads": "Threads"
   },
-  "studioAddress": "Duden Straße 24, Kreuzberg, Berlin",
+  "studioAddress": "Kreuzberg, Berlin",
   "successStandalone": "Thanks — we'll get back to you within 24 hours.",
   "whatsapp": "Prefer WhatsApp? Message us directly →"
 }

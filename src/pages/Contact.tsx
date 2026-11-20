@@ -377,6 +377,12 @@ function Contact() {
                 </a>
               </div>
               <div>
+                <p className="contact__label">{t('contact.labels.threads')}</p>
+                <a href="https://www.threads.net/@xposeu_official" target="_blank" rel="noopener noreferrer">
+                  xposeu_official
+                </a>
+              </div>
+              <div>
                 <p className="contact__label">{t('contact.labels.studio')}</p>
                 <p className="contact__address">{t('contact.studioAddress')}</p>
               </div>

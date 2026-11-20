@@ -22,7 +22,7 @@
 .contact__heading {
   display: grid;
   gap: 12px;
-  margin-bottom: 28px;
+  margin-bottom: clamp(48px, 7vw, 88px);
 }
 
 .contact__heading h1 {
