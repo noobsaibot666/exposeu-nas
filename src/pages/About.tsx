@@ -13,8 +13,6 @@ type TeamMember = {
   bio: string
   portrait: 'alan' | 'joanna' | 'martha'
   tone: string
-  photoCredit: string
-  photoUrl: string
 }
 
 type AboutCopy = {
@@ -25,15 +23,14 @@ type AboutCopy = {
   teamTitle: string
   teamIntro: string
   portraitAlt: string
-  previewLabel: string
   members: TeamMember[]
   selectedMember: string
 }
 
 const teamPortraits = {
-  alan: resolveImagePath('/src/assets/images/team/alan-alves-preview.webp'),
-  joanna: resolveImagePath('/src/assets/images/team/joanna-opalko-preview.webp'),
-  martha: resolveImagePath('/src/assets/images/team/martha-losi-preview.webp'),
+  alan: resolveImagePath('/src/assets/images/team/alan-alves.webp'),
+  joanna: resolveImagePath('/src/assets/images/team/joanna-opalko.webp'),
+  martha: resolveImagePath('/src/assets/images/team/martha-losi.webp'),
 }
 
 function About() {
@@ -179,11 +176,6 @@ function About() {
                 src={teamPortraits[activeMember.portrait]}
                 alt={`${copy.portraitAlt} ${activeMember.name}`}
               />
-              <div className="about__team-photo-caption">
-                <a className="about__team-photo-credit" href={activeMember.photoUrl} target="_blank" rel="noreferrer">
-                  {copy.previewLabel} · {activeMember.photoCredit} / Unsplash
-                </a>
-              </div>
             </div>
           </div>
         </section>

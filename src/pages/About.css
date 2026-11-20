@@ -179,8 +179,7 @@
   animation: about-portrait-in 600ms cubic-bezier(0.18, 0.72, 0.25, 1) both;
 }
 
-.about__team-portrait::before,
-.about__team-portrait::after {
+.about__team-portrait::before {
   position: absolute;
   z-index: 1;
   content: '';
@@ -194,11 +193,6 @@
     radial-gradient(ellipse at 68% 32%, color-mix(in srgb, var(--text-strong) 24%, transparent), transparent 31%),
     radial-gradient(ellipse at 30% 75%, color-mix(in srgb, var(--text-strong) 12%, transparent), transparent 42%);
   transform: rotate(-10deg) scale(1.05);
-}
-
-.about__team-portrait::after {
-  inset: 0;
-  background: linear-gradient(180deg, transparent 44%, color-mix(in srgb, var(--bg-base) 80%, transparent));
 }
 
 .about__team-portrait--warm { background: #716b63; }
@@ -219,27 +213,6 @@
   transition: transform 800ms cubic-bezier(0.18, 0.72, 0.25, 1);
   animation: about-photo-in 850ms cubic-bezier(0.18, 0.72, 0.25, 1) both;
 }
-
-.about__team-photo-caption {
-  position: absolute;
-  z-index: 2;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding: 20px clamp(22px, 4vw, 48px);
-}
-
-.about__team-photo-credit {
-  display: inline-block;
-  color: var(--text-strong);
-  font-size: 0.7rem;
-  line-height: 1.4;
-  text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--text-muted-strong) 55%, transparent);
-  text-underline-offset: 3px;
-}
-
-.about__team-photo-credit:hover { color: var(--text-strong); }
 
 @keyframes about-portrait-in {
   from { opacity: 0; transform: translateY(16px) scale(0.985); }
