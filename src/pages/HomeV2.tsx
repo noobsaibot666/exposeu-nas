@@ -40,11 +40,13 @@ import LocalizedLink from '../i18n/LocalizedLink'
 import { SchemaOrg, SEOMeta } from '../components/SEOMeta'
 import { useNavOverMedia } from '../hooks/useNavOverMedia'
 
+const exhibitionGalleryCardImage = resolveImagePath('/src/assets/images/website/_incoming/homepage/services/exhibition-gallery/001.webp')
+
 const projectVisuals = [
   {
     slug: serviceMeta['exhibition-gallery'].slug,
     offerKey: 'exhibition-gallery',
-    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/services/exhibition-gallery/001.webp'),
+    image: exhibitionGalleryCardImage,
     link: serviceMeta['exhibition-gallery'].href,
   },
   {
@@ -120,7 +122,10 @@ const HOME_SCHEMA = [
       postalCode: '10965',
       addressCountry: 'DE',
     },
-    sameAs: ['https://instagram.com/xposeu_official'],
+    sameAs: [
+      'https://instagram.com/xposeu_official',
+      'https://www.threads.net/@xposeu_official',
+    ],
     image: 'https://expose-u.com/og-default.png',
     areaServed: { '@type': 'City', name: 'Berlin' },
   },
@@ -221,32 +226,20 @@ function HomeV2() {
     [t],
   )
 
-  const heroServices = useMemo(
-    () =>
-      projects.map((project, index) => ({
-        id: `service-thumb-${project.slug}`,
-        image: project.image,
-        label: project.title,
-        rotation: [-4, 2, -1, 3, -2, 4][index % 6],
-        index,
-      })),
-    [projects],
-  )
-
   const mobileHeroStack = useMemo(() => {
-    const extraThumb = heroGallery[0]
+    const exhibitionLabel = heroGallery.find((thumb) => thumb.slug === 'exhibition-gallery')?.label ?? ''
 
     return [
-      ...heroServices,
+      ...heroGallery,
       {
-        id: `mobile-extra-${extraThumb.id}`,
-        image: extraThumb.image,
-        label: extraThumb.label,
+        id: 'mobile-extra-exhibition',
+        image: exhibitionGalleryCardImage,
+        label: exhibitionLabel,
         rotation: 3,
-        index: heroServices.length,
+        index: heroGallery.length,
       },
     ]
-  }, [heroGallery, heroServices])
+  }, [heroGallery])
 
   useEffect(() => {
     const mql = window.matchMedia('(max-width: 900px)')
@@ -902,7 +895,7 @@ function HomeV2() {
                 style={{ '--thumb-rotation': `${thumb.rotation}deg` } as CSSProperties}
               >
                 <div className="home__hero-thumb-image">
-                  <img src={thumb.image} alt={thumb.label} />
+                  <img src={thumb.image} alt="" />
                 </div>
                 <figcaption>
                   <strong>{thumb.label}</strong>
@@ -1022,7 +1015,7 @@ function HomeV2() {
                 }}
               >
                 <div className="home__case-media">
-                  <img src={project.image} alt={project.title} loading="lazy" decoding="async" />
+                  <img src={project.image} alt="" loading="lazy" decoding="async" />
                 </div>
                 <div className="home__case-meta">
                   <h3>{project.title}</h3>

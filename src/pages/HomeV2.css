@@ -404,11 +404,17 @@
   will-change: transform, opacity;
 }
 
-.home__section-header p {
+.home__section-header > p:first-child {
   text-transform: uppercase;
   letter-spacing: 0.35em;
   font-size: 0.8rem;
   color: var(--text-tertiary);
+}
+
+.home__section-intro {
+  max-width: 720px;
+  margin: 16px 0 0;
+  color: var(--text-soft);
 }
 
 .home__section-header h2 {
@@ -981,6 +987,10 @@
   width: 100%;
 }
 
+.home__cases:not(.home__last-projects) .home__cases-grid {
+  max-width: min(1160px, calc(100vw - 48px));
+}
+
 .home__cases-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1032,6 +1042,11 @@
   appearance: none;
   -webkit-appearance: none;
   will-change: transform, opacity, filter;
+}
+
+.home__case-card:focus-visible {
+  outline: 2px solid var(--border-highlight);
+  outline-offset: 4px;
 }
 
 .home__last-projects .home__case-card {
