@@ -15,12 +15,11 @@
     "headline": "Kreative Arbeit, die mehr bewirkt.",
     "copy": "Wir finden, was zwischen deiner Arbeit und den Menschen fehlt, die sie erreichen soll. Mit Fotografie und Film machen wir die Geschichte klarer, schließen diese Lücke und helfen deinem Projekt, sein Ziel zu erreichen."
   },
-  "services": {
+  "offerSection": {
     "label": "FOTOGRAFIE & FILM MIT KUNSTBLICK · BERLIN",
     "headline": "Bring deine Arbeit weiter.",
-    "intro": "Fotografie und Film, abgestimmt auf das Ziel deines Projekts. Unser Schwerpunkt liegt auf Galerien, Kulturinstitutionen sowie Ausstellungs- und Erlebnisstudios. Darüber hinaus arbeiten wir mit Kreativagenturen, Künstler:innen und Live-Projekten.",
-    "subcopy": "Ich brauche Content für:",
-    "offers": {
+    "intro": "Fotografie und Film, abgestimmt auf das Ziel deines Projekts. Wir arbeiten mit Galerien, Kulturinstitutionen, Ausstellungs- und Erlebnisstudios, Kreativagenturen, Künstler:innen und Live-Projekten.",
+    "cards": {
       "exhibition-gallery": {
         "title": "Ausstellungen & Galerien",
         "subtext": "Wir helfen Sammler:innen, Förderern und zukünftigem Publikum, eine Verbindung zum Werk aufzubauen.",
@@ -36,7 +35,12 @@
         "subtext": "Wir dokumentieren Performances und Künstlerprojekte mit Bildern und Film, die das Werk teilen, bewerben und bewahren.",
         "cta": "So arbeiten wir →"
       }
-    },
+    }
+  },
+  "services": {
+    "label": "Formate",
+    "headline": "Wähle das passende Format für Show, Release oder Raum.",
+    "subcopy": "Ich brauche Content für:",
     "cards": {
       "concerts-events": {
         "title": "Konzerte & Live-Events",

@@ -42,7 +42,7 @@ import { useNavOverMedia } from '../hooks/useNavOverMedia'
 
 const exhibitionGalleryCardImage = resolveImagePath('/src/assets/images/website/_incoming/homepage/services/exhibition-gallery/001.webp')
 
-const projectVisuals = [
+const offerVisuals = [
   {
     slug: serviceMeta['exhibition-gallery'].slug,
     offerKey: 'exhibition-gallery',
@@ -63,7 +63,28 @@ const projectVisuals = [
   },
 ]
 
-const hiddenHomeServiceSlugs = new Set<string>()
+const documentationTypeVisuals = [
+  {
+    slug: serviceMeta['exhibition-gallery'].slug,
+    image: exhibitionGalleryCardImage,
+    link: serviceMeta['exhibition-gallery'].href,
+  },
+  {
+    slug: serviceMeta['brand-agency'].slug,
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/brand-agency/033.webp'),
+    link: serviceMeta['brand-agency'].href,
+  },
+  {
+    slug: serviceMeta['concerts-events'].slug,
+    image: resolveImagePath('/src/assets/images/website/artists/002.webp'),
+    link: serviceMeta['concerts-events'].href,
+  },
+  {
+    slug: serviceMeta['artist-sessions'].slug,
+    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/services/artist-sessions/0015.webp'),
+    link: serviceMeta['artist-sessions'].href,
+  },
+]
 
 const lastProjectsBase = [
   { id: 'v1', image: resolveImagePath('/src/assets/images/thumbs/portfolio/01/thumb_0.webp') },
@@ -180,16 +201,25 @@ function HomeV2() {
   useScrollDepthTracking('home', [25, 50, 75, 90])
 
 
-  const projects = useMemo(
+  const offerCards = useMemo(
     () =>
-      projectVisuals
-        .filter((project) => !hiddenHomeServiceSlugs.has(project.slug))
-        .map((project) => ({
-          ...project,
-          title: t(`home.services.offers.${project.offerKey}.title`),
-          subtext: t(`home.services.offers.${project.offerKey}.subtext`),
-          cta: t(`home.services.offers.${project.offerKey}.cta`),
-        })),
+      offerVisuals.map((project) => ({
+        ...project,
+        title: t(`home.offerSection.cards.${project.offerKey}.title`),
+        subtext: t(`home.offerSection.cards.${project.offerKey}.subtext`),
+        cta: t(`home.offerSection.cards.${project.offerKey}.cta`),
+      })),
+    [t],
+  )
+
+  const documentationTypes = useMemo(
+    () =>
+      documentationTypeVisuals.map((project) => ({
+        ...project,
+        title: t(`home.services.cards.${project.slug}.title`),
+        subtext: t(`home.services.cards.${project.slug}.subtext`),
+        cta: t(`home.services.cards.${project.slug}.cta`),
+      })),
     [t],
   )
 
@@ -968,6 +998,45 @@ function HomeV2() {
         </div>
       </header>
 
+      <section className="home__section home__cases home__offerings" id="offerings">
+        <div className="home__section-header">
+          <p>{t('home.offerSection.label')}</p>
+          <h2>{t('home.offerSection.headline')}</h2>
+          <p className={`home__section-intro ${styles.homeRedesign__bodyCopy}`}>
+            {t('home.offerSection.intro')}
+          </p>
+        </div>
+        <div className="home__cases-grid">
+          <div className="home__cases-row home__cases-row--triple">
+            {offerCards.map((project, index) => (
+              <LocalizedLink
+                key={project.title}
+                to={project.link}
+                className="home__case-card"
+                onClick={() => {
+                  trackEvent('home_service_card_click', {
+                    service_slug: project.slug,
+                    card_position: index + 1,
+                  })
+                }}
+              >
+                <div className="home__case-media">
+                  <img src={project.image} alt="" loading="lazy" decoding="async" />
+                </div>
+                <div className="home__case-meta">
+                  <h3>{project.title}</h3>
+                  <p className={`home__case-copy ${styles.homeRedesign__cardCopy}`}>{project.subtext}</p>
+                  <span className="home__case-cta">{project.cta}</span>
+                </div>
+              </LocalizedLink>
+            ))}
+          </div>
+        </div>
+        <p className="home__section-note">
+          {t('home.services.needHelp')} <LocalizedLink to="/contact">{t('home.services.contactUs')}</LocalizedLink>.
+        </p>
+      </section>
+
       <section className="home__section home__proof">
         <div className="home__proof-avatars">
           <div className="home__proof-avatar-stack" aria-hidden="true">
@@ -996,13 +1065,10 @@ function HomeV2() {
         <div className="home__section-header">
           <p>{t('home.services.label')}</p>
           <h2>{t('home.services.headline')}</h2>
-          <p className={`home__section-intro ${styles.homeRedesign__bodyCopy}`}>
-            {t('home.services.intro')}
-          </p>
         </div>
         <div className="home__cases-grid">
-          <div className="home__cases-row home__cases-row--triple">
-            {projects.map((project, index) => (
+          <div className="home__cases-row">
+            {documentationTypes.map((project, index) => (
               <LocalizedLink
                 key={project.title}
                 to={project.link}
@@ -1026,9 +1092,6 @@ function HomeV2() {
             ))}
           </div>
         </div>
-        <p className="home__section-note">
-          {t('home.services.needHelp')} <LocalizedLink to="/contact">{t('home.services.contactUs')}</LocalizedLink>.
-        </p>
       </section>
 
       <section className="home__section home__cases home__last-projects" id="last-projects">
