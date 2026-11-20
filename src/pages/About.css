@@ -1,6 +1,6 @@
 .about {
   min-height: 100svh;
-  overflow: hidden;
+  overflow-x: clip;
   background: var(--bg-base);
   color: var(--text-strong);
 }
@@ -11,17 +11,16 @@
 
 .about__wordmark-wrap {
   width: 100%;
-  padding: 0 var(--content-gutter);
-  overflow: hidden;
+  padding: 0 clamp(12px, 3vw, 44px);
 }
 
 .about__wordmark {
   width: 100%;
   color: var(--text-strong);
-  font-size: clamp(5rem, 25vw, 25rem);
+  font-size: clamp(4rem, 21.8vw, 21.5rem);
   font-weight: 800;
-  letter-spacing: -0.105em;
-  line-height: 0.69;
+  letter-spacing: -0.055em;
+  line-height: 1;
   text-align: center;
   white-space: nowrap;
   transform-origin: center top;
@@ -46,9 +45,9 @@
 }
 
 .about__intro-heading h1 {
-  max-width: 12ch;
+  max-width: 11ch;
   margin: 0;
-  font-size: clamp(2.6rem, 6.1vw, 6.7rem);
+  font-size: clamp(2.45rem, 4.2vw, 4.25rem);
   font-weight: 500;
   letter-spacing: -0.065em;
   line-height: 0.98;
@@ -92,7 +91,7 @@
 .about__team-intro h2 {
   max-width: 17ch;
   margin: 0;
-  font-size: clamp(1.6rem, 3.25vw, 3.2rem);
+  font-size: clamp(1.45rem, 2.35vw, 2.35rem);
   font-weight: 400;
   letter-spacing: -0.045em;
   line-height: 1.08;
@@ -129,14 +128,14 @@
 .about__team-button:focus-visible { outline: 2px solid var(--text-strong); outline-offset: 4px; }
 
 .about__team-name {
-  font-size: clamp(1.45rem, 2.8vw, 2.8rem);
+  font-size: clamp(1.15rem, 1.85vw, 1.8rem);
   font-weight: 700;
   letter-spacing: -0.055em;
   line-height: 1.1;
 }
 
 .about__team-role {
-  font-size: clamp(0.9rem, 1.25vw, 1.06rem);
+  font-size: clamp(0.82rem, 1.05vw, 0.94rem);
   font-weight: 400;
   line-height: 1.45;
 }
@@ -203,7 +202,7 @@
 .about__team-portrait-caption > span {
   display: block;
   margin-bottom: 8px;
-  font-size: clamp(1.1rem, 2vw, 1.6rem);
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
   font-weight: 700;
   letter-spacing: -0.035em;
 }
@@ -212,7 +211,7 @@
   max-width: 42ch;
   margin: 0;
   color: var(--text-muted-strong);
-  font-size: 0.98rem;
+  font-size: 0.88rem;
   line-height: 1.5;
 }
 
@@ -229,22 +228,22 @@
 @media (max-width: 760px) {
   .about__shell { padding-top: 22px; }
   .about__wordmark-wrap { padding: 0 10px; }
-  .about__wordmark { font-size: clamp(4.15rem, 24.7vw, 11rem); letter-spacing: -0.105em; }
+  .about__wordmark { font-size: clamp(3.9rem, 22.5vw, 9rem); letter-spacing: -0.055em; }
   .about__intro,
   .about__team-intro,
   .about__team-interactive { grid-template-columns: 1fr; gap: 30px; }
   .about__intro { padding-top: 62px; padding-bottom: 76px; }
-  .about__intro-heading h1 { max-width: 14ch; font-size: clamp(2.7rem, 11vw, 5rem); }
+  .about__intro-heading h1 { max-width: 12ch; font-size: clamp(2.35rem, 9vw, 4rem); }
   .about__intro-copy p { font-size: 1rem; }
   .about__team-intro { margin-bottom: 26px; }
   .about__team-intro h2 { max-width: 24ch; }
   .about__team-interactive { gap: 26px; }
   .about__team-portrait { min-height: min(112vw, 520px); }
-  .about__team-portrait-mark { font-size: clamp(10rem, 56vw, 20rem); }
+  .about__team-portrait-mark { font-size: clamp(8rem, 44vw, 16rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .about__wordmark { clip-path: none !important; opacity: 1 !important; transform: none !important; }
+  .about__wordmark { opacity: 1 !important; transform: none !important; }
   .about__team-portrait { animation: none; }
   .about__team-button,
   .about__team-portrait::before,

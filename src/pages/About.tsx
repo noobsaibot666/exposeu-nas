@@ -54,28 +54,34 @@ function About() {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         '.about__wordmark',
-        { opacity: 0, y: 34, clipPath: 'inset(0 0 100% 0)' },
-        { opacity: 1, y: 0, clipPath: 'inset(0 0 0% 0)', duration: 1, ease: 'power3.out' },
+        { autoAlpha: 0, y: 28, scale: 0.985 },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 1, ease: 'power3.out', clearProps: 'opacity,visibility,transform' },
       )
 
-      gsap.fromTo(
-        '.about__intro-copy > *',
-        { opacity: 0, y: 18 },
-        { opacity: 1, y: 0, duration: 0.7, stagger: 0.1, delay: 0.2, ease: 'power2.out', clearProps: 'opacity,transform' },
-      )
+      const revealOnEnter = (selector: string, distance = 20, stagger = 0) => {
+        gsap.utils.toArray<HTMLElement>(selector).forEach((element, index) => {
+          gsap.fromTo(
+            element,
+            { autoAlpha: 0, y: distance },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.72,
+              delay: stagger * index,
+              ease: 'power2.out',
+              clearProps: 'opacity,visibility,transform',
+              scrollTrigger: {
+                trigger: element,
+                start: 'top 92%',
+                toggleActions: 'restart none restart none',
+              },
+            },
+          )
+        })
+      }
 
-      gsap.fromTo(
-        '.about__team',
-        { opacity: 0, y: 28 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.75,
-          ease: 'power2.out',
-          clearProps: 'opacity,transform',
-          scrollTrigger: { trigger: '.about__team', start: 'top 82%' },
-        },
-      )
+      revealOnEnter('.about__intro-heading > *, .about__intro-copy > *', 18, 0.08)
+      revealOnEnter('.about__team-intro > *, .about__team-button, .about__team-portrait', 22, 0.09)
     }, rootRef)
 
     return () => ctx.revert()
