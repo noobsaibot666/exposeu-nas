@@ -39,7 +39,7 @@ function About() {
   const rootRef = useRef<HTMLElement | null>(null)
   const { t, tm } = useTranslation()
   const copy = tm<AboutCopy>('about.page')
-  const [selectedMember, setSelectedMember] = useState(0)
+  const [selectedMember, setSelectedMember] = useState<number | null>(null)
 
   const navLinks = useMemo(
     () => ({
@@ -60,12 +60,6 @@ function About() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.about__wordmark',
-        { autoAlpha: 0, y: 28, scale: 0.985 },
-        { autoAlpha: 1, y: 0, scale: 1, duration: 1, ease: 'power3.out', clearProps: 'opacity,visibility,transform' },
-      )
-
       const revealOnEnter = (selector: string, distance = 20, stagger = 0) => {
         gsap.utils.toArray<HTMLElement>(selector).forEach((element, index) => {
           gsap.fromTo(
@@ -95,7 +89,8 @@ function About() {
     return () => ctx.revert()
   }, [])
 
-  const activeMember = copy.members[selectedMember] ?? copy.members[0]
+  const activeMemberIndex = selectedMember ?? 0
+  const activeMember = copy.members[activeMemberIndex]
 
   return (
     <main className="about" ref={rootRef} id="main">
@@ -119,10 +114,6 @@ function About() {
       </div>
 
       <section className="about__shell">
-        <div className="about__wordmark-wrap" aria-label="expose.u">
-          <div className="about__wordmark" aria-hidden="true">expose.u</div>
-        </div>
-
         <div className="about__intro content">
           <div className="about__intro-heading">
             <p className="about__eyebrow">{copy.title}</p>
@@ -155,10 +146,8 @@ function About() {
                   onClick={() => setSelectedMember(index)}
                 >
                   <span className="about__team-name">{member.name}</span>
-                  <span className={`about__team-details${selectedMember === index ? ' is-active' : ''}`} aria-hidden={selectedMember !== index}>
-                    <span className="about__team-role">{member.role}</span>
-                    <span className="about__team-bio">{member.bio}</span>
-                  </span>
+                  <span className="about__team-role">{member.role}</span>
+                  <span className={`about__team-bio${selectedMember === index ? ' is-active' : ''}`} aria-hidden={selectedMember !== index}>{member.bio}</span>
                 </button>
               ))}
             </div>
@@ -168,7 +157,7 @@ function About() {
               id="about-team-portrait"
               role="region"
               aria-label={`${copy.selectedMember}: ${activeMember.name}`}
-              aria-labelledby={`about-team-tab-${selectedMember}`}
+              aria-labelledby={`about-team-tab-${activeMemberIndex}`}
               key={activeMember.name}
             >
               <img

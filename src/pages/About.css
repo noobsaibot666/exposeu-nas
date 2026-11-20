@@ -7,30 +7,13 @@
 
 .about__nav { margin-bottom: 0; }
 
-.about__shell { padding-top: clamp(28px, 4vw, 58px); }
-
-.about__wordmark-wrap {
-  width: 100%;
-  padding: 0 clamp(12px, 3vw, 44px);
-}
-
-.about__wordmark {
-  width: 100%;
-  color: var(--text-strong);
-  font-size: clamp(4rem, 21.8vw, 21.5rem);
-  font-weight: 800;
-  letter-spacing: -0.055em;
-  line-height: 1;
-  text-align: center;
-  white-space: nowrap;
-  transform-origin: center top;
-}
+.about__shell { padding-top: clamp(38px, 6vw, 76px); }
 
 .about__intro {
   display: grid;
   grid-template-columns: minmax(260px, 0.92fr) minmax(0, 1.08fr);
   gap: clamp(36px, 9vw, 150px);
-  padding-top: clamp(56px, 11vw, 160px);
+  padding-top: clamp(28px, 5vw, 72px);
   padding-bottom: clamp(82px, 13vw, 190px);
 }
 
@@ -134,25 +117,9 @@
   line-height: 1.1;
 }
 
-.about__team-details {
-  display: grid;
-  max-height: 0;
-  margin-top: 0;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(-8px);
-  transition: max-height 420ms cubic-bezier(0.18, 0.72, 0.25, 1), margin-top 320ms ease, opacity 250ms ease, transform 360ms cubic-bezier(0.18, 0.72, 0.25, 1);
-}
-
-.about__team-details.is-active {
-  max-height: 140px;
-  margin-top: 9px;
-  opacity: 1;
-  transform: translateY(0);
-}
-
 .about__team-role {
   display: block;
+  margin-top: 4px;
   font-size: clamp(0.78rem, 0.98vw, 0.9rem);
   font-weight: 400;
   line-height: 1.45;
@@ -161,11 +128,23 @@
 .about__team-bio {
   display: block;
   max-width: 44ch;
-  margin-top: 8px;
+  max-height: 0;
+  margin-top: 0;
+  overflow: hidden;
+  opacity: 0;
   color: var(--text-muted-strong);
   font-size: 0.83rem;
   font-weight: 400;
   line-height: 1.5;
+  transform: translateY(-8px);
+  transition: max-height 420ms cubic-bezier(0.18, 0.72, 0.25, 1), margin-top 320ms ease, opacity 250ms ease, transform 360ms cubic-bezier(0.18, 0.72, 0.25, 1);
+}
+
+.about__team-bio.is-active {
+  max-height: 140px;
+  margin-top: 9px;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .about__team-portrait {
@@ -231,12 +210,10 @@
 
 @media (max-width: 760px) {
   .about__shell { padding-top: 22px; }
-  .about__wordmark-wrap { padding: 0 10px; }
-  .about__wordmark { font-size: clamp(3.9rem, 22.5vw, 9rem); letter-spacing: -0.055em; }
   .about__intro,
   .about__team-intro,
   .about__team-interactive { grid-template-columns: 1fr; gap: 30px; }
-  .about__intro { padding-top: 62px; padding-bottom: 76px; }
+  .about__intro { padding-top: 40px; padding-bottom: 76px; }
   .about__intro-heading h1 { max-width: 12ch; font-size: clamp(2.35rem, 9vw, 4rem); }
   .about__intro-copy p { font-size: 1rem; }
   .about__team-intro { margin-bottom: 26px; }
@@ -246,10 +223,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .about__wordmark { opacity: 1 !important; transform: none !important; }
   .about__team-portrait { animation: none; }
   .about__team-button,
-  .about__team-details,
+  .about__team-bio,
   .about__team-portrait::before,
   .about__team-photo { transition: none; animation: none; }
 }
