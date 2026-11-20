@@ -158,7 +158,10 @@ function About() {
                   onClick={() => setSelectedMember(index)}
                 >
                   <span className="about__team-name">{member.name}</span>
-                  <span className="about__team-role">{member.role}</span>
+                  <span className={`about__team-details${selectedMember === index ? ' is-active' : ''}`} aria-hidden={selectedMember !== index}>
+                    <span className="about__team-role">{member.role}</span>
+                    <span className="about__team-bio">{member.bio}</span>
+                  </span>
                 </button>
               ))}
             </div>
@@ -176,9 +179,7 @@ function About() {
                 src={teamPortraits[activeMember.portrait]}
                 alt={`${copy.portraitAlt} ${activeMember.name}`}
               />
-              <div className="about__team-portrait-caption">
-                <span>{activeMember.name}</span>
-                <p>{activeMember.bio}</p>
+              <div className="about__team-photo-caption">
                 <a className="about__team-photo-credit" href={activeMember.photoUrl} target="_blank" rel="noreferrer">
                   {copy.previewLabel} · {activeMember.photoCredit} / Unsplash
                 </a>
