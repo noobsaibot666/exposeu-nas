@@ -670,7 +670,7 @@ function HomeV2() {
               <LocalizedLink
                 key={project.title}
                 to={project.link}
-                className="home__case-card"
+                className="home__offer-thumbnail"
                 onClick={() => {
                   trackEvent('home_service_card_click', {
                     service_slug: project.slug,
@@ -678,14 +678,10 @@ function HomeV2() {
                   })
                 }}
               >
-                <div className="home__case-media">
+                <div className="home__offer-thumbnail-media">
                   <img src={project.image} alt="" loading="lazy" decoding="async" />
                 </div>
-                <div className="home__case-meta">
-                  <h3>{project.title}</h3>
-                  <p className={`home__case-copy ${styles.homeRedesign__cardCopy}`}>{project.subtext}</p>
-                  <span className="home__case-cta">{project.cta}</span>
-                </div>
+                <h3>{project.title}</h3>
               </LocalizedLink>
             ))}
           </div>
@@ -751,7 +747,7 @@ function HomeV2() {
                   })
                 }}
               >
-                <div className="home__case-media">
+                <div className={`home__case-media${project.slug === serviceMeta['artist-sessions'].slug ? ' home__case-media--portrait' : ''}`}>
                   <img src={project.image} alt="" loading="lazy" decoding="async" />
                 </div>
                 <div className="home__case-meta">
