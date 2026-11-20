@@ -387,7 +387,7 @@ function HomeV2() {
           },
         )
 
-        if (row) {
+        if (row && sectionCards.length) {
           const sectionTimeline = gsap.timeline({
             scrollTrigger: {
               trigger: row,
@@ -417,6 +417,36 @@ function HomeV2() {
         }
 
       })
+
+      const offerSection = document.querySelector<HTMLElement>('.home__offerings')
+      const offerRow = offerSection?.querySelector<HTMLElement>('.home__cases-row')
+      if (offerSection && offerRow) {
+        const images = gsap.utils.toArray<HTMLElement>('.home__offer-thumbnail-media', offerSection)
+        const titles = gsap.utils.toArray<HTMLElement>('.home__offer-thumbnail h3', offerSection)
+        const actions = gsap.utils.toArray<HTMLElement>('.home__offer-actions > a', offerSection)
+
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: offerRow,
+            start: 'top 86%',
+            toggleActions: 'play none none reverse',
+          },
+        })
+          .fromTo(images,
+            { autoAlpha: 0, y: 40, scale: 0.96 },
+            { autoAlpha: 1, y: 0, scale: 1, duration: 0.7, stagger: 0.12, ease: 'power2.out' },
+          )
+          .fromTo(titles,
+            { autoAlpha: 0, y: 18 },
+            { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out' },
+            '-=0.4',
+          )
+          .fromTo(actions,
+            { autoAlpha: 0, y: 18 },
+            { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out' },
+            '-=0.25',
+          )
+      }
 
       // Proof sections — gentle fade + lift with scrub
       const proofSections = gsap.utils.toArray<HTMLElement>('.home__proof')
