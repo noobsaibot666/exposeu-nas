@@ -82,7 +82,19 @@ function About() {
       }
 
       revealOnEnter('.about__intro-heading > *, .about__intro-copy > *', 18, 0.08)
-      revealOnEnter('.about__team-intro > *, .about__team-button, .about__team-portrait', 22, 0.09)
+      revealOnEnter('.about__team-intro > *, .about__team-button', 22, 0.09)
+
+      gsap.fromTo(
+        '.about__team-portrait',
+        { autoAlpha: 0, y: 22, scale: 0.985 },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.85, delay: 0.22, ease: 'power2.out', clearProps: 'all' },
+      )
+
+      gsap.fromTo(
+        '.about__team-photo',
+        { autoAlpha: 0, scale: 1.06 },
+        { autoAlpha: 1, scale: 1, duration: 1.1, delay: 0.35, ease: 'power2.out', clearProps: 'opacity,visibility,transform' },
+      )
     }, rootRef)
 
     return () => ctx.revert()
