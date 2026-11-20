@@ -1048,47 +1048,6 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-@media (min-width: 1200px) {
-  #cases .home__cases-row {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 16px;
-  }
-
-  #cases .home__case-card {
-    border-radius: 12px;
-  }
-
-  #cases .home__case-media img {
-    height: clamp(132px, 12vw, 168px);
-  }
-
-  #cases .home__case-media--portrait img {
-    object-fit: cover;
-    object-position: center 36%;
-  }
-
-  #cases .home__case-meta {
-    gap: 9px;
-    padding: 15px 16px 17px;
-  }
-
-  #cases .home__case-meta h3 {
-    font-size: 1.15rem;
-  }
-
-  #cases .home__case-copy {
-    margin: 0 0 4px;
-    font-size: 0.88rem;
-    line-height: 1.4;
-  }
-
-  #cases .home__case-cta {
-    align-self: flex-start;
-    padding: 7px 13px;
-    font-size: 0.8rem;
-  }
-}
-
 .home__last-projects .home__cases-grid {
   max-width: min(1160px, calc(100vw - 48px));
 }
