@@ -79,15 +79,15 @@ const heroGalleryBase = [
     rotation: -4,
   },
   {
-    id: 'thumb-brand',
-    image: resolveImagePath('src/assets/images/landing/agency_hero_01.webp'),
-    slug: 'brand-agency',
-    rotation: -2,
-  },
-  {
     id: 'thumb-concerts',
     image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/concerts-events/DSC_4346.webp'),
     slug: 'concerts-events',
+    rotation: -2,
+  },
+  {
+    id: 'thumb-brand',
+    image: resolveImagePath('src/assets/images/landing/agency_hero_01.webp'),
+    slug: 'brand-agency',
     rotation: 2,
   },
   {
