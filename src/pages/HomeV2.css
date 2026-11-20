@@ -446,7 +446,6 @@
 .home__section-header {
   max-width: 800px;
   margin-bottom: 36px;
-  padding-inline: var(--content-gutter);
   will-change: transform, opacity;
 }
 
@@ -1041,6 +1040,7 @@
 
 .home__cases.home__offerings .home__cases-grid {
   max-width: min(1040px, calc(100vw - 48px));
+  margin-inline: 0 auto;
 }
 
 .home__cases-row {
