@@ -217,13 +217,13 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 14px;
-  margin-top: 28px;
+  margin-top: 48px;
 }
 
 .home__offer-thumbnail {
   min-width: 0;
   color: var(--text-strong);
-  text-align: left;
+  text-align: center;
   text-decoration: none;
 }
 
@@ -235,6 +235,7 @@
 .home__offer-thumbnail-media {
   overflow: hidden;
   aspect-ratio: 4 / 5;
+  border-radius: 14px;
   background: var(--surface-card);
 }
 
@@ -1035,6 +1036,10 @@
 
 .home__cases:not(.home__last-projects) .home__cases-grid {
   max-width: min(1160px, calc(100vw - 48px));
+}
+
+.home__cases.home__offerings .home__cases-grid {
+  max-width: min(1040px, calc(100vw - 48px));
 }
 
 .home__cases-row {
