@@ -277,7 +277,7 @@
   padding-inline: var(--content-gutter);
 }
 
-.home__section-header p {
+.home__section-header > p:first-child {
   text-transform: uppercase;
   letter-spacing: 0.35em;
   font-size: 0.8rem;
