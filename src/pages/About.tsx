@@ -21,7 +21,6 @@ type AboutCopy = {
   paragraphs: string[]
   location: string
   teamTitle: string
-  teamIntro: string
   portraitAlt: string
   members: TeamMember[]
   selectedMember: string
@@ -127,8 +126,7 @@ function About() {
 
         <section className="about__team content" aria-labelledby="about-team-heading">
           <div className="about__team-intro">
-            <p className="about__eyebrow">{copy.teamTitle}</p>
-            <h2 id="about-team-heading">{copy.teamIntro}</h2>
+            <p className="about__eyebrow" id="about-team-heading">{copy.teamTitle}</p>
           </div>
 
           <div className="about__team-interactive">
