@@ -1,7 +1,7 @@
 {
   "hero": {
     "headline": "Documentation for concerts, exhibitions, and creative events.",
-    "subhead": "Berlin-based visual documentation studio. Press-ready delivery.",
+    "subhead": "Berlin-based visual documentation studio.",
     "primaryCta": "Tell us about your project",
     "secondaryCta": "View our work",
     "scroll": "Scroll",
@@ -16,9 +16,27 @@
     "copy": "We find what’s missing between the work and the people it needs to reach. Then we shape photography and film to clarify the story, close the gap and help the project achieve its goal."
   },
   "services": {
-    "label": "Documentation types",
-    "headline": "Choose the format for your show, release, or space.",
+    "label": "ART-FIRST PHOTO & FILM · BERLIN",
+    "headline": "Make your work go further.",
+    "intro": "Photography and film shaped around what your project needs to achieve. Our work centers on galleries, cultural institutions, and exhibition and experience studios, while also supporting creative agencies, artists and live projects.",
     "subcopy": "I need content for my:",
+    "offers": {
+      "exhibition-gallery": {
+        "title": "Exhibitions & Galleries",
+        "subtext": "Help collectors, funders and future audiences connect with the work.",
+        "cta": "How we work →"
+      },
+      "designed-experiences": {
+        "title": "Designed Experiences",
+        "subtext": "Turn exhibition and brand projects into case studies, award entries and tools for new business.",
+        "cta": "How we work →"
+      },
+      "live-work-artists": {
+        "title": "Live Work & Artists",
+        "subtext": "Capture performances and artist projects with images and film made to share, promote and preserve the work.",
+        "cta": "How we work →"
+      }
+    },
     "cards": {
       "concerts-events": {
         "title": "Concerts & Live Events",

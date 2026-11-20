@@ -43,23 +43,21 @@ import { useNavOverMedia } from '../hooks/useNavOverMedia'
 const projectVisuals = [
   {
     slug: serviceMeta['exhibition-gallery'].slug,
+    offerKey: 'exhibition-gallery',
     image: resolveImagePath('/src/assets/images/website/_incoming/homepage/services/exhibition-gallery/001.webp'),
     link: serviceMeta['exhibition-gallery'].href,
   },
   {
     slug: serviceMeta['brand-agency'].slug,
+    offerKey: 'designed-experiences',
     image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/brand-agency/033.webp'),
     link: serviceMeta['brand-agency'].href,
   },
   {
     slug: serviceMeta['concerts-events'].slug,
+    offerKey: 'live-work-artists',
     image: resolveImagePath('/src/assets/images/website/artists/002.webp'),
     link: serviceMeta['concerts-events'].href,
-  },
-  {
-    slug: serviceMeta['artist-sessions'].slug,
-    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/services/artist-sessions/0015.webp'),
-    link: serviceMeta['artist-sessions'].href,
   },
 ]
 
@@ -183,9 +181,9 @@ function HomeV2() {
         .filter((project) => !hiddenHomeServiceSlugs.has(project.slug))
         .map((project) => ({
           ...project,
-          title: t(`home.services.cards.${project.slug}.title`),
-          subtext: t(`home.services.cards.${project.slug}.subtext`),
-          cta: t(`home.services.cards.${project.slug}.cta`),
+          title: t(`home.services.offers.${project.offerKey}.title`),
+          subtext: t(`home.services.offers.${project.offerKey}.subtext`),
+          cta: t(`home.services.offers.${project.offerKey}.cta`),
         })),
     [t],
   )
@@ -1005,9 +1003,12 @@ function HomeV2() {
         <div className="home__section-header">
           <p>{t('home.services.label')}</p>
           <h2>{t('home.services.headline')}</h2>
+          <p className={`home__section-intro ${styles.homeRedesign__bodyCopy}`}>
+            {t('home.services.intro')}
+          </p>
         </div>
         <div className="home__cases-grid">
-          <div className="home__cases-row">
+          <div className="home__cases-row home__cases-row--triple">
             {projects.map((project, index) => (
               <LocalizedLink
                 key={project.title}

@@ -1,7 +1,7 @@
 {
   "hero": {
     "headline": "Dokumentation für Konzerte, Ausstellungen und kreative Events.",
-    "subhead": "Visuelles Dokumentationsstudio aus Berlin. Pressefähig geliefert.",
+    "subhead": "Visuelles Dokumentationsstudio aus Berlin.",
     "primaryCta": "Erzähl uns von deinem Projekt",
     "secondaryCta": "Unsere Arbeiten",
     "scroll": "Scrollen",
@@ -16,9 +16,27 @@
     "copy": "Wir finden, was zwischen deiner Arbeit und den Menschen fehlt, die sie erreichen soll. Mit Fotografie und Film machen wir die Geschichte klarer, schließen diese Lücke und helfen deinem Projekt, sein Ziel zu erreichen."
   },
   "services": {
-    "label": "Formate",
-    "headline": "Wähle das passende Format für Show, Release oder Raum.",
+    "label": "FOTOGRAFIE & FILM MIT KUNSTBLICK · BERLIN",
+    "headline": "Bring deine Arbeit weiter.",
+    "intro": "Fotografie und Film, abgestimmt auf das Ziel deines Projekts. Unser Schwerpunkt liegt auf Galerien, Kulturinstitutionen sowie Ausstellungs- und Erlebnisstudios. Darüber hinaus arbeiten wir mit Kreativagenturen, Künstler:innen und Live-Projekten.",
     "subcopy": "Ich brauche Content für:",
+    "offers": {
+      "exhibition-gallery": {
+        "title": "Ausstellungen & Galerien",
+        "subtext": "Wir helfen Sammler:innen, Förderern und zukünftigem Publikum, eine Verbindung zum Werk aufzubauen.",
+        "cta": "So arbeiten wir →"
+      },
+      "designed-experiences": {
+        "title": "Gestaltete Erlebnisse",
+        "subtext": "Wir machen aus Ausstellungs- und Markenprojekten Case Studies, Award-Einreichungen und Werkzeuge für die Neukundengewinnung.",
+        "cta": "So arbeiten wir →"
+      },
+      "live-work-artists": {
+        "title": "Live-Projekte & Künstler:innen",
+        "subtext": "Wir dokumentieren Performances und Künstlerprojekte mit Bildern und Film, die das Werk teilen, bewerben und bewahren.",
+        "cta": "So arbeiten wir →"
+      }
+    },
     "cards": {
       "concerts-events": {
         "title": "Konzerte & Live-Events",
