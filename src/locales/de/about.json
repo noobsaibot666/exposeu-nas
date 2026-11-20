@@ -11,27 +11,35 @@
     "teamTitle": "Das Team",
     "teamIntro": "Ein kleines Team mit gemeinsamer Sorgfalt für die Arbeit.",
     "selectedMember": "Ausgewähltes Teammitglied",
+    "portraitAlt": "Unsplash-Porträt als Vorschau, keine Abbildung von",
+    "previewLabel": "Vorschaubild",
     "members": [
       {
         "name": "Alan Alves",
         "role": "Kreativdirektor, Fotograf & Filmemacher",
         "bio": "Kreativer Leiter mit internationaler Erfahrung in der Werbung und umfassender Erfahrung in der Foto- und Filmproduktion.",
-        "initials": "AA",
-        "tone": "warm"
+        "portrait": "alan",
+        "tone": "warm",
+        "photoCredit": "Eric Soubeyrand de Saint Prix",
+        "photoUrl": "https://unsplash.com/photos/a-young-man-poses-for-a-portrait-IoixtenW29w"
       },
       {
         "name": "Joanna Opalko",
         "role": "Social Media & Markenpositionierung",
         "bio": "Markenspezialistin mit Erfahrung in der Zusammenarbeit mit Künstler:innen, Galerien und Kulturinstitutionen in ganz Europa.",
-        "initials": "JO",
-        "tone": "cool"
+        "portrait": "joanna",
+        "tone": "cool",
+        "photoCredit": "Philipp Lansing",
+        "photoUrl": "https://unsplash.com/photos/portrait-photograph-of-woman-eCmt0NHWbhY"
       },
       {
         "name": "Martha Losi",
         "role": "Neukund:innen & Projektmanagement",
         "bio": "Spezialistin für Kundenbeziehungen, die Projekte vom ersten Gespräch bis zur finalen Lieferung reibungslos voranbringt.",
-        "initials": "ML",
-        "tone": "earth"
+        "portrait": "martha",
+        "tone": "earth",
+        "photoCredit": "Dmitry Reshetnikov",
+        "photoUrl": "https://unsplash.com/photos/a-young-woman-poses-for-a-portrait-outside-9rKtfF2rANU"
       }
     ]
   }

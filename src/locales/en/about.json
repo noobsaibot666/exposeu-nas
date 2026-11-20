@@ -11,27 +11,35 @@
     "teamTitle": "The team",
     "teamIntro": "A small team with a shared care for the work.",
     "selectedMember": "Selected team member",
+    "portraitAlt": "Unsplash preview portrait, not a likeness of",
+    "previewLabel": "Preview photo",
     "members": [
       {
         "name": "Alan Alves",
         "role": "Creative Director, Photographer & Filmmaker",
         "bio": "A creative lead with a global advertising background and extensive experience in photo and film production.",
-        "initials": "AA",
-        "tone": "warm"
+        "portrait": "alan",
+        "tone": "warm",
+        "photoCredit": "Eric Soubeyrand de Saint Prix",
+        "photoUrl": "https://unsplash.com/photos/a-young-man-poses-for-a-portrait-IoixtenW29w"
       },
       {
         "name": "Joanna Opalko",
         "role": "Social Media & Brand Positioning",
         "bio": "A brand specialist with experience working with artists, galleries and cultural institutions across Europe.",
-        "initials": "JO",
-        "tone": "cool"
+        "portrait": "joanna",
+        "tone": "cool",
+        "photoCredit": "Philipp Lansing",
+        "photoUrl": "https://unsplash.com/photos/portrait-photograph-of-woman-eCmt0NHWbhY"
       },
       {
         "name": "Martha Losi",
         "role": "New Business & Project Manager",
         "bio": "A client relationship specialist who keeps projects moving smoothly, from first conversation to final delivery.",
-        "initials": "ML",
-        "tone": "earth"
+        "portrait": "martha",
+        "tone": "earth",
+        "photoCredit": "Dmitry Reshetnikov",
+        "photoUrl": "https://unsplash.com/photos/a-young-woman-poses-for-a-portrait-outside-9rKtfF2rANU"
       }
     ]
   }

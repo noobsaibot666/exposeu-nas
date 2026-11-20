@@ -3,6 +3,7 @@ import gsap from 'gsap'
 import './About.css'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
+import { resolveImagePath } from '../utils/resolveImagePath'
 import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
 import { SEOMeta } from '../components/SEOMeta'
 
@@ -10,8 +11,10 @@ type TeamMember = {
   name: string
   role: string
   bio: string
-  initials: string
+  portrait: 'alan' | 'joanna' | 'martha'
   tone: string
+  photoCredit: string
+  photoUrl: string
 }
 
 type AboutCopy = {
@@ -21,8 +24,16 @@ type AboutCopy = {
   location: string
   teamTitle: string
   teamIntro: string
+  portraitAlt: string
+  previewLabel: string
   members: TeamMember[]
   selectedMember: string
+}
+
+const teamPortraits = {
+  alan: resolveImagePath('/src/assets/images/team/alan-alves-preview.webp'),
+  joanna: resolveImagePath('/src/assets/images/team/joanna-opalko-preview.webp'),
+  martha: resolveImagePath('/src/assets/images/team/martha-losi-preview.webp'),
 }
 
 function About() {
@@ -160,10 +171,17 @@ function About() {
               aria-labelledby={`about-team-tab-${selectedMember}`}
               key={activeMember.name}
             >
-              <div className="about__team-portrait-mark" aria-hidden="true">{activeMember.initials}</div>
+              <img
+                className="about__team-photo"
+                src={teamPortraits[activeMember.portrait]}
+                alt={`${copy.portraitAlt} ${activeMember.name}`}
+              />
               <div className="about__team-portrait-caption">
                 <span>{activeMember.name}</span>
                 <p>{activeMember.bio}</p>
+                <a className="about__team-photo-credit" href={activeMember.photoUrl} target="_blank" rel="noreferrer">
+                  {copy.previewLabel} · {activeMember.photoCredit} / Unsplash
+                </a>
               </div>
             </div>
           </div>
