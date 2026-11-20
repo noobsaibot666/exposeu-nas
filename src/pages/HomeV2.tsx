@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import gsap from 'gsap'
 import TopNav from '../components/TopNav'
@@ -40,7 +40,7 @@ import LocalizedLink from '../i18n/LocalizedLink'
 import { SchemaOrg, SEOMeta } from '../components/SEOMeta'
 import { useNavOverMedia } from '../hooks/useNavOverMedia'
 
-const exhibitionGalleryCardImage = resolveImagePath('/src/assets/images/website/_incoming/homepage/services/exhibition-gallery/001.webp')
+const exhibitionGalleryCardImage = resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/exhibition-gallery/gallery-opening.webp')
 
 const offerVisuals = [
   {
@@ -90,33 +90,6 @@ const lastProjectsBase = [
   { id: 'v1', image: resolveImagePath('/src/assets/images/thumbs/portfolio/01/thumb_0.webp') },
   { id: 'sanam', image: resolveImagePath('/src/assets/images/thumbs/portfolio/03/thumb_0.webp') },
   { id: 'v2', image: resolveImagePath('/src/assets/images/thumbs/portfolio/02/thumb_0.webp') },
-]
-
-const heroGalleryBase = [
-  {
-    id: 'thumb-exhibition',
-    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/exhibition-gallery/gallery-opening.webp'),
-    slug: 'exhibition-gallery',
-    rotation: -4,
-  },
-  {
-    id: 'thumb-concerts',
-    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/concerts-events/DSC_4346.webp'),
-    slug: 'concerts-events',
-    rotation: -2,
-  },
-  {
-    id: 'thumb-brand',
-    image: resolveImagePath('src/assets/images/landing/agency_hero_01.webp'),
-    slug: 'brand-agency',
-    rotation: 2,
-  },
-  {
-    id: 'thumb-artist',
-    image: resolveImagePath('/src/assets/images/website/_incoming/homepage/hero-thumbs/artist-sessions/artist-interview.webp'),
-    slug: 'artist-sessions',
-    rotation: 4,
-  },
 ]
 
 const proofAvatars = [
@@ -172,19 +145,8 @@ function HomeV2() {
     () => window.matchMedia('(max-width: 900px)').matches,
   )
   const location = useLocation()
-  const [mobileLayout, setMobileLayout] = useState({
-    card: 160,
-    outer: 160,
-    inner: 90,
-    yOuter: 26,
-    yInner: 12,
-  })
   const rootRef = useRef<HTMLElement | null>(null)
   const casesRef = useRef<HTMLElement | null>(null)
-  const mobileHeroRef = useRef<HTMLDivElement | null>(null)
-  const galleryRef = useRef<HTMLDivElement | null>(null)
-  const tiltX = useRef<((value: number) => void) | null>(null)
-  const tiltY = useRef<((value: number) => void) | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const videoHeroRef = useRef<HTMLElement | null>(null)
   const vimeoIframeRef = useRef<HTMLIFrameElement | null>(null)
@@ -246,30 +208,6 @@ function HomeV2() {
       }),
     [t],
   )
-
-  const heroGallery = useMemo(
-    () =>
-      heroGalleryBase.map((item) => ({
-        ...item,
-        label: t(`home.services.cards.${item.slug}.title`),
-      })),
-    [t],
-  )
-
-  const mobileHeroStack = useMemo(() => {
-    const exhibitionLabel = heroGallery.find((thumb) => thumb.slug === 'exhibition-gallery')?.label ?? ''
-
-    return [
-      ...heroGallery,
-      {
-        id: 'mobile-extra-exhibition',
-        image: exhibitionGalleryCardImage,
-        label: exhibitionLabel,
-        rotation: 3,
-        index: heroGallery.length,
-      },
-    ]
-  }, [heroGallery])
 
   useEffect(() => {
     const mql = window.matchMedia('(max-width: 900px)')
@@ -369,20 +307,6 @@ function HomeV2() {
     [navigate, t],
   )
 
-  const handleGalleryMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (!galleryRef.current || !tiltX.current || !tiltY.current) return
-    const bounds = galleryRef.current.getBoundingClientRect()
-    const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 6
-    const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 6
-    tiltX.current(x)
-    tiltY.current(-y)
-  }
-
-  const resetTilt = () => {
-    tiltX.current?.(0)
-    tiltY.current?.(0)
-  }
-
   const trackHomeCta = (ctaLabel: string, ctaLocation: string) => {
     trackEvent('home_cta_click', {
       cta_label: ctaLabel,
@@ -426,136 +350,8 @@ function HomeV2() {
         { opacity: 1, y: 0, duration: 0.7, ease: 'sine.out', delay: 0.55 },
       )
 
-      if (galleryRef.current) {
-        tiltX.current = gsap.quickTo(galleryRef.current, '--hero-tilt-x', { duration: 0.45, ease: 'power3.out' })
-        tiltY.current = gsap.quickTo(galleryRef.current, '--hero-tilt-y', { duration: 0.45, ease: 'power3.out' })
-      }
-
-      if (isMobile) {
-        const mobileThumbImages = gsap.utils.toArray<HTMLElement>('.home__hero-gallery--mobile .home__hero-thumb-image')
-        const mobileHeroItems = gsap.utils.toArray<HTMLElement>('.home__hero-title, .home__hero-gallery--mobile .home__hero-thumb-image, .home__hero-subhead, .home__hero-cta')
-
-        const mobileTimeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: '.home__hero',
-            start: 'top 82%',
-            end: 'top 20%',
-            scrub: 0.9,
-          },
-        })
-
-        mobileTimeline
-          .fromTo(
-            '.home__hero-title',
-            { opacity: 0, y: 34, filter: 'blur(6px)' },
-            { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.82, ease: 'sine.out' },
-          )
-          .fromTo(
-            mobileThumbImages,
-            { opacity: 0, y: 36, scale: 0.82, rotate: -6, filter: 'blur(8px)' },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              rotate: 0,
-              filter: 'blur(0px)',
-              duration: 0.72,
-              ease: 'sine.out',
-              stagger: 0.06,
-            },
-            0.48,
-          )
-          .fromTo(
-            ['.home__hero-subhead', '.home__hero-cta'],
-            { opacity: 0, y: 24, filter: 'blur(5px)' },
-            { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.68, ease: 'sine.out', stagger: 0.1 },
-            1.08,
-          )
-
-        gsap.to(mobileHeroItems, {
-          opacity: 0,
-          y: -18,
-          filter: 'blur(4px)',
-          ease: 'sine.inOut',
-          scrollTrigger: {
-            trigger: '.home__hero',
-            start: 'bottom 38%',
-            end: 'bottom 8%',
-            scrub: 0.65,
-          },
-        })
-      } else {
-        // Hero section — scrub-based sequence, animates in/out with scroll direction.
-        // start: 'top bottom' begins as soon as hero enters from below the viewport.
-        // end: 'top 15%'  completes once the section is fully visible — so clicking
-        // the scroll button (which lands hero.top near 0%) always shows full content.
-        const heroThumbs = gsap.utils.toArray<HTMLElement>('.home__hero-gallery--desktop .home__hero-thumb')
-        const heroTimeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: '.home__hero',
-            start: 'top bottom',
-            end: 'top 15%',
-            scrub: 2,
-          },
-        })
-
-        heroTimeline.fromTo(
-          '.home__hero-title',
-          { opacity: 0, y: 44, filter: 'blur(6px)' },
-          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.4, ease: 'sine.inOut' },
-        )
-
-        const yOffsets = [48, 40, 56, 44, 52]
-        const xOffsets = [-6, 5, 0, 7, -4]
-        const cardStart = 0.9
-        gsap.utils.shuffle(heroThumbs).forEach((el, i) => {
-          el.style.transition = 'none'
-          const image = el.querySelector<HTMLElement>('.home__hero-thumb-image')
-          const caption = el.querySelector<HTMLElement>('figcaption')
-          const targets = [image, caption].filter(Boolean) as HTMLElement[]
-
-          heroTimeline.fromTo(
-            targets.length ? targets : el,
-            {
-              opacity: 0,
-              y: yOffsets[i % yOffsets.length],
-              x: xOffsets[i % xOffsets.length],
-              scale: 0.96,
-              rotate: [-0.8, 0.6, -0.4, 0.8, -0.5][i % 5],
-              filter: 'blur(5px)',
-            },
-            {
-              opacity: 1,
-              y: 0,
-              x: 0,
-              scale: 1,
-              rotate: 0,
-              filter: 'blur(0px)',
-              duration: 1.1,
-              ease: 'sine.inOut',
-              onComplete: () => { el.style.transition = '' },
-            },
-            cardStart + i * 0.16,
-          )
-        })
-
-        heroTimeline
-          .fromTo(
-            '.home__hero-subhead',
-            { opacity: 0, y: 28, filter: 'blur(5px)' },
-            { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.0, ease: 'sine.inOut' },
-            cardStart + heroThumbs.length * 0.16 + 0.4,
-          )
-          .fromTo(
-            '.home__hero-cta',
-            { opacity: 0, y: 20, scale: 0.97 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: 'sine.inOut' },
-            '>-0.1',
-          )
-      }
-
-      // Cases — quick staged entrance. Two sections share these classnames for
-      // styling (Documentation Types + Last Projects), so every selector here
+      // Cases — quick staged entrance. The offers, Documentation Types and
+      // Recent Work sections share these classnames, so every selector here
       // is scoped per-section rather than page-wide — a ScrollTrigger `trigger`
       // string only ever resolves to the FIRST DOM match, so a single shared
       // trigger would silently drive both sections off the first one's scroll
@@ -573,7 +369,6 @@ function HomeV2() {
         const headerItems = gsap.utils.toArray<HTMLElement>('.home__section-header > *', section)
         const sectionCards = gsap.utils.toArray<HTMLElement>('.home__case-card', section)
         const row = section.querySelector<HTMLElement>('.home__cases-row')
-        const note = section.querySelector<HTMLElement>('.home__section-note')
 
         gsap.fromTo(
           headerItems,
@@ -621,24 +416,6 @@ function HomeV2() {
           })
         }
 
-        // Note fades in below the cards
-        if (note) {
-          gsap.fromTo(
-            note,
-            { opacity: 0, y: 16 },
-            {
-              opacity: 1,
-              y: 0,
-              ease: 'sine.inOut',
-              scrollTrigger: {
-                trigger: note,
-                start: 'top 94%',
-                end: 'top 72%',
-                scrub: 0.55,
-              },
-            },
-          )
-        }
       })
 
       // Proof sections — gentle fade + lift with scrub
@@ -799,33 +576,6 @@ function HomeV2() {
     }
   }, [])
 
-  useEffect(() => {
-    const node = mobileHeroRef.current
-    if (!node) return undefined
-
-    const updateLayout = () => {
-      const width = node.getBoundingClientRect().width || window.innerWidth
-      const card = Math.min(240, Math.max(168, width * 0.44))
-      const outer = Math.round(card * 1.0)
-      const inner = Math.round(card * 0.55)
-      const yOuter = Math.round(Math.abs(outer) * 0.16)
-      const yInner = Math.round(Math.abs(inner) * 0.14)
-
-      setMobileLayout({ card, outer, inner, yOuter, yInner })
-    }
-
-    updateLayout()
-
-    if (typeof ResizeObserver !== 'undefined') {
-      const observer = new ResizeObserver(() => updateLayout())
-      observer.observe(node)
-      return () => observer.disconnect()
-    }
-
-    window.addEventListener('resize', updateLayout)
-    return () => window.removeEventListener('resize', updateLayout)
-  }, [])
-
   return (
     <main className="home home--v2" ref={rootRef} id="main">
       <SEOMeta
@@ -906,102 +656,10 @@ function HomeV2() {
         />
       </div>
 
-      <header className="home__section home__hero" id="hero">
-        <div className="home__hero-body">
-          <h1 className="home__hero-title">
-            {t('home.hero.headline')}
-          </h1>
-          <div
-            className="home__hero-gallery home__hero-gallery--desktop"
-            ref={galleryRef}
-            onMouseMove={handleGalleryMouseMove}
-            onMouseLeave={resetTilt}
-          >
-            {heroGallery.map((thumb) => (
-              <figure
-                key={thumb.id}
-                className="home__hero-thumb"
-                data-rotation={thumb.rotation}
-                style={{ '--thumb-rotation': `${thumb.rotation}deg` } as CSSProperties}
-              >
-                <div className="home__hero-thumb-image">
-                  <img src={thumb.image} alt="" />
-                </div>
-                <figcaption>
-                  <strong>{thumb.label}</strong>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-          <div
-            className="home__hero-gallery home__hero-gallery--mobile"
-            aria-hidden="true"
-            ref={mobileHeroRef}
-            style={{ '--mobile-card': `${mobileLayout.card}px` } as CSSProperties}
-          >
-            {mobileHeroStack.map((thumb, index) => {
-              const configs = [
-                { x: -mobileLayout.outer, y: mobileLayout.yOuter + 8, rotate: -24, scale: 0.78, z: 1, opacity: 0.55, blur: 1.5 },
-                { x: -mobileLayout.inner, y: mobileLayout.yInner, rotate: -12, scale: 0.96, z: 2, opacity: 0.85, blur: 0.6 },
-                { x: 0, y: -4, rotate: 0, scale: 1.18, z: 3, opacity: 1, blur: 0 },
-                { x: mobileLayout.inner, y: mobileLayout.yInner, rotate: 12, scale: 0.96, z: 2, opacity: 0.85, blur: 0.6 },
-                { x: mobileLayout.outer, y: mobileLayout.yOuter + 8, rotate: 24, scale: 0.78, z: 1, opacity: 0.55, blur: 1.5 },
-              ]
-              const config = configs[index] ?? configs[2]
-              const stackShift = Math.round(mobileLayout.card * 0.22)
-              const x = config.x - stackShift
-              const y = config.y - 20
-
-              const style: CSSProperties = {
-                transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(${config.scale}) rotate(${config.rotate}deg)`,
-                zIndex: config.z,
-                opacity: config.opacity,
-                filter: `blur(${config.blur}px)`,
-              }
-
-              return (
-                <figure
-                  key={thumb.id}
-                  className="home__hero-thumb"
-                  data-rotation={thumb.rotation}
-                  style={style}
-                >
-                  <div className="home__hero-thumb-image">
-                    <img src={thumb.image} alt="" />
-                  </div>
-                  <figcaption>
-                    <strong>{thumb.label}</strong>
-                  </figcaption>
-                </figure>
-              )
-            })}
-          </div>
-          <p className="home__hero-subhead">
-            {t('home.hero.subhead')}
-          </p>
-          <div className="home__actions">
-            <LocalizedLink
-              to="/contact"
-              className="home__hero-cta"
-              onClick={() => setTimeout(() => trackHomeCta(t('home.hero.primaryCta'), 'hero_primary'), 0)}
-            >
-              {t('home.hero.primaryCta')}
-            </LocalizedLink>
-            <LocalizedLink
-              to="/portfolio"
-              className="home__hero-cta home__hero-cta--ghost"
-              onClick={() => setTimeout(() => trackHomeCta(t('home.hero.secondaryCta'), 'hero_secondary'), 0)}
-            >
-              {t('home.hero.secondaryCta')} →
-            </LocalizedLink>
-          </div>
-        </div>
-      </header>
-
-      <section className="home__section home__cases home__offerings" id="offerings">
+      <section className="home__section home__cases home__offerings" id="hero" aria-labelledby="home-offer-heading">
         <div className="home__section-header">
           <p>{t('home.offerSection.label')}</p>
-          <h2>{t('home.offerSection.headline')}</h2>
+          <h1 id="home-offer-heading">{t('home.offerSection.headline')}</h1>
           <p className={`home__section-intro ${styles.homeRedesign__bodyCopy}`}>
             {t('home.offerSection.intro')}
           </p>
@@ -1032,9 +690,22 @@ function HomeV2() {
             ))}
           </div>
         </div>
-        <p className="home__section-note">
-          {t('home.services.needHelp')} <LocalizedLink to="/contact">{t('home.services.contactUs')}</LocalizedLink>.
-        </p>
+        <div className="home__offer-actions">
+          <LocalizedLink
+            to="/contact"
+            className="home__hero-cta"
+            onClick={() => setTimeout(() => trackHomeCta(t('home.hero.primaryCta'), 'hero_primary'), 0)}
+          >
+            {t('home.hero.primaryCta')}
+          </LocalizedLink>
+          <LocalizedLink
+            to="/portfolio"
+            className="home__hero-cta home__hero-cta--ghost"
+            onClick={() => setTimeout(() => trackHomeCta(t('home.hero.secondaryCta'), 'hero_secondary'), 0)}
+          >
+            {t('home.hero.secondaryCta')} →
+          </LocalizedLink>
+        </div>
       </section>
 
       <section className="home__section home__proof">

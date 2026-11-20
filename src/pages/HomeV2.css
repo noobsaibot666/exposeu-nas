@@ -212,6 +212,14 @@
   margin: 8px 0 24px;
 }
 
+.home__offer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 28px;
+}
+
 .home__actions button {
   border: 1px solid var(--button-outline-border);
   background: transparent;
@@ -417,6 +425,7 @@
   color: var(--text-soft);
 }
 
+.home__section-header h1,
 .home__section-header h2 {
   font-size: clamp(2rem, 4vw, 3rem);
   margin: 12px 0 0;
