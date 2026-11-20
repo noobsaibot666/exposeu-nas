@@ -11,7 +11,7 @@
   "analytics": {
     "ariaLabel": "Analytics consent",
     "title": "Analytics consent",
-    "copy": "We don't collect personal data — only anonymous data to improve our service.",
+    "copy": "We collect only anonymous data to improve our service.",
     "accept": "Accept",
     "reject": "Reject"
   },
