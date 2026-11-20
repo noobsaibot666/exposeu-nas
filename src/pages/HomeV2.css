@@ -234,7 +234,7 @@
 
 .home__offer-thumbnail-media {
   overflow: hidden;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 4 / 5;
   background: var(--surface-card);
 }
 
@@ -1446,6 +1446,10 @@
 }
 
 @media (max-width: 768px) {
+  .home__offer-thumbnail-media {
+    aspect-ratio: 1 / 1;
+  }
+
   .home__section {
     width: 100%;
     padding: 60px 0;
