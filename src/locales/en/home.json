@@ -72,18 +72,20 @@
   },
   "process": {
     "headline": "Our Process",
+    "intro": "Every project starts with a purpose. We shape the creative work around what it needs to achieve.",
+    "cta": "Tell us about your project.",
     "steps": [
       {
-        "title": "Consult",
-        "copy": "We align on intent, timing, and deliverables. You’ll know what’s happening before we shoot."
+        "title": "Understand",
+        "copy": "We learn about the project, its audience and what the images need to do."
       },
       {
-        "title": "Capture",
-        "copy": "We work quietly on site, following your run-of-show and the space’s rhythm."
+        "title": "Plan",
+        "copy": "We agree on the creative direction, timing and essential deliverables."
       },
       {
-        "title": "Deliver",
-        "copy": "You receive press-ready selects and organized finals, ready to publish and archive."
+        "title": "Create",
+        "copy": "We work with care on site and deliver organized photographs and film, ready for their intended use."
       }
     ]
   }

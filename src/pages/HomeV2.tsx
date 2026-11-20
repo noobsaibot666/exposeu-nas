@@ -1074,7 +1074,7 @@ function HomeV2() {
         <div className="home__process-header">
           <h2>{t('home.process.headline')}</h2>
           <p className={styles.homeRedesign__bodyCopy}>
-            {t('home.project.copy')}
+            {t('home.process.intro')}
           </p>
         </div>
         <div className="home__process-grid">
@@ -1095,19 +1095,12 @@ function HomeV2() {
           <button
             type="button"
             onClick={() => {
-              trackHomeCta(t('home.project.requestAvailability'), 'process_primary')
+              trackHomeCta(t('home.process.cta'), 'process_primary')
               navigate('/contact')
             }}
           >
-            {t('home.project.requestAvailability')}
+            {t('home.process.cta')}
           </button>
-          <LocalizedLink
-            to="/portfolio"
-            className="home__process-secondary"
-            onClick={() => trackHomeCta(t('home.project.seeLatestWork'), 'process_secondary')}
-          >
-            {t('home.project.seeLatestWork')}
-          </LocalizedLink>
         </div>
       </section>
 

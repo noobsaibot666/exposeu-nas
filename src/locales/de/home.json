@@ -72,18 +72,20 @@
   },
   "process": {
     "headline": "Unser Ablauf",
+    "intro": "Jedes Projekt beginnt mit einem Ziel. Wir richten die kreative Arbeit danach aus, was es erreichen soll.",
+    "cta": "Erzähl uns von deinem Projekt.",
     "steps": [
       {
-        "title": "Abstimmen",
-        "copy": "Wir klären Ziel, Timing und Deliverables. Vor dem Shoot ist klar, was passiert."
+        "title": "Verstehen",
+        "copy": "Wir lernen das Projekt, sein Publikum und die Aufgabe der Bilder kennen."
       },
       {
-        "title": "Produzieren",
-        "copy": "Vor Ort arbeiten wir ruhig und präzise – im Rhythmus deines Ablaufs und des Raums."
+        "title": "Planen",
+        "copy": "Wir stimmen kreative Richtung, Timing und die wichtigsten Deliverables ab."
       },
       {
-        "title": "Liefern",
-        "copy": "Du erhältst pressefähige Selects und sauber organisierte Finals, bereit für Veröffentlichung und Archiv."
+        "title": "Umsetzen",
+        "copy": "Wir arbeiten vor Ort mit Sorgfalt und liefern organisierte Fotos und Filme für ihren vorgesehenen Einsatz."
       }
     ]
   }
