@@ -6,7 +6,7 @@ import { SEOMeta } from '../components/SEOMeta'
 const heroImage = resolveImagePath('/src/assets/images/services/4_performance_doc/JuanaMolina_SillentGreen055.webp')
 
 const sectionImages = {
-  gallery: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4263.webp'),
+  gallery: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_5364.webp'),
   idealFor: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4210.webp'),
 }
 
