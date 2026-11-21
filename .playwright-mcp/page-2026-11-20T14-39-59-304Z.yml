@@ -1,0 +1,157 @@
+- generic [ref=f5e3]:
+  - link "Skip to content" [ref=f5e4] [cursor=pointer]:
+    - /url: "#main"
+  - complementary "Analytics consent" [ref=f5e5]:
+    - paragraph [ref=f5e6]: We don't collect personal data — only anonymous data to improve our service.
+    - generic [ref=f5e7]:
+      - button "Accept" [ref=f5e8] [cursor=pointer]
+      - button "Reject" [ref=f5e9] [cursor=pointer]
+  - generic [ref=f5e10]:
+    - button "Change language" [ref=f5e11] [cursor=pointer]
+    - menu [aria-hidden]:
+      - menuitemradio [checked]: English
+      - menuitemradio: Deutsch
+  - button "Switch to light mode" [ref=f5e15] [cursor=pointer]
+  - main [ref=f5e23]:
+    - region "Background video" [ref=f5e24]:
+      - button "Scroll to content" [ref=f5e26] [cursor=pointer]:
+        - generic [ref=f5e27]: Scroll
+    - generic [ref=f5e29]:
+      - navigation "Primary" [ref=f5e30]:
+        - button "Home" [ref=f5e32] [cursor=pointer]
+        - button "Services" [ref=f5e34] [cursor=pointer]
+        - button "Last Projects" [ref=f5e36] [cursor=pointer]
+      - button "expose.u" [ref=f5e37] [cursor=pointer]
+      - navigation "Secondary" [ref=f5e38]:
+        - button "About" [ref=f5e40] [cursor=pointer]
+        - button "Contact" [ref=f5e42] [cursor=pointer]
+    - region "Make your work go further." [ref=f5e43]:
+      - generic [ref=f5e44]:
+        - paragraph [ref=f5e45]: ART-FIRST PHOTO & FILM · BERLIN
+        - heading "Make your work go further." [level=1] [ref=f5e46]
+        - paragraph [ref=f5e47]: Photography and film shaped around your project’s goals—for galleries, cultural institutions, exhibition and experience studios, creative agencies, artists and live projects.
+      - generic [ref=f5e49]:
+        - link [ref=f5e50] [cursor=pointer]:
+          - /url: /services/exhibition-gallery
+          - heading "Exhibitions & Galleries" [level=3] [ref=f5e52]
+        - link [ref=f5e53] [cursor=pointer]:
+          - /url: /services/brand-agency
+          - heading "Designed Experiences" [level=3] [ref=f5e55]
+        - link [ref=f5e56] [cursor=pointer]:
+          - /url: /services/concerts-events
+          - heading "Live Work & Artists" [level=3] [ref=f5e58]
+      - generic [ref=f5e59]:
+        - link "Tell us about your project" [ref=f5e60] [cursor=pointer]:
+          - /url: /contact
+        - link "View our work →" [ref=f5e61] [cursor=pointer]:
+          - /url: /portfolio
+    - generic [ref=f5e62]:
+      - generic [ref=f5e63]: OUR APPROACH
+      - heading "Creative work, made to work harder." [level=2] [ref=f5e66]
+      - paragraph [ref=f5e67]: We find the gap between your work and its audience, then shape photography and film to clarify the story, close the gap and help your project reach its goal.
+    - generic [ref=f5e68]:
+      - generic [ref=f5e69]:
+        - paragraph [ref=f5e70]: Documentation types
+        - heading "Choose the format for your show, release, or space." [level=2] [ref=f5e71]
+      - generic [ref=f5e73]:
+        - link "Exhibition & Gallery Your exhibition lives longer than its run. Photo and video documentation for galleries, museums and cultural institutions. How we work →" [ref=f5e74] [cursor=pointer]:
+          - /url: /services/exhibition-gallery
+          - generic [ref=f5e76]:
+            - heading "Exhibition & Gallery" [level=3] [ref=f5e77]
+            - paragraph [ref=f5e78]: Your exhibition lives longer than its run. Photo and video documentation for galleries, museums and cultural institutions.
+            - generic [ref=f5e79]: How we work →
+        - link "Brand & Agency Documentation for designed experiences. Photo and video built for agencies, brand teams and creative studios. How we work →" [ref=f5e80] [cursor=pointer]:
+          - /url: /services/brand-agency
+          - generic [ref=f5e82]:
+            - heading "Brand & Agency" [level=3] [ref=f5e83]
+            - paragraph [ref=f5e84]: Documentation for designed experiences. Photo and video built for agencies, brand teams and creative studios.
+            - generic [ref=f5e85]: How we work →
+        - link "Concerts & Live Events Live event documentation for venues, labels and promoters. The assets you need for the next booking, the next announcement, the next campaign. How we work →" [ref=f5e86] [cursor=pointer]:
+          - /url: /services/concerts-events
+          - generic [ref=f5e88]:
+            - heading "Concerts & Live Events" [level=3] [ref=f5e89]
+            - paragraph [ref=f5e90]: Live event documentation for venues, labels and promoters. The assets you need for the next booking, the next announcement, the next campaign.
+            - generic [ref=f5e91]: How we work →
+        - link "Artist Sessions New work deserves images that match it. Sessions built for press kits, release campaigns and booking profiles. How we work →" [ref=f5e92] [cursor=pointer]:
+          - /url: /services/artist-sessions
+          - generic [ref=f5e94]:
+            - heading "Artist Sessions" [level=3] [ref=f5e95]
+            - paragraph [ref=f5e96]: New work deserves images that match it. Sessions built for press kits, release campaigns and booking profiles.
+            - generic [ref=f5e97]: How we work →
+    - generic [ref=f5e98]:
+      - generic [ref=f5e99]:
+        - paragraph [ref=f5e100]: Recent work
+        - heading "Our last projects." [level=2] [ref=f5e101]
+      - generic [ref=f5e103]:
+        - link "Lick the walls to understand echoes Lick the walls to understand echoes Sound installation made visible. View project →" [ref=f5e104] [cursor=pointer]:
+          - /url: /projects/lick-the-walls
+          - img "Lick the walls to understand echoes" [ref=f5e106]
+          - generic [ref=f5e107]:
+            - heading "Lick the walls to understand echoes" [level=3] [ref=f5e108]
+            - paragraph [ref=f5e109]: Sound installation made visible.
+            - generic [ref=f5e110]: View project →
+        - link "SANAM — Silent Green Berlin SANAM — Silent Green Berlin Stage, crowd, and atmosphere for press and social. View project →" [ref=f5e111] [cursor=pointer]:
+          - /url: /projects/sanam-silent-green
+          - img "SANAM — Silent Green Berlin" [ref=f5e113]
+          - generic [ref=f5e114]:
+            - heading "SANAM — Silent Green Berlin" [level=3] [ref=f5e115]
+            - paragraph [ref=f5e116]: Stage, crowd, and atmosphere for press and social.
+            - generic [ref=f5e117]: View project →
+        - link "Abigail Toll - IDOL - Silent Green Abigail Toll - IDOL - Silent Green A multi-artist night, fully documented. View project →" [ref=f5e118] [cursor=pointer]:
+          - /url: /projects/abigail-toll-idol
+          - img "Abigail Toll - IDOL - Silent Green" [ref=f5e120]
+          - generic [ref=f5e121]:
+            - heading "Abigail Toll - IDOL - Silent Green" [level=3] [ref=f5e122]
+            - paragraph [ref=f5e123]: A multi-artist night, fully documented.
+            - generic [ref=f5e124]: View project →
+    - generic [ref=f5e125]:
+      - generic [ref=f5e126]:
+        - heading "Our Process" [level=2] [ref=f5e127]
+        - paragraph [ref=f5e128]: Every project starts with a purpose. We shape the creative work around what it needs to achieve.
+      - generic [ref=f5e129]:
+        - article [ref=f5e130]:
+          - heading "Understand" [level=3] [ref=f5e131]
+          - paragraph [ref=f5e132]: We learn about the project, its audience and what the images need to do.
+        - article [ref=f5e133]:
+          - heading "Plan" [level=3] [ref=f5e134]
+          - paragraph [ref=f5e135]: We agree on the creative direction, timing and essential deliverables.
+        - article [ref=f5e136]:
+          - heading "Create" [level=3] [ref=f5e137]
+          - paragraph [ref=f5e138]: We work with care on site and deliver organized photographs and film, ready for their intended use.
+      - button "Tell us about your project." [ref=f5e140] [cursor=pointer]
+    - generic [ref=f5e141]:
+      - img "Audience in blue light" [ref=f5e143]
+      - generic [ref=f5e144]:
+        - generic [ref=f5e145]:
+          - paragraph [ref=f5e146]: expose.u
+          - paragraph [ref=f5e147]: Cinematic photo and video for Berlin’s galleries, artists, agencies, and live events.
+          - paragraph [ref=f5e148]: "Selected collaborators: galleries, artists, agencies, cultural venues, and independent producers in Berlin."
+          - paragraph [ref=f5e149]:
+            - text: Something coming up?
+            - link "Tell us about it" [ref=f5e150] [cursor=pointer]:
+              - /url: /contact
+            - text: .
+        - generic [ref=f5e151]:
+          - generic [ref=f5e152]:
+            - paragraph [ref=f5e153]: Documentation types
+            - link "Exhibition & Gallery" [ref=f5e154] [cursor=pointer]:
+              - /url: /services/exhibition-gallery
+            - link "Brand & Agency" [ref=f5e155] [cursor=pointer]:
+              - /url: /services/brand-agency
+            - link "Concerts & Live Events" [ref=f5e156] [cursor=pointer]:
+              - /url: /services/concerts-events
+            - link "Artist Sessions & Portraits" [ref=f5e157] [cursor=pointer]:
+              - /url: /services/artist-sessions
+          - generic [ref=f5e158]:
+            - paragraph [ref=f5e159]: Next steps
+            - link "Tell us about it" [ref=f5e160] [cursor=pointer]:
+              - /url: /contact
+            - link "View Last Projects" [ref=f5e161] [cursor=pointer]:
+              - /url: /portfolio
+          - generic [ref=f5e162]:
+            - paragraph [ref=f5e163]: Legal
+            - link "Impressum" [ref=f5e164] [cursor=pointer]:
+              - /url: /impressum
+            - link "Instagram" [ref=f5e165] [cursor=pointer]:
+              - /url: https://instagram.com/xposeu_official
+      - button "Back to top" [ref=f5e166] [cursor=pointer]

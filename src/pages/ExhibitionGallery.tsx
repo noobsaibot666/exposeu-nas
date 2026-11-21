@@ -8,7 +8,7 @@ const heroImage = resolveImagePath(servicePreviewImages['exhibition-gallery'])
 
 const sectionImages = {
   gallery: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/008.webp'),
-  idealFor: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/003.webp'),
+  idealFor: resolveImagePath('/src/assets/images/services/1_exhibition_doc/_incoming/gallery/cyrus_riffs_a_berlin_art_gallery_in_a_small_building_in_the_a_1850627e-7304-4d0b-8c3c-1288e16a8010_3.webp'),
 }
 
 function ExhibitionGallery() {
