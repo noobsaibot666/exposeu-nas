@@ -1,10 +1,9 @@
 import { resolveImagePath } from '../utils/resolveImagePath'
-import servicePreviewImages from '../data/servicePreviewImages.json'
 import WorkPageLayout from './WorkPageLayout'
 import { useLocale, useTranslation } from '../i18n/LocaleProvider'
 import { SEOMeta } from '../components/SEOMeta'
 
-const heroImage = resolveImagePath(servicePreviewImages['concerts-events'])
+const heroImage = resolveImagePath('/src/assets/images/services/4_performance_doc/JuanaMolina_SillentGreen055.webp')
 
 const sectionImages = {
   gallery: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4263.webp'),
