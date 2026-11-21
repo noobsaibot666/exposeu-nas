@@ -7,7 +7,7 @@ const heroImage = resolveImagePath('/src/assets/images/services/4_performance_do
 
 const sectionImages = {
   gallery: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_5364.webp'),
-  idealFor: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4210.webp'),
+  idealFor: resolveImagePath('/src/assets/images/services/4_performance_doc/_incoming/gallery/DSC_4201.webp'),
 }
 
 function ConcertsEvents() {
