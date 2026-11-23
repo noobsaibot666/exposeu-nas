@@ -182,10 +182,10 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
       "Editoriale Foto- und Videodokumentation für Künstler:innen, Musiker:innen und Performer in Berlin. Pressereif, schnell geliefert.",
     ogTitle: "Künstler- und Musikerdokumentation Berlin | expose.u",
     ogDescription:
-      "Ihr Archiv beginnt mit dem ersten Auftritt. Editoriale Dokumentation für Künstler:innen und Musiker:innen in Berlin.",
+      "Dein Archiv beginnt mit dem ersten Auftritt. Editoriale Dokumentation für Künstler:innen und Musiker:innen in Berlin.",
     heroKicker: "Künstler- & Musikerdokumentation · Berlin",
-    h1: "Ihr Archiv beginnt mit dem ersten Auftritt.",
-    h1Line1: "Ihr Archiv beginnt mit dem ersten Auftritt.",
+    h1: "Dein Archiv beginnt mit dem ersten Auftritt.",
+    h1Line1: "Dein Archiv beginnt mit dem ersten Auftritt.",
     h1Line2: "",
     subheadline:
       "Kein Handyvideo. Die Art von Bild, die ein Label, eine Venue oder eine Booking-Agentur den Auftritt ernst nehmen lässt.",
@@ -199,13 +199,13 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
       email: { href: "mailto:hello@expose-u.com", label: "E-Mail" },
     },
     cta: "Verfügbarkeit anfragen",
-    ctaSecondary: "Sehen Sie, was enthalten ist",
+    ctaSecondary: "Schau, was enthalten ist",
     stickyCta: "Verfügbarkeit anfragen",
     stickyCtaNote: "Editoriales Foto & Video ab 400 €",
     leadForm: {
       serviceLabel: "Künstler:in / Musiker:in",
-      heading: "Erzählen Sie uns von dem Projekt.",
-      body: "Jedes Projekt bekommt ein Angebot, abgestimmt auf Umfang, Zeitplan und Budget. Schicken Sie uns den Termin und wofür die Bilder gedacht sind, und wir melden uns innerhalb eines Tages.",
+      heading: "Erzähl uns von dem Projekt.",
+      body: "Jedes Projekt bekommt ein Angebot, abgestimmt auf Umfang, Zeitplan und Budget. Schick uns den Termin und wofür die Bilder gedacht sind, und wir melden uns innerhalb eines Tages.",
       nameLabel: "Name",
       emailLabel: "E-Mail",
       dateLabel: "Auftritts- oder Shooting-Termin",
@@ -214,8 +214,8 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
       submitLabel: "Verfügbarkeit anfragen →",
       sendingLabel: "Wird gesendet…",
       successHeading: "Erhalten, vielen Dank.",
-      successBody: "Wir haben Ihre Angaben erhalten und melden uns innerhalb eines Tages mit Verfügbarkeit und nächsten Schritten.",
-      errorGeneric: "Etwas ist schiefgelaufen. Schreiben Sie uns bitte an hello@expose-u.com",
+      successBody: "Wir haben deine Angaben erhalten und melden uns innerhalb eines Tages mit Verfügbarkeit und nächsten Schritten.",
+      errorGeneric: "Etwas ist schiefgelaufen. Schreib uns bitte an hello@expose-u.com",
       fullFormLabel: "Lieber das vollständige Formular?",
       fullFormHref: "/de/contact?service=artist-musician&package=project",
     },
@@ -240,8 +240,8 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
         body: "Durchgängige visuelle Identität über mehrere Projekte hinweg.",
       },
     ],
-    includedLabel: "Was Sie erhalten",
-    includedHeading: "Was Sie erhalten",
+    includedLabel: "Was du erhältst",
+    includedHeading: "Was du erhältst",
     includedLede:
       "Organisiert geliefert und einsatzbereit für den Release-Tag, die Presse und Bookings.",
     includedCards: [
@@ -297,7 +297,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
       },
     ],
     finalHeading:
-      "Erzählen Sie uns von Ihrem Auftritt, starten wir Ihr Archiv.",
+      "Erzähl uns von deinem Auftritt, starten wir dein Archiv.",
     finalBody:
       "Jedes Projekt bekommt ein Angebot, abgestimmt auf Umfang, Zeitplan und Budget.",
     pricingNote:

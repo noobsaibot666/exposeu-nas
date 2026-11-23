@@ -167,10 +167,10 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
       "Foto und Video für Ausstellungen in Berlin: Galerien, Künstler:innen und unabhängige Räume. Inhalte, die weit über die Eröffnung hinaus wirken.",
     ogTitle: "Ausstellungs-Foto & -Video Berlin | expose.u",
     ogDescription:
-      "Wir fotografieren und filmen Ihre Ausstellung und geben Ihnen Foto- und Videomaterial, das sie lange nach dem letzten Tag lebendig hält.",
+      "Wir fotografieren und filmen deine Ausstellung und geben dir Foto- und Videomaterial, das sie lange nach dem letzten Tag lebendig hält.",
     heroKicker: "Berlin Art Week & Gallery Night 2026",
-    h1: "Geben Sie Ihrer Ausstellung ein längeres Leben.",
-    h1Line1: "Geben Sie Ihrer Ausstellung ein längeres Leben.",
+    h1: "Gib deiner Ausstellung ein längeres Leben.",
+    h1Line1: "Gib deiner Ausstellung ein längeres Leben.",
     h1Line2: "",
     subheadline:
       "Foto, Video und social-ready Edits für Berliner Galerien während der Art Week. Begrenzte Termine, Antwort in 24 Std.",
@@ -189,8 +189,8 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
     stickyCtaNote: "Begrenzte Art-Week-Plätze",
     leadForm: {
       serviceLabel: "Ausstellung / Galerie",
-      heading: "Schicken Sie uns Ihre Termine, wir halten einen Platz frei.",
-      body: "Die Berlin Art Week läuft vom 9.–13. September, und wir übernehmen eine begrenzte Anzahl an Ausstellungen. Sagen Sie uns, wann Sie eröffnen; wir melden uns innerhalb eines Tages mit der Verfügbarkeit.",
+      heading: "Schick uns deine Termine, wir halten einen Platz frei.",
+      body: "Die Berlin Art Week läuft vom 9. bis 13. September, und wir übernehmen eine begrenzte Anzahl an Ausstellungen. Sag uns, wann du eröffnest; wir melden uns innerhalb eines Tages mit der Verfügbarkeit.",
       nameLabel: "Name",
       emailLabel: "E-Mail",
       dateLabel: "Eröffnungs- oder Aufbautermin",
@@ -199,8 +199,8 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
       submitLabel: "Verfügbarkeit anfragen →",
       sendingLabel: "Wird gesendet…",
       successHeading: "Erhalten, vielen Dank.",
-      successBody: "Wir haben Ihre Termine erhalten und melden uns innerhalb eines Tages mit Verfügbarkeit und nächsten Schritten.",
-      errorGeneric: "Etwas ist schiefgelaufen. Schreiben Sie uns bitte an hello@expose-u.com",
+      successBody: "Wir haben deine Termine erhalten und melden uns innerhalb eines Tages mit Verfügbarkeit und nächsten Schritten.",
+      errorGeneric: "Etwas ist schiefgelaufen. Schreib uns bitte an hello@expose-u.com",
       fullFormLabel: "Lieber das vollständige Formular?",
       fullFormHref: "/de/contact?service=gallery-museum&package=project",
     },
@@ -214,15 +214,15 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
       },
       {
         title: "Künstler:innen mit einer laufenden Ausstellung",
-        body: "Ihre Ausstellung, Performance oder Installation, richtig dokumentiert.",
+        body: "Deine Ausstellung, Performance oder Installation, richtig dokumentiert.",
       },
       {
         title: "Kurator:innen und Projekträume",
         body: "Unabhängige Programme, die dieselbe Aufmerksamkeit verdienen wie die großen Häuser.",
       },
     ],
-    includedLabel: "Was Sie bekommen",
-    includedHeading: "Foto und Video, das Sie wirklich nutzen.",
+    includedLabel: "Was du bekommst",
+    includedHeading: "Foto und Video, das du wirklich nutzt.",
     includedLede:
       "Alles aufgenommen, bearbeitet und geliefert, bereit zum Posten, Drucken und Vorstellen.",
     includedCards: [
@@ -244,20 +244,20 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
       {
         slug: "vertical-social",
         title: "Bereit zum Posten",
-        body: "Vertikales Video und Stills, solange über Ihre Show gesprochen wird.",
+        body: "Vertikales Video und Stills, solange über deine Show gesprochen wird.",
       },
       {
         slug: "press-ready-selects",
         title: "Eine Auswahl, die bleibt",
-        body: "Benannte, bearbeitete Selects für Presse, Sammler und Ihr Archiv.",
+        body: "Benannte, bearbeitete Selects für Presse, Sammler und dein Archiv.",
       },
     ],
     includedCta: "Verfügbarkeit anfragen",
     proofLabel: "Wie wir arbeiten",
     proofItems: [
       {
-        title: "Wir fotografieren, worauf es Ihnen ankommt",
-        body: "Ihre Künstler:innen, Ihre Schlüsselwerke, Ihre Prioritäten, vorab abgestimmt.",
+        title: "Wir fotografieren, worauf es dir ankommt",
+        body: "Deine Künstler:innen, deine Schlüsselwerke, deine Prioritäten, vorab abgestimmt.",
       },
       {
         title: "Foto und Video, ein Team",
@@ -268,13 +268,13 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
         body: "Wir bewegen uns leise durch den Raum und fangen ein, wie es sich wirklich anfühlt.",
       },
       {
-        title: "Schnell zurück bei Ihnen",
+        title: "Schnell zurück bei dir",
         body: "Bearbeitete Auswahl, solange noch über die Show gesprochen wird.",
       },
     ],
-    finalHeading: "Buchen Sie vor Ihrer Eröffnung.",
+    finalHeading: "Buche vor deiner Eröffnung.",
     finalBody:
-      "Berlin Art Week ist nur eine Woche, und wir übernehmen eine begrenzte Anzahl an Ausstellungen. Schicken Sie uns Aufbau- und Eröffnungstermine, wir halten einen Platz frei.",
+      "Berlin Art Week ist nur eine Woche, und wir übernehmen eine begrenzte Anzahl an Ausstellungen. Schick uns Aufbau- und Eröffnungstermine, wir halten einen Platz frei.",
     finalCta: "Verfügbarkeit anfragen",
   },
 };
