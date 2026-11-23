@@ -2,13 +2,15 @@ import { useMemo, useRef } from 'react'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
 import './Impressum.css'
-import { useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
+import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
 import { SEOMeta } from '../components/SEOMeta'
 
 function Privacy() {
   const navigate = useLocaleNavigate()
   const rootRef = useRef<HTMLElement | null>(null)
   const { t } = useTranslation()
+  const { locale } = useLocale()
+  const isDe = locale === 'de'
 
   const navLinks = useMemo(
     () => ({
@@ -28,11 +30,12 @@ function Privacy() {
   return (
     <main className="impressum" ref={rootRef} id="main">
       <SEOMeta
-        title="Privacy Policy"
-        description="How expose.u collects, uses, and protects your personal data."
+        title={t('common.meta.privacy.title')}
+        description={t('common.meta.privacy.description')}
+        ogTitle={t('common.meta.privacy.title')}
+        ogDescription={t('common.meta.privacy.description')}
         canonical="https://expose-u.com/privacy"
-        lang="en"
-        noAlternates
+        lang={locale}
       />
 
       <div className="home__nav impressum__nav">
@@ -47,69 +50,139 @@ function Privacy() {
 
       <section className="section impressum__shell">
         <div className="content impressum__content">
-          <h1>Privacy Policy</h1>
+          {isDe ? (
+            <>
+              <h1>Datenschutz</h1>
 
-          <div className="impressum__block">
-            <p>
-              This Privacy Policy explains how expose.u (<a href="https://expose-u.com">expose-u.com</a>) collects, uses, and protects information when you visit our website or contact us. Last updated: June 2026.
-            </p>
-          </div>
+              <div className="impressum__block">
+                <p>
+                  Diese Datenschutzerklärung erläutert, wie expose.u (<a href="https://expose-u.com">expose-u.com</a>) Informationen erfasst, nutzt und schützt, wenn du unsere Website besuchst oder uns kontaktierst. Stand: November 2026.
+                </p>
+              </div>
 
-          <div className="impressum__block">
-            <h2>Who we are</h2>
-            <p>expose.u GbR: photography and video documentation studio based in Berlin, Germany.</p>
-            <p>Contact: <a href="mailto:hello@expose-u.com">hello@expose-u.com</a></p>
-          </div>
+              <div className="impressum__block">
+                <h2>Wer wir sind</h2>
+                <p>expose.u GbR: Studio für Fotografie und Videodokumentation mit Sitz in Berlin, Deutschland.</p>
+                <p>Kontakt: <a href="mailto:hello@expose-u.com">hello@expose-u.com</a></p>
+              </div>
 
-          <div className="impressum__block">
-            <h2>What data we collect</h2>
-            <p><strong>Contact form:</strong> name, email address, and any message you submit through our contact form.</p>
-            <p><strong>Analytics data:</strong> pages visited, time on site, device type, and approximate location via Google Analytics (GA4) and Microsoft Clarity.</p>
-            <p><strong>Advertising data:</strong> ad interactions and website events tracked via Meta Pixel (Facebook & Instagram).</p>
-            <p><strong>Cookies:</strong> small files stored in your browser by analytics and advertising tools listed above. You can disable cookies in your browser settings at any time.</p>
-          </div>
+              <div className="impressum__block">
+                <h2>Welche Daten wir erfassen</h2>
+                <p><strong>Kontaktformular:</strong> Name, E Mail Adresse und alle Angaben, die du über unser Kontaktformular sendest.</p>
+                <p><strong>Analysedaten:</strong> besuchte Seiten, Verweildauer, Gerätetyp und ungefähre Region über Google Analytics (GA4) und Microsoft Clarity nach deiner Einwilligung.</p>
+                <p><strong>Werbedaten:</strong> Anzeigeninteraktionen und Website Events über das Meta Pixel (Facebook & Instagram) nach deiner Einwilligung.</p>
+                <p><strong>Cookies:</strong> kleine Dateien, die von den oben genannten Analyse und Werbetools in deinem Browser gespeichert werden, sofern du zugestimmt hast. Du kannst Cookies jederzeit in deinen Browsereinstellungen deaktivieren.</p>
+              </div>
 
-          <div className="impressum__block">
-            <h2>Why we collect it</h2>
-            <p><strong>Communication:</strong> to respond to enquiries submitted through the contact form.</p>
-            <p><strong>Website improvement:</strong> to understand how visitors use the site and improve the experience.</p>
-            <p><strong>Advertising measurement:</strong> to measure the effectiveness of ads shown on Meta platforms (Facebook & Instagram).</p>
-          </div>
+              <div className="impressum__block">
+                <h2>Warum wir diese Daten nutzen</h2>
+                <p><strong>Kommunikation:</strong> um Anfragen über unser Kontaktformular zu beantworten.</p>
+                <p><strong>Verbesserung der Website:</strong> um zu verstehen, wie Besucher:innen die Website nutzen, und das Angebot zu verbessern.</p>
+                <p><strong>Messung von Anzeigen:</strong> um die Wirksamkeit von Anzeigen auf Meta Plattformen (Facebook & Instagram) auszuwerten.</p>
+              </div>
 
-          <div className="impressum__block">
-            <h2>Business outreach emails</h2>
-            <p>
-              We may contact venues, galleries, and other organisations directly by email about our services, based on our legitimate interest in B2B business development (GDPR Art. 6(1)(f)). We use publicly available business contact details for this purpose. We do not purchase contact lists.
-            </p>
-            <p>
-              Every outreach email includes a one-click unsubscribe link. You can also object to this processing at any time by emailing <a href="mailto:hello@expose-u.com">hello@expose-u.com</a>. Once you unsubscribe or object, we stop emailing you and retain only your email address on a suppression list, so we don't contact you again.
-            </p>
-          </div>
+              <div className="impressum__block">
+                <h2>Geschäftliche Kontaktaufnahme per E Mail</h2>
+                <p>
+                  Wir können Venues, Galerien und andere Organisationen direkt per E Mail zu unseren Leistungen kontaktieren, auf Grundlage unseres berechtigten Interesses an B2B Geschäftsentwicklung (DSGVO Art. 6 Abs. 1 lit. f). Dafür verwenden wir öffentlich zugängliche geschäftliche Kontaktdaten und kaufen keine Kontaktlisten.
+                </p>
+                <p>
+                  Jede dieser E Mails enthält einen Link zum direkten Abmelden. Du kannst dieser Verarbeitung jederzeit per E Mail an <a href="mailto:hello@expose-u.com">hello@expose-u.com</a> widersprechen. Nach einem Widerspruch schreiben wir dir nicht mehr und speichern nur deine E Mail Adresse auf einer Sperrliste, damit wir dich nicht erneut kontaktieren.
+                </p>
+              </div>
 
-          <div className="impressum__block">
-            <h2>Third-party services</h2>
-            <p><strong>Meta (Facebook & Instagram):</strong> Meta Pixel is used to track website visits and conversions from Meta ads. Meta may use this data according to their own privacy policy.</p>
-            <p><strong>Google Analytics (GA4):</strong> used to analyse website traffic and user behaviour.</p>
-            <p><strong>Microsoft Clarity:</strong> used to record anonymised session replays and heatmaps to improve usability.</p>
-            <p><strong>Calendly:</strong> when you book a call via our scheduling links, your booking details (such as name, email address, and chosen time slot) are processed by Calendly according to their privacy policy.</p>
-            <p><strong>WhatsApp:</strong> when you choose to message us via WhatsApp, your phone number and message content are processed by WhatsApp (Meta) according to their privacy policy.</p>
-          </div>
+              <div className="impressum__block">
+                <h2>Dienste von Drittanbietern</h2>
+                <p><strong>Meta (Facebook & Instagram):</strong> Das Meta Pixel wird eingesetzt, um Websitebesuche und Conversions aus Meta Anzeigen zu erfassen. Meta verarbeitet diese Daten gemäß der eigenen Datenschutzrichtlinie.</p>
+                <p><strong>Google Analytics (GA4):</strong> Dient der Analyse des Websiteverkehrs und des Nutzungsverhaltens nach deiner Einwilligung.</p>
+                <p><strong>Microsoft Clarity:</strong> Dient der anonymisierten Auswertung von Sitzungen und Heatmaps zur Verbesserung der Benutzerfreundlichkeit.</p>
+                <p><strong>Calendly:</strong> Wenn du über unsere Terminlinks ein Gespräch buchst, werden deine Buchungsdaten (wie Name, E Mail Adresse und gewählter Termin) von Calendly gemäß deren Datenschutzrichtlinie verarbeitet.</p>
+                <p><strong>WhatsApp:</strong> Wenn du uns über WhatsApp schreibst, werden deine Telefonnummer und Nachrichteninhalte von WhatsApp (Meta) gemäß deren Datenschutzrichtlinie verarbeitet.</p>
+              </div>
 
-          <div className="impressum__block">
-            <h2>Your rights</h2>
-            <p>You have the right to request access to, correction of, or deletion of any personal data we hold about you. You may also object to data processing or request that we restrict it.</p>
-            <p>To exercise any of these rights, contact us at <a href="mailto:hello@expose-u.com">hello@expose-u.com</a>.</p>
-          </div>
+              <div className="impressum__block">
+                <h2>Deine Rechte</h2>
+                <p>Du hast das Recht auf Auskunft, Berichtigung oder Löschung deiner bei uns gespeicherten personenbezogenen Daten. Außerdem kannst du der Verarbeitung widersprechen oder deren Einschränkung verlangen.</p>
+                <p>Schreib uns zur Ausübung deiner Rechte jederzeit an <a href="mailto:hello@expose-u.com">hello@expose-u.com</a>.</p>
+              </div>
 
-          <div className="impressum__block">
-            <h2>Data retention</h2>
-            <p>Contact form submissions are retained only as long as necessary to respond to your enquiry. Analytics data is retained according to the default retention periods of each third-party service.</p>
-          </div>
+              <div className="impressum__block">
+                <h2>Speicherdauer</h2>
+                <p>Angaben aus Kontaktformularen speichern wir nur so lange, wie es zur Bearbeitung deiner Anfrage erforderlich ist. Analysedaten werden gemäß den Standardfristen der jeweiligen Drittanbieter gespeichert.</p>
+              </div>
 
-          <div className="impressum__block">
-            <h2>Contact</h2>
-            <p>If you have any questions regarding your personal data or wish to request its deletion, please contact us at <a href="mailto:hello@expose-u.com">hello@expose-u.com</a>.</p>
-          </div>
+              <div className="impressum__block">
+                <h2>Kontakt</h2>
+                <p>Wenn du Fragen zu deinen personenbezogenen Daten hast oder deren Löschung wünschst, schreib uns bitte an <a href="mailto:hello@expose-u.com">hello@expose-u.com</a>.</p>
+              </div>
+            </>
+          ) : (
+            <>
+              <h1>Privacy Policy</h1>
+
+              <div className="impressum__block">
+                <p>
+                  This Privacy Policy explains how expose.u (<a href="https://expose-u.com">expose-u.com</a>) collects, uses, and protects information when you visit our website or contact us. Last updated: November 2026.
+                </p>
+              </div>
+
+              <div className="impressum__block">
+                <h2>Who we are</h2>
+                <p>expose.u GbR: photography and video documentation studio based in Berlin, Germany.</p>
+                <p>Contact: <a href="mailto:hello@expose-u.com">hello@expose-u.com</a></p>
+              </div>
+
+              <div className="impressum__block">
+                <h2>What data we collect</h2>
+                <p><strong>Contact form:</strong> name, email address, and any message you submit through our contact form.</p>
+                <p><strong>Analytics data:</strong> pages visited, time on site, device type, and approximate location via Google Analytics (GA4) and Microsoft Clarity.</p>
+                <p><strong>Advertising data:</strong> ad interactions and website events tracked via Meta Pixel (Facebook & Instagram).</p>
+                <p><strong>Cookies:</strong> small files stored in your browser by analytics and advertising tools listed above. You can disable cookies in your browser settings at any time.</p>
+              </div>
+
+              <div className="impressum__block">
+                <h2>Why we collect it</h2>
+                <p><strong>Communication:</strong> to respond to enquiries submitted through the contact form.</p>
+                <p><strong>Website improvement:</strong> to understand how visitors use the site and improve the experience.</p>
+                <p><strong>Advertising measurement:</strong> to measure the effectiveness of ads shown on Meta platforms (Facebook & Instagram).</p>
+              </div>
+
+              <div className="impressum__block">
+                <h2>Business outreach emails</h2>
+                <p>
+                  We may contact venues, galleries, and other organisations directly by email about our services, based on our legitimate interest in B2B business development (GDPR Art. 6(1)(f)). We use publicly available business contact details for this purpose. We do not purchase contact lists.
+                </p>
+                <p>
+                  Every outreach email includes a one click unsubscribe link. You can also object to this processing at any time by emailing <a href="mailto:hello@expose-u.com">hello@expose-u.com</a>. Once you unsubscribe or object, we stop emailing you and retain only your email address on a suppression list, so we don't contact you again.
+                </p>
+              </div>
+
+              <div className="impressum__block">
+                <h2>Third party services</h2>
+                <p><strong>Meta (Facebook & Instagram):</strong> Meta Pixel is used to track website visits and conversions from Meta ads. Meta may use this data according to their own privacy policy.</p>
+                <p><strong>Google Analytics (GA4):</strong> used to analyse website traffic and user behaviour.</p>
+                <p><strong>Microsoft Clarity:</strong> used to record anonymised session replays and heatmaps to improve usability.</p>
+                <p><strong>Calendly:</strong> when you book a call via our scheduling links, your booking details (such as name, email address, and chosen time slot) are processed by Calendly according to their privacy policy.</p>
+                <p><strong>WhatsApp:</strong> when you choose to message us via WhatsApp, your phone number and message content are processed by WhatsApp (Meta) according to their privacy policy.</p>
+              </div>
+
+              <div className="impressum__block">
+                <h2>Your rights</h2>
+                <p>You have the right to request access to, correction of, or deletion of any personal data we hold about you. You may also object to data processing or request that we restrict it.</p>
+                <p>To exercise any of these rights, contact us at <a href="mailto:hello@expose-u.com">hello@expose-u.com</a>.</p>
+              </div>
+
+              <div className="impressum__block">
+                <h2>Data retention</h2>
+                <p>Contact form submissions are retained only as long as necessary to respond to your enquiry. Analytics data is retained according to the default retention periods of each third party service.</p>
+              </div>
+
+              <div className="impressum__block">
+                <h2>Contact</h2>
+                <p>If you have any questions regarding your personal data or wish to request its deletion, please contact us at <a href="mailto:hello@expose-u.com">hello@expose-u.com</a>.</p>
+              </div>
+            </>
+          )}
         </div>
       </section>
 

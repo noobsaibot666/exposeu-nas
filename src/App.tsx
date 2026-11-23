@@ -62,7 +62,7 @@ function RouteScrollReset() {
 
 function App() {
   const location = useLocation()
-  const isEnglishOnlyLegalPage = ['/privacy', '/terms', '/data-deletion'].some(
+  const isEnglishOnlyLegalPage = ['/terms', '/data-deletion'].some(
     (path) => location.pathname === path || location.pathname === `/de${path}`,
   )
   const contentRef = useRef<HTMLDivElement>(null)
@@ -231,6 +231,7 @@ function App() {
             <Route path="/impressum" element={<Impressum />} />
             <Route path="/de/impressum" element={<Impressum />} />
             <Route path="/privacy" element={<Privacy />} />
+            <Route path="/de/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/data-deletion" element={<DataDeletion />} />
             <Route path="/consent" element={<PhotoConsent />} />

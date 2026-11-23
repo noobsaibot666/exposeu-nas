@@ -32,7 +32,7 @@ const PAGE_LEVEL_META_PATHS = new Set([
   '/data-deletion',
   '/concerts-berlin',
 ])
-const ENGLISH_ONLY_META_PATHS = new Set(['/privacy', '/terms', '/data-deletion'])
+const ENGLISH_ONLY_META_PATHS = new Set(['/terms', '/data-deletion'])
 
 export function hasPageLevelMetaOwner(pathname: string): boolean {
   const hasGermanPrefix = pathname === '/de' || pathname.startsWith('/de/')
@@ -139,7 +139,7 @@ export function getMetaForPath(pathname: string): MetaConfig {
     }
   }
   if (pathname === '/privacy') {
-    return { titleKey: 'common.meta.privacy.title', descriptionKey: 'common.meta.privacy.description', noAlternates: true }
+    return { titleKey: 'common.meta.privacy.title', descriptionKey: 'common.meta.privacy.description' }
   }
   if (pathname === '/terms') {
     return { titleKey: 'common.meta.terms.title', descriptionKey: 'common.meta.terms.description', noAlternates: true }

@@ -509,7 +509,6 @@ for (const bundle of [enBundle, deBundle]) {
 
 // English-only legal routes
 for (const [routePath, metaKey] of [
-  ['/privacy', 'privacy'],
   ['/terms', 'terms'],
   ['/data-deletion', 'dataDeletion'],
 ]) {
@@ -521,13 +520,18 @@ for (const [routePath, metaKey] of [
   })
 }
 
-// Impressum (EN & DE)
+// Impressum & Privacy (EN & DE)
 for (const bundle of [enBundle, deBundle]) {
   const prefix = bundle.locale === 'de' ? '/de' : ''
   await writePage(`${prefix}/impressum`, bundle, {
     title: bundle.common.meta.impressum.title,
     description: bundle.common.meta.impressum.description,
     bodyHtml: `<section><h1>${escapeHtml(bundle.common.meta.impressum.title)}</h1><p>${escapeHtml(bundle.common.meta.impressum.description)}</p></section>`,
+  })
+  await writePage(`${prefix}/privacy`, bundle, {
+    title: bundle.common.meta.privacy.title,
+    description: bundle.common.meta.privacy.description,
+    bodyHtml: `<section><h1>${escapeHtml(bundle.common.meta.privacy.title)}</h1><p>${escapeHtml(bundle.common.meta.privacy.description)}</p></section>`,
   })
 }
 
