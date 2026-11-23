@@ -1039,8 +1039,12 @@
 }
 
 .home__cases.home__offerings .home__cases-grid {
-  max-width: min(1040px, calc(100vw - 48px));
-  margin-inline: 0 auto;
+  max-width: min(1160px, calc(100vw - 48px));
+  margin-inline: auto;
+}
+
+.home__cases.home__offerings .home__cases-row--triple {
+  gap: clamp(20px, 2.5vw, 32px);
 }
 
 .home__cases-row {
