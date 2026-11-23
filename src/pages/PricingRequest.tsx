@@ -4,7 +4,7 @@ import TopNav from '../components/TopNav'
 import { useNavOverMedia } from '../hooks/useNavOverMedia'
 import { SUBMITTED_STATE } from '../hooks/useSubmittedGuard'
 import { resolveImagePath } from '../utils/resolveImagePath'
-import { trackEvent } from '../utils/analytics'
+import { getFormAttributionParams, trackEvent } from '../utils/analytics'
 import { serviceMeta, type ServiceSlug } from '../data/serviceMeta'
 import { pricingTiers } from '../data/pricingTiers'
 import './PricingRequest.css'
@@ -74,6 +74,7 @@ function PricingRequest() {
   }, [planInfo, serviceInfo, t])
 
   const heroImage = serviceInfo?.image ?? resolveImagePath('/src/assets/images/services/7_Hero/7_HERO_004.webp')
+  const attribution = useMemo(() => getFormAttributionParams(), [])
 
   useEffect(() => {
     trackEvent('pricing_request_view', {
@@ -148,6 +149,12 @@ function PricingRequest() {
     // when the request was actually accepted (V2-004 / V2-030 — the Google
     // Apps Script endpoint answered 403 to every public request).
     const field = (key: string) => String(formData.get(key) ?? '').trim()
+    const utmSource = field('utm_source')
+    const utmMedium = field('utm_medium')
+    const utmCampaign = field('utm_campaign')
+    const utmTerm = field('utm_term')
+    const utmContent = field('utm_content')
+    const formReferrer = field('referrer')
     const planName = planInfo?.name ?? plan ?? ''
     const message = [
       `Pricing request${planName ? ` — ${planName}` : ''}${serviceInfo?.label ? ` · ${serviceInfo.label}` : ''}`,
@@ -157,6 +164,12 @@ function PricingRequest() {
       field('organization') ? `Organization: ${field('organization')}` : '',
       field('date') ? `Date: ${field('date')}` : '',
       field('location') ? `Location: ${field('location')}` : '',
+      utmSource ? `UTM source: ${utmSource}` : '',
+      utmMedium ? `UTM medium: ${utmMedium}` : '',
+      utmCampaign ? `UTM campaign: ${utmCampaign}` : '',
+      utmTerm ? `UTM term: ${utmTerm}` : '',
+      utmContent ? `UTM content: ${utmContent}` : '',
+      formReferrer ? `Referrer: ${formReferrer}` : '',
       field('details') ? `\nDetails:\n${field('details')}` : '',
     ].filter(Boolean).join('\n')
 
@@ -175,7 +188,7 @@ function PricingRequest() {
           ...(plan ? { package: plan } : {}),
           ...(planName ? { packageLabel: planName } : {}),
           sourceUrl: window.location.href,
-          referrer: document.referrer,
+          referrer: formReferrer || document.referrer,
         }),
       })
       const data = (await response.json().catch(() => null)) as { ok?: boolean; requestId?: string; error?: { code?: string } } | null
@@ -213,6 +226,10 @@ function PricingRequest() {
       }).catch(() => { /* sheet copy is optional */ })
     }
 
+    trackEvent('form_submit', {
+      form_name: 'pricing',
+      plan: planInfo?.name ?? plan ?? 'unknown',
+    })
     trackEvent('form_submission', 'pricing', planInfo?.name ?? plan ?? 'unknown')
     setStatus('success')
     form.reset()
@@ -273,6 +290,12 @@ function PricingRequest() {
           <form className="pricing-request__form" onSubmit={handleSubmit}>
             <input type="hidden" name="plan" value={planInfo?.name ?? plan ?? ''} />
             <input type="hidden" name="service" value={serviceInfo?.label ?? serviceParam ?? ''} />
+            <input type="hidden" name="utm_source" value={attribution.utm_source} />
+            <input type="hidden" name="utm_medium" value={attribution.utm_medium} />
+            <input type="hidden" name="utm_campaign" value={attribution.utm_campaign} />
+            <input type="hidden" name="utm_term" value={attribution.utm_term} />
+            <input type="hidden" name="utm_content" value={attribution.utm_content} />
+            <input type="hidden" name="referrer" value={attribution.referrer} />
             <div className={`${fieldClass('coverageType')} pricing-request__field--full`}>
               <label htmlFor="coverageType">{t('forms.pricing.coverageTypeLabel')}</label>
               <select

@@ -5,7 +5,7 @@ import { ThemeProvider } from './ThemeContext'
 import { Suspense, useEffect, useLayoutEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import AnalyticsConsentBanner from './components/AnalyticsConsentBanner'
-import { trackEvent, trackPageView } from './utils/analytics'
+import { trackEvent, trackPageView, useGlobalClickTracking } from './utils/analytics'
 import LocaleSwitcher from './components/LocaleSwitcher'
 import ThemeToggle from './components/ThemeToggle'
 import { usePageMeta } from './i18n/pageMeta'
@@ -70,6 +70,7 @@ function App() {
   const { t } = useTranslation()
 
   usePageMeta()
+  useGlobalClickTracking()
 
   // Centralized scroll reset + micro-transition on route change
   useLayoutEffect(() => {

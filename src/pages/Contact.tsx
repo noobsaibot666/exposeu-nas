@@ -4,7 +4,7 @@ import './Contact.css'
 import gsap from 'gsap'
 import TopNav from '../components/TopNav'
 import Footer from '../sections/Footer'
-import { hasAnalyticsConsent, trackEvent } from '../utils/analytics'
+import { getFormAttributionParams, hasAnalyticsConsent, trackEvent } from '../utils/analytics'
 import { useLocale, useLocaleNavigate, useTranslation } from '../i18n/LocaleProvider'
 import { SEOMeta } from '../components/SEOMeta'
 import AvailabilityBadge from '../components/AvailabilityBadge'
@@ -57,6 +57,7 @@ function Contact() {
   const hasStartedRef = useRef(false)
   const hasSubmittedRef = useRef(false)
   const hasAbandonFiredRef = useRef(false)
+  const attribution = useMemo(() => getFormAttributionParams(), [])
   const { t, tm } = useTranslation()
   const projectTypeOptions = tm<string[]>('forms.contact.projectTypes')
 
@@ -137,11 +138,22 @@ function Contact() {
     const projectType = String(formData.get('projectType') || '').trim()
     const rawMessage = String(formData.get('message') || '').trim()
     const companyWebsite = String(formData.get('companyWebsite') || '').trim()
+    const utmSource = String(formData.get('utm_source') || '').trim()
+    const utmMedium = String(formData.get('utm_medium') || '').trim()
+    const utmCampaign = String(formData.get('utm_campaign') || '').trim()
+    const utmTerm = String(formData.get('utm_term') || '').trim()
+    const utmContent = String(formData.get('utm_content') || '').trim()
+    const formReferrer = String(formData.get('referrer') || '').trim()
 
     const extraDetails = [
       role ? `Role: ${role}` : '',
       projectDate ? `Date: ${projectDate}` : '',
       website ? `Website / Instagram: ${website}` : '',
+      utmSource ? `UTM Source: ${utmSource}` : '',
+      utmMedium ? `UTM Medium: ${utmMedium}` : '',
+      utmCampaign ? `UTM Campaign: ${utmCampaign}` : '',
+      utmTerm ? `UTM Term: ${utmTerm}` : '',
+      utmContent ? `UTM Content: ${utmContent}` : '',
     ].filter(Boolean)
     const message = [extraDetails.join('\n'), rawMessage].filter(Boolean).join('\n\n')
 
@@ -172,7 +184,7 @@ function Contact() {
         projectType,
         message,
         sourceUrl: window.location.href,
-        referrer: document.referrer,
+        referrer: formReferrer || document.referrer,
         eventId: metaEventId,
         ...(selectedService ? { service: selectedService.slug, serviceLabel: selectedServiceLabel } : {}),
         ...(packageParam ? { package: packageParam } : {}),
@@ -209,6 +221,12 @@ function Contact() {
 
       hasSubmittedRef.current = true
       setSubmitted(true)
+      trackEvent('form_submit', {
+        form_name: 'contact',
+        projectType,
+        service_slug: selectedService?.slug,
+        package_slug: packageParam,
+      })
       trackEvent('contact_form_submit_success', {
         projectType,
         service_slug: selectedService?.slug,
@@ -533,7 +551,13 @@ function Contact() {
                 />
               </div>
 
-              {/* Honeypot */}
+              {/* Attribution & Honeypot */}
+              <input type="hidden" name="utm_source" value={attribution.utm_source} />
+              <input type="hidden" name="utm_medium" value={attribution.utm_medium} />
+              <input type="hidden" name="utm_campaign" value={attribution.utm_campaign} />
+              <input type="hidden" name="utm_term" value={attribution.utm_term} />
+              <input type="hidden" name="utm_content" value={attribution.utm_content} />
+              <input type="hidden" name="referrer" value={attribution.referrer} />
               <div
                 style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', overflow: 'hidden', opacity: 0, pointerEvents: 'none' }}
                 aria-hidden="true"

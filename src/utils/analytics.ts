@@ -39,6 +39,7 @@ export const ANALYTICS_CONSENT_KEY = '__analyticsConsent'
 const DEBUG_STORAGE_KEY = '__analyticsDebug'
 let consentVendorsStarted = false
 let lastPageViewPath: string | null = null
+let lastMetaPageViewPath: string | null = null
 
 function appendVendorScript(id: string, src: string, crossOrigin?: string) {
   if (document.getElementById(id)) return
@@ -93,6 +94,7 @@ export const initializeAnalyticsVendors = () => {
     }
     appendVendorScript('vendor-meta-pixel', 'https://connect.facebook.net/en_US/fbevents.js')
     window.fbq('init', META_PIXEL_ID)
+    lastMetaPageViewPath = window.location.pathname + window.location.search
     window.fbq('track', 'PageView')
   }
 
@@ -296,6 +298,42 @@ const sendEvent = (name: string, params: AnalyticsParams = {}) => {
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'] as const
 const CLICK_ID_KEYS = ['gclid', 'gbraid', 'wbraid', 'fbclid'] as const
 const LANDING_PARAMS_STORAGE_KEY = '__landingAttributionParams'
+const LANDING_REFERRER_STORAGE_KEY = '__landingReferrer'
+
+export type FormAttributionParams = {
+  utm_source: string
+  utm_medium: string
+  utm_campaign: string
+  utm_term: string
+  utm_content: string
+  referrer: string
+}
+
+export function getFormAttributionParams(): FormAttributionParams {
+  const captured = captureLandingAttributionParams()
+  const current = extractUtmParams()
+  let storedReferrer = ''
+  if (typeof window !== 'undefined') {
+    try {
+      storedReferrer = window.sessionStorage.getItem(LANDING_REFERRER_STORAGE_KEY) || ''
+      if (!storedReferrer && document.referrer) {
+        storedReferrer = document.referrer
+        window.sessionStorage.setItem(LANDING_REFERRER_STORAGE_KEY, storedReferrer)
+      }
+    } catch {
+      storedReferrer = typeof document !== 'undefined' ? document.referrer : ''
+    }
+  }
+  const merged = { ...captured, ...current }
+  return {
+    utm_source: String(merged.utm_source || ''),
+    utm_medium: String(merged.utm_medium || ''),
+    utm_campaign: String(merged.utm_campaign || ''),
+    utm_term: String(merged.utm_term || ''),
+    utm_content: String(merged.utm_content || ''),
+    referrer: storedReferrer || (typeof document !== 'undefined' ? document.referrer || '' : ''),
+  }
+}
 
 function extractUtmParams(): AnalyticsParams {
   if (typeof window === 'undefined') return {}
@@ -359,7 +397,40 @@ export const trackPageView = (path: string, params: AnalyticsParams = {}) => {
     })
   }
 
-  // Meta Pixel's initial PageView is fired once during consented bootstrap.
+  // Fire Meta Pixel PageView on SPA navigations (initial bootstrap is guarded via lastMetaPageViewPath).
+  if (hasAnalyticsConsent() && typeof window.fbq === 'function' && META_PIXEL_ID && path !== lastMetaPageViewPath) {
+    lastMetaPageViewPath = path
+    window.fbq('track', 'PageView')
+  }
+}
+
+export const useGlobalClickTracking = () => {
+  useEffect(() => {
+    if (typeof document === 'undefined') return undefined
+
+    const handleClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null
+      const anchor = target?.closest?.('a[href]') as HTMLAnchorElement | null
+      if (!anchor) return
+
+      const rawHref = anchor.getAttribute('href') || ''
+      const href = anchor.href || rawHref
+      const pagePath = window.location.pathname
+
+      if (href.includes('wa.me/')) {
+        trackEvent('whatsapp_click', { link_url: href, page_path: pagePath })
+      } else if (href.includes('calendly.com/') || rawHref.includes('/call-session')) {
+        trackEvent('calendar_click', { link_url: href, page_path: pagePath })
+      } else if (rawHref.startsWith('mailto:')) {
+        trackEvent('mailto_click', { link_url: rawHref, page_path: pagePath })
+      } else if (rawHref.startsWith('tel:')) {
+        trackEvent('phone_click', { link_url: rawHref, page_path: pagePath })
+      }
+    }
+
+    document.addEventListener('click', handleClick, { capture: true })
+    return () => document.removeEventListener('click', handleClick, { capture: true })
+  }, [])
 }
 
 export function trackEvent(name: string, params?: AnalyticsParams): void

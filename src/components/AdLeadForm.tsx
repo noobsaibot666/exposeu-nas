@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react'
-import { hasAnalyticsConsent, trackEvent } from '../utils/analytics'
+import { useMemo, useRef, useState } from 'react'
+import { getFormAttributionParams, hasAnalyticsConsent, trackEvent } from '../utils/analytics'
 
 // Copy is passed in from the page config (same pattern as the rest of
 // AdLandingPageConfig) so this component carries no i18n wiring of its own.
@@ -51,6 +51,7 @@ export default function AdLeadForm({ slug, serviceSlug, packageSlug, copy }: AdL
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const startedRef = useRef(false)
+  const attribution = useMemo(() => getFormAttributionParams(), [])
 
   const onFirstInteraction = () => {
     if (startedRef.current) return
@@ -68,6 +69,12 @@ export default function AdLeadForm({ slug, serviceSlug, packageSlug, copy }: AdL
     const email = String(formData.get('email') || '').trim()
     const date = String(formData.get('openingDate') || '').trim()
     const companyWebsite = String(formData.get('companyWebsite') || '').trim()
+    const utmSource = String(formData.get('utm_source') || '').trim()
+    const utmMedium = String(formData.get('utm_medium') || '').trim()
+    const utmCampaign = String(formData.get('utm_campaign') || '').trim()
+    const utmTerm = String(formData.get('utm_term') || '').trim()
+    const utmContent = String(formData.get('utm_content') || '').trim()
+    const formReferrer = String(formData.get('referrer') || '').trim()
 
     if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setError(copy.errorGeneric)
@@ -81,6 +88,12 @@ export default function AdLeadForm({ slug, serviceSlug, packageSlug, copy }: AdL
       const message = [
         `Quick booking from the ${slug} landing page.`,
         date ? `Opening / install date: ${date}` : '',
+        utmSource ? `UTM source: ${utmSource}` : '',
+        utmMedium ? `UTM medium: ${utmMedium}` : '',
+        utmCampaign ? `UTM campaign: ${utmCampaign}` : '',
+        utmTerm ? `UTM term: ${utmTerm}` : '',
+        utmContent ? `UTM content: ${utmContent}` : '',
+        formReferrer ? `Referrer: ${formReferrer}` : '',
       ]
         .filter(Boolean)
         .join('\n')
@@ -97,7 +110,7 @@ export default function AdLeadForm({ slug, serviceSlug, packageSlug, copy }: AdL
           serviceLabel,
           ...(packageSlug ? { package: packageSlug } : {}),
           sourceUrl: window.location.href,
-          referrer: document.referrer,
+          referrer: formReferrer || document.referrer,
           eventId,
           ...(companyWebsite ? { companyWebsite } : {}),
         }),
@@ -116,6 +129,11 @@ export default function AdLeadForm({ slug, serviceSlug, packageSlug, copy }: AdL
       }
 
       setSubmitted(true)
+      trackEvent('form_submit', {
+        form_name: 'ad_lead',
+        page_slug: slug,
+        service_slug: serviceSlug,
+      })
       trackEvent('landing_page_lead_submit', {
         page_slug: slug,
         service_slug: serviceSlug,
@@ -171,6 +189,12 @@ export default function AdLeadForm({ slug, serviceSlug, packageSlug, copy }: AdL
               {copy.body && <p>{copy.body}</p>}
             </div>
             <form className="alp__quick-book-form" onSubmit={handleSubmit} onFocus={onFirstInteraction} noValidate>
+              <input type="hidden" name="utm_source" value={attribution.utm_source} />
+              <input type="hidden" name="utm_medium" value={attribution.utm_medium} />
+              <input type="hidden" name="utm_campaign" value={attribution.utm_campaign} />
+              <input type="hidden" name="utm_term" value={attribution.utm_term} />
+              <input type="hidden" name="utm_content" value={attribution.utm_content} />
+              <input type="hidden" name="referrer" value={attribution.referrer} />
               <label className="alp__quick-book-field">
                 <span>{copy.nameLabel}</span>
                 <input id="quick-book-name" name="name" type="text" autoComplete="name" required />
