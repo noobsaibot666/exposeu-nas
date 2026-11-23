@@ -442,6 +442,35 @@
   text-align: center;
 }
 
+.work-cta__actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.work-page .work-cta__whatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--button-ghost-bg);
+  color: var(--text-strong);
+  text-decoration: none;
+  transition: transform 150ms ease, border-color 150ms ease, background-color 150ms ease;
+}
+
+.work-page .work-cta__whatsapp:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-highlight);
+  background: var(--button-ghost-hover-bg);
+  color: var(--text-strong);
+}
+
 .work-page .work-cta__link {
   width: auto;
   min-width: 180px;

@@ -29,6 +29,9 @@
     "fields": {
       "name": "Name",
       "email": "Email",
+      "role": "Your role",
+      "projectDate": "Date of your opening or project",
+      "website": "Website or Instagram",
       "projectType": "Type of project",
       "projectTypePlaceholder": "Select a type…",
       "message": "Tell us about your show, exhibition, or project.",

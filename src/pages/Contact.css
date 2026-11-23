@@ -310,9 +310,22 @@
   outline-offset: 2px;
 }
 
-.contact__whatsapp {
+.contact__book-call {
   grid-column: 1 / -1;
   margin-top: 16px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.contact__book-call a {
+  color: var(--text-strong);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.contact__whatsapp {
+  grid-column: 1 / -1;
+  margin-top: 10px;
 }
 
 .contact__whatsapp a {

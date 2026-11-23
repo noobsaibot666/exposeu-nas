@@ -4,6 +4,7 @@ import TopNav from '../components/TopNav'
 import PricingSection from '../sections/PricingSection'
 import TestimonialsStrip from '../components/TestimonialsStrip'
 import FAQSection from '../components/FAQSection'
+import WhatsAppIcon from '../components/WhatsAppIcon'
 import Footer from '../sections/Footer'
 import { trackEvent, useScrollDepthTracking, useTrackViewEvent } from '../utils/analytics'
 import './WorkPage.css'
@@ -408,19 +409,31 @@ function WorkPageLayout({
             <h2>{ctaText}</h2>
             {ctaDetail ? <p>{ctaDetail}</p> : null}
           </div>
-          <LocalizedLink
-            className="work-cta__link"
-            to={finalCtaHref}
-            onClick={() =>
-              setTimeout(() => trackEvent('service_cta_click', {
-                service_slug: serviceSlug,
-                service_label: title,
-                cta_label: ctaLabel ?? t('services.shared.requestAvailability'),
-                cta_location: 'service_footer',
-              }), 0)}
-          >
-            {ctaLabel ?? t('services.shared.requestAvailability')}
-          </LocalizedLink>
+          <div className="work-cta__actions">
+            <LocalizedLink
+              className="work-cta__link"
+              to={finalCtaHref}
+              onClick={() =>
+                setTimeout(() => trackEvent('service_cta_click', {
+                  service_slug: serviceSlug,
+                  service_label: title,
+                  cta_label: ctaLabel ?? t('services.shared.requestAvailability'),
+                  cta_location: 'service_footer',
+                }), 0)}
+            >
+              {ctaLabel ?? t('services.shared.requestAvailability')}
+            </LocalizedLink>
+            <a
+              className="work-cta__whatsapp"
+              href="https://wa.me/48786696765"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp"
+              title="WhatsApp"
+            >
+              <WhatsAppIcon size={20} />
+            </a>
+          </div>
         </div>
       </section>
 

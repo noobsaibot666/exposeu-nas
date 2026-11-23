@@ -131,9 +131,19 @@ function Contact() {
     const formData = new FormData(form)
     const name = String(formData.get('name') || '').trim()
     const email = String(formData.get('email') || '').trim()
+    const role = String(formData.get('role') || '').trim()
+    const projectDate = String(formData.get('projectDate') || '').trim()
+    const website = String(formData.get('website') || '').trim()
     const projectType = String(formData.get('projectType') || '').trim()
-    const message = String(formData.get('message') || '').trim()
+    const rawMessage = String(formData.get('message') || '').trim()
     const companyWebsite = String(formData.get('companyWebsite') || '').trim()
+
+    const extraDetails = [
+      role ? `Role: ${role}` : '',
+      projectDate ? `Date: ${projectDate}` : '',
+      website ? `Website / Instagram: ${website}` : '',
+    ].filter(Boolean)
+    const message = [extraDetails.join('\n'), rawMessage].filter(Boolean).join('\n\n')
 
     const nextErrors: Record<string, string> = {}
     if (!name) nextErrors.name = t('forms.contact.errors.nameRequired')
@@ -431,6 +441,36 @@ function Contact() {
                 )}
               </div>
 
+              <div className="contact__field">
+                <label htmlFor="role">{t('forms.contact.fields.role')}</label>
+                <input
+                  id="role"
+                  name="role"
+                  type="text"
+                  onChange={() => handleFieldInput('role')}
+                />
+              </div>
+
+              <div className="contact__field">
+                <label htmlFor="projectDate">{t('forms.contact.fields.projectDate')}</label>
+                <input
+                  id="projectDate"
+                  name="projectDate"
+                  type="text"
+                  onChange={() => handleFieldInput('projectDate')}
+                />
+              </div>
+
+              <div className="contact__field contact__field--full">
+                <label htmlFor="website">{t('forms.contact.fields.website')}</label>
+                <input
+                  id="website"
+                  name="website"
+                  type="text"
+                  onChange={() => handleFieldInput('website')}
+                />
+              </div>
+
               <div className="contact__field contact__field--full">
                 <label htmlFor="projectType-trigger">{t('forms.contact.fields.projectType')}</label>
                 <div
@@ -516,6 +556,17 @@ function Contact() {
                   t('forms.contact.submit.idle')
                 )}
               </button>
+
+              <div className="contact__book-call">
+                <span>{t('contact.bookCallPrefix')} </span>
+                <a
+                  href="https://calendly.com/alan-creative/15min"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t('contact.bookCallLink')}
+                </a>
+              </div>
 
               <div className="contact__whatsapp">
                 <a

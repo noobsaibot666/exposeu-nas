@@ -10,6 +10,8 @@
     "threads": "Threads"
   },
   "studioAddress": "Kreuzberg, Berlin",
-  "successStandalone": "Thanks, we'll get back to you within 24 hours.",
+  "successStandalone": "Thank you. We reply within 24 hours.",
+  "bookCallPrefix": "Prefer to talk?",
+  "bookCallLink": "Book 15 minutes.",
   "whatsapp": "Prefer WhatsApp? Message us directly →"
 }

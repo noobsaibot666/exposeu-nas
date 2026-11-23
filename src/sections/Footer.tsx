@@ -3,6 +3,7 @@ import { resolveImagePath } from '../utils/resolveImagePath'
 import { serviceList } from '../data/serviceMeta'
 import { useTranslation } from '../i18n/LocaleProvider'
 import LocalizedLink from '../i18n/LocalizedLink'
+import WhatsAppIcon from '../components/WhatsAppIcon'
 
 function Footer() {
   const { t } = useTranslation()
@@ -54,6 +55,17 @@ function Footer() {
             <LocalizedLink to="/impressum">Impressum</LocalizedLink>
             <a href="https://instagram.com/xposeu_official" target="_blank" rel="noreferrer">
               {t('footer.instagram')}
+            </a>
+            <a
+              href="https://wa.me/48786696765"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer__whatsapp"
+              aria-label="WhatsApp"
+              title="WhatsApp"
+            >
+              <WhatsAppIcon size={16} />
+              <span>WhatsApp</span>
             </a>
           </div>
         </div>
