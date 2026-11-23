@@ -73,13 +73,13 @@
     "exhibition-gallery": {
       "title": "Ausstellungen & Galerien",
       "heroCopy": "Deine Ausstellung wirkt über ihre Laufzeit hinaus.",
-      "detail": "Vollständige Dokumentation für Presse, Förderanträge und Langzeitarchiv.",
+      "detail": "Verkaufen über die Eröffnung hinaus. Einzelwerk-Stills, ein Walkthrough und ein Künstlerfilm für Viewing Room und Sammler-E-Mails.",
       "socialProof": "Dokumentiert im Silent Green, Liquidrom und VOO Space. Laufende Partnerschaft mit Leonis Works.",
       "ctaText": "Lass uns deine Ausstellung dokumentieren.",
       "footerCtaLabel": "Erzähl uns von deiner Ausstellung",
       "cards": ["Opening Night", "Lichtstudien", "Kuratorischer Flow", "Installationsdetail"],
       "galleryTitle": "Was enthalten ist.",
-      "galleryCopy": "Sauber organisiert für Presse, Archiv und Partnerkommunikation.",
+      "galleryCopy": "Für Galerien: Collector Sales Kit. Für Institutionen: Funder & Sponsor Report Pack, ein Shooting abgestimmt auf Förder- und Sponsoring-Anforderungen, mit beschrifteter Auswahl und einem Recap-Film.",
       "gallery": [
         { "title": "Installationsstills", "subtitle": "Weite Räume, zentrale Werke und klare Sichtachsen." },
         { "title": "Opening-Atmosphäre", "subtitle": "Gästemomente ohne inszenierte Szenen." },
@@ -130,13 +130,13 @@
     "brand-agency": {
       "title": "Brand & Agency",
       "heroCopy": "Dokumentation für gestaltete Erfahrungen.",
-      "detail": "Foto und Video für Markenaktivierungen und Fallstudien.",
+      "detail": "Case Study fertig zum Projektabschluss. Ein Case-Film im Award-Format, die besten Stills und ein Kunden-Recap.",
       "socialProof": "Case Study, Awards und Kunden-Recap, fertig zum Projektabschluss.",
       "ctaText": "Lass uns dein nächstes Projekt dokumentieren.",
       "footerCtaLabel": "Projektverfügbarkeit anfragen",
       "cards": ["Aktivierungsraum", "Installationsdetail", "Räumliche Dokumentation", "Agency Environment"],
       "galleryTitle": "Was enthalten ist.",
-      "galleryCopy": "Geliefert für Fallstudien, Award-Einreichungen und Kundenpräsentationen.",
+      "galleryCopy": "Case Study & Awards Pack.",
       "gallery": [
         { "title": "Hero-Fotografie", "subtitle": "Saubere Aufnahmen des Raums, des Produkts und der Atmosphäre." },
         { "title": "Räumliche Dokumentation", "subtitle": "Weitwinkel- und Detailaufnahmen des gestalteten Environments." },

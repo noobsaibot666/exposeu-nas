@@ -73,13 +73,13 @@
     "exhibition-gallery": {
       "title": "Exhibition & Gallery",
       "heroCopy": "Your exhibition lives longer than its run.",
-      "detail": "Full coverage for press, funding, and long-term archive.",
+      "detail": "Sell beyond the opening. Per-work stills, a walkthrough and an artist film for your viewing room and collector emails.",
       "socialProof": "Documented at Silent Green, Liquidrom and VOO Space. Ongoing partnership with Leonis Works.",
       "ctaText": "Let's document your exhibition.",
       "footerCtaLabel": "Tell us about your exhibition",
       "cards": ["Opening Night", "Light Studies", "Curated Flow", "Install Detail"],
       "galleryTitle": "What's included.",
-      "galleryCopy": "Delivered organized for press, archive, and partner distribution.",
+      "galleryCopy": "For galleries: Collector Sales Kit. For institutions: Funder & Sponsor Report Pack, a shoot planned around grant and sponsor requirements, with captioned selects and a recap film.",
       "gallery": [
         { "title": "Installation stills", "subtitle": "Wide rooms, key works, and clean sightlines." },
         { "title": "Opening atmosphere", "subtitle": "Guest moments without staged scenes." },
@@ -130,13 +130,13 @@
     "brand-agency": {
       "title": "Brand & Agency",
       "heroCopy": "Documentation for designed experiences.",
-      "detail": "Photo and video for brand activations and case studies.",
+      "detail": "Case study ready when the project closes. An award-format case film, the best stills and a client recap.",
       "socialProof": "Case study, awards and client recap, ready when the project closes.",
       "ctaText": "Let's document your next project.",
       "footerCtaLabel": "Request project availability",
       "cards": ["Runway Light", "Backstage", "Final Walk", "Fabric Motion"],
       "galleryTitle": "What's included.",
-      "galleryCopy": "Delivered for case studies, award submissions, and client presentations.",
+      "galleryCopy": "Case Study & Awards Pack.",
       "gallery": [
         { "title": "Hero brand moments", "subtitle": "Clean frames of the space, product and atmosphere." },
         { "title": "Spatial documentation", "subtitle": "Wide and detail coverage of the designed environment." },
