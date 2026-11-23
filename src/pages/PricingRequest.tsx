@@ -4,7 +4,7 @@ import TopNav from '../components/TopNav'
 import { useNavOverMedia } from '../hooks/useNavOverMedia'
 import { SUBMITTED_STATE } from '../hooks/useSubmittedGuard'
 import { resolveImagePath } from '../utils/resolveImagePath'
-import { getFormAttributionParams, trackEvent } from '../utils/analytics'
+import { getFormAttributionParams, hasAnalyticsConsent, trackEvent } from '../utils/analytics'
 import { serviceMeta, type ServiceSlug } from '../data/serviceMeta'
 import { pricingTiers } from '../data/pricingTiers'
 import './PricingRequest.css'
@@ -231,6 +231,25 @@ function PricingRequest() {
       plan: planInfo?.name ?? plan ?? 'unknown',
     })
     trackEvent('form_submission', 'pricing', planInfo?.name ?? plan ?? 'unknown')
+    if (hasAnalyticsConsent()) {
+      const leadEventId = payload.eventId || crypto.randomUUID()
+      if (typeof window.fbq === 'function') {
+        window.fbq('track', 'Lead', { content_name: planInfo?.name ?? plan ?? 'pricing' }, { eventID: leadEventId })
+      }
+      fetch(`${(import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(/\/+$/, '') || ''}/api/track-lead`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          eventName: 'Lead',
+          email: payload.email,
+          sourceUrl: window.location.href,
+          eventId: leadEventId,
+          projectType: planInfo?.name ?? plan ?? 'pricing',
+          service: serviceParam || null,
+          package: plan || null,
+        }),
+      }).catch(() => { /* best effort */ })
+    }
     setStatus('success')
     form.reset()
     navigate('/pricing-request/success', { state: SUBMITTED_STATE })

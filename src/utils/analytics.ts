@@ -84,13 +84,26 @@ export const initializeAnalyticsVendors = () => {
 
   if (META_PIXEL_ID) {
     if (!window.fbq) {
-      type FbqWithQueue = NonNullable<Window['fbq']> & { queue: unknown[][] }
-      const fbqStub = ((...args: Parameters<NonNullable<Window['fbq']>>) => {
-        fbqStub.queue.push(args)
-      }) as FbqWithQueue
+      type FbqStub = NonNullable<Window['fbq']> & {
+        callMethod?: (...args: unknown[]) => void
+        push: FbqStub
+        loaded: boolean
+        version: string
+        queue: unknown[][]
+      }
+      const fbqStub = function (...args: unknown[]) {
+        if (fbqStub.callMethod) {
+          fbqStub.callMethod(...args)
+        } else {
+          fbqStub.queue.push(args)
+        }
+      } as FbqStub
+      fbqStub.push = fbqStub
+      fbqStub.loaded = true
+      fbqStub.version = '2.0'
       fbqStub.queue = []
       window.fbq = fbqStub
-      window._fbq = window.fbq
+      window._fbq = fbqStub
     }
     appendVendorScript('vendor-meta-pixel', 'https://connect.facebook.net/en_US/fbevents.js')
     window.fbq('init', META_PIXEL_ID)
@@ -409,8 +422,11 @@ export const useGlobalClickTracking = () => {
     if (typeof document === 'undefined') return undefined
 
     const handleClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement | null
-      const anchor = target?.closest?.('a[href]') as HTMLAnchorElement | null
+      const element =
+        event.target instanceof Element
+          ? event.target
+          : (event.target as Node | null)?.parentElement ?? null
+      const anchor = element?.closest?.('a[href]') as HTMLAnchorElement | null
       if (!anchor) return
 
       const rawHref = anchor.getAttribute('href') || ''
