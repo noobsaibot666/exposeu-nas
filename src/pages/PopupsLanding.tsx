@@ -66,9 +66,9 @@ const configs: Record<'en' | 'de', AdLandingPageConfig> = {
       datePlaceholder: 'e.g. 12 September 2026',
       submitLabel: 'Request availability →',
       sendingLabel: 'Sending…',
-      successHeading: 'Got it — thank you.',
+      successHeading: 'Got it, thank you.',
       successBody: "We've received your dates and will get back to you within a day with availability and next steps.",
-      errorGeneric: 'Something went wrong — please email us at hello@expose-u.com',
+      errorGeneric: 'Something went wrong. Please email us at hello@expose-u.com',
       fullFormLabel: 'Prefer the full form?',
       fullFormHref: '/contact?service=popups&package=project',
     },
@@ -111,7 +111,7 @@ const configs: Record<'en' | 'de', AdLandingPageConfig> = {
       {
         slug: 'visitor-energy',
         title: 'Visitor energy',
-        body: 'People browsing, tasting and interacting — without staged scenes.',
+        body: 'People browsing, tasting and interacting, without staged scenes.',
       },
       {
         slug: 'vertical-clips',
@@ -151,7 +151,7 @@ const configs: Record<'en' | 'de', AdLandingPageConfig> = {
     ],
     finalHeading: 'Make the moment last.',
     finalBody:
-      'Your pop-up may run for a few days. The right documentation keeps working after the doors close — for recap, partners and the next pitch.',
+      'Your pop-up may run for a few days. The right documentation keeps working after the doors close, for recap, partners and the next pitch.',
     finalCta: 'Request availability',
   },
   de: {
@@ -191,9 +191,9 @@ const configs: Record<'en' | 'de', AdLandingPageConfig> = {
       datePlaceholder: 'z. B. 12. September 2026',
       submitLabel: 'Verfügbarkeit anfragen →',
       sendingLabel: 'Wird gesendet…',
-      successHeading: 'Erhalten — vielen Dank.',
+      successHeading: 'Erhalten, vielen Dank.',
       successBody: 'Wir haben Ihre Termine erhalten und melden uns innerhalb eines Tages mit Verfügbarkeit und nächsten Schritten.',
-      errorGeneric: 'Etwas ist schiefgelaufen – schreiben Sie uns bitte an hello@expose-u.com',
+      errorGeneric: 'Etwas ist schiefgelaufen. Schreiben Sie uns bitte an hello@expose-u.com',
       fullFormLabel: 'Lieber das vollständige Formular?',
       fullFormHref: '/de/contact?service=popups&package=project',
     },
@@ -236,7 +236,7 @@ const configs: Record<'en' | 'de', AdLandingPageConfig> = {
       {
         slug: 'visitor-energy',
         title: 'Visitor Energy',
-        body: 'Menschen beim Browsen, Probieren und Interagieren — ohne inszenierte Szenen.',
+        body: 'Menschen beim Browsen, Probieren und Interagieren, ohne inszenierte Szenen.',
       },
       {
         slug: 'vertical-clips',
@@ -276,7 +276,7 @@ const configs: Record<'en' | 'de', AdLandingPageConfig> = {
     ],
     finalHeading: 'Machen Sie den Moment haltbar.',
     finalBody:
-      'Ihr Pop-up läuft vielleicht nur ein paar Tage. Die richtige Dokumentation arbeitet weiter, nachdem die Türen schließen — für Recap, Partner und den nächsten Pitch.',
+      'Ihr Pop-up läuft vielleicht nur ein paar Tage. Die richtige Dokumentation arbeitet weiter, nachdem die Türen schließen, für Recap, Partner und den nächsten Pitch.',
     finalCta: 'Verfügbarkeit anfragen',
   },
 }

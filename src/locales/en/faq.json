@@ -2,7 +2,7 @@
   "label": "Frequently asked questions",
   "general": [
     { "q": "How far in advance should I book?", "a": "At least 2 weeks for single events, 4 weeks for retainer work." },
-    { "q": "Do you work outside Berlin?", "a": "We're Berlin-based. Nearby projects considered on request." },
+    { "q": "Do you work outside Berlin?", "a": "We are based in Berlin and work across Germany." },
     { "q": "What formats do you deliver in?", "a": "Press JPEG selects in named folders + full-res finals, organized for immediate distribution." },
     { "q": "Do you offer video as well as photo?", "a": "Yes. Both, or either, depending on scope." }
   ],
@@ -12,8 +12,8 @@
     { "q": "How many images are in a typical delivery?", "a": "20–40 press selects + full gallery of finals, depending on scope." }
   ],
   "exhibition-gallery": [
-    { "q": "Do you shoot the opening and the installation?", "a": "Both, or either — depending on your program and what you need for press and archive." },
-    { "q": "Can images be used for funding applications?", "a": "Yes. Files are organized exactly for that use — named, formatted, and press-ready." },
+    { "q": "Do you shoot the opening and the installation?", "a": "Both, or either, depending on your program and what you need for press and archive." },
+    { "q": "Can images be used for funding applications?", "a": "Yes. Files are organized exactly for that use: named, formatted, and press-ready." },
     { "q": "How long does a gallery shoot take?", "a": "Typically 2–4 hours depending on the space and event." }
   ],
   "artist-sessions": [

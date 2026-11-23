@@ -11,15 +11,15 @@
   "analytics": {
     "ariaLabel": "Analyse-Einwilligung",
     "title": "Analyse-Einwilligung",
-    "copy": "Wir erfassen keine personenbezogenen Daten – nur anonyme Daten zur Verbesserung unseres Angebots.",
+    "copy": "Wir erfassen keine personenbezogenen Daten, nur anonyme Daten zur Verbesserung unseres Angebots.",
     "accept": "Akzeptieren",
     "reject": "Ablehnen"
   },
   "meta": {
     "home": {
-      "title": "Foto- & Videodokumentation Berlin | expose.u",
-      "description": "Foto- und Videodokumentation für Konzerte, Ausstellungen und Live-Events in Berlin. Für Galerien, Künstler:innen, Venues und Agenturen.",
-      "ogTitle": "Konzert- & Ausstellungsdokumentation Berlin | expose.u"
+      "title": "Kunstorientierte Fotografie & Film Berlin | Galerien, Studios, Agenturen | expose.u",
+      "description": "Berliner Studio für kunstorientierte Fotografie und Film. Inhalte, die Galerien, Institutionen, Studios und Agenturen helfen zu verkaufen sowie Förderungen und Awards zu gewinnen.",
+      "ogTitle": "Kunstorientierte Fotografie & Film Berlin | Galerien, Studios, Agenturen | expose.u"
     },
     "about": {
       "title": "Über uns | expose.u",

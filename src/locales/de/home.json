@@ -1,7 +1,7 @@
 {
   "hero": {
-    "headline": "Dokumentation für Konzerte, Ausstellungen und kreative Events.",
-    "subhead": "Visuelles Dokumentationsstudio aus Berlin.",
+    "headline": "Inhalte, die deinem Projekt helfen zu verkaufen, Förderungen zu sichern und Awards zu gewinnen.",
+    "subhead": "Kunstorientierte Fotografie und Film für Galerien, Kulturinstitutionen, Ausstellungsstudios und Kreativagenturen. Mit Sitz in Berlin, tätig in ganz Deutschland.",
     "primaryCta": "Erzähl uns von deinem Projekt",
     "secondaryCta": "Unsere Arbeiten",
     "scroll": "Scrollen",
@@ -18,7 +18,7 @@
   "offerSection": {
     "label": "FOTOGRAFIE & FILM MIT KUNSTBLICK · BERLIN",
     "headline": "Bring deine Arbeit weiter.",
-    "intro": "Fotografie und Film, abgestimmt auf die Ziele deines Projekts – für Galerien, Kulturinstitutionen, Ausstellungs- und Erlebnisstudios, Kreativagenturen, Künstler:innen und Live-Projekte.",
+    "intro": "Fotografie und Film, abgestimmt auf die Ziele deines Projekts, für Galerien, Kulturinstitutionen, Ausstellungs- und Erlebnisstudios, Kreativagenturen, Künstler:innen und Live-Projekte.",
     "cards": {
       "exhibition-gallery": {
         "title": "Ausstellungen & Galerien",
@@ -81,14 +81,14 @@
         "subtext": "Bühne, Publikum und Atmosphäre für Presse und Social."
       },
       "v2": {
-        "title": "Abigail Toll - IDOL - Silent Green",
+        "title": "Abigail Toll, IDOL, Silent Green",
         "subtext": "Ein Abend mit mehreren Künstler:innen, vollständig dokumentiert."
       }
     }
   },
   "project": {
     "headline": "Projekt starten.",
-    "copy": "Mach aus deinem Projekt pressefähige Assets – mit klarem Plan und klaren Deliverables.",
+    "copy": "Mach aus deinem Projekt pressefähige Assets, mit klarem Plan und klaren Deliverables.",
     "requestAvailability": "Verfügbarkeit anfragen",
     "seeLatestWork": "Neueste Arbeiten ansehen"
   },

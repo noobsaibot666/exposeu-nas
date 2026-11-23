@@ -104,7 +104,7 @@ const HOME_SCHEMA = [
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     name: 'expose.u',
-    description: 'Photo and video documentation for concerts, exhibitions, and live events in Berlin.',
+    description: 'Berlin studio for art-first photo and film. Content that helps galleries, institutions, studios and agencies sell, win funding and awards.',
     url: 'https://expose-u.com',
     telephone: '+4917622132950',
     email: 'hello@expose-u.com',
@@ -121,7 +121,10 @@ const HOME_SCHEMA = [
       'https://www.threads.net/@xposeu_official',
     ],
     image: 'https://expose-u.com/og-default.png',
-    areaServed: { '@type': 'City', name: 'Berlin' },
+    areaServed: [
+      { '@type': 'City', name: 'Berlin' },
+      { '@type': 'Country', name: 'Germany' },
+    ],
   },
   {
     '@context': 'https://schema.org',

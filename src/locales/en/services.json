@@ -74,7 +74,7 @@
       "title": "Exhibition & Gallery",
       "heroCopy": "Your exhibition lives longer than its run.",
       "detail": "Full coverage for press, funding, and long-term archive.",
-      "socialProof": "Trusted by Berlin's galleries, curators, and institutions.",
+      "socialProof": "Documented at Silent Green, Liquidrom and VOO Space. Ongoing partnership with Leonis Works.",
       "ctaText": "Let's document your exhibition.",
       "footerCtaLabel": "Tell us about your exhibition",
       "cards": ["Opening Night", "Light Studies", "Curated Flow", "Install Detail"],
@@ -123,7 +123,7 @@
       ],
       "pricing": {
         "title": "Artist Sessions",
-        "body": "We're artists working for artists — every session is shaped around your concept, timing and budget.\n\nTell us what you're working on and we'll send over a proposal.",
+        "body": "We're artists working for artists. Every session is shaped around your concept, timing and budget.\n\nTell us what you're working on and we'll send over a proposal.",
         "cta": "Check availability"
       }
     },
@@ -131,7 +131,7 @@
       "title": "Brand & Agency",
       "heroCopy": "Documentation for designed experiences.",
       "detail": "Photo and video for brand activations and case studies.",
-      "socialProof": "Trusted by creative agencies and brand teams in Berlin.",
+      "socialProof": "Case study, awards and client recap, ready when the project closes.",
       "ctaText": "Let's document your next project.",
       "footerCtaLabel": "Request project availability",
       "cards": ["Runway Light", "Backstage", "Final Walk", "Fabric Motion"],
@@ -176,7 +176,7 @@
       "included": {
         "label": "What you get",
         "h2": "Everything you need. Nothing you don't.",
-        "lede": "A release moves fast. We help you show up ready — with photos, clips, and assets made before the campaign goes live.",
+        "lede": "A release moves fast. We help you show up ready, with photos, clips, and assets made before the campaign goes live.",
         "cards": [
           { "title": "Press photos", "body": "For media coverage, booking outreach, and announcements." },
           { "title": "Artist portraits", "body": "Visuals that reflect your sound, aesthetic, and identity." },

@@ -3,7 +3,7 @@
   "items": [
     {
       "id": "t1",
-      "quote": "They shoot with anamorphic cinema lenses. You notice it the moment you see the first frame — nothing generic, nothing flat. Just beautiful.",
+      "quote": "They shoot with anamorphic cinema lenses. You notice it the moment you see the first frame: nothing generic, nothing flat. Just beautiful.",
       "author": "George Weber",
       "company": "Artist",
       "avatar": null,
@@ -11,7 +11,7 @@
     },
     {
       "id": "t2",
-      "quote": "Real joy to work with. They made my life easy — photos and video that genuinely reflected the artists’ vibe, not just what was happening on stage.",
+      "quote": "Real joy to work with. They made my life easy. Photos and video that genuinely reflected the artists’ vibe, not just what was happening on stage.",
       "author": "Pina Conti de Luca",
       "company": "Venue Booker",
       "avatar": null,
@@ -43,7 +43,7 @@
     },
     {
       "id": "t6",
-      "quote": "Wir brauchten Presseportraits und vertikale Inhalte am selben Nachmittag. Alles kam fertig geschnitten und einsatzbereit zurück — ohne weitere Runden.",
+      "quote": "Wir brauchten Presseportraits und vertikale Inhalte am selben Nachmittag. Alles kam fertig geschnitten und einsatzbereit zurück, ohne weitere Runden.",
       "author": "Nadia Ohm",
       "company": "Musikerin",
       "avatar": null,
@@ -83,7 +83,7 @@
     },
     {
       "id": "t11",
-      "quote": "Installationsaufnahmen, die wir direkt an die Werkstatt und die Presse schicken konnten — gleiche Dateien, kein separater Schnitt nötig.",
+      "quote": "Installationsaufnahmen, die wir direkt an die Werkstatt und die Presse schicken konnten. Gleiche Dateien, kein separater Schnitt nötig.",
       "author": "Samuel Krantz",
       "company": "Künstler",
       "avatar": null,

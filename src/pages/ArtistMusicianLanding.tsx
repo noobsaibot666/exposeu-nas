@@ -82,9 +82,9 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
       datePlaceholder: "e.g. 12 September 2026",
       submitLabel: "Request availability →",
       sendingLabel: "Sending…",
-      successHeading: "Got it — thank you.",
+      successHeading: "Got it, thank you.",
       successBody: "We've received your details and will get back to you within a day with availability and next steps.",
-      errorGeneric: "Something went wrong — please email us at hello@expose-u.com",
+      errorGeneric: "Something went wrong. Please email us at hello@expose-u.com",
       fullFormLabel: "Prefer the full form?",
       fullFormHref: "/contact?service=artist-musician&package=project",
     },
@@ -122,7 +122,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
       {
         slug: "performance-documentation",
         title: "Editorial performance documentation",
-        body: "The show, captured properly — not a phone clip from the crowd.",
+        body: "The show, captured properly, not a phone clip from the crowd.",
       },
       {
         slug: "release-campaign-imagery",
@@ -165,7 +165,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
         body: "The first entry in a visual record that keeps building with every project.",
       },
     ],
-    finalHeading: "Tell us about your show — let's start your archive.",
+    finalHeading: "Tell us about your show, let's start your archive.",
     finalBody:
       "Every project gets a proposal built around scope, timeline and budget.",
     pricingNote:
@@ -213,9 +213,9 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
       datePlaceholder: "z. B. 12. September 2026",
       submitLabel: "Verfügbarkeit anfragen →",
       sendingLabel: "Wird gesendet…",
-      successHeading: "Erhalten — vielen Dank.",
+      successHeading: "Erhalten, vielen Dank.",
       successBody: "Wir haben Ihre Angaben erhalten und melden uns innerhalb eines Tages mit Verfügbarkeit und nächsten Schritten.",
-      errorGeneric: "Etwas ist schiefgelaufen – schreiben Sie uns bitte an hello@expose-u.com",
+      errorGeneric: "Etwas ist schiefgelaufen. Schreiben Sie uns bitte an hello@expose-u.com",
       fullFormLabel: "Lieber das vollständige Formular?",
       fullFormHref: "/de/contact?service=artist-musician&package=project",
     },
@@ -253,7 +253,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
       {
         slug: "performance-documentation",
         title: "Editoriale Auftrittsdokumentation",
-        body: "Der Auftritt, richtig festgehalten — kein Handyclip aus dem Publikum.",
+        body: "Der Auftritt, richtig festgehalten, kein Handyclip aus dem Publikum.",
       },
       {
         slug: "release-campaign-imagery",
@@ -297,7 +297,7 @@ const configs: Record<"en" | "de", AdLandingPageConfig> = {
       },
     ],
     finalHeading:
-      "Erzählen Sie uns von Ihrem Auftritt — starten wir Ihr Archiv.",
+      "Erzählen Sie uns von Ihrem Auftritt, starten wir Ihr Archiv.",
     finalBody:
       "Jedes Projekt bekommt ein Angebot, abgestimmt auf Umfang, Zeitplan und Budget.",
     pricingNote:

@@ -51,7 +51,7 @@
       "footerCtaLabel": "Erzähl uns von deiner Show",
       "cards": ["Live Set", "Bühnenlicht", "Energie", "Bewegung"],
       "galleryTitle": "Was enthalten ist.",
-      "galleryCopy": "Sauber organisiert und schnell geliefert – für unmittelbare Nutzung.",
+      "galleryCopy": "Sauber organisiert und schnell geliefert, für unmittelbare Nutzung.",
       "gallery": [
         { "title": "Bühnencoverage", "subtitle": "Wichtige Cues, weite Momente und starke Hero-Frames." },
         { "title": "Publikum & Atmosphäre", "subtitle": "Energie und Kontext, ohne den Raum zu stören." },
@@ -74,7 +74,7 @@
       "title": "Ausstellungen & Galerien",
       "heroCopy": "Deine Ausstellung wirkt über ihre Laufzeit hinaus.",
       "detail": "Vollständige Dokumentation für Presse, Förderanträge und Langzeitarchiv.",
-      "socialProof": "Vertrauen von Berliner Galerien, Kurator:innen und Institutionen.",
+      "socialProof": "Dokumentiert im Silent Green, Liquidrom und VOO Space. Laufende Partnerschaft mit Leonis Works.",
       "ctaText": "Lass uns deine Ausstellung dokumentieren.",
       "footerCtaLabel": "Erzähl uns von deiner Ausstellung",
       "cards": ["Opening Night", "Lichtstudien", "Kuratorischer Flow", "Installationsdetail"],
@@ -86,7 +86,7 @@
         { "title": "Detailaufnahmen", "subtitle": "Materialien, Labels und Installationsnahaufnahmen." },
         { "title": "Pressefähige Delivery", "subtitle": "Benannte Ordner für direkte Weitergabe." }
       ],
-      "extraGalleryCopy": "Für Teams, die die ganze räumliche und atmosphärische Geschichte brauchen – nicht nur Highlights.",
+      "extraGalleryCopy": "Für Teams, die die ganze räumliche und atmosphärische Geschichte brauchen, nicht nur Highlights.",
       "extraGallery": [
         { "title": "Galerien und Kulturinstitutionen", "subtitle": "Ausstellungen mit Anforderungen aus Presse, Archiv und Förderung." },
         { "title": "Kurator:innen und Künstler:innen", "subtitle": "Kuratorische Dokumentation, Portfolio und Katalog." },
@@ -123,7 +123,7 @@
       ],
       "pricing": {
         "title": "Artist Sessions",
-        "body": "Wir sind Künstler:innen, die für Künstler:innen arbeiten — jede Session wird auf Konzept, Timing und Budget zugeschnitten.\n\nErzähl uns von deinem Projekt, wir schicken dir einen Vorschlag.",
+        "body": "Wir sind Künstler:innen, die für Künstler:innen arbeiten. Jede Session wird auf Konzept, Timing und Budget zugeschnitten.\n\nErzähl uns von deinem Projekt, wir schicken dir einen Vorschlag.",
         "cta": "Verfügbarkeit anfragen"
       }
     },
@@ -131,7 +131,7 @@
       "title": "Brand & Agency",
       "heroCopy": "Dokumentation für gestaltete Erfahrungen.",
       "detail": "Foto und Video für Markenaktivierungen und Fallstudien.",
-      "socialProof": "Vertrauen von Kreativagenturen und Brand-Teams in Berlin.",
+      "socialProof": "Case Study, Awards und Kunden-Recap, fertig zum Projektabschluss.",
       "ctaText": "Lass uns dein nächstes Projekt dokumentieren.",
       "footerCtaLabel": "Projektverfügbarkeit anfragen",
       "cards": ["Aktivierungsraum", "Installationsdetail", "Räumliche Dokumentation", "Agency Environment"],
@@ -176,7 +176,7 @@
       "included": {
         "label": "Was du bekommst",
         "h2": "Alles, was du brauchst. Nichts, was du nicht brauchst.",
-        "lede": "Ein Release bewegt sich schnell. Wir helfen dir, bereit zu sein — mit Fotos, Clips und Assets, bevor deine Kampagne live geht.",
+        "lede": "Ein Release bewegt sich schnell. Wir helfen dir, bereit zu sein, mit Fotos, Clips und Assets, bevor deine Kampagne live geht.",
         "cards": [
           { "title": "Pressefotos", "body": "Für Mediencoverage, Booking-Outreach und Ankündigungen." },
           { "title": "Artist-Portraits", "body": "Visuals, die deinen Sound, deine Ästhetik und deine Identität widerspiegeln." },
