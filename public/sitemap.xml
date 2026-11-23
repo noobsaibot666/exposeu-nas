@@ -58,6 +58,24 @@
   </url>
 
   <url>
+    <loc>https://expose-u.com/services</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/services"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/services"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/services"/>
+  </url>
+
+  <url>
+    <loc>https://expose-u.com/de/services</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://expose-u.com/services"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://expose-u.com/de/services"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://expose-u.com/services"/>
+  </url>
+
+  <url>
     <loc>https://expose-u.com/services/concerts-events</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -146,7 +164,7 @@
     </video:video>
     <video:video>
       <video:thumbnail_loc>https://i.ytimg.com/vi/DkruqulWupw/maxresdefault.jpg</video:thumbnail_loc>
-      <video:title><![CDATA[Abigail Toll - IDOL - Silent Green]]></video:title>
+      <video:title><![CDATA[Abigail Toll, IDOL, Silent Green]]></video:title>
       <video:description><![CDATA[Music performance captured at Silent Green, Berlin.]]></video:description>
       <video:player_loc>https://www.youtube-nocookie.com/embed/DkruqulWupw</video:player_loc>
       <video:publication_date>2025-01-01</video:publication_date>
