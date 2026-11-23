@@ -299,7 +299,7 @@ function HomeV2() {
     () => ({
       left: [
         { id: 'home', label: t('nav.home'), onClick: () => handleScroll('#hero') },
-        { id: 'services', label: t('nav.services'), onClick: () => handleScroll('#cases') },
+        { id: 'services', label: t('nav.services'), onClick: () => navigate('/services') },
         { id: 'portfolio', label: t('nav.lastProjects'), onClick: () => navigate('/portfolio') },
       ],
       right: [

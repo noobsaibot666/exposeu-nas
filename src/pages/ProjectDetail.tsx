@@ -129,15 +129,6 @@ function ProjectDetailPage({ projectId }: { projectId: string }) {
     }
   }, [project])
 
-  const navigateHomeToSection = (sectionId: string) => {
-    navigate(locale === 'de' ? '/de' : '/')
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => {
-        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
-      })
-    })
-  }
-
   // Nav over the hero photo: white-on-dark; past it: themed bar. The mobile
   // project bar appears once the hero has scrolled away and hides again at the
   // end of the page, where the full next-project teaser takes over.
@@ -307,7 +298,7 @@ function ProjectDetailPage({ projectId }: { projectId: string }) {
   const navLinks = {
     left: [
       { id: 'home', label: t('nav.home'), onClick: () => navigate(locale === 'de' ? '/de' : '/') },
-      { id: 'services', label: t('nav.services'), onClick: () => navigateHomeToSection('cases') },
+      { id: 'services', label: t('nav.services'), onClick: () => navigate(locale === 'de' ? '/de/services' : '/services') },
       { id: 'portfolio', label: t('nav.lastProjects'), onClick: () => navigate(locale === 'de' ? '/de/portfolio' : '/portfolio') },
     ],
     right: [

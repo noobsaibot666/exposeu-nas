@@ -24,6 +24,7 @@ const ExhibitionGallery = lazyWithReload(() => import('./pages/ExhibitionGallery
 const Impressum = lazyWithReload(() => import('./pages/Impressum'))
 const ArtistSessions = lazyWithReload(() => import('./pages/ArtistSessions'))
 const Portfolio = lazyWithReload(() => import('./pages/Portfolio'))
+const Services = lazyWithReload(() => import('./pages/Services'))
 const NotFound = lazyWithReload(() => import('./pages/NotFound'))
 const BrandAgencyLanding = lazyWithReload(() => import('./pages/BrandAgencyLanding'))
 const ConcertsBerlin = lazyWithReload(() => import('./pages/ConcertsBerlin'))
@@ -196,6 +197,8 @@ function App() {
             <Route path="/de/contact" element={<Contact />} />
             <Route path="/contact-success" element={<ContactSuccess />} />
             <Route path="/de/contact-success" element={<ContactSuccess />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/de/services" element={<Services />} />
             <Route path="/services/concerts-events" element={<ConcertsEvents />} />
             <Route path="/de/services/concerts-events" element={<ConcertsEvents />} />
             <Route path="/services/exhibition-gallery" element={<ExhibitionGallery />} />

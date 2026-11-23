@@ -22,6 +22,7 @@ const PAGE_LEVEL_META_PATHS = new Set([
   '/gallery-museum-documentation',
   '/artist-musician-documentation',
   '/portfolio',
+  '/services',
   '/services/concerts-events',
   '/services/exhibition-gallery',
   '/services/artist-sessions',
@@ -103,6 +104,9 @@ export function getMetaForPath(pathname: string): MetaConfig {
   }
   if (pathname.startsWith('/pricing-request/')) {
     return { titleKey: 'common.meta.pricingRequest.title', descriptionKey: 'common.meta.pricingRequest.description' }
+  }
+  if (pathname === '/services') {
+    return { titleKey: 'common.meta.servicesIndex.title', descriptionKey: 'common.meta.servicesIndex.description' }
   }
   if (pathname === '/services/concerts-events') {
     return { titleKey: 'common.meta.services.concerts.title', descriptionKey: 'common.meta.services.concerts.description' }

@@ -13,7 +13,7 @@ function Impressum() {
     () => ({
       left: [
         { id: 'home', label: t('nav.home'), onClick: () => navigate('/') },
-        { id: 'services', label: t('nav.services'), href: '/#cases' },
+        { id: 'services', label: t('nav.services'), onClick: () => navigate('/services') },
         { id: 'portfolio', label: t('nav.lastProjects'), onClick: () => navigate('/portfolio') },
       ],
       right: [

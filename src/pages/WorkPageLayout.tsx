@@ -276,7 +276,7 @@ function WorkPageLayout({
         <TopNav
           leftLinks={[
             { id: 'home', label: t('nav.home'), href: '/' },
-            { id: 'services', label: t('nav.services'), href: '/#cases' },
+            { id: 'services', label: t('nav.services'), href: '/services' },
             { id: 'portfolio', label: t('nav.lastProjects'), href: '/portfolio' },
           ]}
           rightLinks={[

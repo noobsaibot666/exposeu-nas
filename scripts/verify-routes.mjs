@@ -23,6 +23,8 @@ const canonical = [
   '/de/contact',
   '/contact-success',
   '/de/contact-success',
+  '/services',
+  '/de/services',
   '/services/concerts-events',
   '/de/services/concerts-events',
   '/services/exhibition-gallery',
