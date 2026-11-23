@@ -372,6 +372,7 @@ export default function ReleaseContentKit() {
         </div>
       </section>
 
+      {false && (
       <section className="section rck__testimonials">
         <div className="content">
           <p className="rck__label">{t('services.pages.release-content-kit.testimonials.label')}</p>
@@ -395,6 +396,7 @@ export default function ReleaseContentKit() {
           </div>
         </div>
       </section>
+      )}
 
       <section className="section rck__usage">
         <div className="content">

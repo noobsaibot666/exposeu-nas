@@ -22,7 +22,12 @@ function initials(name: string) {
     .join('')
 }
 
-export default function TestimonialsStrip({ service }: Props) {
+export default function TestimonialsStrip({ service: _service }: Props) {
+  // Temporarily hidden until updated with new photos.
+  return null
+}
+
+export function _TestimonialsStripContent({ service }: Props) {
   const { t, tm } = useTranslation()
   const all = tm<TestimonialItem[]>('testimonials.items')
   const items = all.filter((item) => item.service === service)

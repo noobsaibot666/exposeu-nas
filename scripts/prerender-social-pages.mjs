@@ -140,7 +140,11 @@ function renderFaqHtml(faq, category) {
   ].join('\n')
 }
 
-function renderTestimonialsHtml(testimonials, service) {
+function renderTestimonialsHtml(_testimonials, _service) {
+  return ''
+}
+
+function _renderTestimonialsHtmlDisabled(testimonials, service) {
   const items = (testimonials.items || []).filter((item) => !service || item.service === service)
   if (!items.length) return ''
   return [
