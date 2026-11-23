@@ -57,29 +57,29 @@ function Privacy() {
 
           <div className="impressum__block">
             <h2>Who we are</h2>
-            <p>expose.u GbR — photography and video documentation studio based in Berlin, Germany.</p>
+            <p>expose.u GbR: photography and video documentation studio based in Berlin, Germany.</p>
             <p>Contact: <a href="mailto:hello@expose-u.com">hello@expose-u.com</a></p>
           </div>
 
           <div className="impressum__block">
             <h2>What data we collect</h2>
-            <p><strong>Contact form</strong> — name, email address, and any message you submit through our contact form.</p>
-            <p><strong>Analytics data</strong> — pages visited, time on site, device type, and approximate location via Google Analytics (GA4) and Microsoft Clarity.</p>
-            <p><strong>Advertising data</strong> — ad interactions and website events tracked via Meta Pixel (Facebook & Instagram).</p>
-            <p><strong>Cookies</strong> — small files stored in your browser by analytics and advertising tools listed above. You can disable cookies in your browser settings at any time.</p>
+            <p><strong>Contact form:</strong> name, email address, and any message you submit through our contact form.</p>
+            <p><strong>Analytics data:</strong> pages visited, time on site, device type, and approximate location via Google Analytics (GA4) and Microsoft Clarity.</p>
+            <p><strong>Advertising data:</strong> ad interactions and website events tracked via Meta Pixel (Facebook & Instagram).</p>
+            <p><strong>Cookies:</strong> small files stored in your browser by analytics and advertising tools listed above. You can disable cookies in your browser settings at any time.</p>
           </div>
 
           <div className="impressum__block">
             <h2>Why we collect it</h2>
-            <p><strong>Communication</strong> — to respond to enquiries submitted through the contact form.</p>
-            <p><strong>Website improvement</strong> — to understand how visitors use the site and improve the experience.</p>
-            <p><strong>Advertising measurement</strong> — to measure the effectiveness of ads shown on Meta platforms (Facebook & Instagram).</p>
+            <p><strong>Communication:</strong> to respond to enquiries submitted through the contact form.</p>
+            <p><strong>Website improvement:</strong> to understand how visitors use the site and improve the experience.</p>
+            <p><strong>Advertising measurement:</strong> to measure the effectiveness of ads shown on Meta platforms (Facebook & Instagram).</p>
           </div>
 
           <div className="impressum__block">
             <h2>Business outreach emails</h2>
             <p>
-              We may contact venues, galleries, and other organisations directly by email about our services, based on our legitimate interest in B2B business development (GDPR Art. 6(1)(f)). We use publicly available business contact details for this purpose — we do not purchase contact lists.
+              We may contact venues, galleries, and other organisations directly by email about our services, based on our legitimate interest in B2B business development (GDPR Art. 6(1)(f)). We use publicly available business contact details for this purpose. We do not purchase contact lists.
             </p>
             <p>
               Every outreach email includes a one-click unsubscribe link. You can also object to this processing at any time by emailing <a href="mailto:hello@expose-u.com">hello@expose-u.com</a>. Once you unsubscribe or object, we stop emailing you and retain only your email address on a suppression list, so we don't contact you again.
@@ -88,9 +88,9 @@ function Privacy() {
 
           <div className="impressum__block">
             <h2>Third-party services</h2>
-            <p><strong>Meta (Facebook & Instagram)</strong> — Meta Pixel is used to track website visits and conversions from Meta ads. Meta may use this data according to their own privacy policy.</p>
-            <p><strong>Google Analytics (GA4)</strong> — used to analyse website traffic and user behaviour.</p>
-            <p><strong>Microsoft Clarity</strong> — used to record anonymised session replays and heatmaps to improve usability.</p>
+            <p><strong>Meta (Facebook & Instagram):</strong> Meta Pixel is used to track website visits and conversions from Meta ads. Meta may use this data according to their own privacy policy.</p>
+            <p><strong>Google Analytics (GA4):</strong> used to analyse website traffic and user behaviour.</p>
+            <p><strong>Microsoft Clarity:</strong> used to record anonymised session replays and heatmaps to improve usability.</p>
           </div>
 
           <div className="impressum__block">

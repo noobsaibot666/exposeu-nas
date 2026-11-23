@@ -72,7 +72,7 @@ function Terms() {
 
           <div className="impressum__block">
             <h2>Accuracy of information</h2>
-            <p>We make reasonable efforts to keep the information on this website accurate and up to date. However, content — including service descriptions, pricing, and availability — may change without notice. expose.u accepts no liability for decisions made based on information found on this website.</p>
+            <p>We make reasonable efforts to keep the information on this website accurate and up to date. However, content (including service descriptions, pricing, and availability) may change without notice. expose.u accepts no liability for decisions made based on information found on this website.</p>
           </div>
 
           <div className="impressum__block">

@@ -64,7 +64,7 @@ function ProjectFilm({ embedUrl, videoSrc, cover, title }: { embedUrl?: string; 
             <>
               <video
                 src={videoSrc}
-                title={`${title} — ${t('portfolio.detail.film')}`}
+                title={`${title}: ${t('portfolio.detail.film')}`}
                 controls
                 autoPlay
                 playsInline
@@ -77,7 +77,7 @@ function ProjectFilm({ embedUrl, videoSrc, cover, title }: { embedUrl?: string; 
             </>
           ) : (
             <>
-              <iframe ref={frameRef} src={src} title={`${title} — ${t('portfolio.detail.film')}`} allow="autoplay; picture-in-picture" allowFullScreen loading="eager" onLoad={announceReady} />
+              <iframe ref={frameRef} src={src} title={`${title}: ${t('portfolio.detail.film')}`} allow="autoplay; picture-in-picture" allowFullScreen loading="eager" onLoad={announceReady} />
               {!ready && !slow && <span className="project-detail__film-loading" role="status">{t('portfolio.detail.loadingFilm')}</span>}
               {slow && !ready && <a className="project-detail__film-fallback" href={watchLink} target="_blank" rel="noopener noreferrer">{t('portfolio.modal.watchOn', { platform })} ↗</a>}
             </>
@@ -277,7 +277,7 @@ function ProjectDetailPage({ projectId }: { projectId: string }) {
   const previous = projects[(index - 1 + total) % total]
   const next = projects[(index + 1) % total]
   const story = project.story?.length ? project.story : [`${project.description} ${t('portfolio.detail.story')}`]
-  const alt = (n: number) => `${project.title} — ${t('portfolio.detail.image')} ${n}`
+  const alt = (n: number) => `${project.title}, ${t('portfolio.detail.image')} ${n}`
   let photoNumber = 1
 
   const renderImage = (still: Still, className = '') => {
@@ -320,7 +320,7 @@ function ProjectDetailPage({ projectId }: { projectId: string }) {
   return (
     <main className="home home--v2 project-detail" id="main">
       <SEOMeta
-        title={`${project.title} — ${project.tag}`}
+        title={`${project.title} | ${project.tag}`}
         description={project.description}
         canonical={`https://expose-u.com/projects/${slug}`}
         ogImage={project.thumb}
