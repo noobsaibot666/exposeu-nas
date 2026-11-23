@@ -1,4 +1,5 @@
-import { useMemo } from 'react'
+import { useLayoutEffect, useMemo, useRef } from 'react'
+import gsap from 'gsap'
 import './Home.css'
 import './HomeV2.css'
 import styles from './HomeRedesign.module.css'
@@ -38,6 +39,51 @@ function Services() {
   const navigate = useLocaleNavigate()
   const { locale } = useLocale()
   const { t } = useTranslation()
+  const rootRef = useRef<HTMLElement | null>(null)
+
+  useLayoutEffect(() => {
+    if (typeof window === 'undefined' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const ctx = gsap.context(() => {
+      const cardMotion = [
+        { y: 52, x: -16, rotate: -2.5 },
+        { y: 52, x: 16, rotate: 2.5 },
+        { y: 64, x: -10, rotate: -1.8 },
+        { y: 64, x: 10, rotate: 1.8 },
+      ]
+
+      const headerItems = gsap.utils.toArray<HTMLElement>('.home__section-header > *')
+      const sectionCards = gsap.utils.toArray<HTMLElement>('.home__case-card')
+
+      gsap.fromTo(
+        headerItems,
+        { opacity: 0, y: 22 },
+        { opacity: 1, y: 0, stagger: 0.08, duration: 0.55, ease: 'sine.out' },
+      )
+
+      const tl = gsap.timeline({ delay: 0.1 })
+      sectionCards.forEach((card, i) => {
+        const { y, x, rotate } = cardMotion[i % cardMotion.length]
+        tl.fromTo(
+          card,
+          { opacity: 0, y, x, scale: 0.94, rotate, filter: 'blur(6px)' },
+          {
+            opacity: 1,
+            y: 0,
+            x: 0,
+            scale: 1,
+            rotate: 0,
+            filter: 'blur(0px)',
+            duration: 0.5,
+            ease: 'sine.out',
+          },
+          i * 0.08,
+        )
+      })
+    }, rootRef)
+
+    return () => ctx.revert()
+  }, [])
 
   const navLinks = useMemo(
     () => ({
@@ -66,7 +112,7 @@ function Services() {
   )
 
   return (
-    <main className="home" id="main">
+    <main className="home" id="main" ref={rootRef}>
       <SEOMeta
         title={t('common.meta.servicesIndex.title')}
         description={t('common.meta.servicesIndex.description')}
