@@ -56,14 +56,9 @@
   transform: translateY(-1px);
 }
 
-.consent__buttonPrimary {
-  border: 1px solid var(--button-solid-border);
-  background: var(--button-solid-bg);
-  color: var(--button-solid-text);
-}
-
+.consent__buttonPrimary,
 .consent__buttonSecondary {
-  border: 1px solid var(--border-soft);
+  border: 1px solid var(--border-highlight);
   background: var(--surface-overlay);
   color: var(--text-strong);
 }

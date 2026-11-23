@@ -91,6 +91,8 @@ function Privacy() {
             <p><strong>Meta (Facebook & Instagram):</strong> Meta Pixel is used to track website visits and conversions from Meta ads. Meta may use this data according to their own privacy policy.</p>
             <p><strong>Google Analytics (GA4):</strong> used to analyse website traffic and user behaviour.</p>
             <p><strong>Microsoft Clarity:</strong> used to record anonymised session replays and heatmaps to improve usability.</p>
+            <p><strong>Calendly:</strong> when you book a call via our scheduling links, your booking details (such as name, email address, and chosen time slot) are processed by Calendly according to their privacy policy.</p>
+            <p><strong>WhatsApp:</strong> when you choose to message us via WhatsApp, your phone number and message content are processed by WhatsApp (Meta) according to their privacy policy.</p>
           </div>
 
           <div className="impressum__block">

@@ -419,8 +419,14 @@ export const useGlobalClickTracking = () => {
 
       if (href.includes('wa.me/')) {
         trackEvent('whatsapp_click', { link_url: href, page_path: pagePath })
+        if (hasAnalyticsConsent() && typeof window.fbq === 'function' && META_PIXEL_ID) {
+          window.fbq('track', 'Contact', { content_name: 'whatsapp' })
+        }
       } else if (href.includes('calendly.com/') || rawHref.includes('/call-session')) {
         trackEvent('calendar_click', { link_url: href, page_path: pagePath })
+        if (hasAnalyticsConsent() && typeof window.fbq === 'function' && META_PIXEL_ID) {
+          window.fbq('track', 'Contact', { content_name: 'calendar' })
+        }
       } else if (rawHref.startsWith('mailto:')) {
         trackEvent('mailto_click', { link_url: rawHref, page_path: pagePath })
       } else if (rawHref.startsWith('tel:')) {
