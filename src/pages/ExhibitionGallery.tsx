@@ -31,10 +31,10 @@ function ExhibitionGallery() {
   return (
     <>
       <SEOMeta
-        title={locale === 'de' ? 'Ausstellungsdokumentation Berlin' : 'Exhibition Documentation Berlin'}
-        description={locale === 'de' ? 'Foto- und Videodokumentation für Galerien, Museen und Kulturinstitutionen in Berlin. Pressefertige Lieferung. Kleines Team. 24-Stunden-Turnaround.' : 'Photo and video documentation for galleries, museums and cultural institutions in Berlin. Press-ready delivery. Small crew. 24-hour turnaround.'}
-        ogTitle={locale === 'de' ? 'Ausstellungsdokumentation Berlin | expose.u' : 'Exhibition Documentation Berlin | expose.u'}
-        ogDescription={locale === 'de' ? 'Foto- und Videodokumentation für Galerien, Museen und Kulturinstitutionen in Berlin. Pressefertige Lieferung. Kleines Team. 24-Stunden-Turnaround.' : 'Full opening and exhibition coverage. Delivered for press, funding, and archive. Berlin-based.'}
+        title={t('common.meta.services.exhibition.title')}
+        description={t('common.meta.services.exhibition.description')}
+        ogTitle={t('common.meta.services.exhibition.title')}
+        ogDescription={t('common.meta.services.exhibition.description')}
         canonical={locale === 'de' ? 'https://expose-u.com/de/services/exhibition-gallery' : 'https://expose-u.com/services/exhibition-gallery'}
         lang={locale}
       />

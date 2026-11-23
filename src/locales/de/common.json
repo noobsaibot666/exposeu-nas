@@ -27,7 +27,7 @@
     },
     "contact": {
       "title": "Kontakt | Kunstorientierte Fotografie & Film Berlin | expose.u",
-      "description": "Kontaktiere expose.u für Ausstellungen, Live-Events, Artist Sessions und Brand-Dokumentation."
+      "description": "Erzähl uns von deinem Projekt. Berliner Studio für kunstorientierte Fotografie und Film. Wir antworten innerhalb von 24 Stunden."
     },
     "contactSuccess": {
       "title": "Nachricht erhalten | expose.u",
@@ -107,20 +107,20 @@
     },
     "services": {
       "concerts": {
-        "title": "Konzerte & Live-Events | expose.u",
+        "title": "Konzert & Live Event Foto und Film Berlin | expose.u",
         "description": "Live-Fotografie und Film mit schneller Auslieferung für Presse, Social und Recaps."
       },
       "exhibition": {
-        "title": "Ausstellungen & Galerien | expose.u",
-        "description": "Ausstellungs- und Galeriedokumentation für Openings, Installationen und saubere Archivübergaben."
+        "title": "Ausstellung & Galerie Foto und Film Berlin | expose.u",
+        "description": "Einzelwerk-Fotos, ein Walkthrough und ein Künstlerfilm für Galerien und Institutionen in Berlin. Collector Sales Kit und Funder & Sponsor Report Pack."
       },
       "artist": {
-        "title": "Artist Sessions & Portraits | expose.u",
+        "title": "Artist Sessions & Portraits Berlin | expose.u",
         "description": "Portraitsessions und Artist-Dokumentation für Releases, Profile und Kampagnen."
       },
       "brand": {
-        "title": "Brand & Agency Events | expose.u",
-        "description": "Editoriale Foto- und Videocoverage für Launches, Aktivierungen und Agentur-Events."
+        "title": "Brand & Agentur Foto und Film Berlin | expose.u",
+        "description": "Case Study bereit, wenn das Projekt endet. Award-Film, Stills und Kunden-Recap für Studios und Agenturen in Berlin."
       }
     }
   }

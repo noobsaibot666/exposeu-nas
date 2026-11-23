@@ -31,10 +31,10 @@ function ArtistSessions() {
   return (
     <>
       <SEOMeta
-        title={locale === 'de' ? 'Artist Sessions Berlin | Editoriale Inhalte für Künstler:innen' : 'Artist Sessions Berlin | Editorial Content for Artists'}
-        description={locale === 'de' ? 'Foto- und Videosessions für Künstler:innen, Releases und kreative Kampagnen in Berlin. Presseportraits, Vertical Content, Kampagnen-Visuals.' : 'Photo and video sessions for artists, releases and creative campaigns in Berlin. Press portraits, vertical content, campaign visuals.'}
-        ogTitle={locale === 'de' ? 'Artist Sessions Berlin | expose.u' : 'Artist Sessions Berlin | expose.u'}
-        ogDescription={locale === 'de' ? 'Foto- und Videosessions für Künstler:innen, Releases und kreative Kampagnen in Berlin. Presseportraits, Vertical Content, Kampagnen-Visuals.' : 'Studio and location sessions for musicians and visual artists. Press-ready results, fast.'}
+        title={t('common.meta.services.artist.title')}
+        description={t('common.meta.services.artist.description')}
+        ogTitle={t('common.meta.services.artist.title')}
+        ogDescription={t('common.meta.services.artist.description')}
         canonical={locale === 'de' ? 'https://expose-u.com/de/services/artist-sessions' : 'https://expose-u.com/services/artist-sessions'}
         lang={locale}
       />
