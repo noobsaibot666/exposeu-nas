@@ -297,13 +297,13 @@ function ProjectDetailPage({ projectId }: { projectId: string }) {
 
   const navLinks = {
     left: [
-      { id: 'home', label: t('nav.home'), onClick: () => navigate(locale === 'de' ? '/de' : '/') },
-      { id: 'services', label: t('nav.services'), onClick: () => navigate(locale === 'de' ? '/de/services' : '/services') },
-      { id: 'portfolio', label: t('nav.lastProjects'), onClick: () => navigate(locale === 'de' ? '/de/portfolio' : '/portfolio') },
+      { id: 'home', label: t('nav.home'), onClick: () => navigate('/') },
+      { id: 'services', label: t('nav.services'), onClick: () => navigate('/services') },
+      { id: 'portfolio', label: t('nav.lastProjects'), onClick: () => navigate('/portfolio') },
     ],
     right: [
-      { id: 'about', label: t('nav.about'), onClick: () => navigate(locale === 'de' ? '/de/about' : '/about') },
-      { id: 'contact', label: t('nav.contact'), onClick: () => navigate(locale === 'de' ? '/de/contact' : '/contact') },
+      { id: 'about', label: t('nav.about'), onClick: () => navigate('/about') },
+      { id: 'contact', label: t('nav.contact'), onClick: () => navigate('/contact') },
     ],
   }
   const highlightAfter = Math.min(2, media.blocks.length)
@@ -322,7 +322,7 @@ function ProjectDetailPage({ projectId }: { projectId: string }) {
           className="top-nav--page"
           leftLinks={navLinks.left}
           rightLinks={navLinks.right}
-          onBrandClick={() => navigate(locale === 'de' ? '/de' : '/')}
+          onBrandClick={() => navigate('/')}
           brandLabel={t('nav.brand')}
         />
       </div>
