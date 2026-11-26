@@ -38,6 +38,7 @@ export function hasPageLevelMetaOwner(pathname: string): boolean {
   const hasGermanPrefix = pathname === '/de' || pathname.startsWith('/de/')
   const canonicalPath = pathname === '/de' ? '/' : hasGermanPrefix ? pathname.slice(3) : pathname
   if (hasGermanPrefix && ENGLISH_ONLY_META_PATHS.has(canonicalPath)) return false
+  if (canonicalPath.startsWith('/projects/')) return true
   return PAGE_LEVEL_META_PATHS.has(canonicalPath)
 }
 
